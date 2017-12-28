@@ -102,7 +102,7 @@
 <meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202017-12-27%20at%2010.05.16%20PM.png">
 <meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202017-12-28%20at%201.24.55%20AM.png">
 <meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202017-12-28%20at%2011.32.43%20AM.png">
-<meta property="og:updated_time" content="2017-12-28T03:36:34.580Z">
+<meta property="og:updated_time" content="2017-12-28T06:51:53.498Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Support Vector Machine">
 <meta name="twitter:description" content="今天来让我来解决Support Vector Machine(SVM)。这个算法一直困扰着我，虽然我没有在实际中使用过它，但是我早已听闻它的强大之处。但因为里面充满着各种数学推导，不花一些时间去研究实在是无法消化。但是，解决恐惧的最好方法就是直面它，所以过去三天除了工作外我一直都在看各种相关书籍，以及Youtube上各种SVM的视频，可谓是受尽各种煎熬，当中可能会因为看不懂里面某个公式而坐立不安，">
@@ -494,7 +494,7 @@ C &amp; = \alpha_i + \mu_i
 \end{aligned}
 \]</span> （2）求<code>min{w, b,  𝜉} L(w, b, a, 𝜉, u)对a的极大</code>： <span class="math display">\[
 \begin{aligned}
-&amp; \mathop{min}_{\alpha} \ \ \ L(w, b, \alpha) =\frac {1}{2}\sum_{i=1}^{m}\sum_{j=1}^{m}\alpha_i\alpha_jy_iy_j(x_i \cdot x_j) -  \sum_{i=1}^{N}\alpha_i \\
+&amp; \mathop{min}_{\alpha} \ \ \ \frac {1}{2}\sum_{i=1}^{m}\sum_{j=1}^{m}\alpha_i\alpha_jy_iy_j(x_i \cdot x_j) -  \sum_{i=1}^{N}\alpha_i \\
 &amp; s.t \ \ \  \sum_{i=1}^{m}\alpha_iy_i = 0\\
 \\ 
 &amp; \ \ \ \ \ \ \ \ \  0 \le \alpha_i \le C , \ \ \ \mu_i \ge 0, \\
@@ -516,7 +516,34 @@ f(x) = sign(w^{*} \cdot x + b^{*})
 \]</span> 解决了。</p>
 <h3 id="三非线形支持向量机与核函数">三、<u>非线形支</u>持向量机与核函数</h3>
 <p>对于线性分类问题，<code>线性分类支持向量机</code>是一种非常有效的方法，但是，有时候分类问题是非线性的。<img src="/images/Screen%20Shot%202017-12-28%20at%2011.32.43%20AM.png" alt="Screen Shot 2017-12-28 at 11.32.43 AM"></p>
-<p>这时候，想用一条直线去把这两类数据进行正确分类是不现实的。因此我们可以使用<code>非线性支持向量机</code></p>
+<p>这时候，想用一条直线去把这两类数据进行正确分类是不现实的。因此我们可以使用<code>非线性支持向量机</code>。</p>
+<p>非线性支持向量机首先使用一个变换将原空间的数据映射到新空间；然后在新空间里用线性分类学习方法从训练数据中学习分类模型。实现这个过程最主要的方法就是<code>核函数(Kernel Function)</code>。</p>
+<p>在原属性空间中计算的相似度函数<code>K</code>称为<code>核函数(Kernel Function)</code>，在满足<code>Mercer原理</code>，也就是说必须存在一个相应的变换，使得计算一对向量的核函数等价于在变换后的空间中计算这对向量的点积，能够使计算点积的开销更小，而且能够避免维灾难。也就是说，有 <span class="math display">\[
+\mathbf{K}(\mathbf{u, \mathbf{v}}) = \mathbf{\Phi}{(\mathbf{u})} \cdot  \mathbf{\Phi}{(\mathbf{v})} = (\mathbf{u} \cdot \mathbf{v} + 1) ^ 2
+\]</span> 下面是一些常用的核函数</p>
+<ul>
+<li><code>多项式核函数（polynomial kernel function)</code></li>
+</ul>
+<p><span class="math display">\[
+K(x, z) = (x \cdot z + 1)^p
+\]</span></p>
+<p>对应的支持向量机是一个<code>p次多项式分类器</code>。</p>
+<ul>
+<li><code>高斯核函数(Gaussian kernel function)</code> <span class="math display">\[
+K(x, z) = exp\left(-\frac{||x-z||^2}{2\sigma^2}\right)
+\]</span> 然后下面我们就可以尝试求解最优解了。</li>
+</ul>
+<p>（1）选取适当的<code>核函数K(x, z)</code>和适当的参数<code>C</code>，构造并求解最优化问题 $$ \begin{aligned} &amp; <em>{}    </em>{i=1}^{m}_{j=1}^{m}_i<em>jy_iy_j(K(x_i, x_j)) - </em>{i=1}<sup>{N}<em>i \ &amp; s.t     </em>{i=1}</sup>{m}_iy_i = 0\ \ &amp;           0 _i C ,     i =1, 2, …, m \</p>
+<p>\end{aligned} $$ 求得最优解<code>ɑ*=(ɑ1*, a2*, ..., a*N)^T</code></p>
+<p>（2）选择<code>ɑ*</code>的一个正分量<code>0&lt;ɑj*&lt;C</code>，计算 <span class="math display">\[
+b^* = y_j - \sum_{i=1}^{N}\alpha_{i}^{*}y_iK(x_i \cdot x_j)
+\]</span> （3）求得分离超平面 <span class="math display">\[
+\sum_{i=1}^{N}\alpha_{i}^{*}y_iK(x \cdot x_i) + b^{*} = 0
+\]</span> （4）分类决策函数 <span class="math display">\[
+f(x) = sign \left (\sum_{i=1}^{N}\alpha_{i}^{*}y_iK(x \cdot x_i) + b^{*}\right)
+\]</span> 解决了。</p>
+<p>下面我们就可以用<code>Python</code>来写一个<code>SVM算法</code>啦</p>
+<pre><code></code></pre>
 
       
     </div>
