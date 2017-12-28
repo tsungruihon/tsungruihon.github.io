@@ -488,7 +488,7 @@ pre,
 }
 pre,
 code {
-  font-family: "Microsoft YaHei", Verdana, sans-serif;
+  font-family: consolas, Menlo, "PingFang SC", "Microsoft YaHei", monospace;
 }
 code {
   padding: 2px 4px;
@@ -1704,7 +1704,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #adcc17;
+  background: #a35e53;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2553,7 +2553,4 @@ embed {
 }
 .links-of-blogroll-inline .links-of-blogroll-item {
   display: inline-block;
-}
-.highlight .gutter {
-  display: none;
 }
