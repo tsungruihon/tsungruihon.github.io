@@ -1,0 +1,1112 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="这周的学习计划是阅读命令模式、解释器模式、观察者模式和模版模式。 命令模式 命令设计模式帮助我们将一个操作（撤销、重做、复制、粘贴等）封装一个对象。这意味着创建一个类，包含实该操作所需要的所有逻辑和方法。 下面的例子是使用命令模式实现最基本的文件操作工具。  创建一个文件，并随意写入一个字符串 读取一个文件的内容 重命名一个文件 删除一个文件  import os   verbose = True">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《Python设计模式》读书笔记三">
+<meta property="og:url" content="http://yoursite.com/2017/07/30/《Python设计模式》读书笔记三/index.html">
+<meta property="og:site_name" content="彼得的博客">
+<meta property="og:description" content="这周的学习计划是阅读命令模式、解释器模式、观察者模式和模版模式。 命令模式 命令设计模式帮助我们将一个操作（撤销、重做、复制、粘贴等）封装一个对象。这意味着创建一个类，包含实该操作所需要的所有逻辑和方法。 下面的例子是使用命令模式实现最基本的文件操作工具。  创建一个文件，并随意写入一个字符串 读取一个文件的内容 重命名一个文件 删除一个文件  import os   verbose = True">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-07-31T09:52:44.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《Python设计模式》读书笔记三">
+<meta name="twitter:description" content="这周的学习计划是阅读命令模式、解释器模式、观察者模式和模版模式。 命令模式 命令设计模式帮助我们将一个操作（撤销、重做、复制、粘贴等）封装一个对象。这意味着创建一个类，包含实该操作所需要的所有逻辑和方法。 下面的例子是使用命令模式实现最基本的文件操作工具。  创建一个文件，并随意写入一个字符串 读取一个文件的内容 重命名一个文件 删除一个文件  import os   verbose = True">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/07/30/《Python设计模式》读书笔记三/"/>
+
+
+
+
+
+  <title>《Python设计模式》读书笔记三 | 彼得的博客</title>
+  <link rel="stylesheet" type="text/css" href="/css/prettify.css">
+  <link rel="stylesheet" type="text/css" href="/css/github-v2.css">
+  <link rel="stylesheet" type="text/css" href="/css/github-v2.min.css">
+  <script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
+       <script type="text/x-mathjax-config">
+         MathJax.Hub.Config({
+           tex2jax: {
+             inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+             processEscapes: true
+           }
+         });
+       </script>
+       <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">彼得的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/30/《Python设计模式》读书笔记三/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peter Tsung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pandas.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="彼得的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                《Python设计模式》读书笔记三
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-30T19:33:21+08:00">
+                2017-07-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-Notes/" itemprop="url" rel="index">
+                    <span itemprop="name">Python_Notes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这周的学习计划是阅读<code>命令模式</code>、<code>解释器模式</code>、<code>观察者模式</code>和<code>模版模式</code>。</p>
+<p><u>命令模式</u></p>
+<p>命令设计模式帮助我们将一个操作（撤销、重做、复制、粘贴等）封装一个对象。这意味着创建一个类，包含实该操作所需要的所有逻辑和方法。</p>
+<p>下面的例子是使用命令模式实现最基本的文件操作工具。</p>
+<ul>
+<li>创建一个文件，并随意写入一个字符串</li>
+<li>读取一个文件的内容</li>
+<li>重命名一个文件</li>
+<li>删除一个文件</li>
+</ul>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">import</span> os </div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3">verbose <span class="op">=</span> <span class="va">True</span></div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4"></div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="kw">class</span> RenameFile:</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, path_src, path_dest):</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7">        <span class="va">self</span>.src, <span class="va">self</span>.dest <span class="op">=</span> path_src, path_dest</div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8">        </div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9">    <span class="kw">def</span> execute(<span class="va">self</span>):</div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10">        <span class="cf">if</span> verbose:</div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11">            <span class="bu">print</span>(<span class="st">&quot;[renaming &#39;</span><span class="sc">{}</span><span class="st">&#39; to &#39;</span><span class="sc">{}</span><span class="st">&#39;&quot;</span>.<span class="bu">format</span>(<span class="va">self</span>.src, <span class="va">self</span>.dest))</div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12">        os.rename(<span class="va">self</span>.src, <span class="va">self</span>.dest)</div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13">    </div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14"><span class="kw">class</span> CreateFile:</div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, path, txt<span class="op">=</span><span class="st">&#39;hello world</span><span class="ch">\n</span><span class="st">&#39;</span>):</div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16">        <span class="va">self</span>.path, <span class="va">self</span>.txt <span class="op">=</span> path, txt</div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17">    </div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18">    <span class="kw">def</span> execute(<span class="va">self</span>):</div>
+<div class="sourceLine" id="19" href="#19" data-line-number="19">        <span class="cf">if</span> verbose:</div>
+<div class="sourceLine" id="20" href="#20" data-line-number="20">            <span class="bu">print</span>(<span class="st">&quot;[creating file &#39;</span><span class="sc">{}</span><span class="st">&#39;]&quot;</span>.<span class="bu">format</span>(<span class="va">self</span>.path))</div>
+<div class="sourceLine" id="21" href="#21" data-line-number="21">        <span class="cf">with</span> <span class="bu">open</span>(<span class="va">self</span>.path, mode<span class="op">=</span><span class="st">&#39;w&#39;</span>, encoding<span class="op">=</span><span class="st">&#39;utf-8&#39;</span>) <span class="im">as</span> out_file:</div>
+<div class="sourceLine" id="22" href="#22" data-line-number="22">            out_file.write(<span class="va">self</span>.txt)</div>
+<div class="sourceLine" id="23" href="#23" data-line-number="23">    </div>
+<div class="sourceLine" id="24" href="#24" data-line-number="24">    <span class="kw">def</span> undo(<span class="va">self</span>):</div>
+<div class="sourceLine" id="25" href="#25" data-line-number="25">        delete_file(<span class="va">self</span>.path)</div>
+<div class="sourceLine" id="26" href="#26" data-line-number="26">    </div>
+<div class="sourceLine" id="27" href="#27" data-line-number="27"><span class="kw">class</span> ReadFile:</div>
+<div class="sourceLine" id="28" href="#28" data-line-number="28">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, path):</div>
+<div class="sourceLine" id="29" href="#29" data-line-number="29">        <span class="va">self</span>.path <span class="op">=</span> path</div>
+<div class="sourceLine" id="30" href="#30" data-line-number="30">        </div>
+<div class="sourceLine" id="31" href="#31" data-line-number="31">    <span class="kw">def</span> execute(<span class="va">self</span>):</div>
+<div class="sourceLine" id="32" href="#32" data-line-number="32">        <span class="cf">if</span> verbose:</div>
+<div class="sourceLine" id="33" href="#33" data-line-number="33">            <span class="bu">print</span>(<span class="st">&quot;[reading file &#39;</span><span class="sc">{}</span><span class="st">&#39;]&quot;</span>.<span class="bu">format</span>(<span class="va">self</span>.path))</div>
+<div class="sourceLine" id="34" href="#34" data-line-number="34">        <span class="cf">with</span> <span class="bu">open</span>(<span class="va">self</span>.path, mode<span class="op">=</span><span class="st">&#39;r&#39;</span>, encoding<span class="op">=</span><span class="st">&#39;utf-8&#39;</span>) <span class="im">as</span> in_file:</div>
+<div class="sourceLine" id="35" href="#35" data-line-number="35">            <span class="bu">print</span>(in_file.read(), end<span class="op">=</span><span class="st">&#39;&#39;</span>)</div>
+<div class="sourceLine" id="36" href="#36" data-line-number="36">            </div>
+<div class="sourceLine" id="37" href="#37" data-line-number="37"><span class="kw">def</span> delete_file(path):</div>
+<div class="sourceLine" id="38" href="#38" data-line-number="38">    <span class="cf">if</span> verbose:</div>
+<div class="sourceLine" id="39" href="#39" data-line-number="39">        <span class="bu">print</span>(<span class="st">&quot;deleting file &#39;</span><span class="sc">{}</span><span class="st">&#39;&quot;</span>.<span class="bu">format</span>(path))</div>
+<div class="sourceLine" id="40" href="#40" data-line-number="40">    os.remove(path)</div>
+<div class="sourceLine" id="41" href="#41" data-line-number="41"></div>
+<div class="sourceLine" id="42" href="#42" data-line-number="42"><span class="kw">def</span> main():</div>
+<div class="sourceLine" id="43" href="#43" data-line-number="43">    orig_name, new_name <span class="op">=</span> <span class="st">&#39;file1&#39;</span>, <span class="st">&#39;file2&#39;</span></div>
+<div class="sourceLine" id="44" href="#44" data-line-number="44">    </div>
+<div class="sourceLine" id="45" href="#45" data-line-number="45">    commands <span class="op">=</span> []</div>
+<div class="sourceLine" id="46" href="#46" data-line-number="46">    <span class="cf">for</span> cmd <span class="kw">in</span> CreateFIle(orig_name), ReadFile(orig_name), RenameFile(orig_name, new_name):</div>
+<div class="sourceLine" id="47" href="#47" data-line-number="47">        commands.append(cmd)</div>
+<div class="sourceLine" id="48" href="#48" data-line-number="48">    [c.execute() <span class="cf">for</span> c <span class="kw">in</span> commands]</div>
+<div class="sourceLine" id="49" href="#49" data-line-number="49">    </div>
+<div class="sourceLine" id="50" href="#50" data-line-number="50">    answer <span class="op">=</span> <span class="bu">input</span>(<span class="st">&#39;reverse the executed commands? []y/n&#39;</span>)</div>
+<div class="sourceLine" id="51" href="#51" data-line-number="51">    </div>
+<div class="sourceLine" id="52" href="#52" data-line-number="52">    <span class="cf">if</span> answer <span class="kw">not</span> <span class="kw">in</span> <span class="st">&#39;yY&#39;</span>:</div>
+<div class="sourceLine" id="53" href="#53" data-line-number="53">        <span class="bu">print</span>(<span class="st">&quot;the result is </span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(new_name))</div>
+<div class="sourceLine" id="54" href="#54" data-line-number="54">        exit()</div>
+<div class="sourceLine" id="55" href="#55" data-line-number="55">    </div>
+<div class="sourceLine" id="56" href="#56" data-line-number="56">    <span class="cf">for</span> c <span class="kw">in</span> <span class="bu">reversed</span>(commands):</div>
+<div class="sourceLine" id="57" href="#57" data-line-number="57">        <span class="cf">try</span>:</div>
+<div class="sourceLine" id="58" href="#58" data-line-number="58">            c.undo()</div>
+<div class="sourceLine" id="59" href="#59" data-line-number="59">        <span class="cf">except</span> <span class="pp">AttributeError</span> <span class="im">as</span> e:</div>
+<div class="sourceLine" id="60" href="#60" data-line-number="60">            <span class="cf">pass</span></div>
+<div class="sourceLine" id="61" href="#61" data-line-number="61"> </div>
+<div class="sourceLine" id="62" href="#62" data-line-number="62"><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</div>
+<div class="sourceLine" id="63" href="#63" data-line-number="63">    main()</div></code></pre>
+<p><u>解释器模式</u></p>
+<p>在解释器模式中，有一个十分重要的名词，就是<code>DSL(Domain Specific Language)</code>，领域特定语言。<code>DSL</code>是一种针对一个特定领域的有限表达能力。</p>
+<p>而<code>DSL</code>分为内部<code>DSL</code>和外部<code>DSL</code>。内部<code>DSL</code>构建在一种宿主编程语言中。内部<code>DSL</code>的一个例子是，使用<code>Python</code>解决线性方程组的一种语言。使用内部<code>DSL</code>的优势是我们不必担心创建、编译及解析语法，因为这些已经被宿主语言解决掉了。劣势是会受限于宿主语言的特性。如果宿主语言不具备这些特性，构建一种表达能力强、简洁而且优美的内部<code>DSL</code>是富有挑战性的。</p>
+<p>外部<code>DSL</code>不依赖某种宿主语言。<code>DSL</code>的创建者可以决定语言的方方面面（语法、句法等），但也要负责为其创建一个解析器和编译器。</p>
+<p>下面的例子是创建一种内部<code>DSL</code>控制一个智能屋。</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">from</span> pyparsing <span class="im">import</span> Word, OneOrMore, Optional, Group, Suppress, alphanums</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="kw">class</span> Gate:</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5">        <span class="va">self</span>.is_open <span class="op">=</span> <span class="va">False</span></div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6">        </div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7">    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8">        <span class="cf">return</span> <span class="st">&#39;Open&#39;</span> <span class="cf">if</span> <span class="va">self</span>.is_open <span class="cf">else</span> <span class="st">&#39;closed&#39;</span></div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9">    </div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10">    <span class="kw">def</span> <span class="bu">open</span>(<span class="va">self</span>):</div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11">        <span class="bu">print</span>(<span class="st">&#39;opening the gate&#39;</span>)</div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12">        <span class="va">self</span>.is_open <span class="op">=</span> <span class="va">True</span></div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13">        </div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14">    <span class="kw">def</span> close(<span class="va">self</span>):</div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15">        <span class="bu">print</span>(<span class="st">&#39;closing the gate&#39;</span>)</div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16">        <span class="va">self</span>.is_open <span class="op">=</span> <span class="va">False</span></div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17">        </div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18"></div>
+<div class="sourceLine" id="19" href="#19" data-line-number="19"><span class="kw">class</span> Garage:</div>
+<div class="sourceLine" id="20" href="#20" data-line-number="20">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</div>
+<div class="sourceLine" id="21" href="#21" data-line-number="21">        <span class="va">self</span>.is_open <span class="op">=</span> <span class="va">False</span></div>
+<div class="sourceLine" id="22" href="#22" data-line-number="22">    </div>
+<div class="sourceLine" id="23" href="#23" data-line-number="23">    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</div>
+<div class="sourceLine" id="24" href="#24" data-line-number="24">        <span class="cf">return</span> <span class="st">&#39;open&#39;</span> <span class="cf">if</span> <span class="va">self</span>.is_open <span class="cf">else</span> <span class="st">&#39;closed&#39;</span></div>
+<div class="sourceLine" id="25" href="#25" data-line-number="25">    </div>
+<div class="sourceLine" id="26" href="#26" data-line-number="26">    <span class="kw">def</span> <span class="bu">open</span>(<span class="va">self</span>):</div>
+<div class="sourceLine" id="27" href="#27" data-line-number="27">        <span class="bu">print</span>(<span class="st">&#39;opening the garage&#39;</span>)</div>
+<div class="sourceLine" id="28" href="#28" data-line-number="28">        <span class="va">self</span>.is_open <span class="op">=</span> <span class="va">True</span></div>
+<div class="sourceLine" id="29" href="#29" data-line-number="29">        </div>
+<div class="sourceLine" id="30" href="#30" data-line-number="30">    <span class="kw">def</span> close(<span class="va">self</span>):</div>
+<div class="sourceLine" id="31" href="#31" data-line-number="31">        <span class="bu">print</span>(<span class="st">&#39;closing the garage&#39;</span>)</div>
+<div class="sourceLine" id="32" href="#32" data-line-number="32">        <span class="va">self</span>.is_open <span class="op">=</span> <span class="va">False</span></div>
+<div class="sourceLine" id="33" href="#33" data-line-number="33">    </div>
+<div class="sourceLine" id="34" href="#34" data-line-number="34"><span class="kw">class</span> Aircondition:</div>
+<div class="sourceLine" id="35" href="#35" data-line-number="35">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</div>
+<div class="sourceLine" id="36" href="#36" data-line-number="36">        <span class="va">self</span>.is_on <span class="op">=</span> <span class="va">False</span></div>
+<div class="sourceLine" id="37" href="#37" data-line-number="37">    </div>
+<div class="sourceLine" id="38" href="#38" data-line-number="38">    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</div>
+<div class="sourceLine" id="39" href="#39" data-line-number="39">        <span class="cf">return</span> <span class="st">&#39;on&#39;</span> <span class="cf">if</span> <span class="va">self</span>.is_on <span class="cf">else</span> <span class="st">&#39;off&#39;</span></div>
+<div class="sourceLine" id="40" href="#40" data-line-number="40">    </div>
+<div class="sourceLine" id="41" href="#41" data-line-number="41">    <span class="kw">def</span> turn_on(<span class="va">self</span>):</div>
+<div class="sourceLine" id="42" href="#42" data-line-number="42">        <span class="bu">print</span>(<span class="st">&#39;turning on the aircondition&#39;</span>)</div>
+<div class="sourceLine" id="43" href="#43" data-line-number="43">        <span class="va">self</span>.is_on <span class="op">=</span> <span class="va">True</span></div>
+<div class="sourceLine" id="44" href="#44" data-line-number="44">          </div>
+<div class="sourceLine" id="45" href="#45" data-line-number="45">    <span class="kw">def</span> turn_off(<span class="va">self</span>):</div>
+<div class="sourceLine" id="46" href="#46" data-line-number="46">        <span class="bu">print</span>(<span class="st">&#39;turning off the aircondition&#39;</span>)</div>
+<div class="sourceLine" id="47" href="#47" data-line-number="47">        <span class="va">self</span>.is_on <span class="op">=</span> <span class="va">True</span></div>
+<div class="sourceLine" id="48" href="#48" data-line-number="48">        </div>
+<div class="sourceLine" id="49" href="#49" data-line-number="49"><span class="kw">class</span> Heating:</div>
+<div class="sourceLine" id="50" href="#50" data-line-number="50">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</div>
+<div class="sourceLine" id="51" href="#51" data-line-number="51">        <span class="va">self</span>.is_on <span class="op">=</span> <span class="va">False</span></div>
+<div class="sourceLine" id="52" href="#52" data-line-number="52">        </div>
+<div class="sourceLine" id="53" href="#53" data-line-number="53">    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</div>
+<div class="sourceLine" id="54" href="#54" data-line-number="54">        <span class="cf">return</span> <span class="st">&#39;on&#39;</span> <span class="cf">if</span> <span class="va">self</span>.is_on <span class="cf">else</span> <span class="st">&#39;off&#39;</span></div>
+<div class="sourceLine" id="55" href="#55" data-line-number="55">    </div>
+<div class="sourceLine" id="56" href="#56" data-line-number="56">    <span class="kw">def</span> turn_on(<span class="va">self</span>):</div>
+<div class="sourceLine" id="57" href="#57" data-line-number="57">        <span class="bu">print</span>(<span class="st">&#39;turning on the heating&#39;</span>)</div>
+<div class="sourceLine" id="58" href="#58" data-line-number="58">        <span class="va">self</span>.is_on <span class="op">=</span> <span class="va">True</span></div>
+<div class="sourceLine" id="59" href="#59" data-line-number="59">        </div>
+<div class="sourceLine" id="60" href="#60" data-line-number="60">    <span class="kw">def</span> turn_off(<span class="va">self</span>):</div>
+<div class="sourceLine" id="61" href="#61" data-line-number="61">        <span class="bu">print</span>(<span class="st">&#39;turning off the heating&#39;</span>)</div>
+<div class="sourceLine" id="62" href="#62" data-line-number="62">        <span class="va">self</span>.is_on <span class="op">=</span> <span class="va">False</span></div>
+<div class="sourceLine" id="63" href="#63" data-line-number="63">        </div>
+<div class="sourceLine" id="64" href="#64" data-line-number="64"><span class="kw">class</span> Boiler:</div>
+<div class="sourceLine" id="65" href="#65" data-line-number="65">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</div>
+<div class="sourceLine" id="66" href="#66" data-line-number="66">        <span class="va">self</span>.temperature <span class="op">=</span> <span class="dv">83</span></div>
+<div class="sourceLine" id="67" href="#67" data-line-number="67">    </div>
+<div class="sourceLine" id="68" href="#68" data-line-number="68">    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</div>
+<div class="sourceLine" id="69" href="#69" data-line-number="69">        <span class="cf">return</span> <span class="st">&#39;boiler temperature: </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(<span class="va">self</span>.temperature)</div>
+<div class="sourceLine" id="70" href="#70" data-line-number="70">    </div>
+<div class="sourceLine" id="71" href="#71" data-line-number="71">    <span class="kw">def</span> increase_temperature(<span class="va">self</span>, amount):</div>
+<div class="sourceLine" id="72" href="#72" data-line-number="72">        <span class="bu">print</span>(<span class="st">&quot;increasing the boiler&#39;s temperature by </span><span class="sc">{}</span><span class="st"> degress&quot;</span>.<span class="bu">format</span>(amount))</div>
+<div class="sourceLine" id="73" href="#73" data-line-number="73">        <span class="va">self</span>.temperature <span class="op">+=</span> amount</div>
+<div class="sourceLine" id="74" href="#74" data-line-number="74">        </div>
+<div class="sourceLine" id="75" href="#75" data-line-number="75">    <span class="kw">def</span> decrease_temperature(<span class="va">self</span>, amount):</div>
+<div class="sourceLine" id="76" href="#76" data-line-number="76">        <span class="bu">print</span>(<span class="st">&quot;decreasing the boiler&#39;s temperature by </span><span class="sc">{}</span><span class="st"> degress&quot;</span>.<span class="bu">format</span>(amount))</div>
+<div class="sourceLine" id="77" href="#77" data-line-number="77">        <span class="va">self</span>.temperature <span class="op">-=</span> amount</div>
+<div class="sourceLine" id="78" href="#78" data-line-number="78"> </div>
+<div class="sourceLine" id="79" href="#79" data-line-number="79"><span class="kw">class</span> Fridge:</div>
+<div class="sourceLine" id="80" href="#80" data-line-number="80">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</div>
+<div class="sourceLine" id="81" href="#81" data-line-number="81">        <span class="va">self</span>.temperature <span class="op">=</span> <span class="dv">2</span></div>
+<div class="sourceLine" id="82" href="#82" data-line-number="82">    </div>
+<div class="sourceLine" id="83" href="#83" data-line-number="83">    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</div>
+<div class="sourceLine" id="84" href="#84" data-line-number="84">        <span class="cf">return</span> <span class="st">&#39;fridge temperature: </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(<span class="va">self</span>.temperature)</div>
+<div class="sourceLine" id="85" href="#85" data-line-number="85">    </div>
+<div class="sourceLine" id="86" href="#86" data-line-number="86">    <span class="kw">def</span> increase_temperature(<span class="va">self</span>, amount):</div>
+<div class="sourceLine" id="87" href="#87" data-line-number="87">        <span class="bu">print</span>(<span class="st">&quot;increasing the fridge&#39;s temperature by </span><span class="sc">{}</span><span class="st"> degrees&quot;</span>.<span class="bu">format</span>(amount))</div>
+<div class="sourceLine" id="88" href="#88" data-line-number="88">        <span class="va">self</span>.temperature <span class="op">+=</span> amount</div>
+<div class="sourceLine" id="89" href="#89" data-line-number="89">        </div>
+<div class="sourceLine" id="90" href="#90" data-line-number="90">    <span class="kw">def</span> decrease_temperature(<span class="va">self</span>, amount):</div>
+<div class="sourceLine" id="91" href="#91" data-line-number="91">        <span class="bu">print</span>(<span class="st">&quot;decreasing the fridge&#39;s temperature by </span><span class="sc">{}</span><span class="st"> degrees&quot;</span>.<span class="bu">format</span>(amount))</div>
+<div class="sourceLine" id="92" href="#92" data-line-number="92">        <span class="va">self</span>.temperature <span class="op">-=</span> amount</div>
+<div class="sourceLine" id="93" href="#93" data-line-number="93">        </div>
+<div class="sourceLine" id="94" href="#94" data-line-number="94"><span class="kw">def</span> main():</div>
+<div class="sourceLine" id="95" href="#95" data-line-number="95">    word <span class="op">=</span> Word(alphanums)</div>
+<div class="sourceLine" id="96" href="#96" data-line-number="96">    command <span class="op">=</span> Group(OneOrMore(word))</div>
+<div class="sourceLine" id="97" href="#97" data-line-number="97">    token <span class="op">=</span> Suppress(<span class="st">&quot;-&gt;&quot;</span>)</div>
+<div class="sourceLine" id="98" href="#98" data-line-number="98">    device <span class="op">=</span> Group(OneOrMore(word))</div>
+<div class="sourceLine" id="99" href="#99" data-line-number="99">    argument <span class="op">=</span> Group(OneOrMore(word))</div>
+<div class="sourceLine" id="100" href="#100" data-line-number="100">    event <span class="op">=</span> command <span class="op">+</span> token <span class="op">+</span> device <span class="op">+</span> Optional(token <span class="op">+</span> argument)</div>
+<div class="sourceLine" id="101" href="#101" data-line-number="101">    </div>
+<div class="sourceLine" id="102" href="#102" data-line-number="102">    gate <span class="op">=</span> Gate()</div>
+<div class="sourceLine" id="103" href="#103" data-line-number="103">    garage <span class="op">=</span> Garage()</div>
+<div class="sourceLine" id="104" href="#104" data-line-number="104">    airco <span class="op">=</span> Aircondition()</div>
+<div class="sourceLine" id="105" href="#105" data-line-number="105">    heating <span class="op">=</span> Heating()</div>
+<div class="sourceLine" id="106" href="#106" data-line-number="106">    boiler <span class="op">=</span> Boiler()</div>
+<div class="sourceLine" id="107" href="#107" data-line-number="107">    fridge <span class="op">=</span> Fridge()</div>
+<div class="sourceLine" id="108" href="#108" data-line-number="108">    </div>
+<div class="sourceLine" id="109" href="#109" data-line-number="109">    tests <span class="op">=</span> (<span class="st">&#39;open -&gt; gate&#39;</span>, </div>
+<div class="sourceLine" id="110" href="#110" data-line-number="110">             <span class="st">&#39;close -&gt; garage&#39;</span>,</div>
+<div class="sourceLine" id="111" href="#111" data-line-number="111">             <span class="st">&#39;turn on -&gt; aircondition&#39;</span>,</div>
+<div class="sourceLine" id="112" href="#112" data-line-number="112">             <span class="st">&#39;turn off -&gt; heating&#39;</span>, </div>
+<div class="sourceLine" id="113" href="#113" data-line-number="113">             <span class="st">&#39;increase -&gt; boiler temperature -&gt; 5 degrees&#39;</span>,</div>
+<div class="sourceLine" id="114" href="#114" data-line-number="114">             <span class="st">&#39;decrease -&gt; fridge temperature -&gt; 2 degress&#39;</span>)</div>
+<div class="sourceLine" id="115" href="#115" data-line-number="115">    open_actions <span class="op">=</span> {<span class="st">&#39;gate&#39;</span>: gate.<span class="bu">open</span>, </div>
+<div class="sourceLine" id="116" href="#116" data-line-number="116">                    <span class="st">&#39;garage&#39;</span>: garage.<span class="bu">open</span>, </div>
+<div class="sourceLine" id="117" href="#117" data-line-number="117">                    <span class="st">&#39;aircondition&#39;</span>: airco.turn_on,</div>
+<div class="sourceLine" id="118" href="#118" data-line-number="118">                    <span class="st">&#39;heating&#39;</span>: heating.turn_on,</div>
+<div class="sourceLine" id="119" href="#119" data-line-number="119">                    <span class="st">&#39;boiler temperature&#39;</span>: boiler.increase_temperature,</div>
+<div class="sourceLine" id="120" href="#120" data-line-number="120">                    <span class="st">&#39;fridge temperature&#39;</span>: fridge.increase_temperature}</div>
+<div class="sourceLine" id="121" href="#121" data-line-number="121">    close_actions <span class="op">=</span> {<span class="st">&#39;gate&#39;</span>: gate.close, </div>
+<div class="sourceLine" id="122" href="#122" data-line-number="122">                    <span class="st">&#39;garage&#39;</span>: garage.close, </div>
+<div class="sourceLine" id="123" href="#123" data-line-number="123">                    <span class="st">&#39;aircondition&#39;</span>: airco.turn_off,</div>
+<div class="sourceLine" id="124" href="#124" data-line-number="124">                    <span class="st">&#39;heating&#39;</span>: heating.turn_off,</div>
+<div class="sourceLine" id="125" href="#125" data-line-number="125">                    <span class="st">&#39;boiler temperature&#39;</span>: boiler.decrease_temperature,</div>
+<div class="sourceLine" id="126" href="#126" data-line-number="126">                    <span class="st">&#39;fridge temperature&#39;</span>:fridge.decrease_temperature}</div>
+<div class="sourceLine" id="127" href="#127" data-line-number="127">    </div>
+<div class="sourceLine" id="128" href="#128" data-line-number="128">    <span class="cf">for</span> t <span class="kw">in</span> tests:</div>
+<div class="sourceLine" id="129" href="#129" data-line-number="129">        <span class="cf">if</span> <span class="bu">len</span>(event.parseString(t)) <span class="op">==</span> <span class="dv">2</span>:</div>
+<div class="sourceLine" id="130" href="#130" data-line-number="130">            cmd, dev <span class="op">=</span> event.parseString(t)</div>
+<div class="sourceLine" id="131" href="#131" data-line-number="131">            cmd_str, dev_str <span class="op">=</span> <span class="st">&#39; &#39;</span>.join(cmd), <span class="st">&#39; &#39;</span>join(dev)</div>
+<div class="sourceLine" id="132" href="#132" data-line-number="132">            <span class="cf">if</span> <span class="st">&#39;open&#39;</span> <span class="kw">in</span> cmd_str <span class="kw">or</span> <span class="st">&#39;turn on&#39;</span> <span class="kw">in</span> cmd_str:</div>
+<div class="sourceLine" id="133" href="#133" data-line-number="133">                open_actions[dev_str]()</div>
+<div class="sourceLine" id="134" href="#134" data-line-number="134">            <span class="cf">elif</span> <span class="st">&#39;close&#39;</span> <span class="kw">in</span> cmd_str <span class="kw">or</span> <span class="st">&#39;turn on&#39;</span> <span class="kw">in</span> cmd_str:</div>
+<div class="sourceLine" id="135" href="#135" data-line-number="135">                close_actions[dev_str]()</div>
+<div class="sourceLine" id="136" href="#136" data-line-number="136">         <span class="cf">elif</span> <span class="bu">len</span>(event.parseString(t)) <span class="op">==</span> <span class="dv">3</span>:</div>
+<div class="sourceLine" id="137" href="#137" data-line-number="137">            cmd, dev, arg<span class="op">=</span> event.parseString(t)</div>
+<div class="sourceLine" id="138" href="#138" data-line-number="138">            cmd_str, dev_str, arg_str <span class="op">=</span> <span class="st">&#39; &#39;</span>.join(cmd), <span class="st">&#39; &#39;</span>.join(dev), <span class="st">&#39; &#39;</span>.join(arg)</div>
+<div class="sourceLine" id="139" href="#139" data-line-number="139">            num_arg <span class="op">=</span> <span class="dv">0</span></div>
+<div class="sourceLine" id="140" href="#140" data-line-number="140">            <span class="cf">try</span>:</div>
+<div class="sourceLine" id="141" href="#141" data-line-number="141">                num_arg <span class="op">=</span> <span class="bu">int</span>(arg_str.split()[<span class="dv">0</span>])</div>
+<div class="sourceLine" id="142" href="#142" data-line-number="142">            <span class="cf">except</span> <span class="pp">ValueError</span> <span class="im">as</span> err:</div>
+<div class="sourceLine" id="143" href="#143" data-line-number="143">                <span class="bu">print</span>(<span class="st">&quot;expected number nut got: &#39;</span><span class="sc">{}</span><span class="st">&#39;&quot;</span>.<span class="bu">format</span>(arg_str[<span class="dv">0</span>]))</div>
+<div class="sourceLine" id="144" href="#144" data-line-number="144">            <span class="cf">if</span> <span class="st">&#39;increase&#39;</span> <span class="kw">in</span> cmd_str <span class="kw">and</span> num_arg <span class="op">&gt;</span> <span class="dv">0</span>:</div>
+<div class="sourceLine" id="145" href="#145" data-line-number="145">                open_actions[dev_str](num_arg)</div>
+<div class="sourceLine" id="146" href="#146" data-line-number="146">            <span class="cf">elif</span> <span class="st">&#39;decrease&#39;</span> <span class="kw">in</span> cmd_str <span class="kw">and</span> num_arg <span class="op">&gt;</span> <span class="dv">0</span>:</div>
+<div class="sourceLine" id="147" href="#147" data-line-number="147">                close_actions[dev_str](num_arg)</div>
+<div class="sourceLine" id="148" href="#148" data-line-number="148">                </div>
+<div class="sourceLine" id="149" href="#149" data-line-number="149"><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</div>
+<div class="sourceLine" id="150" href="#150" data-line-number="150">    main()</div></code></pre>
+<p><u>观察者模式</u></p>
+<p>观察者模式描述的是单个对象（发布者，又称为主持人或可观察者）与一个或多个对象（订阅者，又称为观察者）之间的发布-订阅关系。</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="kw">class</span> Publisher:</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3">        <span class="va">self</span>.observers <span class="op">=</span> []</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4">        </div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5">    <span class="kw">def</span> add(<span class="va">self</span>, observer):</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6">        <span class="cf">if</span> observer <span class="kw">not</span> <span class="kw">in</span> <span class="va">self</span>.observers:</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7">            <span class="va">self</span>.observers.append(observer)</div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8">        <span class="cf">else</span>:</div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9">            <span class="bu">print</span>(<span class="st">&#39;Failed to add: </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(observer))</div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10">    </div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11">    <span class="kw">def</span> remove(<span class="va">self</span>, observer):</div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12">        <span class="cf">try</span>:</div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13">            <span class="va">self</span>.observers.remove(observer)</div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14">        <span class="cf">except</span> <span class="pp">ValueError</span>:</div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15">            <span class="bu">print</span>(<span class="st">&#39;Failed to remove: </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(observer))</div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16">            </div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17">    <span class="kw">def</span> notify(<span class="va">self</span>):</div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18">        [o.notify(<span class="va">self</span>) <span class="cf">for</span> o <span class="kw">in</span> <span class="va">self</span>.observers]</div>
+<div class="sourceLine" id="19" href="#19" data-line-number="19">        </div>
+<div class="sourceLine" id="20" href="#20" data-line-number="20"><span class="kw">class</span> DefaultFormatter(Publisher):</div>
+<div class="sourceLine" id="21" href="#21" data-line-number="21">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name):</div>
+<div class="sourceLine" id="22" href="#22" data-line-number="22">        Publisher.<span class="fu">__init__</span>(<span class="va">self</span>)</div>
+<div class="sourceLine" id="23" href="#23" data-line-number="23">        <span class="va">self</span>.name <span class="op">=</span> name</div>
+<div class="sourceLine" id="24" href="#24" data-line-number="24">        <span class="va">self</span>._data <span class="op">=</span> <span class="dv">0</span></div>
+<div class="sourceLine" id="25" href="#25" data-line-number="25">    </div>
+<div class="sourceLine" id="26" href="#26" data-line-number="26">    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</div>
+<div class="sourceLine" id="27" href="#27" data-line-number="27">        <span class="cf">return</span> <span class="st">&quot;</span><span class="sc">{}</span><span class="st">: &#39;</span><span class="sc">{}</span><span class="st">&#39; has data = </span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(<span class="bu">type</span>(<span class="va">self</span>).<span class="va">__name__</span>, <span class="va">self</span>.name, <span class="va">self</span>._data)</div>
+<div class="sourceLine" id="28" href="#28" data-line-number="28">    </div>
+<div class="sourceLine" id="29" href="#29" data-line-number="29">    <span class="at">@property</span></div>
+<div class="sourceLine" id="30" href="#30" data-line-number="30">    <span class="kw">def</span> data(<span class="va">self</span>):</div>
+<div class="sourceLine" id="31" href="#31" data-line-number="31">        <span class="cf">return</span> <span class="va">self</span>._data</div>
+<div class="sourceLine" id="32" href="#32" data-line-number="32">    </div>
+<div class="sourceLine" id="33" href="#33" data-line-number="33">    <span class="at">@data.setter</span></div>
+<div class="sourceLine" id="34" href="#34" data-line-number="34">    <span class="kw">def</span> data(<span class="va">self</span>, new_value):</div>
+<div class="sourceLine" id="35" href="#35" data-line-number="35">        <span class="cf">try</span>:</div>
+<div class="sourceLine" id="36" href="#36" data-line-number="36">            <span class="va">self</span>._data <span class="op">=</span> <span class="bu">int</span>(new_value)</div>
+<div class="sourceLine" id="37" href="#37" data-line-number="37">        <span class="cf">except</span> <span class="pp">ValueError</span> <span class="im">as</span> e:</div>
+<div class="sourceLine" id="38" href="#38" data-line-number="38">            <span class="bu">print</span>(<span class="st">&#39;Error: </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(e))</div>
+<div class="sourceLine" id="39" href="#39" data-line-number="39">        <span class="cf">else</span>:</div>
+<div class="sourceLine" id="40" href="#40" data-line-number="40">            <span class="va">self</span>.notify()</div>
+<div class="sourceLine" id="41" href="#41" data-line-number="41"></div>
+<div class="sourceLine" id="42" href="#42" data-line-number="42"><span class="kw">class</span> HexFormatter:</div>
+<div class="sourceLine" id="43" href="#43" data-line-number="43">    <span class="kw">def</span> notify(<span class="va">self</span>, publisher):</div>
+<div class="sourceLine" id="44" href="#44" data-line-number="44">        <span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{}</span><span class="st">: &#39;</span><span class="sc">{}</span><span class="st">&#39; has now hex data = </span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(<span class="bu">type</span>(<span class="va">self</span>).<span class="va">__name__</span>, publisher.name, <span class="bu">hex</span>(publisher.data)))</div>
+<div class="sourceLine" id="45" href="#45" data-line-number="45">        </div>
+<div class="sourceLine" id="46" href="#46" data-line-number="46"><span class="kw">class</span> BinaryFormatter:</div>
+<div class="sourceLine" id="47" href="#47" data-line-number="47">    <span class="kw">def</span> notify(<span class="va">self</span>, publisher):</div>
+<div class="sourceLine" id="48" href="#48" data-line-number="48">        <span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{}</span><span class="st">: &#39;</span><span class="sc">{}</span><span class="st">&#39; has now bin data = </span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(<span class="bu">type</span>(<span class="va">self</span>).<span class="va">__name__</span>, publisher.name, <span class="bu">bin</span>(publisher.data)))</div>
+<div class="sourceLine" id="49" href="#49" data-line-number="49">        </div>
+<div class="sourceLine" id="50" href="#50" data-line-number="50"><span class="kw">def</span> main():</div>
+<div class="sourceLine" id="51" href="#51" data-line-number="51">    df <span class="op">=</span> DefaultFormatter(<span class="st">&#39;test1&#39;</span>)</div>
+<div class="sourceLine" id="52" href="#52" data-line-number="52">    <span class="bu">print</span>(df)</div>
+<div class="sourceLine" id="53" href="#53" data-line-number="53">    </div>
+<div class="sourceLine" id="54" href="#54" data-line-number="54">    <span class="bu">print</span>()</div>
+<div class="sourceLine" id="55" href="#55" data-line-number="55">    hf <span class="op">=</span> HexFormatter()</div>
+<div class="sourceLine" id="56" href="#56" data-line-number="56">    df.add(hf)</div>
+<div class="sourceLine" id="57" href="#57" data-line-number="57">    df.data <span class="op">=</span> <span class="dv">3</span></div>
+<div class="sourceLine" id="58" href="#58" data-line-number="58">    <span class="bu">print</span>(df)</div>
+<div class="sourceLine" id="59" href="#59" data-line-number="59">    </div>
+<div class="sourceLine" id="60" href="#60" data-line-number="60">    <span class="bu">print</span>()</div>
+<div class="sourceLine" id="61" href="#61" data-line-number="61">    bf <span class="op">=</span> BinaryFormatter()</div>
+<div class="sourceLine" id="62" href="#62" data-line-number="62">    df.add(bf)</div>
+<div class="sourceLine" id="63" href="#63" data-line-number="63">    df.data <span class="op">=</span> <span class="dv">21</span></div>
+<div class="sourceLine" id="64" href="#64" data-line-number="64">    <span class="bu">print</span>(df)</div>
+<div class="sourceLine" id="65" href="#65" data-line-number="65">    </div>
+<div class="sourceLine" id="66" href="#66" data-line-number="66">    <span class="bu">print</span>()</div>
+<div class="sourceLine" id="67" href="#67" data-line-number="67">    df.remove(hf)</div>
+<div class="sourceLine" id="68" href="#68" data-line-number="68">    df.data <span class="op">=</span> <span class="dv">40</span></div>
+<div class="sourceLine" id="69" href="#69" data-line-number="69">    <span class="bu">print</span>(df)</div>
+<div class="sourceLine" id="70" href="#70" data-line-number="70">    </div>
+<div class="sourceLine" id="71" href="#71" data-line-number="71">    <span class="bu">print</span>()</div>
+<div class="sourceLine" id="72" href="#72" data-line-number="72">    df.remove(hf)</div>
+<div class="sourceLine" id="73" href="#73" data-line-number="73">    df.add(hf)</div>
+<div class="sourceLine" id="74" href="#74" data-line-number="74">    </div>
+<div class="sourceLine" id="75" href="#75" data-line-number="75">    df.data <span class="op">=</span> <span class="st">&#39;hello&#39;</span></div>
+<div class="sourceLine" id="76" href="#76" data-line-number="76">    <span class="bu">print</span>(df)</div>
+<div class="sourceLine" id="77" href="#77" data-line-number="77">    </div>
+<div class="sourceLine" id="78" href="#78" data-line-number="78">    <span class="bu">print</span>()</div>
+<div class="sourceLine" id="79" href="#79" data-line-number="79">    df.data <span class="op">=</span> <span class="fl">15.8</span></div>
+<div class="sourceLine" id="80" href="#80" data-line-number="80">    <span class="bu">print</span>(df)</div>
+<div class="sourceLine" id="81" href="#81" data-line-number="81">    </div>
+<div class="sourceLine" id="82" href="#82" data-line-number="82"><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</div>
+<div class="sourceLine" id="83" href="#83" data-line-number="83">    main()</div></code></pre>
+<p><u>模版模式</u></p>
+<p>广度优先搜索和深度优先搜索能够体现一些通用但非全部的步骤。</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="co">#BFS</span></div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="kw">def</span> bfs(graph, start, end):</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3">    path <span class="op">=</span> []</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4">    visited <span class="op">=</span> [start]</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5">    <span class="cf">while</span> visited:</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6">        current <span class="op">=</span> visited.pop(<span class="dv">0</span>)</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7">        <span class="cf">if</span> current <span class="kw">not</span> <span class="kw">in</span> path:</div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8">            path.append(current)</div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9">            <span class="cf">if</span> current <span class="op">==</span> end:</div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10">                <span class="bu">print</span>(path)</div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11">                <span class="cf">return</span> (<span class="va">True</span>, path)</div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12">            <span class="cf">if</span> current <span class="kw">not</span> <span class="kw">in</span> graph:</div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13">                <span class="cf">continue</span></div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14">        visited <span class="op">=</span> visited <span class="op">+</span> graph[current]</div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15">    <span class="cf">return</span> (<span class="va">False</span>, path)</div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16"></div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17"><span class="co">#DFS</span></div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18"><span class="kw">def</span> dfs(graph, start, end):</div>
+<div class="sourceLine" id="19" href="#19" data-line-number="19">    path <span class="op">=</span> []</div>
+<div class="sourceLine" id="20" href="#20" data-line-number="20">    visited <span class="op">=</span> [start]</div>
+<div class="sourceLine" id="21" href="#21" data-line-number="21">    <span class="cf">while</span> visited:</div>
+<div class="sourceLine" id="22" href="#22" data-line-number="22">        current <span class="op">=</span> visited.pop(<span class="dv">0</span>)</div>
+<div class="sourceLine" id="23" href="#23" data-line-number="23">        <span class="cf">if</span> current <span class="kw">not</span> <span class="kw">in</span> path:</div>
+<div class="sourceLine" id="24" href="#24" data-line-number="24">            path.append(current)</div>
+<div class="sourceLine" id="25" href="#25" data-line-number="25">            <span class="cf">if</span> current <span class="op">==</span> end:</div>
+<div class="sourceLine" id="26" href="#26" data-line-number="26">                <span class="bu">print</span>(path)</div>
+<div class="sourceLine" id="27" href="#27" data-line-number="27">                <span class="cf">return</span> (<span class="va">True</span>, path)</div>
+<div class="sourceLine" id="28" href="#28" data-line-number="28">            <span class="cf">if</span> current <span class="kw">not</span> <span class="kw">in</span> graph:</div>
+<div class="sourceLine" id="29" href="#29" data-line-number="29">                <span class="cf">continue</span></div>
+<div class="sourceLine" id="30" href="#30" data-line-number="30">        visited <span class="op">=</span> graph[current] <span class="op">+</span> visited</div>
+<div class="sourceLine" id="31" href="#31" data-line-number="31">    <span class="cf">return</span> (<span class="va">False</span>, path)</div></code></pre>
+<p>可以看到，两个算法有大量的重复，而只有一行不同，因此可以运用模版模式，来解决代码冗余的问题。</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="kw">def</span> traverse(graph, start, end, action):</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2">    path <span class="op">=</span> []</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3">    visited <span class="op">=</span> [start]</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4">    <span class="cf">while</span> visited:</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5">        current <span class="op">=</span> visited.pop(<span class="dv">0</span>)</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6">        <span class="cf">if</span> current <span class="kw">not</span> <span class="kw">in</span> path:</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7">            path.append(current)</div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8">            <span class="cf">if</span> current <span class="op">==</span> end:</div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9">                <span class="cf">return</span> (<span class="va">True</span>, path)</div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10">            <span class="cf">if</span> current <span class="kw">not</span> <span class="kw">in</span> graph:</div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11">                <span class="cf">continue</span></div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12">        visited <span class="op">=</span> action(visited, graph[current])</div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13">     <span class="cf">return</span> (<span class="va">False</span>, path)</div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14"></div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15"><span class="kw">def</span> extend_bfs_path(visited, current):</div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16">    <span class="cf">return</span> visited <span class="op">+</span> current</div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17"></div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18"><span class="kw">def</span> extend_dfs_path(visited, current):</div>
+<div class="sourceLine" id="19" href="#19" data-line-number="19">    <span class="cf">return</span> current <span class="op">+</span> visited</div></code></pre>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/29/《Python设计模式》读书笔记二/" rel="next" title="《Python设计模式》读书笔记二">
+                <i class="fa fa-chevron-left"></i> 《Python设计模式》读书笔记二
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/05/ML读书笔记一/" rel="prev" title="ML读书笔记一">
+                ML读书笔记一 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/pandas.jpeg"
+               alt="Peter Tsung" />
+          <p class="site-author-name" itemprop="name">Peter Tsung</p>
+           
+              <p class="site-description motion-element" itemprop="description">I Never Save Anything For The Swim Back.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Peter Tsung</span>
+</div>
+
+<!--
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+            tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+                    TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+                            messageStyle: "none"
+                                }); 
+    </script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Queue(function() {
+                    var all = MathJax.Hub.getAllJax(), i;
+                            for(i=0; i < all.length; i += 1) {
+                                            all[i].SourceElement().parentNode.className += ' has-jax';
+                                                    }
+                                                        });
+        </script>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+-->
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  <script src="/js/src/prettify.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    $(window).load(function(){
+    $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+     prettyPrint();
+    })
+  </script>
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>

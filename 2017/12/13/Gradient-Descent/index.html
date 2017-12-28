@@ -1,0 +1,871 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="从六月份开始，已经看了很多Python机器学习的书籍和教程，但是依然有些摸不着头脑。现在看来，其实一方面是太过注重应用层面而没有关注实质性的数学层面内容。而如果慢慢看算法公式，其实很多疑点都会被解决。我觉得自己对于这方面是有着一个近乎极度疯狂的执迷，很想弄明白里面的运作机制。 而今天这一内容里面，我将分享自己对机器学习算法里面的梯度下降方法做一个笔记和总结。 在进行解释梯度下降方法之前，需要对方向">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gradient Descent">
+<meta property="og:url" content="http://yoursite.com/2017/12/13/Gradient-Descent/index.html">
+<meta property="og:site_name" content="彼得的博客">
+<meta property="og:description" content="从六月份开始，已经看了很多Python机器学习的书籍和教程，但是依然有些摸不着头脑。现在看来，其实一方面是太过注重应用层面而没有关注实质性的数学层面内容。而如果慢慢看算法公式，其实很多疑点都会被解决。我觉得自己对于这方面是有着一个近乎极度疯狂的执迷，很想弄明白里面的运作机制。 而今天这一内容里面，我将分享自己对机器学习算法里面的梯度下降方法做一个笔记和总结。 在进行解释梯度下降方法之前，需要对方向">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202017-12-15%20at%203.27.56%20PM.png">
+<meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202017-12-15%20at%203.35.26%20PM.png">
+<meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202017-12-15%20at%203.36.02%20PM.png">
+<meta property="og:image" content="http://yoursite.com/images/Figure_1.png">
+<meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202017-12-16%20at%201.33.45%20AM.png">
+<meta property="og:updated_time" content="2017-12-15T17:40:17.147Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gradient Descent">
+<meta name="twitter:description" content="从六月份开始，已经看了很多Python机器学习的书籍和教程，但是依然有些摸不着头脑。现在看来，其实一方面是太过注重应用层面而没有关注实质性的数学层面内容。而如果慢慢看算法公式，其实很多疑点都会被解决。我觉得自己对于这方面是有着一个近乎极度疯狂的执迷，很想弄明白里面的运作机制。 而今天这一内容里面，我将分享自己对机器学习算法里面的梯度下降方法做一个笔记和总结。 在进行解释梯度下降方法之前，需要对方向">
+<meta name="twitter:image" content="http://yoursite.com/images/Screen%20Shot%202017-12-15%20at%203.27.56%20PM.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/12/13/Gradient-Descent/"/>
+
+
+
+
+
+  <title>Gradient Descent | 彼得的博客</title>
+  <link rel="stylesheet" type="text/css" href="/css/prettify.css">
+  <link rel="stylesheet" type="text/css" href="/css/github-v2.css">
+  <link rel="stylesheet" type="text/css" href="/css/github-v2.min.css">
+  <script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
+       <script type="text/x-mathjax-config">
+         MathJax.Hub.Config({
+           tex2jax: {
+             inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+             processEscapes: true
+           }
+         });
+       </script>
+       <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">彼得的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/13/Gradient-Descent/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peter Tsung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pandas.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="彼得的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Gradient Descent
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-13T18:15:00+08:00">
+                2017-12-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>从六月份开始，已经看了很多Python机器学习的书籍和教程，但是依然有些摸不着头脑。现在看来，其实一方面是太过注重应用层面而没有关注实质性的数学层面内容。而如果慢慢看算法公式，其实很多疑点都会被解决。我觉得自己对于这方面是有着一个近乎极度疯狂的执迷，很想弄明白里面的运作机制。</p>
+<p>而今天这一内容里面，我将分享自己对机器学习算法里面的梯度下降方法做一个笔记和总结。</p>
+<p>在进行解释梯度下降方法之前，需要对方向导数和梯度做一个基本的解释。</p>
+<blockquote>
+<p>对于<strong>方向导数</strong>，设 z = f(x, y) 在M0(x0, y0)处可微，则f(x, y)在M0点任意方向<strong><em>l</em></strong> = （cosa, cosb)存在方向导数且： <span class="math display">\[
+\frac{\partial f(x_0, y_0)}{\partial l} = \frac{\partial f(x_0, y_0)}{\partial x}cos\alpha+\frac{\partial f(x_0, y_0)}{\partial y}cos\beta
+\]</span> 对于梯度，函数z = f(x, y)在点M0的方向导数计算公式可改写成：</p>
+<figure>
+<img src="/images/Screen%20Shot%202017-12-15%20at%203.27.56%20PM.png" alt="Screen Shot 2017-12-15 at 3.27.56 PM"><figcaption>Screen Shot 2017-12-15 at 3.27.56 PM</figcaption>
+</figure>
+<p>在这里向量: <span class="math display">\[
+grad  f(x_0, y_0) = (\frac{\partial f(x_0, y_0)}{x} , \frac{\partial f(x_0, y_0)}{\partial y} ）
+\]</span></p>
+<p>称为z = f(x, y) 在点M0的梯度（向量）。</p>
+<p>假设我们需要求得函数中某点变化最快的值，其实也就是求方向导数模的最大值，那么梯度的方向需要跟单位方向向量的夹角为0。也就是说，函数在某点的梯度，其方向是函数在该点的方向导数最大的方向，它的模是最大方向导数的值。</p>
+</blockquote>
+<p>因此对于方向导数而言，求的是函数中某点在某个方向下的导数，不同方向的导数都不相同，也就说函数中某点沿不同方向的变化速度不一样。而梯度就是函数对变量偏导数的集合。</p>
+<p>假设有如下一个线性回归问题，公式如下： &gt; <span class="math display">\[
+&gt; h(x) =h_\theta(x) =\theta_0+\theta_1x_1+\theta_2x_2
+&gt; \]</span> &gt;</p>
+<p>其中x是自变量，比如说房子面积，θ是权重参数，也就是我们需要使用梯度下降求解的具体值。</p>
+<p>然后我们还需要引入损失函数（<code>Loss Function</code>或者叫<code>Cost Function</code>)，目的是为了在梯度下降时用来衡量更新后的参数是否是向着正确的方向前进。如下损失函数(m表示训练集样本数量)</p>
+<figure>
+<img src="/images/Screen%20Shot%202017-12-15%20at%203.35.26%20PM.png" alt="Screen Shot 2017-12-15 at 3.35.26 PM"><figcaption>Screen Shot 2017-12-15 at 3.35.26 PM</figcaption>
+</figure>
+<p>因为我们的目的，是要找到这个损失函数的值最小的参数下的目标函数<code>h(x)</code>，所以面对这种情况，我们其实很容易想到偏导数。结合方向导数以及梯度这一个概念，我们可以得到某个样本数据在函数中下降速度最快的方向。也就是说，我们希望能够对<code>Loss Function</code>求最优解，而我们可以通过求<code>Loss Function</code>的梯度然后不断更新参数来得到。如果我们得到了<code>Loss Function</code>的最优解，那么我们也就能得到目标函数<code>h(x)</code>。</p>
+<p>下面将对<code>Loss Function</code>进行某一个参数θi的偏导数：</p>
+<figure>
+<img src="/images/Screen%20Shot%202017-12-15%20at%203.36.02%20PM.png" alt="Screen Shot 2017-12-15 at 3.36.02 PM"><figcaption>Screen Shot 2017-12-15 at 3.36.02 PM</figcaption>
+</figure>
+<p>在求出<code>Loss Function</code>对于某一个参数的偏导数之后，我们实际上已经求得到了<code>Loss Function</code>在某一点M0下变化速度最快的方向，也就是确定θi的值。这个时候，只要逐步迭代，就可以求出在给定的数据集中，<code>Loss Function</code>最优解下的目标函数，也就是所有θ的最优解。</p>
+<p>于是对于这一个最基本的线性回归例子，我们就可以直接上<code>Python</code>代码了。</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">import</span> numpy <span class="im">as</span> np</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="co">#y=2 * (x1) + (x2) + 3 </span></div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4">rate <span class="op">=</span> <span class="fl">0.001</span></div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5">x_train <span class="op">=</span> np.array([    [<span class="dv">1</span>, <span class="dv">2</span>],    [<span class="dv">2</span>, <span class="dv">1</span>],    [<span class="dv">2</span>, <span class="dv">3</span>],    [<span class="dv">3</span>, <span class="dv">5</span>],    [<span class="dv">1</span>, <span class="dv">3</span>],    [<span class="dv">4</span>, <span class="dv">2</span>],    [<span class="dv">7</span>, <span class="dv">3</span>],    [<span class="dv">4</span>, <span class="dv">5</span>],    [<span class="dv">11</span>, <span class="dv">3</span>],    [<span class="dv">8</span>, <span class="dv">7</span>]    ])</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6">y_train <span class="op">=</span> np.array([<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">10</span>, <span class="dv">14</span>, <span class="dv">8</span>, <span class="dv">13</span>, <span class="dv">20</span>, <span class="dv">16</span>, <span class="dv">28</span>, <span class="dv">26</span>])</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7">x_test  <span class="op">=</span> np.array([    [<span class="dv">1</span>, <span class="dv">4</span>],    [<span class="dv">2</span>, <span class="dv">2</span>],    [<span class="dv">2</span>, <span class="dv">5</span>],    [<span class="dv">5</span>, <span class="dv">3</span>],    [<span class="dv">1</span>, <span class="dv">5</span>],    [<span class="dv">4</span>, <span class="dv">1</span>]    ])</div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8"></div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9">a <span class="op">=</span> np.random.normal()</div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10">b <span class="op">=</span> np.random.normal()</div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11">c <span class="op">=</span> np.random.normal()</div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12"></div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13"><span class="kw">def</span> h(x):</div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14">    <span class="cf">return</span> a<span class="op">*</span>x[<span class="dv">0</span>]<span class="op">+</span>b<span class="op">*</span>x[<span class="dv">1</span>]<span class="op">+</span>c</div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15"></div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10000</span>):</div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17">    sum_a<span class="op">=</span><span class="dv">0</span></div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18">    sum_b<span class="op">=</span><span class="dv">0</span></div>
+<div class="sourceLine" id="19" href="#19" data-line-number="19">    sum_c<span class="op">=</span><span class="dv">0</span></div>
+<div class="sourceLine" id="20" href="#20" data-line-number="20">    <span class="cf">for</span> x, y <span class="kw">in</span> <span class="bu">zip</span>(x_train, y_train):</div>
+<div class="sourceLine" id="21" href="#21" data-line-number="21">        sum_a <span class="op">=</span> sum_a <span class="op">+</span> rate<span class="op">*</span>(y<span class="op">-</span>h(x))<span class="op">*</span>x[<span class="dv">0</span>]</div>
+<div class="sourceLine" id="22" href="#22" data-line-number="22">        sum_b <span class="op">=</span> sum_b <span class="op">+</span> rate<span class="op">*</span>(y<span class="op">-</span>h(x))<span class="op">*</span>x[<span class="dv">1</span>]</div>
+<div class="sourceLine" id="23" href="#23" data-line-number="23">        sum_c <span class="op">=</span> sum_c <span class="op">+</span> rate<span class="op">*</span>(y<span class="op">-</span>h(x))</div>
+<div class="sourceLine" id="24" href="#24" data-line-number="24">    a <span class="op">=</span> a <span class="op">+</span> sum_a</div>
+<div class="sourceLine" id="25" href="#25" data-line-number="25">    b <span class="op">=</span> b <span class="op">+</span> sum_b</div>
+<div class="sourceLine" id="26" href="#26" data-line-number="26">    c <span class="op">=</span> c <span class="op">+</span> sum_c</div>
+<div class="sourceLine" id="27" href="#27" data-line-number="27">    plt.plot([h(xi) <span class="cf">for</span> xi <span class="kw">in</span> x_test])</div>
+<div class="sourceLine" id="28" href="#28" data-line-number="28"></div>
+<div class="sourceLine" id="29" href="#29" data-line-number="29"><span class="bu">print</span>(a)</div>
+<div class="sourceLine" id="30" href="#30" data-line-number="30"><span class="bu">print</span>(b)</div>
+<div class="sourceLine" id="31" href="#31" data-line-number="31"><span class="bu">print</span>(c)</div>
+<div class="sourceLine" id="32" href="#32" data-line-number="32"></div>
+<div class="sourceLine" id="33" href="#33" data-line-number="33">result<span class="op">=</span>[h(xi) <span class="cf">for</span> xi <span class="kw">in</span> x_train]</div>
+<div class="sourceLine" id="34" href="#34" data-line-number="34"><span class="bu">print</span>(result)</div>
+<div class="sourceLine" id="35" href="#35" data-line-number="35"></div>
+<div class="sourceLine" id="36" href="#36" data-line-number="36">result<span class="op">=</span>[h(xi) <span class="cf">for</span> xi <span class="kw">in</span> x_test]</div>
+<div class="sourceLine" id="37" href="#37" data-line-number="37"><span class="bu">print</span>(result)</div>
+<div class="sourceLine" id="38" href="#38" data-line-number="38"></div>
+<div class="sourceLine" id="39" href="#39" data-line-number="39">plt.show()</div></code></pre>
+<figure>
+<img src="/images/Figure_1.png" alt="Figure_1"><figcaption>Figure_1</figcaption>
+</figure>
+<p>然而， 这样的写法对于效率而言是一个十分大的问题，，整个程序跑下来的时间十分长。这个时候，就想到了<strong>梯度下降矢量化</strong>，通过矢量化，能够将运算过程转为线性代数的计算，利用逆矩阵和矩阵乘法，整个计算速度大大提高。</p>
+<figure>
+<img src="/images/Screen%20Shot%202017-12-16%20at%201.33.45%20AM.png" alt="Screen Shot 2017-12-16 at 1.33.45 AM"><figcaption>Screen Shot 2017-12-16 at 1.33.45 AM</figcaption>
+</figure>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">import</span> numpy <span class="im">as</span> np</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="co">#y=2 * (x1) + (x2) + 3 </span></div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4">rate <span class="op">=</span> <span class="fl">0.001</span></div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5">X <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">2</span>, <span class="dv">1</span>], [<span class="dv">2</span>, <span class="dv">3</span>], </div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6">              [<span class="dv">3</span>, <span class="dv">5</span>], [<span class="dv">1</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">2</span>], </div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7">              [<span class="dv">7</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">5</span>], [<span class="dv">11</span>, <span class="dv">3</span>]])</div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8">y <span class="op">=</span> np.array([<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">10</span>, </div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9">              <span class="dv">14</span>, <span class="dv">8</span>, <span class="dv">13</span>, </div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10">              <span class="dv">20</span>, <span class="dv">16</span>, <span class="dv">28</span>])</div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11"></div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12"><span class="kw">def</span> compute_cost(X, y, theta):</div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13">    <span class="cf">return</span> np.<span class="bu">sum</span>(np.square(np.dot(X, theta) <span class="op">-</span> y)) <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> <span class="bu">len</span>(y))</div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14"></div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15"><span class="kw">def</span> gradient_descent_vectorization(X, y, learning_rate, iterations):</div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16">    X <span class="op">=</span> np.column_stack((np.ones(<span class="bu">len</span>(X)), X))</div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17">    theta <span class="op">=</span> np.zeros(X.shape[<span class="dv">1</span>])</div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18">    m <span class="op">=</span> <span class="bu">len</span>(X)</div>
+<div class="sourceLine" id="19" href="#19" data-line-number="19">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(iterations):</div>
+<div class="sourceLine" id="20" href="#20" data-line-number="20">        hypothesis <span class="op">=</span> np.dot(X, theta)</div>
+<div class="sourceLine" id="21" href="#21" data-line-number="21">        loss <span class="op">=</span> hypothesis <span class="op">-</span> y</div>
+<div class="sourceLine" id="22" href="#22" data-line-number="22">        gradient <span class="op">=</span> np.dot(X.T, loss) <span class="op">/</span> m</div>
+<div class="sourceLine" id="23" href="#23" data-line-number="23">        theta <span class="op">=</span> theta <span class="op">-</span> learning_rate <span class="op">*</span> gradient</div>
+<div class="sourceLine" id="24" href="#24" data-line-number="24">    <span class="cf">return</span> X, theta</div>
+<div class="sourceLine" id="25" href="#25" data-line-number="25"></div>
+<div class="sourceLine" id="26" href="#26" data-line-number="26">learning_rate <span class="op">=</span> <span class="fl">0.01</span></div>
+<div class="sourceLine" id="27" href="#27" data-line-number="27">iterations <span class="op">=</span> <span class="dv">50000</span></div>
+<div class="sourceLine" id="28" href="#28" data-line-number="28">X, theta <span class="op">=</span> gradient_descent_vectorization(X, y, learning_rate, iterations)</div>
+<div class="sourceLine" id="29" href="#29" data-line-number="29">cost <span class="op">=</span> compute_cost(X, y, theta)</div>
+<div class="sourceLine" id="30" href="#30" data-line-number="30"></div>
+<div class="sourceLine" id="31" href="#31" data-line-number="31"><span class="bu">print</span>(<span class="st">&quot;theta1 = &quot;</span>,theta[<span class="dv">1</span>], <span class="st">&quot;theta2 = &quot;</span>, theta[<span class="dv">2</span>], <span class="st">&quot;theta3 = &quot;</span>, theta[<span class="dv">0</span>])</div>
+<div class="sourceLine" id="32" href="#32" data-line-number="32"><span class="bu">print</span>(<span class="st">&#39;cost:&#39;</span>, cost)</div>
+<div class="sourceLine" id="33" href="#33" data-line-number="33"></div>
+<div class="sourceLine" id="34" href="#34" data-line-number="34"></div>
+<div class="sourceLine" id="35" href="#35" data-line-number="35">[output]</div>
+<div class="sourceLine" id="36" href="#36" data-line-number="36">theta1 <span class="op">=</span>  <span class="fl">2.02720821766</span> theta2 <span class="op">=</span>  <span class="fl">1.17962898412</span> theta3 <span class="op">=</span>  <span class="fl">2.2645149405</span></div>
+<div class="sourceLine" id="37" href="#37" data-line-number="37">cost: <span class="fl">0.0354239310129</span></div>
+<div class="sourceLine" id="38" href="#38" data-line-number="38">[Finished <span class="kw">in</span> <span class="fl">0.7</span>s]</div></code></pre>
+<p>只能说，经过矢量化运算后的梯度下降效率真的很高。还没有矢量化的梯度下降，在相同迭代次数和学习速度下的所需时间接近67s，而目前矢量化后的时间是0.7s，足足快了一百倍。</p>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/28/Python-zip-with-iter/" rel="next" title="Python zip( ) with iter( )">
+                <i class="fa fa-chevron-left"></i> Python zip( ) with iter( )
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/17/Logistic-Rregression/" rel="prev" title="Logistic Rregression">
+                Logistic Rregression <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/pandas.jpeg"
+               alt="Peter Tsung" />
+          <p class="site-author-name" itemprop="name">Peter Tsung</p>
+           
+              <p class="site-description motion-element" itemprop="description">I Never Save Anything For The Swim Back.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Peter Tsung</span>
+</div>
+
+<!--
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+            tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+                    TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+                            messageStyle: "none"
+                                }); 
+    </script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Queue(function() {
+                    var all = MathJax.Hub.getAllJax(), i;
+                            for(i=0; i < all.length; i += 1) {
+                                            all[i].SourceElement().parentNode.className += ' has-jax';
+                                                    }
+                                                        });
+        </script>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+-->
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  <script src="/js/src/prettify.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    $(window).load(function(){
+    $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+     prettyPrint();
+    })
+  </script>
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>

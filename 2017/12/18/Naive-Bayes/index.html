@@ -1,0 +1,863 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="总结完Logistic Regression，我觉得再看回Naive Bayes就很好理解了。从来都没有试过这么清楚过。 Naive Bayes(朴素贝叶斯法)是基于贝叶斯定理与特征条件独立假设的分类方法，对于给定的训练数据集，首先基于特征条件独立假设学习输入/输出的联合概率分布；然后基于此模型，对给定的输入x，利用贝叶斯定理求出后验概率最大的输出y。 朴素贝叶斯对条件概率分布作了条件独立性的假设">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Naive Bayes">
+<meta property="og:url" content="http://yoursite.com/2017/12/18/Naive-Bayes/index.html">
+<meta property="og:site_name" content="彼得的博客">
+<meta property="og:description" content="总结完Logistic Regression，我觉得再看回Naive Bayes就很好理解了。从来都没有试过这么清楚过。 Naive Bayes(朴素贝叶斯法)是基于贝叶斯定理与特征条件独立假设的分类方法，对于给定的训练数据集，首先基于特征条件独立假设学习输入/输出的联合概率分布；然后基于此模型，对给定的输入x，利用贝叶斯定理求出后验概率最大的输出y。 朴素贝叶斯对条件概率分布作了条件独立性的假设">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-18T19:06:35.831Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Naive Bayes">
+<meta name="twitter:description" content="总结完Logistic Regression，我觉得再看回Naive Bayes就很好理解了。从来都没有试过这么清楚过。 Naive Bayes(朴素贝叶斯法)是基于贝叶斯定理与特征条件独立假设的分类方法，对于给定的训练数据集，首先基于特征条件独立假设学习输入/输出的联合概率分布；然后基于此模型，对给定的输入x，利用贝叶斯定理求出后验概率最大的输出y。 朴素贝叶斯对条件概率分布作了条件独立性的假设">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/12/18/Naive-Bayes/"/>
+
+
+
+
+
+  <title>Naive Bayes | 彼得的博客</title>
+  <link rel="stylesheet" type="text/css" href="/css/prettify.css">
+  <link rel="stylesheet" type="text/css" href="/css/github-v2.css">
+  <link rel="stylesheet" type="text/css" href="/css/github-v2.min.css">
+  <script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
+       <script type="text/x-mathjax-config">
+         MathJax.Hub.Config({
+           tex2jax: {
+             inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+             processEscapes: true
+           }
+         });
+       </script>
+       <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">彼得的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/18/Naive-Bayes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peter Tsung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pandas.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="彼得的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Naive Bayes
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-18T15:25:37+08:00">
+                2017-12-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>总结完<code>Logistic Regression</code>，我觉得再看回<code>Naive Bayes</code>就很好理解了。从来都没有试过这么清楚过。</p>
+<p><code>Naive Bayes(朴素贝叶斯法)</code>是基于贝叶斯定理与特征条件独立假设的分类方法，对于给定的训练数据集，首先基于特征条件独立假设学习输入/输出的联合概率分布；然后基于此模型，对给定的输入<code>x</code>，利用贝叶斯定理求出后验概率最大的输出<code>y</code>。</p>
+<p><code>朴素贝叶斯</code>对条件概率分布作了条件独立性的假设，具体地，条件独立性假设是： <span class="math display">\[
+\begin{aligned}
+P(X  =x|Y=c_k)  &amp;= P(X^{(1)}  = x^{(1)}, ･･･, X^{(n)}=x^{(n)}|Y=c_k) \\
+\\
+&amp; = \prod_{j=1}^nP(X^{(j)} = x^{(j)}|Y=c_k)
+\end{aligned}
+\]</span> 独立条件假设就是说用于分类的特征在类确定的条件下都是条件独立的，这个公式就是似然函数。代表的是给定参数后变量的概率。这一假设使朴素贝叶斯变得简单，但代价就是有时候会牺牲一定的分类准确率。</p>
+<p><code>朴素贝叶斯</code>分类时，对给定的输入<code>x</code>，通过学习到的模型计算后验概率分布<code>P(Y=ck|X=x)</code>，将后验概率最大的类作为<code>x</code>的类输出。而后验概率计算是根据贝叶斯定理进行的： <span class="math display">\[
+\begin{aligned}
+P(Y=c_k|X=x) &amp;  = \frac {P(X=x|Y=c_k)\cdot P(Y=c_k)}{\sum_kP(X=x|Y=c_k)\cdot P(Y=c_k)} \\
+\\
+&amp; =\frac {P(Y=c_k)\cdot \prod_jP(X^{(j)} |Y=c_k)}{\sum_kP(Y=c_k)\cdot \prod_jP(X^{(j)} |Y=c_k)} \ \ \ k=1, 2, ...,K 
+\end{aligned}
+\]</span> 于是<code>朴素贝叶斯分类器</code>可以表示为： <span class="math display">\[
+y = f(x) = \mathop{\arg\max}_{c_k} \frac {P(Y=c_k)\prod_jP(X^{(j)}=x^{(j)}|Y=c_k)}{\sum_kP(Y=c_k)\cdot \prod_jP(X^{(j)} |Y=c_k)}
+\]</span> 然后其实对于每个<code>c_k</code>，分母都是一样的，所以可以简化公式： <span class="math display">\[
+y = f(x) = \mathop{\arg\max}_{c_k}P(Y=c_k)\prod_jP(X^{(j)}=x^{(j)}|Y=c_k)
+\]</span> 搞定。</p>
+<p>也就说，朴素贝叶斯法的学习与分类分为以下几个步骤：</p>
+<ol type="1">
+<li>计算先验概率及条件概率：</li>
+</ol>
+<p><span class="math display">\[
+\begin{aligned}
+&amp; P(Y=c_k) = \frac {\sum_{i=k}^NI(y_i=c_k)}{N},  \ \ \ k=1, 2, ..., K \\
+&amp;P(X^{(j)} = a_{jl}|Y=c_k) = \frac {\sum_{i=1}^NI(x_i^{(j)} = a_{jl}, y=c_k)}{\sum_{i=1}^NI(y_i=c_k)} \\
+\\
+&amp; j = 1, 2, ..., n; \ \ \ l = 1, 2, ..., S_j; \ \ \ k = 1, 2, ..., K
+\end{aligned}
+\]</span></p>
+<ol start="2" type="1">
+<li>对于给定的实例，可以进行计算：</li>
+</ol>
+<p><span class="math display">\[
+\begin{aligned}
+&amp; x =(x^{(1)}, x^{(2)}, x^{(3)}, ..., x^{(n)})^T \\
+\\
+&amp;P(Y=c_k)\prod_{j=1}^nP(X^{(j)} = x^{j}|Y = c_k), \ \ \ k = 1, 2, ..., K
+\end{aligned}
+\]</span></p>
+<ol start="3" type="1">
+<li>确定实例<code>x</code>的类：</li>
+</ol>
+<p><span class="math display">\[
+y = f(x) = \mathop{\arg\max}_{c_k}P(Y=c_k)\prod_jP(X^{(j)}=x^{(j)}|Y=c_k)
+\]</span></p>
+<p> 然后下面我们可以用Python来实现这个算法啦。</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">import</span> numpy <span class="im">as</span> np</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="im">from</span> functools <span class="im">import</span> <span class="bu">reduce</span></div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"></div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="kw">def</span> createFeaturesList(X):</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5">    featureSet <span class="op">=</span> <span class="bu">set</span>([])</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6">    <span class="cf">for</span> xi <span class="kw">in</span> X:</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7">        featureSet <span class="op">=</span> featureSet <span class="op">|</span> <span class="bu">set</span>(xi)</div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8">    <span class="cf">return</span> <span class="bu">list</span>(featureSet)</div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9"></div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10"><span class="kw">def</span> features2Vec(featuresList, x):</div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11">    featureVec <span class="op">=</span> [<span class="dv">0</span>] <span class="op">*</span> <span class="bu">len</span>(featuresList)</div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12">    <span class="cf">for</span> feature <span class="kw">in</span> x:</div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13">        featureVec[featuresList.index(feature)] <span class="op">=</span> <span class="dv">1</span></div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14">    <span class="cf">return</span> featureVec</div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15"></div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16"><span class="kw">def</span> train(featuresMatrix, y):</div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17">    num_sample <span class="op">=</span> <span class="bu">len</span>(featuresMatrix)</div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18">    num_feature <span class="op">=</span> <span class="bu">len</span>(featuresMatrix[<span class="dv">0</span>])</div>
+<div class="sourceLine" id="19" href="#19" data-line-number="19">    <span class="co"># 计算P{Y=1}</span></div>
+<div class="sourceLine" id="20" href="#20" data-line-number="20">    P_Y_1 <span class="op">=</span> (<span class="bu">sum</span>(y))<span class="op">/</span>(<span class="bu">float</span>(num_sample))</div>
+<div class="sourceLine" id="21" href="#21" data-line-number="21">    P_Y_0 <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> P_Y_1</div>
+<div class="sourceLine" id="22" href="#22" data-line-number="22">    </div>
+<div class="sourceLine" id="23" href="#23" data-line-number="23">    <span class="co"># 计算在不同标签下对应的特征个数</span></div>
+<div class="sourceLine" id="24" href="#24" data-line-number="24">    P_1_Count <span class="op">=</span> np.zeros(num_feature)</div>
+<div class="sourceLine" id="25" href="#25" data-line-number="25">    P_0_Count <span class="op">=</span> np.zeros(num_feature)</div>
+<div class="sourceLine" id="26" href="#26" data-line-number="26"></div>
+<div class="sourceLine" id="27" href="#27" data-line-number="27">    <span class="co"># 计算Y=1和Y=0的个数</span></div>
+<div class="sourceLine" id="28" href="#28" data-line-number="28">    Y_1_sum <span class="op">=</span> <span class="bu">sum</span>(y)</div>
+<div class="sourceLine" id="29" href="#29" data-line-number="29">    Y_0_sum <span class="op">=</span> <span class="bu">len</span>(y) <span class="op">-</span> <span class="bu">sum</span>(y)</div>
+<div class="sourceLine" id="30" href="#30" data-line-number="30"></div>
+<div class="sourceLine" id="31" href="#31" data-line-number="31">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(num_sample):</div>
+<div class="sourceLine" id="32" href="#32" data-line-number="32">        <span class="cf">if</span> y[i] <span class="op">==</span> <span class="dv">1</span>:</div>
+<div class="sourceLine" id="33" href="#33" data-line-number="33">            <span class="co"># 计算在Y = 1下对应的特征个数</span></div>
+<div class="sourceLine" id="34" href="#34" data-line-number="34">            P_1_Count <span class="op">+=</span> featuresMatrix[i]</div>
+<div class="sourceLine" id="35" href="#35" data-line-number="35">        <span class="cf">else</span>:</div>
+<div class="sourceLine" id="36" href="#36" data-line-number="36">            <span class="co"># 计算在Y = 0下对应的特征个数</span></div>
+<div class="sourceLine" id="37" href="#37" data-line-number="37">            P_0_Count <span class="op">+=</span> featuresMatrix[i]</div>
+<div class="sourceLine" id="38" href="#38" data-line-number="38"></div>
+<div class="sourceLine" id="39" href="#39" data-line-number="39">    <span class="co"># 计算P{X=xi|y=1} 和 P{X=xi|y=0}</span></div>
+<div class="sourceLine" id="40" href="#40" data-line-number="40">    P_1_Condition <span class="op">=</span> (P_1_Count <span class="op">/</span> Y_1_sum)</div>
+<div class="sourceLine" id="41" href="#41" data-line-number="41">    P_0_Condition <span class="op">=</span> (P_0_Count <span class="op">/</span> Y_0_sum)</div>
+<div class="sourceLine" id="42" href="#42" data-line-number="42"></div>
+<div class="sourceLine" id="43" href="#43" data-line-number="43">    <span class="cf">return</span> P_1_Condition, P_0_Condition, P_Y_1</div>
+<div class="sourceLine" id="44" href="#44" data-line-number="44"></div>
+<div class="sourceLine" id="45" href="#45" data-line-number="45"><span class="kw">def</span> classify(features_Vec, P_1_Condition, P_0_Condition, P_Y_1):</div>
+<div class="sourceLine" id="46" href="#46" data-line-number="46">    prod1 <span class="op">=</span> features_Vec <span class="op">*</span> P_1_Condition</div>
+<div class="sourceLine" id="47" href="#47" data-line-number="47">    prod1 <span class="op">=</span> <span class="bu">reduce</span>(<span class="kw">lambda</span> x, y: x<span class="op">*</span>y, prod1[prod1 <span class="op">&gt;</span> <span class="dv">0</span>])</div>
+<div class="sourceLine" id="48" href="#48" data-line-number="48">    prod0 <span class="op">=</span> features_Vec <span class="op">*</span> P_0_Condition</div>
+<div class="sourceLine" id="49" href="#49" data-line-number="49">    prod0 <span class="op">=</span> <span class="bu">reduce</span>(<span class="kw">lambda</span> x, y: x<span class="op">*</span>y, prod0[prod0 <span class="op">&gt;</span> <span class="dv">0</span>])</div>
+<div class="sourceLine" id="50" href="#50" data-line-number="50"></div>
+<div class="sourceLine" id="51" href="#51" data-line-number="51">    p1 <span class="op">=</span> prod1 <span class="op">*</span> P_Y_1</div>
+<div class="sourceLine" id="52" href="#52" data-line-number="52">    p0 <span class="op">=</span> prod0 <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> P_Y_1)</div>
+<div class="sourceLine" id="53" href="#53" data-line-number="53">    <span class="cf">if</span> p1 <span class="op">&gt;</span> p0:</div>
+<div class="sourceLine" id="54" href="#54" data-line-number="54">        <span class="cf">return</span> <span class="dv">1</span></div>
+<div class="sourceLine" id="55" href="#55" data-line-number="55">    <span class="cf">else</span>:</div>
+<div class="sourceLine" id="56" href="#56" data-line-number="56">        <span class="cf">return</span> <span class="dv">0</span></div>
+<div class="sourceLine" id="57" href="#57" data-line-number="57"></div>
+<div class="sourceLine" id="58" href="#58" data-line-number="58">X <span class="op">=</span> [[<span class="dv">1</span>,<span class="st">&#39;s&#39;</span>],[<span class="dv">1</span>,<span class="st">&#39;m&#39;</span>],[<span class="dv">1</span>,<span class="st">&#39;m&#39;</span>],[<span class="dv">1</span>,<span class="st">&#39;s&#39;</span>],[<span class="dv">1</span>,<span class="st">&#39;s&#39;</span>],[<span class="dv">2</span>,<span class="st">&#39;s&#39;</span>],[<span class="dv">2</span>,<span class="st">&#39;m&#39;</span>],[<span class="dv">2</span>,<span class="st">&#39;m&#39;</span>],[<span class="dv">2</span>,<span class="st">&#39;l&#39;</span>],[<span class="dv">2</span>,<span class="st">&#39;l&#39;</span>],[<span class="dv">3</span>,<span class="st">&#39;l&#39;</span>],[<span class="dv">3</span>,<span class="st">&#39;m&#39;</span>],[<span class="dv">3</span>,<span class="st">&#39;m&#39;</span>],[<span class="dv">3</span>,<span class="st">&#39;l&#39;</span>],[<span class="dv">3</span>,<span class="st">&#39;l&#39;</span>]]  </div>
+<div class="sourceLine" id="59" href="#59" data-line-number="59">y <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>]  </div>
+<div class="sourceLine" id="60" href="#60" data-line-number="60">featuresList <span class="op">=</span> createFeaturesList(X)  </div>
+<div class="sourceLine" id="61" href="#61" data-line-number="61">featuresMatrix <span class="op">=</span> []  </div>
+<div class="sourceLine" id="62" href="#62" data-line-number="62"><span class="cf">for</span> xi <span class="kw">in</span> X:  </div>
+<div class="sourceLine" id="63" href="#63" data-line-number="63">    featuresMatrix.append(features2Vec(featuresList,xi))  </div>
+<div class="sourceLine" id="64" href="#64" data-line-number="64">P_0_Conditon,P_1_Conditon,P_Y_1 <span class="op">=</span> train(featuresMatrix,y) </div>
+<div class="sourceLine" id="65" href="#65" data-line-number="65">goal <span class="op">=</span> [<span class="dv">2</span>,<span class="st">&#39;s&#39;</span>]</div>
+<div class="sourceLine" id="66" href="#66" data-line-number="66">features2Vec <span class="op">=</span> np.array(features2Vec(featuresList,goal))</div>
+<div class="sourceLine" id="67" href="#67" data-line-number="67"><span class="bu">print</span>(classify(features2Vec,P_0_Conditon,P_1_Conditon,P_Y_1))</div></code></pre>
+<p>但其实这个<code>Naive Bayes</code>还有很多问题，譬如说遇到概率为0，这个时候应该用贝叶斯估计，在公式里面加上拉普拉斯平滑，那么分类偏差将会少很多。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/17/Logistic-Rregression/" rel="next" title="Logistic Rregression">
+                <i class="fa fa-chevron-left"></i> Logistic Rregression
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/22/分类结果混淆矩阵/" rel="prev" title="分类结果混淆矩阵">
+                分类结果混淆矩阵 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/pandas.jpeg"
+               alt="Peter Tsung" />
+          <p class="site-author-name" itemprop="name">Peter Tsung</p>
+           
+              <p class="site-description motion-element" itemprop="description">I Never Save Anything For The Swim Back.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Peter Tsung</span>
+</div>
+
+<!--
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+            tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+                    TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+                            messageStyle: "none"
+                                }); 
+    </script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Queue(function() {
+                    var all = MathJax.Hub.getAllJax(), i;
+                            for(i=0; i < all.length; i += 1) {
+                                            all[i].SourceElement().parentNode.className += ' has-jax';
+                                                    }
+                                                        });
+        </script>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+-->
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  <script src="/js/src/prettify.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    $(window).load(function(){
+    $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+     prettyPrint();
+    })
+  </script>
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>

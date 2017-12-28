@@ -1,0 +1,876 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="本周的学习计划有动态属性和特性、属性描述符和类元编程。下面将分享我的阅读笔记。 在Python中，数据的属性和处理数据的方法统称为属性(attribute)。其实，方法只是可调用的属性。除了这二者之外，还可以创建特性(property)，在不改变类接口的前提下，使用存取方法（即读取方法和设值方法）修改数据属性。这与统一访问原则相符：  不管服务是由存储还是计算实现的，一个模块提供的所有服务都应该通">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="流畅的Python-读书笔记(五)">
+<meta property="og:url" content="http://yoursite.com/2017/07/11/流畅的Python-读书笔记-五/index.html">
+<meta property="og:site_name" content="彼得的博客">
+<meta property="og:description" content="本周的学习计划有动态属性和特性、属性描述符和类元编程。下面将分享我的阅读笔记。 在Python中，数据的属性和处理数据的方法统称为属性(attribute)。其实，方法只是可调用的属性。除了这二者之外，还可以创建特性(property)，在不改变类接口的前提下，使用存取方法（即读取方法和设值方法）修改数据属性。这与统一访问原则相符：  不管服务是由存储还是计算实现的，一个模块提供的所有服务都应该通">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-07-12T09:20:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="流畅的Python-读书笔记(五)">
+<meta name="twitter:description" content="本周的学习计划有动态属性和特性、属性描述符和类元编程。下面将分享我的阅读笔记。 在Python中，数据的属性和处理数据的方法统称为属性(attribute)。其实，方法只是可调用的属性。除了这二者之外，还可以创建特性(property)，在不改变类接口的前提下，使用存取方法（即读取方法和设值方法）修改数据属性。这与统一访问原则相符：  不管服务是由存储还是计算实现的，一个模块提供的所有服务都应该通">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/07/11/流畅的Python-读书笔记-五/"/>
+
+
+
+
+
+  <title>流畅的Python-读书笔记(五) | 彼得的博客</title>
+  <link rel="stylesheet" type="text/css" href="/css/prettify.css">
+  <link rel="stylesheet" type="text/css" href="/css/github-v2.css">
+  <link rel="stylesheet" type="text/css" href="/css/github-v2.min.css">
+  <script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
+       <script type="text/x-mathjax-config">
+         MathJax.Hub.Config({
+           tex2jax: {
+             inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+             processEscapes: true
+           }
+         });
+       </script>
+       <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">彼得的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/11/流畅的Python-读书笔记-五/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peter Tsung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pandas.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="彼得的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                流畅的Python-读书笔记(五)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-11T17:44:20+08:00">
+                2017-07-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-Notes/" itemprop="url" rel="index">
+                    <span itemprop="name">Python_Notes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本周的学习计划有<code>动态属性和特性</code>、<code>属性描述符</code>和<code>类元编程</code>。下面将分享我的阅读笔记。</p>
+<p>在Python中，数据的属性和处理数据的方法统称为属性(<code>attribute</code>)。其实，方法只是可调用的属性。除了这二者之外，还可以创建特性(<code>property</code>)，在不改变类接口的前提下，使用存取方法（即读取方法和设值方法）修改数据属性。这与统一访问原则相符：</p>
+<blockquote>
+<p>不管服务是由存储还是计算实现的，一个模块提供的所有服务都应该通过统一的方式使用。</p>
+</blockquote>
+<p>动态创建属性是一种元编程。在下面实例中，是使用动态属性访问JSON类数据。</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">from</span> collections <span class="im">import</span> abc</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="kw">class</span> FrozenJSON:</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4">    </div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, mapping):</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6">        <span class="va">self</span>.__data <span class="op">=</span> <span class="bu">dict</span>(mapping)</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7">        </div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8">    <span class="kw">def</span> <span class="fu">__getattr__</span>(<span class="va">self</span>, name):</div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9">        <span class="cf">if</span> <span class="bu">hasattr</span>(<span class="va">self</span>.__data, name):</div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10">            <span class="cf">return</span> <span class="bu">getattr</span>(<span class="va">self</span>.__data, name)</div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11">        <span class="cf">else</span>:</div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12">            <span class="cf">return</span> FrozenJSON.build(<span class="va">self</span>.__data[name])</div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13">        </div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14">    <span class="at">@classmethod</span></div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15">    <span class="kw">def</span> build(cls, obj):</div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16">        <span class="cf">if</span> <span class="bu">isinstance</span>(obj, abc.Mapping):</div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17">            <span class="cf">return</span> cls(obj)</div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18">        <span class="cf">elif</span> <span class="bu">isinstance</span>(obj, abc.MutableSequence):</div>
+<div class="sourceLine" id="19" href="#19" data-line-number="19">            <span class="cf">return</span> [cls.build(item) <span class="cf">for</span> item <span class="kw">in</span> obj]</div>
+<div class="sourceLine" id="20" href="#20" data-line-number="20">        <span class="cf">else</span>:</div>
+<div class="sourceLine" id="21" href="#21" data-line-number="21">            <span class="cf">return</span> obj</div></code></pre>
+<p><code>FrozenJSON</code>类的关键是<code>__getattr__</code>方法。而有一点很重要，就是仅当无法使用常规的方式获取属性（即在实例、类或超类中找不到指定的属性），解释器才会调用特殊的<code>__getattr__</code>方法。</p>
+<p>一般而言通常都会把<code>__init__</code>成为构造方法，其实用于构建实例的是特殊方法<code>__new__</code>：这是个类方法（使用特殊方式处理，因此不必使用<code>@classmethod</code>装饰器），必须返回一个实例。返回的实例会作为第一个参数（即<code>self</code>)传给<code>__init__</code>方法。因为调用<code>__init__</code>方法时要传入实例，而且禁止返回任何值，所以<code>__init__</code>方法其实是“初始化方法”。真正的构造方法是<code>__new__</code>。</p>
+<p>下面使用<code>__new__</code>方法实现访问JSON类数据。</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">from</span> collections <span class="im">import</span> abc</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="kw">class</span> FrozenJSON:</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4">    </div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5">    <span class="kw">def</span> <span class="fu">__new__</span>(cls, args):</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6">        <span class="cf">if</span> <span class="bu">isinstance</span>(arg, abc.Mapping):</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7">            <span class="cf">return</span> <span class="bu">super</span>().<span class="fu">__new__</span>(cls)</div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8">        <span class="cf">elif</span> <span class="bu">isinstance</span>(arg, abc.MutableSequence):</div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9">            <span class="cf">return</span> [cls(item) <span class="cf">for</span> item <span class="kw">in</span> arg]</div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10">        <span class="cf">else</span>:</div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11">            <span class="cf">return</span> arg</div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12">    </div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, mapping):</div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14">        <span class="va">self</span>.__data <span class="op">=</span> {}</div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15">        <span class="cf">for</span> key, value <span class="kw">in</span> mapping.items():</div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16">            <span class="cf">if</span> iskeyword(key):</div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17">                key <span class="op">+=</span> <span class="st">&#39;_&#39;</span></div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18">            <span class="va">self</span>.__data[key] <span class="op">=</span> value</div>
+<div class="sourceLine" id="19" href="#19" data-line-number="19">    </div>
+<div class="sourceLine" id="20" href="#20" data-line-number="20">    <span class="kw">def</span> <span class="fu">__getattr__</span>(<span class="va">self</span>, name):</div>
+<div class="sourceLine" id="21" href="#21" data-line-number="21">        <span class="cf">if</span> <span class="bu">hasattr</span>(<span class="va">self</span>.__data, name):</div>
+<div class="sourceLine" id="22" href="#22" data-line-number="22">            <span class="cf">return</span> <span class="bu">getattr</span>(<span class="va">self</span>.__data, name)</div>
+<div class="sourceLine" id="23" href="#23" data-line-number="23">        <span class="cf">else</span>:</div>
+<div class="sourceLine" id="24" href="#24" data-line-number="24">            <span class="cf">return</span> FrozenJSON(<span class="va">self</span>.__data[name])</div></code></pre>
+<p>这一版的<code>LineItem</code>类用到了<code>quantity</code>特性的两个实例：一个用于管理<code>weight</code>属性，另一个用于管理<code>price</code>属性。</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="kw">class</span> LineItem:</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2">    weight <span class="op">=</span> quantity(<span class="st">&#39;weight&#39;</span>) <span class="co"># 使用工厂函数把第一个自定义的特性weight定义为类属性</span></div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3">    price <span class="op">=</span> quantity(<span class="st">&#39;price&#39;</span>) <span class="co"># 构建另一个自定义的特性，price</span></div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4">    </div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, description, weight, price):</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6">        <span class="va">self</span>.description <span class="op">=</span> description</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7">        <span class="va">self</span>.weight <span class="op">=</span> weight <span class="co"># 特性已经激活，确保不能把weight设为负数或零</span></div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8">        <span class="va">self</span>.price <span class="op">=</span> price <span class="co"># 使用特性获取实例中存储的值</span></div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9">        </div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10">    <span class="kw">def</span> subtotal(<span class="va">self</span>):</div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11">        <span class="cf">return</span> <span class="va">self</span>.weight <span class="op">*</span> <span class="va">self</span>.price</div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12">    </div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13"><span class="kw">def</span> quantity(storage_name):</div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14">    </div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15">    <span class="kw">def</span> qty_getter(instance):</div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16">        <span class="cf">return</span> instance.__dict__[storage_name]</div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17">    </div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18">    <span class="kw">def</span> qty_setter(instance, value):</div>
+<div class="sourceLine" id="19" href="#19" data-line-number="19">        <span class="cf">if</span> value <span class="op">&gt;</span> <span class="dv">0</span>:</div>
+<div class="sourceLine" id="20" href="#20" data-line-number="20">            instance.__dict__[storage_name] <span class="op">=</span> value</div>
+<div class="sourceLine" id="21" href="#21" data-line-number="21">        <span class="cf">else</span>:</div>
+<div class="sourceLine" id="22" href="#22" data-line-number="22">            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">&#39;value must be &gt; 0&#39;</span>)</div>
+<div class="sourceLine" id="23" href="#23" data-line-number="23">    </div>
+<div class="sourceLine" id="24" href="#24" data-line-number="24">    <span class="cf">return</span> <span class="bu">property</span>(qty_getter, qty_setter)</div></code></pre>
+<p><code>getattr(object, name[, default])</code></p>
+<p>从<code>object</code>对象中获取<code>name</code>字符串对应的属性。获取的属性可能来自对象所属的类或超类。</p>
+<p><code>hasattr(object, name)</code></p>
+<p>如果<code>object</code>对象中存在指定的属性，或者能以某种方式（例如继承）通过<code>object</code>对象获取指定的属性，返回<code>True</code>。</p>
+<p><code>setattr(object, name, value)</code></p>
+<p>把<code>object</code>对象指定属性的值设为<code>value</code>，前提是<code>object</code>对象能接受那个值。这个函数可能会创建一个新属性，或者覆盖现有的属性。</p>
+<p><code>var([object])</code></p>
+<p>返回<code>object</code>对象的<code>__dict__</code>属性；如果实例所属的类定义了<code>__slots__</code>属性，实例没有<code>__dict__</code>属性，那么<code>vars</code>函数不能处理那个实例。</p>
+<p>描述符是对多个属性运用相同存储逻辑的一种方式。</p>
+<p>描述符是实现了特定协议的类，这个协议包括<code>__get__</code>、<code>__set__</code>和<code>__delete__</code>方法。<code>property</code>类实现了完整的描述符协议。</p>
+<p><u>描述符类</u></p>
+<p>实现描述符协议的类。</p>
+<p><u>托管类</u></p>
+<p>把描述符实例声明为类属性的类。</p>
+<p><u>描述符实例</u></p>
+<p>描述符类的各个实例，声明为托管类的类属性。</p>
+<p><u>托管实例</u></p>
+<p>托管类的实例。</p>
+<p><u>存储属性</u></p>
+<p>托管实例中存储自身托管属性的属性。</p>
+<p><u>托管属性</u></p>
+<p>托管类中由描述符实例处理的公开属性，值存储在存储属性中。</p>
+<p>下面使用<code>Quantity</code>描述符管理<code>LineItem</code>的属性。</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="co"># 描述符基于协议实现，无需创建子类</span></div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="kw">class</span> Quantity:</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3">    </div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, storage_name):</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5">        <span class="co"># Quantity实例有个storage_name属性，这是托管实例存储值的属性名称</span></div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6">        <span class="va">self</span>.storage_name <span class="op">=</span> storage_name</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7">    <span class="co"># 尝试为托管属性赋值时，会调用__set__方法。</span></div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8">    <span class="co"># self是描述符实例（即LineItem.weight或LineItem.price)</span></div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9">    <span class="co"># instance是托管实例（LineItem实例），value是要设定的值    </span></div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10">    <span class="kw">def</span> <span class="fu">__set__</span>(<span class="va">self</span>, instance, value):</div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11">        <span class="cf">if</span> value <span class="op">&gt;</span> <span class="dv">0</span>:            </div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12">            instance.__dict__[<span class="va">self</span>.storage_name] <span class="op">=</span> value</div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13">        <span class="cf">else</span>:</div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14">            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">&#39;value must be &gt; 0&#39;</span>)</div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15"></div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16"><span class="kw">class</span> LineItem:</div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17">    </div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18">    weight <span class="op">=</span> Quantity(<span class="st">&#39;weight&#39;</span>)</div>
+<div class="sourceLine" id="19" href="#19" data-line-number="19">    price <span class="op">=</span> Quantity(<span class="st">&#39;price&#39;</span>)</div>
+<div class="sourceLine" id="20" href="#20" data-line-number="20">    </div>
+<div class="sourceLine" id="21" href="#21" data-line-number="21">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, description, weight, price):</div>
+<div class="sourceLine" id="22" href="#22" data-line-number="22">        <span class="va">self</span>.description <span class="op">=</span> description</div>
+<div class="sourceLine" id="23" href="#23" data-line-number="23">        <span class="va">self</span>.weight <span class="op">=</span> weight</div>
+<div class="sourceLine" id="24" href="#24" data-line-number="24">        <span class="va">self</span>.price <span class="op">=</span> price</div>
+<div class="sourceLine" id="25" href="#25" data-line-number="25">    </div>
+<div class="sourceLine" id="26" href="#26" data-line-number="26">    <span class="kw">def</span> subtotal(<span class="va">self</span>):</div>
+<div class="sourceLine" id="27" href="#27" data-line-number="27">        <span class="cf">return</span> <span class="va">self</span>.weight <span class="op">*</span> <span class="va">self</span>.price</div></code></pre>
+<p>存储在描述符中的数据，会变成<code>LineItem</code>类的类属性，从而由全部<code>LineItem</code>实例共享。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/06/流畅的Python-读书笔记-四/" rel="next" title="流畅的Python-读书笔记(四)">
+                <i class="fa fa-chevron-left"></i> 流畅的Python-读书笔记(四)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/21/《Python设计模式》读书笔记一/" rel="prev" title="《Python设计模式》读书笔记一">
+                《Python设计模式》读书笔记一 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/pandas.jpeg"
+               alt="Peter Tsung" />
+          <p class="site-author-name" itemprop="name">Peter Tsung</p>
+           
+              <p class="site-description motion-element" itemprop="description">I Never Save Anything For The Swim Back.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Peter Tsung</span>
+</div>
+
+<!--
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+            tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+                    TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+                            messageStyle: "none"
+                                }); 
+    </script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Queue(function() {
+                    var all = MathJax.Hub.getAllJax(), i;
+                            for(i=0; i < all.length; i += 1) {
+                                            all[i].SourceElement().parentNode.className += ' has-jax';
+                                                    }
+                                                        });
+        </script>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+-->
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  <script src="/js/src/prettify.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    $(window).load(function(){
+    $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+     prettyPrint();
+    })
+  </script>
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
