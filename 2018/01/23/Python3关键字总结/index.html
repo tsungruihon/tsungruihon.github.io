@@ -98,7 +98,7 @@
 <meta property="og:site_name" content="彼得的博客">
 <meta property="og:description" content="这一节主要介绍Python3的关键字。 首先，通过使用import keyword我们可以看到python3的关键字列表。 import keyword print(keyword.kwlist)  [output] [&amp;#39;False&amp;#39;, &amp;#39;None&amp;#39;, &amp;#39;True&amp;#39;, &amp;#39;and&amp;#39;, &amp;#39;as&amp;#39;, &amp;#39;assert&amp;">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-23T15:05:59.340Z">
+<meta property="og:updated_time" content="2018-01-23T16:12:09.833Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python3关键字总结">
 <meta name="twitter:description" content="这一节主要介绍Python3的关键字。 首先，通过使用import keyword我们可以看到python3的关键字列表。 import keyword print(keyword.kwlist)  [output] [&amp;#39;False&amp;#39;, &amp;#39;None&amp;#39;, &amp;#39;True&amp;#39;, &amp;#39;and&amp;#39;, &amp;#39;as&amp;#39;, &amp;#39;assert&amp;">
@@ -398,6 +398,117 @@
 <div class="sourceLine" id="16" href="#16" data-line-number="16"><span class="va">True</span></div>
 <div class="sourceLine" id="17" href="#17" data-line-number="17"><span class="op">&gt;&gt;&gt;</span> <span class="va">True</span> <span class="op">+</span> <span class="va">True</span></div>
 <div class="sourceLine" id="18" href="#18" data-line-number="18"><span class="dv">2</span></div></code></pre>
+<h2 id="none">None</h2>
+<p><code>None</code>在<code>Python</code>中是一个特殊的实例(<code>&lt;class 'NoneType'&gt;</code>)，代表着缺失值或者空值。</p>
+<p>当函数没有<code>return</code>声明的时候，函数将会返回<code>None</code></p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="va">None</span> <span class="op">==</span> <span class="dv">0</span></div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="va">False</span></div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> <span class="va">None</span> <span class="op">==</span> []</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="va">False</span></div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> <span class="va">None</span> <span class="op">==</span> <span class="va">False</span></div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="va">False</span></div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> <span class="va">None</span></div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="op">&gt;&gt;&gt;</span> y <span class="op">=</span> <span class="va">None</span></div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="op">&gt;&gt;&gt;</span> x <span class="op">==</span> y</div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10"><span class="va">True</span></div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11"><span class="op">&gt;&gt;&gt;</span> <span class="kw">def</span> a_void_function():</div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12">...     a <span class="op">=</span> <span class="dv">1</span></div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13">...     b <span class="op">=</span> <span class="dv">2</span></div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14">...     c <span class="op">=</span> a <span class="op">+</span> b</div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15">...</div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> a_void_function()</div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(x)</div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18"><span class="va">None</span></div></code></pre>
+<h2 id="and-or-not">and, or, not</h2>
+<p>只有操作数都是<code>True</code>，<code>and</code>结果才会输出<code>True</code>。</p>
+<table>
+<thead>
+<tr class="header">
+<th>A</th>
+<th>B</th>
+<th>A and B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>True</td>
+<td>True</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<td>True</td>
+<td>False</td>
+<td>False</td>
+</tr>
+<tr class="odd">
+<td>False</td>
+<td>True</td>
+<td>False</td>
+</tr>
+<tr class="even">
+<td>False</td>
+<td>False</td>
+<td>False</td>
+</tr>
+</tbody>
+</table>
+<p><code>Or</code>会返回<code>True</code>只要其中一个操作数是<code>True</code>。</p>
+<table>
+<thead>
+<tr class="header">
+<th>A</th>
+<th>B</th>
+<th>A or B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>True</td>
+<td>True</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<td>True</td>
+<td>False</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<td>False</td>
+<td>True</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<td>False</td>
+<td>False</td>
+<td>False</td>
+</tr>
+</tbody>
+</table>
+<p><code>not</code>操作数用来反转值。</p>
+<table>
+<thead>
+<tr class="header">
+<th>A</th>
+<th>not A</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>True</td>
+<td>False</td>
+</tr>
+<tr class="even">
+<td>False</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="va">True</span> <span class="kw">and</span> <span class="va">False</span></div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="va">False</span></div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> <span class="va">True</span> <span class="kw">or</span> <span class="va">False</span></div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="va">True</span></div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> <span class="kw">not</span> <span class="va">False</span></div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="va">True</span></div></code></pre>
 
       
     </div>
@@ -577,7 +688,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#true-false"><span class="nav-number">1.</span> <span class="nav-text">True, False</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#true-false"><span class="nav-number">1.</span> <span class="nav-text">True, False</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#none"><span class="nav-number">2.</span> <span class="nav-text">None</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#and-or-not"><span class="nav-number">3.</span> <span class="nav-text">and, or, not</span></a></li></ol></div>
             
 
           </div>
