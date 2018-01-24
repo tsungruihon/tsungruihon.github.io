@@ -429,31 +429,31 @@
 <table>
 <thead>
 <tr class="header">
-<th>A</th>
-<th>B</th>
-<th>A and B</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">B</th>
+<th style="text-align: center;">A and B</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>True</td>
-<td>True</td>
-<td>True</td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">True</td>
 </tr>
 <tr class="even">
-<td>True</td>
-<td>False</td>
-<td>False</td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">False</td>
+<td style="text-align: center;">False</td>
 </tr>
 <tr class="odd">
-<td>False</td>
-<td>True</td>
-<td>False</td>
+<td style="text-align: center;">False</td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">False</td>
 </tr>
 <tr class="even">
-<td>False</td>
-<td>False</td>
-<td>False</td>
+<td style="text-align: center;">False</td>
+<td style="text-align: center;">False</td>
+<td style="text-align: center;">False</td>
 </tr>
 </tbody>
 </table>
@@ -461,31 +461,31 @@
 <table>
 <thead>
 <tr class="header">
-<th>A</th>
-<th>B</th>
-<th>A or B</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">B</th>
+<th style="text-align: center;">A or B</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>True</td>
-<td>True</td>
-<td>True</td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">True</td>
 </tr>
 <tr class="even">
-<td>True</td>
-<td>False</td>
-<td>True</td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">False</td>
+<td style="text-align: center;">True</td>
 </tr>
 <tr class="odd">
-<td>False</td>
-<td>True</td>
-<td>True</td>
+<td style="text-align: center;">False</td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">True</td>
 </tr>
 <tr class="even">
-<td>False</td>
-<td>False</td>
-<td>False</td>
+<td style="text-align: center;">False</td>
+<td style="text-align: center;">False</td>
+<td style="text-align: center;">False</td>
 </tr>
 </tbody>
 </table>
@@ -493,18 +493,18 @@
 <table>
 <thead>
 <tr class="header">
-<th>A</th>
-<th>not A</th>
+<th style="text-align: center;">not A</th>
+<th style="text-align: center;">A</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>True</td>
-<td>False</td>
+<td style="text-align: center;">False</td>
+<td style="text-align: center;">True</td>
 </tr>
 <tr class="even">
-<td>False</td>
-<td>True</td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">False</td>
 </tr>
 </tbody>
 </table>
@@ -711,7 +711,7 @@
 <pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;example.txt&#39;</span>, <span class="st">&#39;w&#39;</span>) <span class="im">as</span> my_file:</div>
 <div class="sourceLine" id="2" href="#2" data-line-number="2">    my_file.write(<span class="st">&#39;Hello world!&#39;</span>)</div></code></pre>
 <h2 id="yield">yield</h2>
-<p><code>yield</code>在函数里面像<code>return</code>，但<code>yield</code>返回的是一个生成器。生成器是一个一次只能生成一个对象或者值的迭代器。一个很大的列表的会占用非常大的内存，而生成器将会很好的应对这类情况，因为它每次只会生成一个值而不是把所有的值都存放在内存中。</p>
+<p><code>yield</code>在函数里面像<code>return</code>，但<code>yield</code>返回的是一个生成器。生成器是一个一次只能生成一个对象或者值的迭代器。一个很大的列表的会占用非常大的内存，而生成器将会很好的应对这类情况，因为它每次只会生成一个值，也就是实时地生成数据，而不是把所有的值都存放在内存中。</p>
 <p>在生成器中，我们可以用<code>next()</code>方法生成值。</p>
 <pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> g <span class="op">=</span> (<span class="dv">2</span> <span class="op">**</span> x <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>))</div>
 <div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> <span class="bu">next</span>(g)</div>
