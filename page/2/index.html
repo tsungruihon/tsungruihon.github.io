@@ -277,6 +277,411 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/29/《Python设计模式》读书笔记二/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peter Tsung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pandas.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="彼得的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/29/《Python设计模式》读书笔记二/" itemprop="url">
+                  《Python设计模式》读书笔记二
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-29T19:29:23+08:00">
+                2017-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-Notes/" itemprop="url" rel="index">
+                    <span itemprop="name">Python_Notes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这周的学习计划是阅读<code>外观模式</code>、<code>享元模式</code>、<code>模型-视图-控制器模式</code>、<code>代理模式</code>和<code>责任链模式</code>。</p>
+<p><u>外观设计模式</u></p>
+<p>外观设计模式的作用是隐藏系统的内部复杂性，并通过一个简化的接口向客户端暴露必要的部分。使用外观模式的最常见理由是为一个复杂系统提供单个简单的入口点。引入外观之后，客户端代码通过简单地调用一个方法／函数就能使用一个系统。同时，内部系统并不会丢失任何功能，外观只是封装了内部系统。</p>
+<p>还有一个额外的好处，就是我们可以改变系统内部，但客户端代码用户不用关心这个改变，也不会受这个改变的影响。</p>
+<p>下面将以多服务进程操作系统使用的接口实现来说明外观模式是如何体现的。</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">from</span> enum <span class="im">import</span> Enum</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="im">from</span> abc <span class="im">import</span> ABCMeta, abstractmethod</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"></div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4">State <span class="op">=</span> Enum(<span class="st">&#39;State&#39;</span>, <span class="st">&#39;new running sleeping restart zombie&#39;</span>)</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"></div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="kw">class</span> User:</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7">    <span class="cf">pass</span></div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8"></div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="kw">class</span> Process:</div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10">    <span class="cf">pass</span></div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11"></div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12"><span class="kw">class</span> Server(metaclass<span class="op">=</span>ABCMeta):</div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13">    <span class="at">@abstractmethod</span></div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15">        <span class="cf">pass</span></div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16">    </div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17">    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18">        <span class="cf">return</span> <span class="va">self</span>.name</div>
+<div class="sourceLine" id="19" href="#19" data-line-number="19">    </div>
+<div class="sourceLine" id="20" href="#20" data-line-number="20">    <span class="at">@abstractmethod</span></div>
+<div class="sourceLine" id="21" href="#21" data-line-number="21">    <span class="kw">def</span> boot(<span class="va">self</span>):</div>
+<div class="sourceLine" id="22" href="#22" data-line-number="22">        <span class="cf">pass</span></div>
+<div class="sourceLine" id="23" href="#23" data-line-number="23">    </div>
+<div class="sourceLine" id="24" href="#24" data-line-number="24">    <span class="at">@abstractmethod</span></div>
+<div class="sourceLine" id="25" href="#25" data-line-number="25">    <span class="kw">def</span> kill(<span class="va">self</span>, restart<span class="op">=</span><span class="va">True</span>):</div>
+<div class="sourceLine" id="26" href="#26" data-line-number="26">        <span class="cf">pass</span></div>
+<div class="sourceLine" id="27" href="#27" data-line-number="27">    </div>
+<div class="sourceLine" id="28" href="#28" data-line-number="28"><span class="kw">class</span> FileServer(Server):</div>
+<div class="sourceLine" id="29" href="#29" data-line-number="29">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</div>
+<div class="sourceLine" id="30" href="#30" data-line-number="30">        <span class="va">self</span>.name <span class="op">=</span> <span class="st">&quot;FileServer&quot;</span></div>
+<div class="sourceLine" id="31" href="#31" data-line-number="31">        <span class="va">self</span>.state <span class="op">=</span> State.new</div>
+<div class="sourceLine" id="32" href="#32" data-line-number="32">        </div>
+<div class="sourceLine" id="33" href="#33" data-line-number="33">    <span class="kw">def</span> boot(<span class="va">self</span>):</div>
+<div class="sourceLine" id="34" href="#34" data-line-number="34">        <span class="bu">print</span>(<span class="st">&#39;booting the </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(<span class="va">self</span>))</div>
+<div class="sourceLine" id="35" href="#35" data-line-number="35">        <span class="va">self</span>.state <span class="op">=</span> State.running</div>
+<div class="sourceLine" id="36" href="#36" data-line-number="36">        </div>
+<div class="sourceLine" id="37" href="#37" data-line-number="37">    <span class="kw">def</span> kill(<span class="va">self</span>, restart<span class="op">=</span><span class="va">True</span>):</div>
+<div class="sourceLine" id="38" href="#38" data-line-number="38">        <span class="bu">print</span>(<span class="st">&#39;Killing </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(<span class="va">self</span>))</div>
+<div class="sourceLine" id="39" href="#39" data-line-number="39">        <span class="va">self</span>.state <span class="op">=</span> State.restart <span class="cf">if</span> restart <span class="cf">else</span> State.zombie</div>
+<div class="sourceLine" id="40" href="#40" data-line-number="40">        </div>
+<div class="sourceLine" id="41" href="#41" data-line-number="41">    <span class="kw">def</span> create_file(<span class="va">self</span>, user, name, permissions):</div>
+<div class="sourceLine" id="42" href="#42" data-line-number="42">        <span class="bu">print</span>(<span class="st">&quot;trying to create the file &#39;</span><span class="sc">{}</span><span class="st">&#39; for user &#39;</span><span class="sc">{}</span><span class="st">&#39; with permissions </span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(name, user, permissions))</div>
+<div class="sourceLine" id="43" href="#43" data-line-number="43">        </div>
+<div class="sourceLine" id="44" href="#44" data-line-number="44"><span class="kw">class</span> ProcessServer(Server):</div>
+<div class="sourceLine" id="45" href="#45" data-line-number="45">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</div>
+<div class="sourceLine" id="46" href="#46" data-line-number="46">        <span class="va">self</span>.name <span class="op">=</span> <span class="st">&#39;ProcessServer&#39;</span></div>
+<div class="sourceLine" id="47" href="#47" data-line-number="47">        <span class="va">self</span>.state <span class="op">=</span> State.new</div>
+<div class="sourceLine" id="48" href="#48" data-line-number="48">        </div>
+<div class="sourceLine" id="49" href="#49" data-line-number="49">    <span class="kw">def</span> boot(<span class="va">self</span>):</div>
+<div class="sourceLine" id="50" href="#50" data-line-number="50">        <span class="bu">print</span>(<span class="st">&#39;booting the </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(<span class="va">self</span>))</div>
+<div class="sourceLine" id="51" href="#51" data-line-number="51">        <span class="va">self</span>.state <span class="op">=</span> State.running</div>
+<div class="sourceLine" id="52" href="#52" data-line-number="52">        </div>
+<div class="sourceLine" id="53" href="#53" data-line-number="53">    <span class="kw">def</span> kill(<span class="va">self</span>, restart<span class="op">=</span><span class="va">True</span>):</div>
+<div class="sourceLine" id="54" href="#54" data-line-number="54">        <span class="bu">print</span>(<span class="st">&#39;Killing </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(<span class="va">self</span>))</div>
+<div class="sourceLine" id="55" href="#55" data-line-number="55">        <span class="va">self</span>.state <span class="op">=</span> State.restart <span class="cf">if</span> restart <span class="cf">else</span> State.zombie</div>
+<div class="sourceLine" id="56" href="#56" data-line-number="56">    </div>
+<div class="sourceLine" id="57" href="#57" data-line-number="57">    <span class="kw">def</span> create_process(<span class="va">self</span>, user, name):</div>
+<div class="sourceLine" id="58" href="#58" data-line-number="58">        <span class="bu">print</span>(<span class="st">&quot;trying to create the process &#39;</span><span class="sc">{}</span><span class="st">&#39; for user &#39;</span><span class="sc">{}</span><span class="st">&#39;&quot;</span>.<span class="bu">format</span>(name, user))</div>
+<div class="sourceLine" id="59" href="#59" data-line-number="59">        </div>
+<div class="sourceLine" id="60" href="#60" data-line-number="60"><span class="kw">class</span> WindowServer:</div>
+<div class="sourceLine" id="61" href="#61" data-line-number="61">    <span class="cf">pass</span></div>
+<div class="sourceLine" id="62" href="#62" data-line-number="62"></div>
+<div class="sourceLine" id="63" href="#63" data-line-number="63"><span class="kw">class</span> NetworkServer:</div>
+<div class="sourceLine" id="64" href="#64" data-line-number="64">    <span class="cf">pass</span></div>
+<div class="sourceLine" id="65" href="#65" data-line-number="65"></div>
+<div class="sourceLine" id="66" href="#66" data-line-number="66"><span class="kw">class</span> OperatingSystem:</div>
+<div class="sourceLine" id="67" href="#67" data-line-number="67">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</div>
+<div class="sourceLine" id="68" href="#68" data-line-number="68">        <span class="va">self</span>.fs <span class="op">=</span> FileServer()</div>
+<div class="sourceLine" id="69" href="#69" data-line-number="69">        <span class="va">self</span>.ps <span class="op">=</span> ProcessServer()</div>
+<div class="sourceLine" id="70" href="#70" data-line-number="70">        </div>
+<div class="sourceLine" id="71" href="#71" data-line-number="71">    <span class="kw">def</span> start(<span class="va">self</span>):</div>
+<div class="sourceLine" id="72" href="#72" data-line-number="72">        [i.boot() <span class="cf">for</span> i <span class="kw">in</span> (<span class="va">self</span>.fs, <span class="va">self</span>.ps)]</div>
+<div class="sourceLine" id="73" href="#73" data-line-number="73">        </div>
+<div class="sourceLine" id="74" href="#74" data-line-number="74">    <span class="kw">def</span> create_file(<span class="va">self</span>, user, name, permissions):</div>
+<div class="sourceLine" id="75" href="#75" data-line-number="75">        <span class="cf">return</span> <span class="va">self</span>.ps.create_process(user, name)</div>
+<div class="sourceLine" id="76" href="#76" data-line-number="76"></div>
+<div class="sourceLine" id="77" href="#77" data-line-number="77"><span class="kw">def</span> main():</div>
+<div class="sourceLine" id="78" href="#78" data-line-number="78">    os <span class="op">=</span> OperatingSystem()</div>
+<div class="sourceLine" id="79" href="#79" data-line-number="79">    os.start()</div>
+<div class="sourceLine" id="80" href="#80" data-line-number="80">    os.create_file(<span class="st">&#39;foo&#39;</span>, <span class="st">&#39;hello&#39;</span>, <span class="st">&#39;-rw-r-r&#39;</span>)</div>
+<div class="sourceLine" id="81" href="#81" data-line-number="81">    os.create_process(<span class="st">&#39;bar&#39;</span>, <span class="st">&#39;ls/tmp&#39;</span>)</div>
+<div class="sourceLine" id="82" href="#82" data-line-number="82">    </div>
+<div class="sourceLine" id="83" href="#83" data-line-number="83"><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</div>
+<div class="sourceLine" id="84" href="#84" data-line-number="84">    main()</div></code></pre>
+<p><u>享元模式</u></p>
+<p>一个享元（Flyweight）就是一个包含状态独立的不可变（又称固有的）数据的共享对象，享元旨在优化性能和内存使用。若想享元模式有效，需要满足以下几个条件：</p>
+<ul>
+<li>应用需要使用大量的对象</li>
+<li>对象太多，存储／渲染它们的代价太大。一旦移除对象中的可变状态（因为在需要之时，应该由客户端代码显式地传递给享元），多组不同的对象可被相对更少的共享对象所替代。</li>
+<li>对象ID对于应用不重要。共享对象会造成ID比较的失败，所以不能依赖对象ID（那些在客户端代码看来不同的对象，最终具有相同的ID）。</li>
+</ul>
+<p>一般来说，在应用需要创建大量的计算代价大但共享许多属性的对象时，可以使用享元。</p>
+<p>在下面的例子中，将会构造一小片水果树的森林，小到能确保在单个终端页面中阅读整个输出。然而，无论你构造的森林有多大，内存分配都保持相同。</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">import</span> random</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="im">from</span> enum <span class="im">import</span> Enum</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"></div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4">TreeType <span class="op">=</span> Enum(<span class="st">&#39;TreeType&#39;</span>, <span class="st">&#39;apple_tree cherry_tree peach_tree&#39;</span>)</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"></div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="kw">class</span> Tree:</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7">    pool <span class="op">=</span> <span class="bu">dict</span>()</div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8">    </div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9">    <span class="kw">def</span> <span class="fu">__new__</span>(cls, tree_type):</div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10">        obj <span class="op">=</span> cls.pool.get(tree_type, <span class="va">None</span>)</div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11">        <span class="cf">if</span> <span class="kw">not</span> obj:</div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12">            obj <span class="op">=</span> <span class="bu">object</span>.<span class="fu">__new__</span>(cls)</div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13">            cls.pool[tree_type] <span class="op">=</span> obj</div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14">            obj.tree_type <span class="op">=</span> tree_type</div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15">        <span class="cf">return</span> obj</div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16">    </div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17">    <span class="kw">def</span> render(<span class="va">self</span>, age, x, y):</div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18">        <span class="bu">print</span>(<span class="st">&#39;render a tree of type </span><span class="sc">{}</span><span class="st"> and age </span><span class="sc">{}</span><span class="st"> at (</span><span class="sc">{}</span><span class="st">, </span><span class="sc">{}</span><span class="st">)&#39;</span>).<span class="bu">format</span>(<span class="va">self</span>.tree_type, age, x, y)</div>
+<div class="sourceLine" id="19" href="#19" data-line-number="19"></div>
+<div class="sourceLine" id="20" href="#20" data-line-number="20"><span class="kw">def</span> main():</div>
+<div class="sourceLine" id="21" href="#21" data-line-number="21">    rnd <span class="op">=</span> random.Random()</div>
+<div class="sourceLine" id="22" href="#22" data-line-number="22">    age_min, age_max <span class="op">=</span> <span class="dv">1</span>, <span class="dv">30</span></div>
+<div class="sourceLine" id="23" href="#23" data-line-number="23">    min_point, max_point <span class="op">=</span> <span class="dv">0</span>, <span class="dv">100</span></div>
+<div class="sourceLine" id="24" href="#24" data-line-number="24">    tree_counter <span class="op">=</span> <span class="dv">0</span></div>
+<div class="sourceLine" id="25" href="#25" data-line-number="25">    </div>
+<div class="sourceLine" id="26" href="#26" data-line-number="26">    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</div>
+<div class="sourceLine" id="27" href="#27" data-line-number="27">        t1 <span class="op">=</span> Tree(TreeType.apple_tree)</div>
+<div class="sourceLine" id="28" href="#28" data-line-number="28">        t1.render(rnd.randint(age_min, age_max),</div>
+<div class="sourceLine" id="29" href="#29" data-line-number="29">                  rnd.randint(min_point, max_point),</div>
+<div class="sourceLine" id="30" href="#30" data-line-number="30">                  rnd.randint(min_point, max_point))</div>
+<div class="sourceLine" id="31" href="#31" data-line-number="31">        tree_counter<span class="op">+=</span><span class="dv">1</span></div>
+<div class="sourceLine" id="32" href="#32" data-line-number="32">    </div>
+<div class="sourceLine" id="33" href="#33" data-line-number="33">    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</div>
+<div class="sourceLine" id="34" href="#34" data-line-number="34">        t2 <span class="op">=</span> Tree(TreeType.apple_tree)</div>
+<div class="sourceLine" id="35" href="#35" data-line-number="35">        t2.render(rnd.randint(age_min, age_max),</div>
+<div class="sourceLine" id="36" href="#36" data-line-number="36">                  rnd.randint(min_point, max_point),</div>
+<div class="sourceLine" id="37" href="#37" data-line-number="37">                  rnd.randint(min_point, max_point))</div>
+<div class="sourceLine" id="38" href="#38" data-line-number="38">        tree_counter<span class="op">+=</span><span class="dv">1</span></div>
+<div class="sourceLine" id="39" href="#39" data-line-number="39">        </div>
+<div class="sourceLine" id="40" href="#40" data-line-number="40">    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</div>
+<div class="sourceLine" id="41" href="#41" data-line-number="41">        t3 <span class="op">=</span> Tree(TreeType.apple_tree)</div>
+<div class="sourceLine" id="42" href="#42" data-line-number="42">        t3.render(rnd.randint(age_min, age_max),</div>
+<div class="sourceLine" id="43" href="#43" data-line-number="43">                  rnd.randint(min_point, max_point),</div>
+<div class="sourceLine" id="44" href="#44" data-line-number="44">                  rnd.randint(min_point, max_point))</div>
+<div class="sourceLine" id="45" href="#45" data-line-number="45">        tree_counter<span class="op">+=</span><span class="dv">1</span></div>
+<div class="sourceLine" id="46" href="#46" data-line-number="46">        </div>
+<div class="sourceLine" id="47" href="#47" data-line-number="47">    <span class="bu">print</span>(<span class="st">&#39;trees rendered: </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(tree_counter))</div>
+<div class="sourceLine" id="48" href="#48" data-line-number="48">    <span class="bu">print</span>(<span class="st">&#39;trees actually created: </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(<span class="bu">len</span>(Tree.pool)))</div>
+<div class="sourceLine" id="49" href="#49" data-line-number="49">    </div>
+<div class="sourceLine" id="50" href="#50" data-line-number="50">    t4 <span class="op">=</span> Tree(TreeType.cherry_tree)</div>
+<div class="sourceLine" id="51" href="#51" data-line-number="51">    t5 <span class="op">=</span> Tree(TreeType.cherry_tree)</div>
+<div class="sourceLine" id="52" href="#52" data-line-number="52">    t6 <span class="op">=</span> Tree(TreeType.apple_tree)</div>
+<div class="sourceLine" id="53" href="#53" data-line-number="53">    <span class="bu">print</span>(<span class="st">&#39;</span><span class="sc">{}</span><span class="st"> == </span><span class="sc">{}</span><span class="st">? </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(<span class="bu">id</span>(t4), <span class="bu">id</span>(t5), <span class="bu">id</span>(t4) <span class="op">==</span> <span class="bu">id</span>(t5)))</div>
+<div class="sourceLine" id="54" href="#54" data-line-number="54">    <span class="bu">print</span>(<span class="st">&#39;</span><span class="sc">{}</span><span class="st"> == </span><span class="sc">{}</span><span class="st">? </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(<span class="bu">id</span>(t5), <span class="bu">id</span>(t6), <span class="bu">id</span>(t5) <span class="op">==</span> <span class="bu">id</span>(t6)))</div>
+<div class="sourceLine" id="55" href="#55" data-line-number="55">    </div>
+<div class="sourceLine" id="56" href="#56" data-line-number="56"><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</div>
+<div class="sourceLine" id="57" href="#57" data-line-number="57">    main()</div></code></pre>
+<p><u>模型-视图-控制器模式</u></p>
+<p>关注点分离（Seperation of Concerns，SoC）原则是软件工程相关的设计原则之一。SoC原则背后的思想是将一个应用切分成不同的部分，每个部分解决一个单独的关注点。分层设计中的层次（数据访问层、业务逻辑层和表示层等）即是关注点的例子。使用SoC原则能简化软件应用的开发和维护。</p>
+<p>一开始接触<code>MVC</code>模式是因为学习<code>Django</code>，<code>Django</code>把逻辑层、数据层和表示层都分开三个部分。所以各个模块的实现需要在对应的部分中填写，这样层次比较分明，减少了把所有部分都揉在一起而造成错误的问题。</p>
+<p><u>代理模式</u></p>
+<p>代理模式有以下四种：</p>
+<ul>
+<li>远程代理：实际存在于不同地址空间（例如，某个网络服务器）的对象在本地的代理者。</li>
+<li>虚拟代理：用于懒初始化，将一个大计算量对象的创建延迟到真正需要的时候进行。</li>
+<li>保护／防护代理：控制对敏感对象的访问。</li>
+<li>智能（引用）代理：在对象被访问时执行额外的动作。此类代理的例子包括引用计数和线程安全检查。</li>
+</ul>
+<p>下面的例子是实现一个简单的保护代理来查看和添加用户。</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="kw">class</span> SensitiveInfo:</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3">        <span class="va">self</span>.users <span class="op">=</span> [<span class="st">&#39;nick&#39;</span>, <span class="st">&#39;tom&#39;</span>, <span class="st">&#39;ben&#39;</span>, <span class="st">&#39;mike&#39;</span>]</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4">        </div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5">    <span class="kw">def</span> read(<span class="va">self</span>):</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6">        <span class="bu">print</span>(<span class="st">&#39;There are </span><span class="sc">{}</span><span class="st"> users: </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(<span class="bu">len</span>(<span class="va">self</span>.users), <span class="st">&#39;&#39;</span>.join(<span class="va">self</span>.users)))</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7">        </div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8">    <span class="kw">def</span> add(<span class="va">self</span>, user):</div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9">        <span class="va">self</span>.users.append(user)</div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10">        <span class="bu">print</span>(<span class="st">&#39;Added user </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(user))</div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11">        </div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12"><span class="kw">class</span> Info:</div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13">    <span class="co">&quot;&quot;&quot;SensitiveInfo的保护代理&quot;&quot;&quot;</span></div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15">        <span class="va">self</span>.protected <span class="op">=</span> SensitiveInfo()</div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16">        <span class="va">self</span>.secret <span class="op">=</span> <span class="st">&#39;0xdeadbeef&#39;</span></div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17">    </div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18">    <span class="kw">def</span> read(<span class="va">self</span>):</div>
+<div class="sourceLine" id="19" href="#19" data-line-number="19">        <span class="va">self</span>.protected.read()</div>
+<div class="sourceLine" id="20" href="#20" data-line-number="20">        </div>
+<div class="sourceLine" id="21" href="#21" data-line-number="21">    <span class="kw">def</span> add(<span class="va">self</span>, user):</div>
+<div class="sourceLine" id="22" href="#22" data-line-number="22">        sec <span class="op">=</span> <span class="bu">input</span>(<span class="st">&#39;what is the secret&#39;</span>)</div>
+<div class="sourceLine" id="23" href="#23" data-line-number="23">        <span class="va">self</span>.protected.add(user) <span class="cf">if</span> sec <span class="op">==</span> <span class="va">self</span>.secret <span class="cf">else</span> <span class="bu">print</span>(<span class="st">&quot;That&#39;s wrong&quot;</span>)</div>
+<div class="sourceLine" id="24" href="#24" data-line-number="24">        </div>
+<div class="sourceLine" id="25" href="#25" data-line-number="25"><span class="kw">def</span> main():</div>
+<div class="sourceLine" id="26" href="#26" data-line-number="26">    info <span class="op">=</span> Info()</div>
+<div class="sourceLine" id="27" href="#27" data-line-number="27">    </div>
+<div class="sourceLine" id="28" href="#28" data-line-number="28">    <span class="cf">while</span> <span class="va">True</span>:</div>
+<div class="sourceLine" id="29" href="#29" data-line-number="29">        <span class="bu">print</span>(<span class="st">&#39;1. read list |==| 2. add user |==| 3. quit&#39;</span>)</div>
+<div class="sourceLine" id="30" href="#30" data-line-number="30">        key <span class="op">=</span> <span class="bu">input</span>(<span class="st">&#39;choose option: &#39;</span>)</div>
+<div class="sourceLine" id="31" href="#31" data-line-number="31">        <span class="cf">if</span> key <span class="op">==</span> <span class="st">&#39;1&#39;</span>:</div>
+<div class="sourceLine" id="32" href="#32" data-line-number="32">            info.read()</div>
+<div class="sourceLine" id="33" href="#33" data-line-number="33">        <span class="cf">elif</span> key <span class="op">==</span> <span class="st">&#39;2&#39;</span>:</div>
+<div class="sourceLine" id="34" href="#34" data-line-number="34">            name <span class="op">=</span> <span class="bu">input</span>(<span class="st">&#39;choose username: &#39;</span>)</div>
+<div class="sourceLine" id="35" href="#35" data-line-number="35">            info.add(name)</div>
+<div class="sourceLine" id="36" href="#36" data-line-number="36">        <span class="cf">elif</span> key <span class="op">==</span> <span class="st">&#39;3&#39;</span>:</div>
+<div class="sourceLine" id="37" href="#37" data-line-number="37">            exit()</div>
+<div class="sourceLine" id="38" href="#38" data-line-number="38">        <span class="cf">else</span>:</div>
+<div class="sourceLine" id="39" href="#39" data-line-number="39">            <span class="bu">print</span>(<span class="st">&#39;unknown option: </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(key))</div>
+<div class="sourceLine" id="40" href="#40" data-line-number="40"></div>
+<div class="sourceLine" id="41" href="#41" data-line-number="41"><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</div>
+<div class="sourceLine" id="42" href="#42" data-line-number="42">    main()</div></code></pre>
+<p><u>责任链模式</u></p>
+<p>责任链（<code>Chain of Responsibility</code>）模式用于让多个对象来处理单个请求时，或者用于预先不知道应该由哪个对象（来自某个对象链）来处理某个特定请求时。在无法预知知道处理程序的数量和类型时，该模式有助于对请求／处理事情进行建模。适合使用责任链模式的系统例子包括基于事件的系统、采购系统和运输系统。</p>
+<p>下面是用责任链模式实现一个简单的事件系统。</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="kw">class</span> Event:</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name):</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3">        <span class="va">self</span>.name <span class="op">=</span> name</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4">    </div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5">    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6">        <span class="cf">return</span> <span class="va">self</span>.name</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7">    </div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="kw">class</span> Widget:</div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, parent<span class="op">=</span><span class="va">None</span>):</div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10">        <span class="va">self</span>.parent <span class="op">=</span> parent</div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11">    </div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12">    <span class="kw">def</span> handle(<span class="va">self</span>, event):</div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13">        handler <span class="op">=</span> <span class="st">&#39;handler_</span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(event)</div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14">        <span class="cf">if</span> <span class="bu">hasattr</span>(<span class="va">self</span>, handler):</div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15">            method <span class="op">=</span> <span class="bu">getattr</span>(<span class="va">self</span>, handler)</div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16">            method(event)</div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17">        <span class="cf">elif</span> <span class="va">self</span>.parent:</div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18">            <span class="va">self</span>.parent.handler(event)</div>
+<div class="sourceLine" id="19" href="#19" data-line-number="19">        <span class="cf">elif</span> <span class="bu">hasattr</span>(<span class="va">self</span>, <span class="st">&#39;handler_default&#39;</span>):</div>
+<div class="sourceLine" id="20" href="#20" data-line-number="20">            <span class="va">self</span>.handler_default(event)</div>
+<div class="sourceLine" id="21" href="#21" data-line-number="21"></div>
+<div class="sourceLine" id="22" href="#22" data-line-number="22"><span class="kw">class</span> MainWindow(Widget):</div>
+<div class="sourceLine" id="23" href="#23" data-line-number="23">    <span class="kw">def</span> handle_close(<span class="va">self</span>, event):</div>
+<div class="sourceLine" id="24" href="#24" data-line-number="24">        <span class="bu">print</span>(<span class="st">&#39;MainWindow: </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(event))</div>
+<div class="sourceLine" id="25" href="#25" data-line-number="25">    </div>
+<div class="sourceLine" id="26" href="#26" data-line-number="26">    <span class="kw">def</span> handler_default(<span class="va">self</span>, event):</div>
+<div class="sourceLine" id="27" href="#27" data-line-number="27">        <span class="bu">print</span>(<span class="st">&#39;MainWindow: </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(event))</div>
+<div class="sourceLine" id="28" href="#28" data-line-number="28">        </div>
+<div class="sourceLine" id="29" href="#29" data-line-number="29"><span class="kw">class</span> SendDialog(Widget):</div>
+<div class="sourceLine" id="30" href="#30" data-line-number="30">    <span class="kw">def</span> handle_paint(<span class="va">self</span>, event):</div>
+<div class="sourceLine" id="31" href="#31" data-line-number="31">        <span class="bu">print</span>(<span class="st">&#39;SendDialog: </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(event))</div>
+<div class="sourceLine" id="32" href="#32" data-line-number="32">        </div>
+<div class="sourceLine" id="33" href="#33" data-line-number="33"><span class="kw">class</span> MsgText(Widget):</div>
+<div class="sourceLine" id="34" href="#34" data-line-number="34">    <span class="kw">def</span> handler_down(<span class="va">self</span>, event):</div>
+<div class="sourceLine" id="35" href="#35" data-line-number="35">        <span class="bu">print</span>(<span class="st">&#39;MsgText: </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(event))</div>
+<div class="sourceLine" id="36" href="#36" data-line-number="36">        </div>
+<div class="sourceLine" id="37" href="#37" data-line-number="37"><span class="kw">def</span> main():</div>
+<div class="sourceLine" id="38" href="#38" data-line-number="38">    mw <span class="op">=</span> MainWindow()</div>
+<div class="sourceLine" id="39" href="#39" data-line-number="39">    sd <span class="op">=</span> SendDialog(mw)</div>
+<div class="sourceLine" id="40" href="#40" data-line-number="40">    msg <span class="op">=</span> MsgText(sd)</div>
+<div class="sourceLine" id="41" href="#41" data-line-number="41">    </div>
+<div class="sourceLine" id="42" href="#42" data-line-number="42">    <span class="cf">for</span> e <span class="kw">in</span> (<span class="st">&#39;down&#39;</span>, <span class="st">&#39;paint&#39;</span>, <span class="st">&#39;unhandled&#39;</span>, <span class="st">&#39;close&#39;</span>):</div>
+<div class="sourceLine" id="43" href="#43" data-line-number="43">        evt <span class="op">=</span> Event(e)</div>
+<div class="sourceLine" id="44" href="#44" data-line-number="44">        <span class="bu">print</span>(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">Sending event -</span><span class="sc">{}</span><span class="st">- to MainWindow&#39;</span>.<span class="bu">format</span>(evt))</div>
+<div class="sourceLine" id="45" href="#45" data-line-number="45">        mw.handle(evt)</div>
+<div class="sourceLine" id="46" href="#46" data-line-number="46">        <span class="bu">print</span>(<span class="st">&#39;Sending event -</span><span class="sc">{}</span><span class="st">- to SendDialog&#39;</span>.<span class="bu">format</span>(evt))</div>
+<div class="sourceLine" id="47" href="#47" data-line-number="47">        sd.handle(evt)</div>
+<div class="sourceLine" id="48" href="#48" data-line-number="48">        <span class="bu">print</span>(<span class="st">&#39;Sending event -</span><span class="sc">{}</span><span class="st">- to MsgText&#39;</span>.<span class="bu">format</span>(evt))</div>
+<div class="sourceLine" id="49" href="#49" data-line-number="49">        msg.handle(evt)</div>
+<div class="sourceLine" id="50" href="#50" data-line-number="50"></div>
+<div class="sourceLine" id="51" href="#51" data-line-number="51"><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</div>
+<div class="sourceLine" id="52" href="#52" data-line-number="52">    main()</div></code></pre>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/21/《Python设计模式》读书笔记一/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -4468,135 +4873,6 @@ eCPM=r(a,u,c) = \mu(a,u,c) · \nu(a, u,c)
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/02/爺爺紀念/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Peter Tsung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pandas.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="彼得的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/06/02/爺爺紀念/" itemprop="url">
-                  爺爺紀念
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-02T14:24:02+08:00">
-                2017-06-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>距離爺爺去世，已經過去了大半年了。我還記得，去年十月中旬我在準備考研的時候，忽然收到爸爸的電話，說爺爺身體可能不行了，要我回去一趟。當時我記得我在寢室弄著我的髮型，在學習怎樣用噴霧給頭髮定型。然後我馬上收拾東西，回自習室拿了一些書本，然後買了機票，就回去了。我還依稀記得，回到家那晚，已經快一點了。所以晚上就來不及去看望爺爺。</p>
-<p>到了早上，我就去中心醫院看爺爺。當時看到爺爺已經說不出話了，看到他手臂上都是插著管子，然後還時不時要抽痰，我看著真的很心疼。我就說，我是鋭鴻，爺爺我回來啦。那一幕我真的永遠都忘不了。然後爺爺好像哭了，我看到他眼淚流下來。當時其實最遺憾的就是，沒有在他身體健康的時候多陪他。沒有早點功成名就，沒有讓他看到他的孫兒結婚兒孫滿堂。我假裝堅強，忍著不讓淚水流下來，假裝這一切都只不過人生的輪迴，生老病死，人之常情。</p>
-<p>但是我卻沒有辦法用這些理由麻醉自己，因為我知道，那是我最在乎的親人。那天晚上，我和媽媽再一起去探望爺爺，我跟爺爺說，爺爺我明天就回去了，你要好好堅持保重身體。我很快會回來探望你的。我會努力加油的。然後看著他又要抽痰，我問護士，能不能不要抽痰，因為抽痰的時候，爺爺很難受。護士說，不抽痰的話，那些痰會在他的呼吸道堵塞，這樣他就不能呼吸，很快就不行的了。</p>
-<p>然後我們回去，準備收拾第二天的行李，早早上床休息睡覺。當晚凌晨十二點多，接到姐姐的電話，姐姐哭著說，爺爺不行了，你趕緊過來醫院。然後去到醫院的時候，爺爺就走了。</p>
-<p>我記憶中和爺爺的經歷，就是買筆買本子。我小學、初中、高中每一個學期都要去東城市場買很多學習工具還有本子，都是爺爺陪我買的。如果爺爺身體不舒服，他會給錢給我買。反正不管每一次要買的數量有多少，買的價格有多貴，爺爺都會給我買。一般都是先在美麗華跟爺爺奶奶喝早茶，喝完早茶就會去東城市場買文具。有時候還會買一些零食。整個過程自己真的一分錢都不用花，就會覺得只用關注自己缺什麼，爺爺和奶奶就會給你補什麼。當時覺得很多事情都是多麼地理所當然，上了大學，才發現其實很多瑣碎的花費都是很多，以前過的很輕鬆，是因為有家裡人在，有家裡人疼。這種疼愛，真的是無私的，不求任何回報的。我學習上的障礙不是很多，我覺得爺爺奶奶在學習工具的準備上替我做了很多，我真的很感激他們。</p>
-<p>今年清明節回去，看到爺爺的名字刻在了墓碑上，才真正說服自己爺爺已經去世的事實。然後當時在墓碑上對爺爺說，爺爺我回來了，我一定會好好努力加油的。眼淚當時又情不自禁落下來。</p>
-<p>人是一種善忘的動物，但我並不想忘記親人對我的愛。前幾天端午節，回去奶奶家探望奶奶，中午我們很晚才到家，然後是準備打火鍋。當時奶奶給了我和姐姐各100，說你們想買什麼就買什麼啦。這個熟悉的場景，是爺爺和我們的經歷。爺爺總是會給我們錢，說，你們想買什麼就買什麼啦。然後我拉著小車跟姐姐去清河市場，一路上又想起了當年去市場無憂無慮，爺爺奶奶帶著我們，跟我們說想要什麼就拿什麼的場景。現在跟以前的不同，就是我們慢慢從一個被寵愛和保護的小孩，漸漸成長為一個要學會照顧家人，學會愛家人，學會對家人無私分享，不求回報的成年人。</p>
-<p>爺爺走了之後，我一直在思考，這段人生經歷於我而言，到底是意味著什麼。為什麼要讓我經歷這些事情。我覺得，這可能是要讓我知道，我其實是很幸運。有一個這麼疼愛我的爺爺，這麼希望我能有所成就，對社會有所貢獻。我覺得爺爺給我做了一個很好的榜樣，不僅從人生中要不斷拚搏，克服患難，去不斷實現個人的人生價值和人生目標。而且還要學會在生活、家庭和家族中，愛待自己的家人和伴侶，在讓他們一步步慢慢追尋個人人生意義的同時，也能夠無憂無慮地享受生活和家人的愛。</p>
-<p>爺爺我想你，我會一直努力的。</p>
-<p>2017年夏</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -4646,7 +4922,7 @@ eCPM=r(a,u,c) = \mu(a,u,c) · \nu(a, u,c)
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-count">27</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -4668,7 +4944,7 @@ eCPM=r(a,u,c) = \mu(a,u,c) · \nu(a, u,c)
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
