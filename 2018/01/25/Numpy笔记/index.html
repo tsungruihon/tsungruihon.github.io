@@ -99,7 +99,8 @@
 <meta property="og:description" content="Numpy是Python的一个很重要的第三方库，其他很多科学计算的第三方库都是以Numpy为基础建立的。 Numpy的一个重要特性是它的数组计算。 import numpy as np  #数组上的数学操作 #假如我们想将列表中的每个元素增加1， 列表不支持这样的操作 &amp;gt;&amp;gt;&amp;gt; a = [1, 2, 3, 4] &amp;gt;&amp;gt;&amp;gt; a + 1  ---------------">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/output_241_2.png">
-<meta property="og:updated_time" content="2018-01-26T11:36:48.171Z">
+<meta property="og:image" content="http://yoursite.com/images/output_241_2.png">
+<meta property="og:updated_time" content="2018-01-26T12:19:43.488Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Numpy笔记">
 <meta name="twitter:description" content="Numpy是Python的一个很重要的第三方库，其他很多科学计算的第三方库都是以Numpy为基础建立的。 Numpy的一个重要特性是它的数组计算。 import numpy as np  #数组上的数学操作 #假如我们想将列表中的每个元素增加1， 列表不支持这样的操作 &amp;gt;&amp;gt;&amp;gt; a = [1, 2, 3, 4] &amp;gt;&amp;gt;&amp;gt; a + 1  ---------------">
@@ -1320,7 +1321,45 @@
 <div class="sourceLine" id="67" href="#67" data-line-number="67">       [<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">-0.5</span>, <span class="fl">-0.5</span>, <span class="fl">-0.5</span>, <span class="fl">-0.5</span>],</div>
 <div class="sourceLine" id="68" href="#68" data-line-number="68">       [ <span class="fl">0.</span> ,  <span class="fl">0.</span> ,  <span class="fl">0.</span> ,  <span class="fl">0.</span> ,  <span class="fl">0.</span> ],</div>
 <div class="sourceLine" id="69" href="#69" data-line-number="69">       [ <span class="fl">0.5</span>,  <span class="fl">0.5</span>,  <span class="fl">0.5</span>,  <span class="fl">0.5</span>,  <span class="fl">0.5</span>],</div>
-<div class="sourceLine" id="70" href="#70" data-line-number="70">       [ <span class="fl">1.</span> ,  <span class="fl">1.</span> ,  <span class="fl">1.</span> ,  <span class="fl">1.</span> ,  <span class="fl">1.</span> ]])</div></code></pre>
+<div class="sourceLine" id="70" href="#70" data-line-number="70">       [ <span class="fl">1.</span> ,  <span class="fl">1.</span> ,  <span class="fl">1.</span> ,  <span class="fl">1.</span> ,  <span class="fl">1.</span> ]])</div>
+<div class="sourceLine" id="71" href="#71" data-line-number="71"></div>
+<div class="sourceLine" id="72" href="#72" data-line-number="72"><span class="co"># ones , zeros</span></div>
+<div class="sourceLine" id="73" href="#73" data-line-number="73"><span class="co"># ones(shape, dtype=float64)</span></div>
+<div class="sourceLine" id="74" href="#74" data-line-number="74"><span class="co"># zeros(shape, dtype=float64)</span></div>
+<div class="sourceLine" id="75" href="#75" data-line-number="75"><span class="co"># 产生一个制定形状的全 0 或全 1 的数组，还可以制定数组类型：</span></div>
+<div class="sourceLine" id="76" href="#76" data-line-number="76"><span class="op">&gt;&gt;&gt;</span> np.zeros(<span class="dv">3</span>)</div>
+<div class="sourceLine" id="77" href="#77" data-line-number="77">array([ <span class="fl">0.</span>,  <span class="fl">0.</span>,  <span class="fl">0.</span>])</div>
+<div class="sourceLine" id="78" href="#78" data-line-number="78"><span class="op">&gt;&gt;&gt;</span> np.ones([<span class="dv">2</span>, <span class="dv">3</span>], dtype<span class="op">=</span>np.float32)</div>
+<div class="sourceLine" id="79" href="#79" data-line-number="79">array([[ <span class="fl">1.</span>,  <span class="fl">1.</span>,  <span class="fl">1.</span>],</div>
+<div class="sourceLine" id="80" href="#80" data-line-number="80">       [ <span class="fl">1.</span>,  <span class="fl">1.</span>,  <span class="fl">1.</span>]], dtype<span class="op">=</span>float32)</div>
+<div class="sourceLine" id="81" href="#81" data-line-number="81"><span class="op">&gt;&gt;&gt;</span> np.ones([<span class="dv">2</span>, <span class="dv">3</span>]) <span class="op">*</span> <span class="dv">5</span></div>
+<div class="sourceLine" id="82" href="#82" data-line-number="82">array([[ <span class="fl">5.</span>,  <span class="fl">5.</span>,  <span class="fl">5.</span>],</div>
+<div class="sourceLine" id="83" href="#83" data-line-number="83">       [ <span class="fl">5.</span>,  <span class="fl">5.</span>,  <span class="fl">5.</span>]])</div>
+<div class="sourceLine" id="84" href="#84" data-line-number="84"></div>
+<div class="sourceLine" id="85" href="#85" data-line-number="85"><span class="co"># empty</span></div>
+<div class="sourceLine" id="86" href="#86" data-line-number="86"><span class="co"># empty(shape, dtype=float64, order=&#39;C&#39;)</span></div>
+<div class="sourceLine" id="87" href="#87" data-line-number="87"><span class="co"># 也可以使用 empty 方法产生一个制定大小的数组（数组所指向的内存未被初始化，所以值随机），再用 fill 方法填充：</span></div>
+<div class="sourceLine" id="88" href="#88" data-line-number="88"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> np.empty(<span class="dv">2</span>)</div>
+<div class="sourceLine" id="89" href="#89" data-line-number="89"><span class="op">&gt;&gt;&gt;</span> a</div>
+<div class="sourceLine" id="90" href="#90" data-line-number="90">array([  <span class="fl">4.94065646e-324</span>,   <span class="fl">9.88131292e-324</span>])</div>
+<div class="sourceLine" id="91" href="#91" data-line-number="91"><span class="op">&gt;&gt;&gt;</span> a.fill(<span class="dv">5</span>)</div>
+<div class="sourceLine" id="92" href="#92" data-line-number="92"><span class="op">&gt;&gt;&gt;</span> a</div>
+<div class="sourceLine" id="93" href="#93" data-line-number="93">array([ <span class="fl">5.</span>,  <span class="fl">5.</span>])</div>
+<div class="sourceLine" id="94" href="#94" data-line-number="94"></div>
+<div class="sourceLine" id="95" href="#95" data-line-number="95"><span class="co"># empty_like, ones_like, zeros_like</span></div>
+<div class="sourceLine" id="96" href="#96" data-line-number="96"><span class="co"># empty_like(a)</span></div>
+<div class="sourceLine" id="97" href="#97" data-line-number="97"><span class="co"># ones_like(a)</span></div>
+<div class="sourceLine" id="98" href="#98" data-line-number="98"><span class="co"># zeros_like(a)</span></div>
+<div class="sourceLine" id="99" href="#99" data-line-number="99"><span class="co"># 产生一个跟 a 大小一样，类型一样的对应数组。</span></div>
+<div class="sourceLine" id="100" href="#100" data-line-number="100"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">10</span>, <span class="fl">2.5</span>)</div>
+<div class="sourceLine" id="101" href="#101" data-line-number="101"><span class="op">&gt;&gt;&gt;</span> a</div>
+<div class="sourceLine" id="102" href="#102" data-line-number="102">array([ <span class="fl">0.</span> ,  <span class="fl">2.5</span>,  <span class="fl">5.</span> ,  <span class="fl">7.5</span>])</div>
+<div class="sourceLine" id="103" href="#103" data-line-number="103"><span class="op">&gt;&gt;&gt;</span> np.empty_like(a)</div>
+<div class="sourceLine" id="104" href="#104" data-line-number="104">array([   <span class="fl">0.</span>  ,    <span class="fl">0.</span>  ,  <span class="fl">356.2</span> ,  <span class="fl">238.84</span>])</div>
+<div class="sourceLine" id="105" href="#105" data-line-number="105"><span class="op">&gt;&gt;&gt;</span> np.zeros_like(a)</div>
+<div class="sourceLine" id="106" href="#106" data-line-number="106">array([ <span class="fl">0.</span>,  <span class="fl">0.</span>,  <span class="fl">0.</span>,  <span class="fl">0.</span>])</div>
+<div class="sourceLine" id="107" href="#107" data-line-number="107"><span class="op">&gt;&gt;&gt;</span> np.ones_like(a)</div>
+<div class="sourceLine" id="108" href="#108" data-line-number="108">array([ <span class="fl">1.</span>,  <span class="fl">1.</span>,  <span class="fl">1.</span>,  <span class="fl">1.</span>])</div></code></pre>
 <pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">%</span>matplotlib inline</div>
 <div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</div>
 <div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="im">from</span> mpl_toolkits.mplot3d <span class="im">import</span> Axes3D</div>
@@ -1350,6 +1389,340 @@
 <figure>
 <img src="/images/output_241_2.png" alt="output_241_2"><figcaption>output_241_2</figcaption>
 </figure>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="co"># 事实上，x, y 中有很多冗余的元素，这里提供了一个 sparse 的选项：</span></div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> x_ticks <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">5</span>)</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> y_ticks <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">5</span>)</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> x, y <span class="op">=</span> np.meshgrid(x_ticks, y_ticks, sparse<span class="op">=</span><span class="va">True</span>)</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> x</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6">array([[<span class="op">-</span><span class="fl">1.</span> , <span class="fl">-0.5</span>,  <span class="fl">0.</span> ,  <span class="fl">0.5</span>,  <span class="fl">1.</span> ]])</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> y</div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8">array([[<span class="op">-</span><span class="fl">1.</span> ],</div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9">[<span class="op">-</span><span class="fl">0.5</span>],</div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10">[ <span class="fl">0.</span> ],</div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11">[ <span class="fl">0.5</span>],</div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12">[ <span class="fl">1.</span> ]])</div></code></pre>
+<p>在这个选项下，x, y 变成了单一的行向量和列向量，但这并不影响结果。</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1">x_ticks <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">51</span>)</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2">y_ticks <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">51</span>)</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"></div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4">x, y <span class="op">=</span> np.meshgrid(x_ticks, y_ticks, sparse<span class="op">=</span><span class="va">True</span>)</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"></div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6">z <span class="op">=</span> f(x, y)</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7"></div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8">fig <span class="op">=</span> plt.figure()</div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9">ax <span class="op">=</span> fig.add_subplot(<span class="dv">111</span>, projection<span class="op">=</span><span class="st">&#39;3d&#39;</span>)</div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10">ax.plot_surface(x, y, z, </div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11">               rstride<span class="op">=</span><span class="dv">1</span>, cstride<span class="op">=</span><span class="dv">1</span>,</div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12">               cmap<span class="op">=</span>cm.YlGnBu_r)</div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13">ax.set_xlabel(<span class="st">&#39;x&#39;</span>)</div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14">ax.set_ylabel(<span class="st">&#39;y&#39;</span>)</div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15">ax.set_zlabel(<span class="st">&#39;z&#39;</span>)</div></code></pre>
+<figure>
+<img src="/images/output_241_2.png" alt="output_241_2"><figcaption>output_241_2</figcaption>
+</figure>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="co"># r_ , c_</span></div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="co"># 我们可以使用 r_ / c_ 来产生行向量或者列向量。</span></div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="co"># 使用切片产生：</span></div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> np.r_[<span class="dv">0</span>:<span class="dv">1</span>:.<span class="dv">1</span>]</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5">array([ <span class="fl">0.</span> ,  <span class="fl">0.1</span>,  <span class="fl">0.2</span>,  <span class="fl">0.3</span>,  <span class="fl">0.4</span>,  <span class="fl">0.5</span>,  <span class="fl">0.6</span>,  <span class="fl">0.7</span>,  <span class="fl">0.8</span>,  <span class="fl">0.9</span>])</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="op">&gt;&gt;&gt;</span> np.c_[<span class="dv">0</span>:<span class="dv">1</span>:.<span class="dv">1</span>]</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7">array([[ <span class="fl">0.</span> ],</div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8">[ <span class="fl">0.1</span>],</div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9">[ <span class="fl">0.2</span>],</div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10">[ <span class="fl">0.3</span>],</div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11">[ <span class="fl">0.4</span>],</div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12">[ <span class="fl">0.5</span>],</div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13">[ <span class="fl">0.6</span>],</div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14">[ <span class="fl">0.7</span>],</div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15">[ <span class="fl">0.8</span>],</div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16">[ <span class="fl">0.9</span>]])</div></code></pre>
+<h2 id="矩阵"><u>矩阵</u></h2>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="co"># identity</span></div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="co"># indentity(n, dtype=float64)</span></div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="co"># 产生一个 n 乘 n 的单位矩阵：</span></div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> np.identity(<span class="dv">3</span>)</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5">array([[ <span class="fl">1.</span>,  <span class="fl">0.</span>,  <span class="fl">0.</span>],</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6">[ <span class="fl">0.</span>,  <span class="fl">1.</span>,  <span class="fl">0.</span>],</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7">[ <span class="fl">0.</span>,  <span class="fl">0.</span>,  <span class="fl">1.</span>]])</div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8"></div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="co"># 使用 mat 方法将 2 维数组转化为矩阵：</span></div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">4</span>],</div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11">[<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">3</span>], </div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12">[<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>]])</div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13"><span class="op">&gt;&gt;&gt;</span> A <span class="op">=</span> np.mat(a)</div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14"><span class="op">&gt;&gt;&gt;</span> A</div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15">matrix([[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>],</div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16">[<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">3</span>],</div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17">[<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>]])</div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18"></div>
+<div class="sourceLine" id="19" href="#19" data-line-number="19"><span class="co"># 也可以使用 Matlab 的语法传入一个字符串来生成矩阵：</span></div>
+<div class="sourceLine" id="20" href="#20" data-line-number="20"><span class="op">&gt;&gt;&gt;</span> A <span class="op">=</span> np.mat(<span class="st">&#39;1, 2, 3; 2, 5, 3; 7, 8, 9&#39;</span>)</div>
+<div class="sourceLine" id="21" href="#21" data-line-number="21"><span class="op">&gt;&gt;&gt;</span> A</div>
+<div class="sourceLine" id="22" href="#22" data-line-number="22">matrix([[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>],</div>
+<div class="sourceLine" id="23" href="#23" data-line-number="23">[<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">3</span>],</div>
+<div class="sourceLine" id="24" href="#24" data-line-number="24">[<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>]])</div>
+<div class="sourceLine" id="25" href="#25" data-line-number="25"></div>
+<div class="sourceLine" id="26" href="#26" data-line-number="26"><span class="co"># 利用分块创造新的矩阵：</span></div>
+<div class="sourceLine" id="27" href="#27" data-line-number="27"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> np.array([[ <span class="dv">1</span>, <span class="dv">2</span>],</div>
+<div class="sourceLine" id="28" href="#28" data-line-number="28">[<span class="dv">3</span>, <span class="dv">4</span>]])</div>
+<div class="sourceLine" id="29" href="#29" data-line-number="29"><span class="op">&gt;&gt;&gt;</span> b <span class="op">=</span> np.array([[<span class="dv">10</span>,<span class="dv">20</span>], </div>
+<div class="sourceLine" id="30" href="#30" data-line-number="30">[<span class="dv">30</span>,<span class="dv">40</span>]])</div>
+<div class="sourceLine" id="31" href="#31" data-line-number="31"><span class="op">&gt;&gt;&gt;</span> np.bmat(<span class="st">&#39;a, b; b, a&#39;</span>)</div>
+<div class="sourceLine" id="32" href="#32" data-line-number="32">matrix([[ <span class="dv">1</span>,  <span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">20</span>],</div>
+<div class="sourceLine" id="33" href="#33" data-line-number="33">[ <span class="dv">3</span>,  <span class="dv">4</span>, <span class="dv">30</span>, <span class="dv">40</span>],</div>
+<div class="sourceLine" id="34" href="#34" data-line-number="34">[<span class="dv">10</span>, <span class="dv">20</span>,  <span class="dv">1</span>,  <span class="dv">2</span>],</div>
+<div class="sourceLine" id="35" href="#35" data-line-number="35">[<span class="dv">30</span>, <span class="dv">40</span>,  <span class="dv">3</span>,  <span class="dv">4</span>]])</div>
+<div class="sourceLine" id="36" href="#36" data-line-number="36"></div>
+<div class="sourceLine" id="37" href="#37" data-line-number="37"><span class="co"># 矩阵与向量的乘法：</span></div>
+<div class="sourceLine" id="38" href="#38" data-line-number="38"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.array([[<span class="dv">1</span>], [<span class="dv">2</span>], [<span class="dv">3</span>]])</div>
+<div class="sourceLine" id="39" href="#39" data-line-number="39"><span class="op">&gt;&gt;&gt;</span> x</div>
+<div class="sourceLine" id="40" href="#40" data-line-number="40">array([[<span class="dv">1</span>],</div>
+<div class="sourceLine" id="41" href="#41" data-line-number="41">[<span class="dv">2</span>],</div>
+<div class="sourceLine" id="42" href="#42" data-line-number="42">[<span class="dv">3</span>]])</div>
+<div class="sourceLine" id="43" href="#43" data-line-number="43"><span class="op">&gt;&gt;&gt;</span> A <span class="op">*</span> x</div>
+<div class="sourceLine" id="44" href="#44" data-line-number="44">matrix([[<span class="dv">14</span>],</div>
+<div class="sourceLine" id="45" href="#45" data-line-number="45">[<span class="dv">21</span>],</div>
+<div class="sourceLine" id="46" href="#46" data-line-number="46">[<span class="dv">50</span>]])</div>
+<div class="sourceLine" id="47" href="#47" data-line-number="47"></div>
+<div class="sourceLine" id="48" href="#48" data-line-number="48"><span class="co"># A.I 表示 A 矩阵的逆矩阵：</span></div>
+<div class="sourceLine" id="49" href="#49" data-line-number="49"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(A <span class="op">*</span> A.I)</div>
+<div class="sourceLine" id="50" href="#50" data-line-number="50">[[  <span class="fl">1.00000000e+00</span>   <span class="fl">2.77555756e-17</span>   <span class="fl">0.00000000e+00</span>]</div>
+<div class="sourceLine" id="51" href="#51" data-line-number="51">[  <span class="fl">0.00000000e+00</span>   <span class="fl">1.00000000e+00</span>   <span class="fl">2.77555756e-17</span>]</div>
+<div class="sourceLine" id="52" href="#52" data-line-number="52">[  <span class="fl">0.00000000e+00</span>   <span class="fl">0.00000000e+00</span>   <span class="fl">1.00000000e+00</span>]]</div>
+<div class="sourceLine" id="53" href="#53" data-line-number="53"></div>
+<div class="sourceLine" id="54" href="#54" data-line-number="54"><span class="co"># 矩阵指数表示矩阵连乘：</span></div>
+<div class="sourceLine" id="55" href="#55" data-line-number="55"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(A <span class="op">**</span> <span class="dv">4</span>)</div>
+<div class="sourceLine" id="56" href="#56" data-line-number="56">[[ <span class="dv">4960</span>  <span class="dv">7380</span>  <span class="dv">7200</span>]</div>
+<div class="sourceLine" id="57" href="#57" data-line-number="57">[ <span class="dv">6735</span> <span class="dv">10045</span>  <span class="dv">9780</span>]</div>
+<div class="sourceLine" id="58" href="#58" data-line-number="58">[<span class="dv">17230</span> <span class="dv">25650</span> <span class="dv">25020</span>]]</div>
+<div class="sourceLine" id="59" href="#59" data-line-number="59"></div>
+<div class="sourceLine" id="60" href="#60" data-line-number="60"><span class="co"># 创建n*n维单位矩阵：np.eye(n)</span></div>
+<div class="sourceLine" id="61" href="#61" data-line-number="61"><span class="op">&gt;&gt;&gt;</span> np.eye(<span class="dv">4</span>)</div>
+<div class="sourceLine" id="62" href="#62" data-line-number="62">array([[ <span class="fl">1.</span>,  <span class="fl">0.</span>,  <span class="fl">0.</span>,  <span class="fl">0.</span>],</div>
+<div class="sourceLine" id="63" href="#63" data-line-number="63">[ <span class="fl">0.</span>,  <span class="fl">1.</span>,  <span class="fl">0.</span>,  <span class="fl">0.</span>],</div>
+<div class="sourceLine" id="64" href="#64" data-line-number="64">[ <span class="fl">0.</span>,  <span class="fl">0.</span>,  <span class="fl">1.</span>,  <span class="fl">0.</span>],</div>
+<div class="sourceLine" id="65" href="#65" data-line-number="65">[ <span class="fl">0.</span>,  <span class="fl">0.</span>,  <span class="fl">0.</span>,  <span class="fl">1.</span>]])</div>
+<div class="sourceLine" id="66" href="#66" data-line-number="66"></div>
+<div class="sourceLine" id="67" href="#67" data-line-number="67"><span class="co"># 计算协方差矩阵</span></div>
+<div class="sourceLine" id="68" href="#68" data-line-number="68"><span class="op">&gt;&gt;&gt;</span> np.cov(A)</div>
+<div class="sourceLine" id="69" href="#69" data-line-number="69">array([[ <span class="fl">1.</span>        ,  <span class="fl">0.5</span>       ,  <span class="fl">1.</span>        ],</div>
+<div class="sourceLine" id="70" href="#70" data-line-number="70">[ <span class="fl">0.5</span>       ,  <span class="fl">2.33333333</span>,  <span class="fl">0.5</span>       ],</div>
+<div class="sourceLine" id="71" href="#71" data-line-number="71">[ <span class="fl">1.</span>        ,  <span class="fl">0.5</span>       ,  <span class="fl">1.</span>        ]])</div>
+<div class="sourceLine" id="72" href="#72" data-line-number="72"></div>
+<div class="sourceLine" id="73" href="#73" data-line-number="73"><span class="co"># 计算矩阵的迹（对角线元素和）：a.trace()</span></div>
+<div class="sourceLine" id="74" href="#74" data-line-number="74"><span class="op">&gt;&gt;&gt;</span> A.trace()</div>
+<div class="sourceLine" id="75" href="#75" data-line-number="75">matrix([[<span class="dv">15</span>]])</div>
+<div class="sourceLine" id="76" href="#76" data-line-number="76"></div>
+<div class="sourceLine" id="77" href="#77" data-line-number="77"><span class="co"># 相关系数</span></div>
+<div class="sourceLine" id="78" href="#78" data-line-number="78"><span class="op">&gt;&gt;&gt;</span> np.corrcoef(A, A.I)</div>
+<div class="sourceLine" id="79" href="#79" data-line-number="79">array([[  <span class="fl">1.00000000e+00</span>,   <span class="fl">3.27326835e-01</span>,   <span class="fl">1.00000000e+00</span>,</div>
+<div class="sourceLine" id="80" href="#80" data-line-number="80"><span class="fl">1.00000000e+00</span>,   <span class="fl">9.61481343e-17</span>,  <span class="fl">-7.55928946e-01</span>],</div>
+<div class="sourceLine" id="81" href="#81" data-line-number="81">[  <span class="fl">3.27326835e-01</span>,   <span class="fl">1.00000000e+00</span>,   <span class="fl">3.27326835e-01</span>,</div>
+<div class="sourceLine" id="82" href="#82" data-line-number="82"><span class="fl">3.27326835e-01</span>,   <span class="fl">9.44911183e-01</span>,  <span class="fl">-8.66025404e-01</span>],</div>
+<div class="sourceLine" id="83" href="#83" data-line-number="83">[  <span class="fl">1.00000000e+00</span>,   <span class="fl">3.27326835e-01</span>,   <span class="fl">1.00000000e+00</span>,</div>
+<div class="sourceLine" id="84" href="#84" data-line-number="84"><span class="fl">1.00000000e+00</span>,   <span class="fl">9.61481343e-17</span>,  <span class="fl">-7.55928946e-01</span>],</div>
+<div class="sourceLine" id="85" href="#85" data-line-number="85">[  <span class="fl">1.00000000e+00</span>,   <span class="fl">3.27326835e-01</span>,   <span class="fl">1.00000000e+00</span>,</div>
+<div class="sourceLine" id="86" href="#86" data-line-number="86"><span class="fl">1.00000000e+00</span>,   <span class="fl">3.20493781e-17</span>,  <span class="fl">-7.55928946e-01</span>],</div>
+<div class="sourceLine" id="87" href="#87" data-line-number="87">[  <span class="fl">9.61481343e-17</span>,   <span class="fl">9.44911183e-01</span>,   <span class="fl">9.61481343e-17</span>,</div>
+<div class="sourceLine" id="88" href="#88" data-line-number="88"><span class="fl">3.20493781e-17</span>,   <span class="fl">1.00000000e+00</span>,  <span class="fl">-6.54653671e-01</span>],</div>
+<div class="sourceLine" id="89" href="#89" data-line-number="89">[ <span class="fl">-7.55928946e-01</span>,  <span class="fl">-8.66025404e-01</span>,  <span class="fl">-7.55928946e-01</span>,</div>
+<div class="sourceLine" id="90" href="#90" data-line-number="90"><span class="fl">-7.55928946e-01</span>,  <span class="fl">-6.54653671e-01</span>,   <span class="fl">1.00000000e+00</span>]])</div>
+<div class="sourceLine" id="91" href="#91" data-line-number="91"></div>
+<div class="sourceLine" id="92" href="#92" data-line-number="92"><span class="co"># 获取矩阵对角线的元素</span></div>
+<div class="sourceLine" id="93" href="#93" data-line-number="93"><span class="op">&gt;&gt;&gt;</span> A.diagonal()</div>
+<div class="sourceLine" id="94" href="#94" data-line-number="94">matrix([[<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">9</span>]])</div></code></pre>
+<h2 id="ufunc-对象"><u>ufunc 对象</u></h2>
+<p>Numpy 有两种基本对象：ndarray (N-dimensional array object) 和 ufunc (universal function object)。ndarray 是存储单一数据类型的多维数组，而 ufunc 则是能够对数组进行处理的函数。</p>
+<p>例如，我们之前所接触到的二元操作符对应的 Numpy 函数，如 add，就是一种 ufunc 对象，它可以作用于数组的每个元素。</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> np.array([<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>])</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> b <span class="op">=</span> np.array([<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>])</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> np.add(a, b)</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4">array([<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>])</div></code></pre>
+<p>查看支持的方法：</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="bu">dir</span>(np.add)</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2">[<span class="st">&#39;__call__&#39;</span>,</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"> <span class="st">&#39;__class__&#39;</span>,</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4"> <span class="st">&#39;__delattr__&#39;</span>,</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"> <span class="st">&#39;__dir__&#39;</span>,</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6"> <span class="st">&#39;__doc__&#39;</span>,</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7"> <span class="st">&#39;__eq__&#39;</span>,</div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8"> <span class="st">&#39;__format__&#39;</span>,</div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9"> <span class="st">&#39;__ge__&#39;</span>,</div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10"> <span class="st">&#39;__getattribute__&#39;</span>,</div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11"> <span class="st">&#39;__gt__&#39;</span>,</div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12"> <span class="st">&#39;__hash__&#39;</span>,</div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13"> <span class="st">&#39;__init__&#39;</span>,</div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14"> <span class="st">&#39;__le__&#39;</span>,</div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15"> <span class="st">&#39;__lt__&#39;</span>,</div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16"> <span class="st">&#39;__name__&#39;</span>,</div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17"> <span class="st">&#39;__ne__&#39;</span>,</div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18"> <span class="st">&#39;__new__&#39;</span>,</div>
+<div class="sourceLine" id="19" href="#19" data-line-number="19"> <span class="st">&#39;__reduce__&#39;</span>,</div>
+<div class="sourceLine" id="20" href="#20" data-line-number="20"> <span class="st">&#39;__reduce_ex__&#39;</span>,</div>
+<div class="sourceLine" id="21" href="#21" data-line-number="21"> <span class="st">&#39;__repr__&#39;</span>,</div>
+<div class="sourceLine" id="22" href="#22" data-line-number="22"> <span class="st">&#39;__setattr__&#39;</span>,</div>
+<div class="sourceLine" id="23" href="#23" data-line-number="23"> <span class="st">&#39;__sizeof__&#39;</span>,</div>
+<div class="sourceLine" id="24" href="#24" data-line-number="24"> <span class="st">&#39;__str__&#39;</span>,</div>
+<div class="sourceLine" id="25" href="#25" data-line-number="25"> <span class="st">&#39;__subclasshook__&#39;</span>,</div>
+<div class="sourceLine" id="26" href="#26" data-line-number="26"> <span class="st">&#39;accumulate&#39;</span>,</div>
+<div class="sourceLine" id="27" href="#27" data-line-number="27"> <span class="st">&#39;at&#39;</span>,</div>
+<div class="sourceLine" id="28" href="#28" data-line-number="28"> <span class="st">&#39;identity&#39;</span>,</div>
+<div class="sourceLine" id="29" href="#29" data-line-number="29"> <span class="st">&#39;nargs&#39;</span>,</div>
+<div class="sourceLine" id="30" href="#30" data-line-number="30"> <span class="st">&#39;nin&#39;</span>,</div>
+<div class="sourceLine" id="31" href="#31" data-line-number="31"> <span class="st">&#39;nout&#39;</span>,</div>
+<div class="sourceLine" id="32" href="#32" data-line-number="32"> <span class="st">&#39;ntypes&#39;</span>,</div>
+<div class="sourceLine" id="33" href="#33" data-line-number="33"> <span class="st">&#39;outer&#39;</span>,</div>
+<div class="sourceLine" id="34" href="#34" data-line-number="34"> <span class="st">&#39;reduce&#39;</span>,</div>
+<div class="sourceLine" id="35" href="#35" data-line-number="35"> <span class="st">&#39;reduceat&#39;</span>,</div>
+<div class="sourceLine" id="36" href="#36" data-line-number="36"> <span class="st">&#39;signature&#39;</span>,</div>
+<div class="sourceLine" id="37" href="#37" data-line-number="37"> <span class="st">&#39;types&#39;</span>]</div></code></pre>
+<p>除此之外，大部分能够作用于数组的数学函数如三角函数等，都是 ufunc 对象。特别地，对于二元操作符所对应的 ufunc 对象，支持以下方法：</p>
+<h3 id="reduce-方法"><u>reduce 方法</u></h3>
+<p><code>op.reduce(a)</code></p>
+<p>将<code>op</code>沿着某个轴应用，使得数组 <code>a</code> 的维数降低一维。 <code>add</code> 作用到一维数组上相当于求和： <span class="math display">\[
+\begin{align}
+y &amp; = add.recuce(a) \\
+&amp; = a[0] + a[1] + ... + a[N-1] \\
+&amp; = \sum_{n=0}^{N-1} a[n]
+\end{align}
+\]</span></p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>])</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> np.add.<span class="bu">reduce</span>(a)</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="dv">10</span></div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4"></div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="co"># 多维数组默认只按照第一维进行运算：</span></div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]])</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> np.add.<span class="bu">reduce</span>(a)</div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8">array([<span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">9</span>])</div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="op">&gt;&gt;&gt;</span> np.add.<span class="bu">reduce</span>(a, <span class="dv">1</span>)</div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10">array([ <span class="dv">6</span>, <span class="dv">15</span>])</div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> np.array([<span class="st">&#39;ab&#39;</span>, <span class="st">&#39;cd&#39;</span>, <span class="st">&#39;ef&#39;</span>], np.<span class="bu">object</span>)</div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12"><span class="op">&gt;&gt;&gt;</span> np.add.<span class="bu">reduce</span>(a)</div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13"><span class="co">&#39;abcdef&#39;</span></div></code></pre>
+<h2 id="accumulate-方法">accumulate 方法</h2>
+<p><code>op.accumulate(a)</code></p>
+<p><code>accumulate</code> 可以看成保存 <code>reduce</code> 每一步的结果所形成的数组。 <span class="math display">\[
+\begin{align}
+y &amp; = add.accumulate(a) \\
+&amp; = \left[\sum_{n=0}^{0} a[n], \sum_{n=0}^{1} a[n], ..., \sum_{n=0}^{N-1} a[n]\right]
+\end{align}
+\]</span> 与之前类似：</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> np.array([<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>])</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> np.add.accumulate(a)</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3">array([ <span class="dv">1</span>,  <span class="dv">3</span>,  <span class="dv">6</span>, <span class="dv">10</span>])</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> np.array([<span class="st">&#39;ab&#39;</span>, <span class="st">&#39;cd&#39;</span>, <span class="st">&#39;ef&#39;</span>], np.<span class="bu">object</span>)</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> np.add.accumulate(a)</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6">array([<span class="st">&#39;ab&#39;</span>, <span class="st">&#39;abcd&#39;</span>, <span class="st">&#39;abcdef&#39;</span>], dtype<span class="op">=</span><span class="bu">object</span>)</div></code></pre>
+<h2 id="reduceat-方法">reduceat 方法</h2>
+<p><code>op.reduceat(a, indices)</code></p>
+<p><code>reduceat</code> 方法将操作符运用到指定的下标上，返回一个与 <code>indices</code> 大小相同的数组： <span class="math display">\[
+\begin{align}
+y &amp; = add.reduceat(a, indices) \\
+&amp; = \left[\sum_{n=indice[0]}^{indice[1]-1} a[n], \sum_{n=indice[1]}^{indice[2]-1} a[n], ..., \sum_{n=indice[-1]}^{N-1} a[n]\right]
+\end{align}
+\]</span></p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> np.array([<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">50</span>])</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> indices <span class="op">=</span> np.array([<span class="dv">1</span>,<span class="dv">4</span>])</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> np.add.reduceat(a, indices)</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4">array([<span class="dv">60</span>, <span class="dv">90</span>])</div></code></pre>
+<p>这里，<code>indices</code> 为 <code>[1, 4]</code>，所以 <code>60</code> 表示从下标1（包括）加到下标4（不包括）的结果，<code>90</code> 表示从下标4（包括）加到结尾的结果。</p>
+<h2 id="outer-方法">outer 方法</h2>
+<p><code>op.outer(a, b)</code></p>
+<p>对于 <code>a</code> 中每个元素，将 <code>op</code> 运用到它和 <code>b</code> 的每一个元素上所得到的结果：</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> np.array([<span class="dv">0</span>,<span class="dv">1</span>])</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> b <span class="op">=</span> np.array([<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>])</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> np.add.outer(a, b)</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4">array([[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>],</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5">       [<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>]])</div></code></pre>
+<p>注意有顺序的区别：</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> np.add.outer(b, a)</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2">array([[<span class="dv">1</span>, <span class="dv">2</span>],</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3">       [<span class="dv">2</span>, <span class="dv">3</span>],</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4">       [<span class="dv">3</span>, <span class="dv">4</span>]])</div></code></pre>
+<h2 id="choose-函数实现条件筛选"><u>choose 函数实现条件筛选</u></h2>
+<p>对于数组，我们有时候需要进行类似 switch 和 case 进行条件选择，此时使用 choose 函数十分方便</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> control <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>],</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2">                    [<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">0</span>],</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3">                    [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>]])</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4"></div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> np.choose(control, [<span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">12</span>])</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6">array([[<span class="dv">11</span>, <span class="dv">10</span>, <span class="dv">11</span>],</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7">       [<span class="dv">12</span>, <span class="dv">11</span>, <span class="dv">10</span>],</div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8">       [<span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">12</span>]])</div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9"></div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10"><span class="co"># 下面的例子将数组中所有小于 10 的值变成了 10。</span></div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> np.array([[ <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>], </div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12">              [<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>], </div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13">              [<span class="dv">20</span>,<span class="dv">21</span>,<span class="dv">22</span>]])</div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14"><span class="op">&gt;&gt;&gt;</span> a <span class="op">&lt;</span> <span class="dv">10</span></div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15">array([[ <span class="va">True</span>,  <span class="va">True</span>,  <span class="va">True</span>],</div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16">       [<span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>],</div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17">       [<span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>]], dtype<span class="op">=</span><span class="bu">bool</span>)</div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18"><span class="op">&gt;&gt;&gt;</span> np.choose(a <span class="op">&lt;</span> <span class="dv">10</span>, (a, <span class="dv">10</span>))</div>
+<div class="sourceLine" id="19" href="#19" data-line-number="19">array([[<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>],</div>
+<div class="sourceLine" id="20" href="#20" data-line-number="20">       [<span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">12</span>],</div>
+<div class="sourceLine" id="21" href="#21" data-line-number="21">       [<span class="dv">20</span>, <span class="dv">21</span>, <span class="dv">22</span>]])</div></code></pre>
+<h2 id="数组广播机制"><u>数组广播机制</u></h2>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> np.array([[ <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>],</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2">              [<span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">10</span>],</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3">              [<span class="dv">20</span>,<span class="dv">20</span>,<span class="dv">20</span>],</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4">              [<span class="dv">30</span>,<span class="dv">30</span>,<span class="dv">30</span>]])</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> b <span class="op">=</span> np.array([[ <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>],</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6">              [ <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>],</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7">              [ <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>],</div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8">              [ <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>]])</div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="op">&gt;&gt;&gt;</span> a <span class="op">+</span> b</div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10">array([[ <span class="dv">0</span>,  <span class="dv">1</span>,  <span class="dv">2</span>],</div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11">       [<span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">12</span>],</div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12">       [<span class="dv">20</span>, <span class="dv">21</span>, <span class="dv">22</span>],</div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13">       [<span class="dv">30</span>, <span class="dv">31</span>, <span class="dv">32</span>]])</div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14"></div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15"><span class="co"># 将 b 的值变成一维的 [0,1,2] 之后的加法：</span></div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16"><span class="op">&gt;&gt;&gt;</span> b <span class="op">=</span> np.array([<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>])</div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17"><span class="op">&gt;&gt;&gt;</span> a <span class="op">+</span> b</div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18">array([[ <span class="dv">0</span>,  <span class="dv">1</span>,  <span class="dv">2</span>],</div>
+<div class="sourceLine" id="19" href="#19" data-line-number="19">           [<span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">12</span>],</div>
+<div class="sourceLine" id="20" href="#20" data-line-number="20">           [<span class="dv">20</span>, <span class="dv">21</span>, <span class="dv">22</span>],</div>
+<div class="sourceLine" id="21" href="#21" data-line-number="21">           [<span class="dv">30</span>, <span class="dv">31</span>, <span class="dv">32</span>]])</div>
+<div class="sourceLine" id="22" href="#22" data-line-number="22">    </div>
+<div class="sourceLine" id="23" href="#23" data-line-number="23"><span class="co"># 结果一样，虽然两个数组的维数不一样，但是 Numpy 检测到 b 的维度与 a 的维度匹配，所以将 b 扩展为之前的形式，得到相同的形状。</span></div>
+<div class="sourceLine" id="24" href="#24" data-line-number="24"><span class="co"># 对于更高维度，这样的扩展依然有效。</span></div></code></pre>
+<h2 id="数组读写"><u>数组读写</u></h2>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="op">%%</span>writefile myfile.txt</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="fl">2.1</span> <span class="fl">2.3</span> <span class="fl">3.2</span> <span class="fl">1.3</span> <span class="fl">3.1</span></div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="fl">6.1</span> <span class="fl">3.1</span> <span class="fl">4.2</span> <span class="fl">2.3</span> <span class="fl">1.8</span></div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4">Writing myfile.txt</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"></div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="co"># 为了生成数组，我们首先将数据转化成一个列表组成的列表，再将这个列表转换为数组：</span></div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> data <span class="op">=</span> []</div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="op">&gt;&gt;&gt;</span> <span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;myfile.txt&#39;</span>) <span class="im">as</span> f:</div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9">        <span class="cf">for</span> line <span class="kw">in</span> f:</div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10">            fileds <span class="op">=</span> line.split()</div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11">            row_data <span class="op">=</span> [<span class="bu">float</span>(x) <span class="cf">for</span> x <span class="kw">in</span> fileds]</div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12">            data.append(row_data)</div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13"></div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14"><span class="op">&gt;&gt;&gt;</span> data <span class="op">=</span> np.array(data)</div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15"><span class="op">&gt;&gt;&gt;</span> data</div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16">array([[ <span class="fl">2.1</span>,  <span class="fl">2.3</span>,  <span class="fl">3.2</span>,  <span class="fl">1.3</span>,  <span class="fl">3.1</span>],</div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17">               [ <span class="fl">6.1</span>,  <span class="fl">3.1</span>,  <span class="fl">4.2</span>,  <span class="fl">2.3</span>,  <span class="fl">1.8</span>]])</div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18"></div>
+<div class="sourceLine" id="19" href="#19" data-line-number="19"><span class="co"># 不过，更简便的是使用 loadtxt 方法：</span></div>
+<div class="sourceLine" id="20" href="#20" data-line-number="20"><span class="op">&gt;&gt;&gt;</span> data <span class="op">=</span> np.loadtxt(<span class="st">&#39;myfile.txt&#39;</span>)</div>
+<div class="sourceLine" id="21" href="#21" data-line-number="21"><span class="op">&gt;&gt;&gt;</span> data</div>
+<div class="sourceLine" id="22" href="#22" data-line-number="22">array([[ <span class="fl">2.1</span>,  <span class="fl">2.3</span>,  <span class="fl">3.2</span>,  <span class="fl">1.3</span>,  <span class="fl">3.1</span>],</div>
+<div class="sourceLine" id="23" href="#23" data-line-number="23">       [ <span class="fl">6.1</span>,  <span class="fl">3.1</span>,  <span class="fl">4.2</span>,  <span class="fl">2.3</span>,  <span class="fl">1.8</span>]])</div>
+<div class="sourceLine" id="24" href="#24" data-line-number="24"></div>
+<div class="sourceLine" id="25" href="#25" data-line-number="25"><span class="co"># 将数组写入文件</span></div>
+<div class="sourceLine" id="26" href="#26" data-line-number="26"><span class="co"># savetxt 可以将数组写入文件，默认使用科学计数法的形式保存：</span></div>
+<div class="sourceLine" id="27" href="#27" data-line-number="27"><span class="op">&gt;&gt;&gt;</span> data <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="dv">2</span>], </div>
+<div class="sourceLine" id="28" href="#28" data-line-number="28">                 [<span class="dv">3</span>,<span class="dv">4</span>]])</div>
+<div class="sourceLine" id="29" href="#29" data-line-number="29"><span class="op">&gt;&gt;&gt;</span> np.savetxt(<span class="st">&#39;out.txt&#39;</span>, data)</div>
+<div class="sourceLine" id="30" href="#30" data-line-number="30"><span class="op">&gt;&gt;&gt;</span> <span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;out.txt&#39;</span>) <span class="im">as</span> f:</div>
+<div class="sourceLine" id="31" href="#31" data-line-number="31">        <span class="cf">for</span> line <span class="kw">in</span> f:</div>
+<div class="sourceLine" id="32" href="#32" data-line-number="32">            <span class="bu">print</span>(line, end<span class="op">=</span><span class="st">&#39;,&#39;</span>)</div>
+<div class="sourceLine" id="33" href="#33" data-line-number="33"></div>
+<div class="sourceLine" id="34" href="#34" data-line-number="34"><span class="fl">1.000000000000000000e+00</span> <span class="fl">2.000000000000000000e+00</span></div>
+<div class="sourceLine" id="35" href="#35" data-line-number="35">,<span class="fl">3.000000000000000000e+00</span> <span class="fl">4.000000000000000000e+00</span></div></code></pre>
 
       
     </div>
@@ -1529,7 +1902,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy的一个重要特性是它的数组计算"><span class="nav-number">1.</span> <span class="nav-text">Numpy的一个重要特性是它的数组计算。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#花式索引"><span class="nav-number">2.</span> <span class="nav-text">花式索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组排序"><span class="nav-number">3.</span> <span class="nav-text">数组排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组连接"><span class="nav-number">4.</span> <span class="nav-text">数组连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成数组的函数"><span class="nav-number">5.</span> <span class="nav-text">生成数组的函数</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy的一个重要特性是它的数组计算"><span class="nav-number">1.</span> <span class="nav-text">Numpy的一个重要特性是它的数组计算。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#花式索引"><span class="nav-number">2.</span> <span class="nav-text">花式索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组排序"><span class="nav-number">3.</span> <span class="nav-text">数组排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组连接"><span class="nav-number">4.</span> <span class="nav-text">数组连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成数组的函数"><span class="nav-number">5.</span> <span class="nav-text">生成数组的函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#矩阵"><span class="nav-number">6.</span> <span class="nav-text">矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ufunc-对象"><span class="nav-number">7.</span> <span class="nav-text">ufunc 对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#reduce-方法"><span class="nav-number">7.1.</span> <span class="nav-text">reduce 方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#accumulate-方法"><span class="nav-number">8.</span> <span class="nav-text">accumulate 方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reduceat-方法"><span class="nav-number">9.</span> <span class="nav-text">reduceat 方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#outer-方法"><span class="nav-number">10.</span> <span class="nav-text">outer 方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#choose-函数实现条件筛选"><span class="nav-number">11.</span> <span class="nav-text">choose 函数实现条件筛选</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组广播机制"><span class="nav-number">12.</span> <span class="nav-text">数组广播机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组读写"><span class="nav-number">13.</span> <span class="nav-text">数组读写</span></a></li></ol></div>
             
 
           </div>
