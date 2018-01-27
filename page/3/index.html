@@ -277,6 +277,193 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/02/讀《計算廣告》筆記-一/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peter Tsung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pandas.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="彼得的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/06/02/讀《計算廣告》筆記-一/" itemprop="url">
+                  讀《計算廣告》筆記(一)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-02T17:24:58+08:00">
+                2017-06-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/讀書筆記/" itemprop="url" rel="index">
+                    <span itemprop="name">讀書筆記</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>發現對於我個人而言我根本不了解廣告。廣告的學問比我想像中要更多更深，因此我買了一本書《計算廣告》來多瞭解廣告，包括<u>在線廣告市場與背景</u>、<u>在線廣告產品邏輯</u>、<u>以及計算廣告關鍵技術</u>。那麼就以筆記這種方式，來加強我對書中內容的理解吧。</p>
+<p>書中首先給出了廣告的定義：</p>
+<blockquote>
+<p>廣告是由已確定的出資人通過各種媒介進行的有關產品（商品、服務和觀點）的，通常是有償的、有組織的、綜合的、勸服性的非人員的信息傳播活動。</p>
+</blockquote>
+<p>首先，書中提到，出資人、媒體和受眾這三者的利益博弈關係是廣告活動永遠的主線，這一主線將貫穿於商業和產品型態的整個演化過程。出資人指的是需求方（demand），一般是廣告主（advertiser）、代表廣告主利益的代理商（agency）或者其他技術型態的採買方；媒體一般是供求方，同時也可以是其他技術型態的變現平台。</p>
+<p>書中也給出了廣告的目的：</p>
+<blockquote>
+<p>廣告的根本目的是廣告主通過媒體達到低成本的用戶接觸。</p>
+</blockquote>
+<p>也就是說，按某種市場意圖接觸響應的人群，進而影響其中的潛在用戶，使他們選擇廣告主產品的機率增加，或者對產品性價比的苛求程度降低，這才是廣告的根本目的。</p>
+<p>對於互聯網廣告，作者認為：</p>
+<blockquote>
+<p>一切付費的信息、產品或服務的傳播渠道，都是廣告</p>
+</blockquote>
+<p>在線廣告創意有以下七種類型：</p>
+<ol type="1">
+<li>橫幅廣告（banner ad）</li>
+<li>文字鏈廣告（textual ad）</li>
+<li>富媒體廣告（rich media ad）：這類廣告往往是利用視覺衝擊力較強的表現形式，在不佔用固定版面位置的情況下，向用戶侵入式地投送廣告素材。常見形式有彈窗、對聯、全屏等。它比較適合在高質量媒體做一些品牌性質比較強的廣告投放，但是對用戶的使用體驗往往影響比較大。</li>
+<li>視頻廣告（video ad）：隨著在線視頻的快速發展，在視頻流播放的間隙插入的廣告也成為互聯網廣告的一種重要形式。</li>
+<li>社交廣告（social ad）：即在社交網絡環境下嵌入的廣告。這種方式力求在用戶自然關注的交互過程中盡可能自然地插入廣告，希望通過用戶的擴散式傳播獲得更大的影響力和口碑。</li>
+<li>移動廣告（mobile ad）：即在應用中插入廣州的SDK（Software Development Kit）和響應的廣告網絡（背景是移動互聯網在近幾年的爆發式增長）</li>
+<li>郵件定向營銷廣告（E-mail Direct Marketing, EDM）：通過電子郵件的方式向目標用戶傳遞推廣信息的一種網絡營銷手段。</li>
+</ol>
+<p>然後書中給了大量專業名詞：</p>
+<ul>
+<li>整合營銷（integrated marketing）：通過多種渠道的有機配合來達到投放效果的最優。</li>
+<li>投入產出比（Return On Investment，ROI）：某次廣告活動的總產出與總投入的比例。</li>
+<li>合約廣告（agreement-based advertising）：即採用合同約定的方式確定某一廣告位在某一時間段為某特定廣告主所獨佔，並且根據雙方的要求，確定廣告創意和投放策略。</li>
+<li>定向廣告（targeted advertising）: 這樣的廣告系統已經對計算技術產生了兩個具體的需求：一個是受眾定向（audience targeting），即通過技術手段標定某個用戶的性別、年齡或其他標籤。二是廣告投放（ad serving），即將廣告投送由直接嵌入頁面變為實時響應前端請求，並根據用戶標籤自動決策和返回合適的廣告創意。</li>
+<li>擔保式投遞（guaranteed delivery， GD）：媒體向廣告主保證某個投放量，並在此基礎上確定合同的總金額以及投放量未完成情況下的賠償方案。</li>
+<li>按千次展示付費（Cost per Mille， CPM）</li>
+<li>在線分配（online allocation）：一是如何有效地將流量分配到各個合約互相交叉的人群覆蓋上；二是要在在線的環境下實時地完成每一次展示決策。</li>
+<li>競價廣告（auction-based adverising）:供給方只向廣告主保證質即單位流量的成本，但不再以合約的方式給出量的保證，也就說，對每一次展示都基本按照收益最高的原則來決策。</li>
+<li>廣告網絡（ad Network，ADN）：它批量地運營媒體的廣告位資源，按照人群或上下文標籤賣給需求方，並用競價的方式決定流量分配。</li>
+<li>點擊付費（Cost per Click， CPC）</li>
+<li>千次展示收益（Revenue per Mille， RPM）</li>
+<li>交易終端（Trading Desk， TD）：面向多個ADN或媒體按人群一站式採買廣告並優化投入產出比的需求方產品</li>
+<li>實時競價（Real Time Bidding， RTB）：讓需求方按自己的人群定義來挑選流量。它將拍賣的過程由廣告主預先出價，變成每次展示時實時出價。只要把廣告展示的上下文頁面URL以及訪客的用戶標誌等信息傳給需求方，它就有充分的信息完成定制化的人群選擇和出價。</li>
+<li>廣告交易平台（ad Exchange， ADX）：大量聚合各媒體的剩餘流量並採用實時競價方式為他們變現的產品型態。</li>
+<li>需求方平台（Demand Side Platform， DSP）：通過實時競價的方式，按照定制化的人群標籤購買廣告。</li>
+<li>優選（preferred deals）</li>
+<li>私有交易市場（Private Market Place，PMP）</li>
+<li>原生廣告（Native AD）：將內容與廣告以某種方式統一決策或排序的廣告產品。</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/02/爺爺紀念/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2614,7 +2801,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
