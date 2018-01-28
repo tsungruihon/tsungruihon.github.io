@@ -115,7 +115,7 @@
 <meta property="og:image" content="http://yoursite.com/images/scipy/output_49_0.png">
 <meta property="og:image" content="http://yoursite.com/images/scipy/output_53_0.png">
 <meta property="og:image" content="http://yoursite.com/images/scipy/output_55_0.png">
-<meta property="og:updated_time" content="2018-01-28T05:47:01.125Z">
+<meta property="og:updated_time" content="2018-01-28T05:48:57.780Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Scipy笔记">
 <meta name="twitter:description" content="scipy包含许多专注于科学计算中常见问题的工具箱。它的子模块对应于不同的应用，比如插值、积分、优化、图像处理、统计和特殊功能等。 scipy是由针对特定任务的子模块组成的：    子模块 描述     scipy.cluster 向量计算 / Kmeans   scipy.constants 物理和数学常量   scipy.fftpack 傅里叶变换   scipy.integrate 积分程序">
@@ -486,7 +486,7 @@
 <p>这些都可以在 <code>scipy.stats</code>中找到。</p>
 <h3 id="连续分布">连续分布</h3>
 <h3 id="正态分布">正态分布</h3>
-<p>以正态分布为例，先导入正态分布：</p>
+<p>以<code>正态分布</code>为例，先导入<code>正态分布</code>：</p>
 <pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">from</span> scipy.stats <span class="im">import</span> norm</div></code></pre>
 <p>它包含四类常用的函数：</p>
 <ul>
@@ -540,14 +540,14 @@
 <figure>
 <img src="/images/scipy/output_19_2.png" alt="output_19_2"><figcaption>output_19_2</figcaption>
 </figure>
-<p>默认情况，正态分布的参数为均值0，标准差1，即标准正态分布。可以通过 loc 和 scale 来调整这些参数，一种方法是调用相关函数时进行输入：</p>
+<p>默认情况，<code>正态分布</code>的参数为均值0，标准差1，即标准正态分布。可以通过<code>loc</code>和<code>scale</code>来调整这些参数，一种方法是调用相关函数时进行输入：</p>
 <pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm.pdf(x, loc<span class="op">=</span><span class="dv">0</span>, scale<span class="op">=</span><span class="dv">1</span>))</div>
 <div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm.pdf(x, loc<span class="op">=</span><span class="fl">0.5</span>, scale<span class="op">=</span><span class="dv">2</span>))</div>
 <div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm.pdf(x, loc<span class="op">=-</span><span class="fl">0.5</span>, scale<span class="op">=</span>.<span class="dv">5</span>))</div></code></pre>
 <figure>
 <img src="/images/scipy/output_21_0.png" alt="output_21_0"><figcaption>output_21_0</figcaption>
 </figure>
-<p>另一种则是将 loc, scale 作为参数直接输给 norm 生成相应的分布：</p>
+<p>另一种则是将 <code>loc</code>, <code>scale</code> 作为参数直接输给 <code>norm</code> 生成相应的分布：</p>
 <pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm(loc<span class="op">=</span><span class="dv">0</span>, scale<span class="op">=</span><span class="dv">1</span>).pdf(x))</div>
 <div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm(loc<span class="op">=</span><span class="fl">0.5</span>, scale<span class="op">=</span><span class="dv">2</span>).pdf(x))</div>
 <div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm(loc<span class="op">=-</span><span class="fl">0.5</span>, scale<span class="op">=</span>.<span class="dv">5</span>).pdf(x))</div></code></pre>
@@ -556,7 +556,7 @@
 </figure>
 <p>其他连续分布</p>
 <pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">from</span> scipy.stats <span class="im">import</span> lognorm, t, dweibull</div></code></pre>
-<p>支持与 norm 类似的操作，如概率密度函数等。</p>
+<p>支持与<code>norm</code> 类似的操作，如概率密度函数等。</p>
 <p>不同参数的对数正态分布：</p>
 <pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.linspace(<span class="fl">0.01</span>, <span class="dv">3</span>, <span class="dv">100</span>)</div>
 <div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
@@ -568,7 +568,7 @@
 <figure>
 <img src="/images/scipy/output_27_1.png" alt="output_27_1"><figcaption>output_27_1</figcaption>
 </figure>
-<p>不同的韦氏分布：</p>
+<p>不同的<code>韦氏分布</code>：</p>
 <pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.linspace(<span class="fl">0.01</span>, <span class="dv">3</span>, <span class="dv">100</span>)</div>
 <div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
 <div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, dweibull.pdf(x, <span class="dv">1</span>), label<span class="op">=</span><span class="st">&#39;s=1, constant failure rate&#39;</span>)</div>
@@ -627,9 +627,9 @@
 </figure>
 <h3 id="导入相关的函数">导入相关的函数：</h3>
 <ul>
-<li>正态分布</li>
-<li>独立双样本 <code>t</code> 检验，配对样本 <code>t</code> 检验，单样本 <code>t</code> 检验</li>
-<li>学生 <code>t</code> 分布</li>
+<li><code>正态分布</code></li>
+<li><code>独立双样本 t 检验</code>，<code>配对样本 t 检验</code>，<code>单样本 t 检验</code></li>
+<li><code>学生 t 分布</code></li>
 </ul>
 <pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">from</span> scipy.stats <span class="im">import</span> norm</div>
 <div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="im">from</span> scipy.stats <span class="im">import</span> ttest_ind, ttest_rel, ttest_1samp</div>
