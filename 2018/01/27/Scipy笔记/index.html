@@ -1,0 +1,1111 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="scipy包含许多专注于科学计算中常见问题的工具箱。它的子模块对应于不同的应用，比如插值、积分、优化、图像处理、统计和特殊功能等。 scipy是由针对特定任务的子模块组成的：    子模块 描述     scipy.cluster 向量计算 / Kmeans   scipy.constants 物理和数学常量   scipy.fftpack 傅里叶变换   scipy.integrate 积分程序">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Scipy笔记">
+<meta property="og:url" content="http://yoursite.com/2018/01/27/Scipy笔记/index.html">
+<meta property="og:site_name" content="彼得的博客">
+<meta property="og:description" content="scipy包含许多专注于科学计算中常见问题的工具箱。它的子模块对应于不同的应用，比如插值、积分、优化、图像处理、统计和特殊功能等。 scipy是由针对特定任务的子模块组成的：    子模块 描述     scipy.cluster 向量计算 / Kmeans   scipy.constants 物理和数学常量   scipy.fftpack 傅里叶变换   scipy.integrate 积分程序">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/scipy/output_9_1.png">
+<meta property="og:image" content="http://yoursite.com/images/scipy/output_11_0.png">
+<meta property="og:image" content="http://yoursite.com/images/scipy/output_15_0.png">
+<meta property="og:image" content="http://yoursite.com/images/scipy/output_19_2.png">
+<meta property="og:image" content="http://yoursite.com/images/scipy/output_21_0.png">
+<meta property="og:image" content="http://yoursite.com/images/scipy/output_23_0.png">
+<meta property="og:image" content="http://yoursite.com/images/scipy/output_27_1.png">
+<meta property="og:image" content="http://yoursite.com/images/scipy/output_29_1.png">
+<meta property="og:image" content="http://yoursite.com/images/scipy/output_30_1.png">
+<meta property="og:image" content="http://yoursite.com/images/scipy/output_34_1.png">
+<meta property="og:image" content="http://yoursite.com/images/scipy/output_36_1.png">
+<meta property="og:image" content="http://yoursite.com/images/scipy/output_38_1.png">
+<meta property="og:image" content="http://yoursite.com/images/scipy/output_42_1.png">
+<meta property="og:image" content="http://yoursite.com/images/scipy/output_46_0.png">
+<meta property="og:image" content="http://yoursite.com/images/scipy/output_49_0.png">
+<meta property="og:image" content="http://yoursite.com/images/scipy/output_53_0.png">
+<meta property="og:image" content="http://yoursite.com/images/scipy/output_55_0.png">
+<meta property="og:updated_time" content="2018-01-28T05:30:09.145Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Scipy笔记">
+<meta name="twitter:description" content="scipy包含许多专注于科学计算中常见问题的工具箱。它的子模块对应于不同的应用，比如插值、积分、优化、图像处理、统计和特殊功能等。 scipy是由针对特定任务的子模块组成的：    子模块 描述     scipy.cluster 向量计算 / Kmeans   scipy.constants 物理和数学常量   scipy.fftpack 傅里叶变换   scipy.integrate 积分程序">
+<meta name="twitter:image" content="http://yoursite.com/images/scipy/output_9_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/27/Scipy笔记/"/>
+
+
+
+
+
+  <title>Scipy笔记 | 彼得的博客</title>
+  <link rel="stylesheet" type="text/css" href="/css/prettify.css">
+  <link rel="stylesheet" type="text/css" href="/css/github-v2.css">
+  <link rel="stylesheet" type="text/css" href="/css/github-v2.min.css">
+  <script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
+       <script type="text/x-mathjax-config">
+         MathJax.Hub.Config({
+           tex2jax: {
+             inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+             processEscapes: true
+           }
+         });
+       </script>
+       <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">彼得的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/27/Scipy笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peter Tsung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pandas.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="彼得的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Scipy笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-27T20:07:27+08:00">
+                2018-01-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-Notes/" itemprop="url" rel="index">
+                    <span itemprop="name">Python_Notes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><code>scipy</code>包含许多专注于科学计算中常见问题的工具箱。它的子模块对应于不同的应用，比如插值、积分、优化、图像处理、统计和特殊功能等。</p>
+<p>scipy是由针对特定任务的子模块组成的：</p>
+<table>
+<thead>
+<tr class="header">
+<th>子模块</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="http://docs.scipy.org/doc/scipy/reference/cluster.html#scipy.cluster" target="_blank" rel="noopener"><code>scipy.cluster</code></a></td>
+<td>向量计算 / Kmeans</td>
+</tr>
+<tr class="even">
+<td><a href="http://docs.scipy.org/doc/scipy/reference/constants.html#scipy.constants" target="_blank" rel="noopener"><code>scipy.constants</code></a></td>
+<td>物理和数学常量</td>
+</tr>
+<tr class="odd">
+<td><a href="http://docs.scipy.org/doc/scipy/reference/fftpack.html#scipy.fftpack" target="_blank" rel="noopener"><code>scipy.fftpack</code></a></td>
+<td>傅里叶变换</td>
+</tr>
+<tr class="even">
+<td><a href="http://docs.scipy.org/doc/scipy/reference/integrate.html#scipy.integrate" target="_blank" rel="noopener"><code>scipy.integrate</code></a></td>
+<td>积分程序</td>
+</tr>
+<tr class="odd">
+<td><a href="http://docs.scipy.org/doc/scipy/reference/interpolate.html#scipy.interpolate" target="_blank" rel="noopener"><code>scipy.interpolate</code></a></td>
+<td>插值</td>
+</tr>
+<tr class="even">
+<td><a href="http://docs.scipy.org/doc/scipy/reference/io.html#scipy.io" target="_blank" rel="noopener"><code>scipy.io</code></a></td>
+<td>数据输入和输出</td>
+</tr>
+<tr class="odd">
+<td><a href="http://docs.scipy.org/doc/scipy/reference/linalg.html#scipy.linalg" target="_blank" rel="noopener"><code>scipy.linalg</code></a></td>
+<td>线性代数程序</td>
+</tr>
+<tr class="even">
+<td><a href="http://docs.scipy.org/doc/scipy/reference/ndimage.html#scipy.ndimage" target="_blank" rel="noopener"><code>scipy.ndimage</code></a></td>
+<td>n-维图像包</td>
+</tr>
+<tr class="odd">
+<td><a href="http://docs.scipy.org/doc/scipy/reference/odr.html#scipy.odr" target="_blank" rel="noopener"><code>scipy.odr</code></a></td>
+<td>正交距离回归</td>
+</tr>
+<tr class="even">
+<td><a href="http://docs.scipy.org/doc/scipy/reference/optimize.html#scipy.optimize" target="_blank" rel="noopener"><code>scipy.optimize</code></a></td>
+<td>优化</td>
+</tr>
+<tr class="odd">
+<td><a href="http://docs.scipy.org/doc/scipy/reference/signal.html#scipy.signal" target="_blank" rel="noopener"><code>scipy.signal</code></a></td>
+<td>信号处理</td>
+</tr>
+<tr class="even">
+<td><a href="http://docs.scipy.org/doc/scipy/reference/sparse.html#scipy.sparse" target="_blank" rel="noopener"><code>scipy.sparse</code></a></td>
+<td>稀疏矩阵</td>
+</tr>
+<tr class="odd">
+<td><a href="http://docs.scipy.org/doc/scipy/reference/spatial.html#scipy.spatial" target="_blank" rel="noopener"><code>scipy.spatial</code></a></td>
+<td>空间数据结构和算法</td>
+</tr>
+<tr class="even">
+<td><a href="http://docs.scipy.org/doc/scipy/reference/special.html#scipy.special" target="_blank" rel="noopener"><code>scipy.special</code></a></td>
+<td>一些特殊数学函数</td>
+</tr>
+<tr class="odd">
+<td><a href="http://docs.scipy.org/doc/scipy/reference/stats.html#scipy.stats" target="_blank" rel="noopener"><code>scipy.stats</code></a></td>
+<td>统计</td>
+</tr>
+</tbody>
+</table>
+<p>他们全都依赖于<code>numpy</code>，但是大多数都是彼此独立。</p>
+<h2 id="概率统计方法"><u>概率统计方法</u></h2>
+<h3 id="简介">简介</h3>
+<p><code>Python</code>中常用的统计工具有 <code>Numpy</code>, <code>Pandas</code>, <code>PyMC</code>, <code>StatsModels</code>等。Scipy 中的子库 scipy.stats 中包含很多统计上的方法。</p>
+<p>导入 numpy 和 matplotlib：</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">import</span> numpy <span class="im">as</span> np</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</div></code></pre>
+<h3 id="概率分布">概率分布</h3>
+<ul>
+<li>常见的连续概率分布有：
+<ul>
+<li>均匀分布</li>
+<li>正态分布</li>
+<li>学生t分布</li>
+<li>F分布</li>
+<li>Gamma分布</li>
+</ul></li>
+<li>离散概率分布：
+<ul>
+<li>伯努利分布</li>
+<li>几何分布</li>
+</ul></li>
+</ul>
+<p>这些都可以在 <code>scipy.stats</code>中找到。</p>
+<h3 id="连续分布">连续分布</h3>
+<h3 id="正态分布">正态分布</h3>
+<p>以正态分布为例，先导入正态分布：</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">from</span> scipy.stats <span class="im">import</span> norm</div></code></pre>
+<p>它包含四类常用的函数：</p>
+<ul>
+<li><code>norm.cdf</code> 返回对应的<a href="https://zh.wikipedia.org/wiki/%E7%B4%AF%E7%A7%AF%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0" target="_blank" rel="noopener">累计分布函数</a>值</li>
+<li><code>norm.pdf</code> 返回对应的<a href="https://zh.wikipedia.org/wiki/%E6%A9%9F%E7%8E%87%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B8" target="_blank" rel="noopener">概率密度函数</a>值</li>
+<li><code>norm.rvs</code> 产生指定参数的随机变量</li>
+<li><code>norm.fit</code> 返回给定数据下，各参数的<a href="https://zh.wikipedia.org/wiki/%E6%9C%80%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1" target="_blank" rel="noopener">最大似然估计</a>（MLE）值</li>
+</ul>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="co"># 从正态分布产生500个随机点：</span></div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> x_norm <span class="op">=</span> norm.rvs(size<span class="op">=</span><span class="dv">500</span>)</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> <span class="bu">type</span>(x_norm)</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5">numpy.ndarray</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6"></div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> h <span class="op">=</span> plt.hist(x_norm)</div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="st">&#39;count: &#39;</span>, h[<span class="dv">0</span>])</div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9">count:  [   <span class="fl">2.</span>   <span class="fl">10.</span>   <span class="fl">20.</span>   <span class="fl">66.</span>  <span class="fl">119.</span>  <span class="fl">119.</span>  <span class="fl">102.</span>   <span class="fl">42.</span>   <span class="fl">17.</span>    <span class="fl">3.</span>]</div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="st">&#39;bin centers&#39;</span>, h[<span class="dv">1</span>])</div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11"><span class="bu">bin</span> centers [<span class="op">-</span><span class="fl">3.46</span> <span class="fl">-2.81</span> <span class="fl">-2.16</span> <span class="fl">-1.51</span> <span class="fl">-0.86</span> <span class="fl">-0.21</span>  <span class="fl">0.43</span>  <span class="fl">1.08</span>  <span class="fl">1.73</span>  <span class="fl">2.38</span>  <span class="fl">3.03</span>]</div></code></pre>
+<figure>
+<img src="/images/scipy/output_9_1.png" alt="output_9_1"><figcaption>output_9_1</figcaption>
+</figure>
+<p>归一化直方图（用出现频率代替次数），将划分区间变为 20（默认 10）:</p>
+<figure>
+<img src="/images/scipy/output_11_0.png" alt="output_11_0"><figcaption>output_11_0</figcaption>
+</figure>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="co"># 在这组数据下，正态分布参数的最大似然估计值为：</span></div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> x_mean, x_std <span class="op">=</span> norm.fit(x_norm)</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="st">&#39;mean &#39;</span>, x_mean)</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5">mean  <span class="fl">-0.036045620814</span></div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="st">&#39;x_std&#39;</span>, x_std)</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7">x_std <span class="fl">1.00480461409</span></div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8"></div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="co"># 将真实的概率密度函数与直方图进行比较：</span></div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10"><span class="op">&gt;&gt;&gt;</span> h <span class="op">=</span> plt.hist(x_norm, normed<span class="op">=</span><span class="va">True</span>, bins<span class="op">=</span><span class="dv">20</span>)</div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">50</span>)</div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm.pdf(x), <span class="st">&#39;r-&#39;</span>)</div></code></pre>
+<figure>
+<img src="/images/scipy/output_15_0.png" alt="output_15_0"><figcaption>output_15_0</figcaption>
+</figure>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="co"># 导入积分函数：</span></div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> scipy.integrate <span class="im">import</span> trapz</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"></div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="co"># 通过积分，计算落在某个区间的概率大小：</span></div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"></div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="op">&gt;&gt;&gt;</span> x1 <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">108</span>)</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> trapz(norm.pdf(x1), x1)</div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="st">&#39;</span><span class="sc">{:.2f}</span><span class="st"> of the values lie between -2 and 2&#39;</span>.<span class="bu">format</span>(p))</div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="fl">0.95</span> of the values lie between <span class="dv">-2</span> <span class="kw">and</span> <span class="dv">2</span></div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10"></div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11"><span class="op">&gt;&gt;&gt;</span> plt.fill_between(x1, norm.pdf(x1), color<span class="op">=</span><span class="st">&#39;red&#39;</span>)</div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, norm.pdf(x), <span class="st">&#39;k-&#39;</span>)</div></code></pre>
+<figure>
+<img src="/images/scipy/output_19_2.png" alt="output_19_2"><figcaption>output_19_2</figcaption>
+</figure>
+<p>默认情况，正态分布的参数为均值0，标准差1，即标准正态分布。可以通过 loc 和 scale 来调整这些参数，一种方法是调用相关函数时进行输入：</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm.pdf(x, loc<span class="op">=</span><span class="dv">0</span>, scale<span class="op">=</span><span class="dv">1</span>))</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm.pdf(x, loc<span class="op">=</span><span class="fl">0.5</span>, scale<span class="op">=</span><span class="dv">2</span>))</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm.pdf(x, loc<span class="op">=-</span><span class="fl">0.5</span>, scale<span class="op">=</span>.<span class="dv">5</span>))</div></code></pre>
+<figure>
+<img src="/images/scipy/output_21_0.png" alt="output_21_0"><figcaption>output_21_0</figcaption>
+</figure>
+<p>另一种则是将 loc, scale 作为参数直接输给 norm 生成相应的分布：</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm(loc<span class="op">=</span><span class="dv">0</span>, scale<span class="op">=</span><span class="dv">1</span>).pdf(x))</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm(loc<span class="op">=</span><span class="fl">0.5</span>, scale<span class="op">=</span><span class="dv">2</span>).pdf(x))</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm(loc<span class="op">=-</span><span class="fl">0.5</span>, scale<span class="op">=</span>.<span class="dv">5</span>).pdf(x))</div></code></pre>
+<figure>
+<img src="/images/scipy/output_23_0.png" alt="output_23_0"><figcaption>output_23_0</figcaption>
+</figure>
+<p>其他连续分布</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">from</span> scipy.stats <span class="im">import</span> lognorm, t, dweibull</div></code></pre>
+<p>支持与 norm 类似的操作，如概率密度函数等。</p>
+<p>不同参数的对数正态分布：</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.linspace(<span class="fl">0.01</span>, <span class="dv">3</span>, <span class="dv">100</span>)</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, lognorm.pdf(x, <span class="dv">1</span>), label<span class="op">=</span><span class="st">&#39;s=1&#39;</span>)</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, lognorm.pdf(x, <span class="dv">2</span>), label<span class="op">=</span><span class="st">&#39;s=2&#39;</span>)</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, lognorm.pdf(x, <span class="fl">.1</span>), label<span class="op">=</span><span class="st">&#39;s=0.1&#39;</span>)</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6"></div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> plt.legend()</div></code></pre>
+<figure>
+<img src="/images/scipy/output_27_1.png" alt="output_27_1"><figcaption>output_27_1</figcaption>
+</figure>
+<p>不同的韦氏分布：</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.linspace(<span class="fl">0.01</span>, <span class="dv">3</span>, <span class="dv">100</span>)</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, dweibull.pdf(x, <span class="dv">1</span>), label<span class="op">=</span><span class="st">&#39;s=1, constant failure rate&#39;</span>)</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, dweibull.pdf(x, <span class="dv">2</span>), label<span class="op">=</span><span class="st">&#39;s=2, increasing failure rate&#39;</span>)</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, dweibull.pdf(x, <span class="fl">.1</span>), label<span class="op">=</span><span class="st">&#39;0&lt;s&lt;1, decreasing failure rate&#39;</span>)</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6"></div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> plt.legend()</div></code></pre>
+<figure>
+<img src="/images/scipy/output_29_1.png" alt="output_29_1"><figcaption>output_29_1</figcaption>
+</figure>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">100</span>)</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, t.pdf(x, <span class="dv">1</span>), label<span class="op">=</span><span class="st">&#39;df=1&#39;</span>)</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, t.pdf(x, <span class="dv">2</span>), label<span class="op">=</span><span class="st">&#39;df=2&#39;</span>)</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, t.pdf(x, <span class="dv">100</span>), label<span class="op">=</span><span class="st">&#39;df=100&#39;</span>)</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="op">&gt;&gt;&gt;</span> plt.plot(x[::<span class="dv">5</span>], norm.pdf(x[::<span class="dv">5</span>]), <span class="st">&#39;kx&#39;</span>, label<span class="op">=</span><span class="st">&#39;normal&#39;</span>)</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7"></div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="op">&gt;&gt;&gt;</span> plt.legend()</div></code></pre>
+<figure>
+<img src="/images/scipy/output_30_1.png" alt="output_30_1"><figcaption>output_30_1</figcaption>
+</figure>
+<h2 id="离散分布">离散分布</h2>
+<p>导入离散分布：</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">from</span> scipy.stats <span class="im">import</span> binom, poisson, randint</div></code></pre>
+<p>离散分布没有概率密度函数，但是有概率质量函数。离散均匀分布的概率质量函数<code>（PMF）</code>：</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="op">%</span>matplotlib inline</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> high <span class="op">=</span> <span class="dv">10</span></div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> low <span class="op">=</span> <span class="dv">-10</span></div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4"></div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.arange(low, high<span class="op">+</span><span class="dv">1</span>, <span class="fl">0.5</span>)</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.stem(x, randint(low, high).pmf(x))</div></code></pre>
+<figure>
+<img src="/images/scipy/output_34_1.png" alt="output_34_1"><figcaption>output_34_1</figcaption>
+</figure>
+<h3 id="二项分布">二项分布：</h3>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> num_trails <span class="op">=</span> <span class="dv">60</span></div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.arange(num_trails)</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"></div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, binom(num_trails, <span class="fl">0.5</span>).pmf(x), <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="st">&#39;p=0.5&#39;</span>)</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, binom(num_trails, <span class="fl">0.2</span>).pmf(x), <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="st">&#39;p=0.2&#39;</span>)</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6"></div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> plt.legend()</div></code></pre>
+<figure>
+<img src="/images/scipy/output_36_1.png" alt="output_36_1"><figcaption>output_36_1</figcaption>
+</figure>
+<h3 id="泊松分布">泊松分布：</h3>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">21</span>)</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, poisson(<span class="dv">1</span>).pmf(x), <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="vs">r&#39;$\lambda$=1&#39;</span>)</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, poisson(<span class="dv">4</span>).pmf(x), <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="vs">r&#39;$\lambda$=4&#39;</span>)</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, poisson(<span class="dv">9</span>).pmf(x), <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="vs">r&#39;$\lambda$=9&#39;</span>)</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6"></div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> plt.legend()</div></code></pre>
+<figure>
+<img src="/images/scipy/output_38_1.png" alt="output_38_1"><figcaption>output_38_1</figcaption>
+</figure>
+<h3 id="导入相关的函数">导入相关的函数：</h3>
+<ul>
+<li>正态分布</li>
+<li>独立双样本 <code>t</code> 检验，配对样本 <code>t</code> 检验，单样本 <code>t</code> 检验</li>
+<li>学生 <code>t</code> 分布</li>
+</ul>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">from</span> scipy.stats <span class="im">import</span> norm</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="im">from</span> scipy.stats <span class="im">import</span> ttest_ind, ttest_rel, ttest_1samp</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="im">from</span> scipy.stats <span class="im">import</span> t</div></code></pre>
+<h3 id="独立样本-t-检验">独立样本 t 检验</h3>
+<h3 id="两组参数不同的正态分布">两组参数不同的正态分布：</h3>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> n1 <span class="op">=</span> norm(loc<span class="op">=</span><span class="fl">0.3</span>, scale<span class="op">=</span><span class="fl">1.0</span>)</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> n2 <span class="op">=</span> norm(loc<span class="op">=</span><span class="dv">0</span>, scale<span class="op">=</span><span class="fl">1.0</span>)</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"></div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="co"># 从分布中产生两组随机样本：</span></div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> n1_samples <span class="op">=</span> n1.rvs(size<span class="op">=</span><span class="dv">100</span>)</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="op">&gt;&gt;&gt;</span> n2_samples <span class="op">=</span> n2.rvs(size<span class="op">=</span><span class="dv">100</span>)</div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7"></div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="co"># 将两组样本混合在一起：</span></div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="op">&gt;&gt;&gt;</span> samples <span class="op">=</span> np.hstack((n1_samples, n2_samples))</div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10"></div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11"><span class="co"># 最大似然参数估计：</span></div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12"><span class="op">&gt;&gt;&gt;</span> loc, scale <span class="op">=</span> norm.fit(samples)</div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13"><span class="op">&gt;&gt;&gt;</span> n <span class="op">=</span> norm(loc<span class="op">=</span>loc, scale<span class="op">=</span>scale)</div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14"></div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15"><span class="co"># 比较</span></div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">100</span>)</div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17"><span class="op">&gt;&gt;&gt;</span> plt.hist([samples, n1_samples, n2_samples], normed<span class="op">=</span><span class="va">True</span>)</div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, n.pdf(x), <span class="st">&#39;b-&#39;</span>)</div>
+<div class="sourceLine" id="19" href="#19" data-line-number="19"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, n1.pdf(x), <span class="st">&#39;g-&#39;</span>)</div>
+<div class="sourceLine" id="20" href="#20" data-line-number="20"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, n2.pdf(x), <span class="st">&#39;r-&#39;</span>)</div></code></pre>
+<figure>
+<img src="/images/scipy/output_42_1.png" alt="output_42_1"><figcaption>output_42_1</figcaption>
+</figure>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="co"># 独立双样本 t 检验的目的在于判断两组样本之间是否有显著差异：p 值小，说明这两个样本有显著性差异。</span></div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> t_val, p <span class="op">=</span> ttest_ind(n1_samples, n2_samples)</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="st">&#39;t = </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(t_val))</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4">t <span class="op">=</span> <span class="fl">2.4883708971185237</span></div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="st">&#39;p-value = </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(p))</div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6">p<span class="op">-</span>value <span class="op">=</span> <span class="fl">0.013658121015263052</span></div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7"></div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="co"># p值计算原理</span></div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="co"># p值对应的部分是下图中的红色区域，边界范围由 t 值决定。</span></div>
+<div class="sourceLine" id="10" href="#10" data-line-number="10"><span class="op">&gt;&gt;&gt;</span> pop_size <span class="op">=</span> <span class="dv">35</span></div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11"><span class="op">&gt;&gt;&gt;</span> my_t <span class="op">=</span> t(pop_size) <span class="co"># 传入参数为自由度，这里自由度为50</span></div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12"></div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, my_t.pdf(x), <span class="st">&#39;b-&#39;</span>)</div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14"><span class="op">&gt;&gt;&gt;</span> lower_x <span class="op">=</span> x[x<span class="op">&lt;=</span> <span class="op">-</span><span class="bu">abs</span>(t_val)]</div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15"><span class="op">&gt;&gt;&gt;</span> upper_x <span class="op">=</span> x[x<span class="op">&gt;=</span> <span class="bu">abs</span>(t_val)]</div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16"></div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.fill_between(lower_x, my_t.pdf(lower_x), color<span class="op">=</span><span class="st">&#39;red&#39;</span>)</div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.fill_between(upper_x, my_t.pdf(upper_x), color<span class="op">=</span><span class="st">&#39;red&#39;</span>)</div></code></pre>
+<figure>
+<img src="/images/scipy/output_46_0.png" alt="output_46_0"><figcaption>output_46_0</figcaption>
+</figure>
+<h2 id="曲线拟合"><u>曲线拟合</u></h2>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">100</span>)</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> y <span class="op">=</span> <span class="dv">4</span> <span class="op">*</span> x <span class="op">+</span> <span class="fl">1.5</span></div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> noise_y <span class="op">=</span> y <span class="op">+</span> np.random.randn(y.shape[<span class="op">-</span><span class="dv">1</span>]) <span class="op">*</span> <span class="fl">2.5</span></div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, noise_y, <span class="st">&#39;rx&#39;</span>)</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, y, <span class="st">&#39;b:&#39;</span>)</div></code></pre>
+<figure>
+<img src="/images/scipy/output_49_0.png" alt="output_49_0"><figcaption>output_49_0</figcaption>
+</figure>
+<p>进行线性拟合，polyfit 是多项式拟合函数，线性拟合即一阶多项式：</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> coeff <span class="op">=</span> np.polyfit(x, noise_y, <span class="dv">1</span>)</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> coeff</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3">array([ <span class="fl">4.05681667</span>,  <span class="fl">1.61039447</span>])</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4"></div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="co"># 一阶多项式 y = a_1 x + a_0 拟合，返回两个系数 [a_1, a_0]。</span></div>
+<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="co"># 画出拟合曲线：</span></div>
+<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, noise_y, <span class="st">&#39;rx&#39;</span>)</div>
+<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, coeff[<span class="dv">0</span>] <span class="op">*</span> x <span class="op">+</span> coeff[<span class="dv">1</span>], <span class="st">&#39;k-&#39;</span>)</div>
+<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, y, <span class="st">&#39;b--&#39;</span>)</div></code></pre>
+<figure>
+<img src="/images/scipy/output_53_0.png" alt="output_53_0"><figcaption>output_53_0</figcaption>
+</figure>
+<p>还可以用<code>poly1d</code> 生成一个以传入的 <code>coeff</code> 为参数的多项式函数：</p>
+<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> f <span class="op">=</span> np.poly1d(coeff)</div>
+<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, noise_y, <span class="st">&#39;rx&#39;</span>)</div>
+<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, f(x))</div>
+<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(f)</div>
+<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="fl">4.057</span> x <span class="op">+</span> <span class="fl">1.61</span></div></code></pre>
+<figure>
+<img src="/images/scipy/output_55_0.png" alt="output_55_0"><figcaption>output_55_0</figcaption>
+</figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/27/Pandas笔记/" rel="next" title="Pandas笔记">
+                <i class="fa fa-chevron-left"></i> Pandas笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/pandas.jpeg"
+               alt="Peter Tsung" />
+          <p class="site-author-name" itemprop="name">Peter Tsung</p>
+           
+              <p class="site-description motion-element" itemprop="description">I Never Save Anything For The Swim Back.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概率统计方法"><span class="nav-number">1.</span> <span class="nav-text">概率统计方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#概率分布"><span class="nav-number">1.2.</span> <span class="nav-text">概率分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连续分布"><span class="nav-number">1.3.</span> <span class="nav-text">连续分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正态分布"><span class="nav-number">1.4.</span> <span class="nav-text">正态分布</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#离散分布"><span class="nav-number">2.</span> <span class="nav-text">离散分布</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#二项分布"><span class="nav-number">2.1.</span> <span class="nav-text">二项分布：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#泊松分布"><span class="nav-number">2.2.</span> <span class="nav-text">泊松分布：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#导入相关的函数"><span class="nav-number">2.3.</span> <span class="nav-text">导入相关的函数：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#独立样本-t-检验"><span class="nav-number">2.4.</span> <span class="nav-text">独立样本 t 检验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两组参数不同的正态分布"><span class="nav-number">2.5.</span> <span class="nav-text">两组参数不同的正态分布：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#曲线拟合"><span class="nav-number">3.</span> <span class="nav-text">曲线拟合</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Peter Tsung</span>
+</div>
+
+<!--
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+            tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+                    TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+                            messageStyle: "none"
+                                }); 
+    </script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Queue(function() {
+                    var all = MathJax.Hub.getAllJax(), i;
+                            for(i=0; i < all.length; i += 1) {
+                                            all[i].SourceElement().parentNode.className += ' has-jax';
+                                                    }
+                                                        });
+        </script>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+-->
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  <script src="/js/src/prettify.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    $(window).load(function(){
+    $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+     prettyPrint();
+    })
+  </script>
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
