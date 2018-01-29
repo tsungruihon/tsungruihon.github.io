@@ -277,6 +277,222 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/11/讀《計算廣告》筆記-二/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peter Tsung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pandas.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="彼得的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/06/11/讀《計算廣告》筆記-二/" itemprop="url">
+                  讀《計算廣告》筆記(二)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-11T17:45:35+08:00">
+                2017-06-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/讀書筆記/" itemprop="url" rel="index">
+                    <span itemprop="name">讀書筆記</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>這週有一點點小遺憾，因為沒有太多的時間總結第二章的內容。現在趁時間寬裕，總結一下讀書筆記。</p>
+<p>首先用一個三段式信息傳播模型來解剖廣告由物理上產生到最終產生轉化行為的全過程。</p>
+<figure>
+<img src="/images/process%20of%20ad.png" alt="process of ad"><figcaption>process of ad</figcaption>
+</figure>
+<p>（1）曝光阶段（exposure）。这一阶段指的是广告物理上展现出来的过程，此阶段的有效程度往往与广告位的物理属性有关，并没有太多可以通过技术优化的空间。在互联网广告中，位置的影响有时会更加显著，因此如何从算法上消除由此带来的点击率预估偏差，是一个非常重要的实际问题。</p>
+<p>（2）关注阶段（attention）。这一阶段指的是受众从物理上接触到广告到意识上注意到它的过程。对广告而言，曝光并不一定意味着关注。。当用户明确辨识出某个固定不变的广告位，并且不再认为它与自己当前浏览网页的任务有关联时，他会下意识地屏蔽其中的内容。</p>
+<p>（3）理解阶段（comprehension）。用户关注到了广告的内容也并不意味着他一定能够理解广告传达的信息。</p>
+<p>（4）接受阶段（acceptance）。受众理解了广告传达的信息，并不一定表示他认可这些信息。</p>
+<p>（5）保持阶段（retention）。对于不仅仅追求短期转化的广告商，当然希望广告传达的信息给用户留下长久的印象。</p>
+<p>（6）决策阶段（decision）。成功广告的最终作用是带来用户的转化行为，虽然这一阶段已经离开了广告的业务范围，但好的广告还是能够为转化率的提高做好铺垫。</p>
+<p>定性地说，越靠前的阶段，其效果的改善对点击率的贡献越大；而越靠后的阶段，其效果的改善对转化率的贡献越大。计算广告的核心问题，是为一系列用户与环境的组合找到最合适的广告投放策略以优化整体广告活动的利润。 <span class="math display">\[
+eCPM=r(a,u,c) = \mu(a,u,c) · \nu(a, u,c)
+\]</span> 这里的i代表从第1次到第T次之间的某一次广告展示。我们优化的目标就是在这T次展示上的总收入（r）与总成本（q）的差，即广告活动的利润。 其中a、u、c这三个变量，分别代表广告、用户与环境。</p>
+<p>按照媒体网络和广告主网站上的行为段对回报r进行分解，是实践中比较合理且容易操作的方式： <span class="math display">\[
+eCPM=r(a,u,c) = \mu(a,u,c) · \nu(a, u,c)
+\]</span> μ表示点击率，ν表示点击价值。点击率描述的是发生在媒体上的行为，点击价值描述的是发生在广告主网站上的行为。</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">结算方式</th>
+<th style="text-align: center;">点击率估计\点击价值估计</th>
+<th style="text-align: center;">优缺点</th>
+<th style="text-align: center;">适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">CPT</td>
+<td style="text-align: center;">需求方</td>
+<td style="text-align: center;">可以充分发挥橱窗效益&lt;br?但无法利用受众定向技术</td>
+<td style="text-align: center;">高曝光的品牌广告</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">CPM</td>
+<td style="text-align: center;">需求方</td>
+<td style="text-align: center;">可以利用受众定向选择人群<br>合约售卖下，受众划分不能过细</td>
+<td style="text-align: center;">1. 有受众选择需求的品牌广告<br>2.实时竞价广告交易</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">CPC</td>
+<td style="text-align: center;">供给方</td>
+<td style="text-align: center;">可以非常精细地划分受众人群<br>比较合理的供给方和需求方分工</td>
+<td style="text-align: center;">竞价广告网络</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">CPS／CPA／ROI</td>
+<td style="text-align: center;">供给方</td>
+<td style="text-align: center;">需求方无任何风险<br>供给方运营难度较大</td>
+<td style="text-align: center;">1. 效果类广告联盟<br>2. 效果类DSP</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>橱窗效应就是在商品交易中摆放位置（或区位位置）直接影响交易结果的现象，也可引申为广告在商品交易中的优势作用。</p>
+</blockquote>
+<p>專業名詞總結：</p>
+<ul>
+<li>千次展示期望收入（expected Cost Per Mille，eCPM）</li>
+<li>广告安全（ad safety）：如何让合适的广告出现在合适的媒体上。</li>
+<li>技术和计算导向：着重在广告效果精确的预估和优化能力</li>
+<li>效果的可衡量性：不同的产品或时代中，点击率绝对值的比较并没有那么重要，而在一个特定时期不同广告和算法表现出来的差异才是更有意义。</li>
+<li>创意和投放方式的标准化：标准化的驱动力来自于受众定向与程序购买。既然需求方关心的是人群而非广告位，创意尺寸的统一化与一些关键接口的标准化非常关键。</li>
+<li>媒体概念的多样化：对在线购物行业而言，门户网站、垂直网站、搜索引擎、电商网站、返利网，在转化链条上一个比一个更靠近购买行为。越接近转化的媒体上的广告带来的流量已定可以达到更高的ROI，不过离“引导潜在用户”这样的广告目的也就越远。</li>
+<li>数据驱动的投放决策：互联网化的根本驱动力可以认为是数据的深入加工和利用。在线广告的基本投放逻辑就是，先广泛收集用户的行为数据和广告反馈数据，利用云计算的基础设施对用户打上合适的标签，同样根据数据在多个广告竞争同一次展示时作出决策，再将投放的结果统计数据反馈给广告操作人员以调整投放策略。</li>
+<li>点击率（Click Through Rate, CTR）：广告点击与广告展现的比率</li>
+<li>到达率：落地耶成功打开次数与点击次数的比例。同样也可以用接触到广告的人数与传播范围内的总人数的比例。</li>
+<li>转化率（Conversion Rate， CVR）：转化次数与到达次数的比例。而用户从落地页开始，进一步完成下单等操作。</li>
+<li>点击价值（click value）， 即单次点击为广告产品带来的收益。</li>
+<li>CPM结算：即按照千次展示结算。</li>
+<li>CPC结算，即按点击率结算。</li>
+<li>CPS（cost per sale）／CPA（cost per action）／ROI结算，即按照销售订单数、转化行为数或投入产出比来结算</li>
+<li>CPT（cost per time）结算，这是针对大品牌广告主特定的广告活动，将某个广告位以独占式方式交给某个广告主，并按独占的时间段收取费用的方式。</li>
+</ul>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/05/流畅的Python-读书笔记-一/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3378,7 +3594,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">30</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
