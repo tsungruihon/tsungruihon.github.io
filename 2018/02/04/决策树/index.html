@@ -98,7 +98,7 @@
 <meta property="og:site_name" content="彼得的博客">
 <meta property="og:description" content="今天终于有时间来总结一下决策树了。决策树学习包括三个步骤： 特征选择、决策树的生成和决策树的修剪。 用决策树分类，从根节点开始，对实例的某一特征进行测试，根据测试结果，将实例分配到其子结点。每一个子结点对应着该特征的一个取值。如此递归地对实例进行测试并分配，直至达到叶节点。最后将实例分到叶结点的类中。 决策树的路径或其对应的if-then规则集合具有一个重要性质：互斥并且完备。就是说每一个实例都被">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-06T15:37:53.527Z">
+<meta property="og:updated_time" content="2018-02-06T15:45:17.470Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Decision Tree">
 <meta name="twitter:description" content="今天终于有时间来总结一下决策树了。决策树学习包括三个步骤： 特征选择、决策树的生成和决策树的修剪。 用决策树分类，从根节点开始，对实例的某一特征进行测试，根据测试结果，将实例分配到其子结点。每一个子结点对应着该特征的一个取值。如此递归地对实例进行测试并分配，直至达到叶节点。最后将实例分到叶结点的类中。 决策树的路径或其对应的if-then规则集合具有一个重要性质：互斥并且完备。就是说每一个实例都被">
@@ -531,8 +531,7 @@ C_{\alpha}(T) &amp; = C(T) + \alpha(T)
 <li><p>若<code>_new</code>中所有损失都大于<code>_old</code>中对应的损失、则退出循环体</p></li>
 <li><p>否则，设p满足： <span class="math display">\[
 p=\mathop{\arg\min}_{p}\_new[p]≤\_old[p]
-\]</span> ​</p>
-<p>则对<code>_tmp_nodes[p]</code>进行局部剪枝</p></li>
+\]</span> 则对<code>_tmp_nodes[p]</code>进行局部剪枝</p></li>
 <li><p>在完成局部剪枝后，更新<code>_old</code>、<code>_new</code>、<code>_tmp_nodes</code>等变量。具体而言，我们无需重新计算它们， 只需更新“被影响到的” Node 所对应的位置的值即可</p></li>
 </ol></li>
 <li><p>最后调用<code>self.reduce_nodes</code>方法、将被剪掉的 Node 从<code>nodes</code>中除去</p></li>

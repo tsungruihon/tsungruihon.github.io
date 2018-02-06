@@ -536,8 +536,7 @@ C_{\alpha}(T) &amp; = C(T) + \alpha(T)
 <li><p>若<code>_new</code>中所有损失都大于<code>_old</code>中对应的损失、则退出循环体</p></li>
 <li><p>否则，设p满足： <span class="math display">\[
 p=\mathop{\arg\min}_{p}\_new[p]≤\_old[p]
-\]</span> ​</p>
-<p>则对<code>_tmp_nodes[p]</code>进行局部剪枝</p></li>
+\]</span> 则对<code>_tmp_nodes[p]</code>进行局部剪枝</p></li>
 <li><p>在完成局部剪枝后，更新<code>_old</code>、<code>_new</code>、<code>_tmp_nodes</code>等变量。具体而言，我们无需重新计算它们， 只需更新“被影响到的” Node 所对应的位置的值即可</p></li>
 </ol></li>
 <li><p>最后调用<code>self.reduce_nodes</code>方法、将被剪掉的 Node 从<code>nodes</code>中除去</p></li>
