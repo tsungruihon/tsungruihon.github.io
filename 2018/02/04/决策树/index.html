@@ -98,7 +98,7 @@
 <meta property="og:site_name" content="彼得的博客">
 <meta property="og:description" content="今天终于有时间来总结一下决策树了。决策树学习包括三个步骤： 特征选择、决策树的生成和决策树的修剪。 用决策树分类，从根节点开始，对实例的某一特征进行测试，根据测试结果，将实例分配到其子结点。每一个子结点对应着该特征的一个取值。如此递归地对实例进行测试并分配，直至达到叶节点。最后将实例分到叶结点的类中。 决策树的路径或其对应的if-then规则集合具有一个重要性质：互斥并且完备。就是说每一个实例都被">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-06T15:35:55.954Z">
+<meta property="og:updated_time" content="2018-02-06T15:37:53.527Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Decision Tree">
 <meta name="twitter:description" content="今天终于有时间来总结一下决策树了。决策树学习包括三个步骤： 特征选择、决策树的生成和决策树的修剪。 用决策树分类，从根节点开始，对实例的某一特征进行测试，根据测试结果，将实例分配到其子结点。每一个子结点对应着该特征的一个取值。如此递归地对实例进行测试并分配，直至达到叶节点。最后将实例分到叶结点的类中。 决策树的路径或其对应的if-then规则集合具有一个重要性质：互斥并且完备。就是说每一个实例都被">
@@ -520,10 +520,10 @@ C_{\alpha}(T) &amp; = C(T) + \alpha(T)
 <p><code>预剪枝</code>是指事先给定某个误差计算方法，找到数据集最佳的二元切分方式，另外，还要确定什么时候停止划分，一旦停止划分会生成一个叶结点。在决策树生成过程中，在划分节点时，若该节点的划分没有提高其在训练集上的准确率，则不进行划分。</p>
 <p><code>后剪枝</code>是利用测试集来对树进行剪枝。首先指定参数，使得构建出的树足够大、足够复杂，便于剪枝。然后从上而下找到叶节点，用测试集来判断将这些叶节点合并是否能降低测试误差。如果是的话就合并。</p>
 <p>采取类似于伪代码的形式来进行叙述：</p>
-<p><strong>1. 输入</strong>：生成算法产生的原始决策树TT，惩罚因子αα</p>
+<p><strong>1. 输入</strong>：生成算法产生的原始决策树T，惩罚因子α</p>
 <p><strong>2. 过程</strong>：</p>
 <ol type="1">
-<li><p>从下往上地获取TT中所有 Node，存入列表<code>_tmp_nodes</code></p></li>
+<li><p>从下往上地获取T中所有 Node，存入列表<code>_tmp_nodes</code></p></li>
 <li><p>对<code>_tmp_nodes</code>中的所有 Node 计算损失，存入列表<code>_old</code></p></li>
 <li><p>计算<code>_tmp_nodes</code>中所有 Node 进行局部剪枝后的损失，存入列表<code>_new</code></p></li>
 <li><p>进入循环体：</p>
