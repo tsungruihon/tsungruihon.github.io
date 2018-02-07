@@ -277,6 +277,126 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/07/KNN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peter Tsung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pandas.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="彼得的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/02/07/KNN/" itemprop="url">
+                  KNN
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-07T13:55:56+08:00">
+                2018-02-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/04/决策树/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -4930,252 +5050,6 @@ y = f(x) = \mathop{\arg\max}_{c_k}P(Y=c_k)\prod_jP(X^{(j)}=x^{(j)}|Y=c_k)
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/17/Logistic-Rregression/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Peter Tsung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pandas.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="彼得的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/12/17/Logistic-Rregression/" itemprop="url">
-                  Logistic Rregression
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-17T10:53:16+08:00">
-                2017-12-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
-                    <span itemprop="name">Machine Learning</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>今天看了极大似然估计(<code>Maximum likelihood evaluation</code>)，然后就看到极大似然估计在<code>Logistic Regression</code>上面的应用，忽然有一种醍醐灌顶的感觉。</p>
-<p>首先，原来<code>Logistic Regression</code>的中文读法是逻辑斯谛回归而不是逻辑回归，知道真相的我忽然觉得以前的自己好土。。但这不是重点，其实这是重点。。好吧</p>
-<p><code>Logistic Regression</code>是根据不同的特征量，输出0和1，并且只能输出0和1。我们可以通过<code>Sigmoid</code>函数来实现。 <span class="math display">\[
-\sigma(x)  = \frac{1}{1+e^{-w x}} = \frac{e^{wt}}{1 + e^{wx}}
-\]</span></p>
-<p><span class="math display">\[
-\sigma&#39;(x) =  \sigma(x)(1 - \sigma(x))
-\]</span></p>
-<p>而为什么会涉及到极大似然估计呢？因为我们希望能够在给定的概率密度函<code>σ(x)</code>，以及样本数据中，得到能够以最大概率发生样本数据的参数<code>w</code>的估计。因此我们需要引入似然函数并且计算极大似然估计。</p>
-<p>确定了分类函数之后，接下来，我们把<code>Sigmoid</code>函数的输入记为<code>z</code>，则 <span class="math display">\[
-z = w_0x_0+w_1x_1+w_2x_2+...+w_nx_n = w^Tx
-\]</span> 向量<code>x</code>是特征变量，是输入数据，向量<code>w</code>是回归系数。所以我们要做的事情就是如何确定最优的回归系数<code>w(w0, w1, w2, ..., wn)</code></p>
-<p>现在来看看我们有什么公式</p>
-<ul>
-<li><p>输入特征变量： <span class="math display">\[z = w_0x_0+w_1x_1+w_2x_2+...+w_nx_n = w^Tx\]</span></p></li>
-<li><p>分类函数（预测函数）： <span class="math display">\[ h(z) =  \frac{1}{1+e^{-z}} = h_w(x)= \frac{1}{1+e^{-w^Tx}} \]</span></p></li>
-<li><p>对于任意确定的<code>x</code>和<code>w</code>，有：</p>
-<p><span class="math display">\[P(y=1|x, w)=h_w(x)\]</span></p>
-<p><span class="math display">\[P(y = 0|x, w) = 1 - h_w(x)\]</span></p></li>
-</ul>
-<p>这个公式可以写成： <span class="math display">\[
-P(y|x, w) = (h_w(x))^y(1-h_w(x))^{1-y}
-\]</span></p>
-<p>取似然函数： <span class="math display">\[
-\begin{aligned}
-L(w)&amp; =\prod_{i=1}^{m}P(y^{(i)}|x^{(i)}, w) \\
-&amp; =\prod_{i = 1}^{m}(h_w(x^{(i)}))^{y^{(i)}}(1-h_w(x^{(i)}))^{1-y^{(i)}} 
-\end{aligned}
-\]</span> 然后转化为对数似然函数，这样更方便求解。 <span class="math display">\[
-J(w) = logL(w) = \sum_{i=1}^{m}(y^{(i)}logh_w(x^{(i)}) + (1-y^{(i)})log(1-h_w(x^{(i)})))
-\]</span> 得到对数似然函数<code>J(w)</code>后，我们就可以利用函数<code>J(w)</code>来表示预测值和实际值的偏差。<code>J(w)</code>越大，表示预测值与实际值的差异越小，预测越准确。</p>
-<p><code>Cost</code>函数可以写成： <span class="math display">\[
-Cost(h_w^x, y)=\left\{
-\begin{aligned}
-logh_w(x), &amp;  &amp;  { y = 1}  \\
-1 - logh_w(x), &amp; &amp; {y = 0}
-\end{aligned}
-\right.
-\]</span> 下面我们需要求<code>Cost</code>函数的最大值，所以我们需要对<code>J(w)</code>进行求偏导： <span class="math display">\[
-\begin{aligned}
-\frac {\partial}{\partial {w_j}}J(w) &amp; = \sum_{i=1}^m((y^{(i)}\frac{1}{h_w(x^{(i)})}-(1-y^{(i)})\frac{1}{1-h_w(x^{(i)})})\cdot\frac{\partial{h_w(x^{(i)})}}{\partial {w_j}})  \\
-&amp; = \sum_{i=1}^m((y^{(i)}\frac{1}{h_w(x^{(i)})}-(1-y^{(i)})\frac{1}{1-h_w(x^{(i)})})\cdot(h_w(x^{(i)})\cdot(1-h_w(x^{(i)}))\cdot x_j) \\
-&amp; = \sum_{i=1}^m((y^{(i)}\cdot (1-h_w(x^{(i)} )-(1-y^{(i)})\cdot h_w(x^{(i)})) \cdot x_j) \\
-&amp; = \sum_{i=1}^m(y^{(i)}-h_w(x^{(i)}))\cdot x_j)
-\end{aligned}
-\]</span> 因此我们得到了梯度上升法迭代公式： <span class="math display">\[
-w_j := w_j + \alpha\sum_{i=1}^m(y^{(i)}-h_w(x^{(i)}))\cdot x_j)
-\]</span> 弄清楚每一块做什么之后，我们就可以用Python写一遍<code>Logistic Regression</code>了。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">import</span> numpy <span class="im">as</span> np</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="kw">def</span> sigmoid(z):</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">    <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> np.exp(<span class="op">-</span>z))</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"></div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="kw">def</span> log_likelihood(X, y, w):</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">    hypothesis <span class="op">=</span> sigmoid(np.dot(w.T, x))</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9">    ll <span class="op">=</span> np.<span class="bu">sum</span>(y <span class="op">*</span> np.log(hypothesis) <span class="op">+</span> (<span class="dv">1</span> <span class="op">-</span> y) <span class="op">*</span> np.log(<span class="dv">1</span> <span class="op">-</span> hypothesis))</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">    <span class="cf">return</span> ll</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11"></div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12"><span class="kw">def</span> logistic_regression(X, y, num_steps, learning_rate, add_intercept <span class="op">=</span> <span class="va">False</span>):</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">    <span class="cf">if</span> add_intercept:</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">        intercept <span class="op">=</span> np.ones((X.shape[<span class="dv">0</span>], <span class="dv">1</span>))</div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">        X <span class="op">=</span> np.hstack((intercept, X))</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16"></div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17">    weights <span class="op">=</span> np.zeros(X.shape[<span class="dv">1</span>])</div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18"></div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19">    <span class="cf">for</span> step <span class="kw">in</span> <span class="bu">range</span>(num_steps):</div>
-<div class="sourceLine" id="20" href="#20" data-line-number="20">        hypothesis <span class="op">=</span> sigmoid(np.dot(X, weights.T))</div>
-<div class="sourceLine" id="21" href="#21" data-line-number="21">        error <span class="op">=</span> y <span class="op">-</span> hypothesis</div>
-<div class="sourceLine" id="22" href="#22" data-line-number="22">        gradient <span class="op">=</span> np.dot(X.T, error)</div>
-<div class="sourceLine" id="23" href="#23" data-line-number="23">        weights <span class="op">+=</span> learning_rate <span class="op">*</span> gradient</div>
-<div class="sourceLine" id="24" href="#24" data-line-number="24"></div>
-<div class="sourceLine" id="25" href="#25" data-line-number="25">    <span class="cf">return</span> weights</div>
-<div class="sourceLine" id="26" href="#26" data-line-number="26"></div>
-<div class="sourceLine" id="27" href="#27" data-line-number="27">np.random.seed(<span class="dv">12</span>)</div>
-<div class="sourceLine" id="28" href="#28" data-line-number="28">num_observations <span class="op">=</span> <span class="dv">5000</span></div>
-<div class="sourceLine" id="29" href="#29" data-line-number="29"></div>
-<div class="sourceLine" id="30" href="#30" data-line-number="30">x1 <span class="op">=</span> np.random.multivariate_normal([<span class="dv">0</span>, <span class="dv">0</span>], [[<span class="dv">1</span>, <span class="fl">.75</span>], [.<span class="dv">75</span>, <span class="dv">1</span>]], num_observations)</div>
-<div class="sourceLine" id="31" href="#31" data-line-number="31">x2 <span class="op">=</span> np.random.multivariate_normal([<span class="dv">1</span>, <span class="dv">4</span>], [[<span class="dv">1</span>, <span class="fl">.75</span>], [.<span class="dv">75</span>, <span class="dv">1</span>]], num_observations)</div>
-<div class="sourceLine" id="32" href="#32" data-line-number="32"></div>
-<div class="sourceLine" id="33" href="#33" data-line-number="33">X <span class="op">=</span> np.vstack((x1, x2)).astype(np.float32)</div>
-<div class="sourceLine" id="34" href="#34" data-line-number="34">y <span class="op">=</span> np.hstack((np.zeros(num_observations), np.ones(num_observations)))</div>
-<div class="sourceLine" id="35" href="#35" data-line-number="35"></div>
-<div class="sourceLine" id="36" href="#36" data-line-number="36">weights <span class="op">=</span> logistic_regression(X, y, num_steps <span class="op">=</span> <span class="dv">50000</span>, learning_rate <span class="op">=</span> <span class="fl">5e-5</span>, add_intercept <span class="op">=</span> <span class="va">True</span>)</div>
-<div class="sourceLine" id="37" href="#37" data-line-number="37"></div>
-<div class="sourceLine" id="38" href="#38" data-line-number="38"></div>
-<div class="sourceLine" id="39" href="#39" data-line-number="39"><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</div>
-<div class="sourceLine" id="40" href="#40" data-line-number="40"></div>
-<div class="sourceLine" id="41" href="#41" data-line-number="41">clf <span class="op">=</span> LogisticRegression(fit_intercept<span class="op">=</span><span class="va">True</span>, C<span class="op">=</span><span class="fl">1e15</span>)</div>
-<div class="sourceLine" id="42" href="#42" data-line-number="42">clf.fit(X, y)</div>
-<div class="sourceLine" id="43" href="#43" data-line-number="43"><span class="bu">print</span>(clf.intercept_, clf.coef_)</div>
-<div class="sourceLine" id="44" href="#44" data-line-number="44"><span class="bu">print</span>(weights)</div>
-<div class="sourceLine" id="45" href="#45" data-line-number="45"></div>
-<div class="sourceLine" id="46" href="#46" data-line-number="46">final_distribtion <span class="op">=</span> np.dot(np.hstack((np.ones((X.shape[<span class="dv">0</span>], <span class="dv">1</span>)),</div>
-<div class="sourceLine" id="47" href="#47" data-line-number="47">                        X)), weights)</div>
-<div class="sourceLine" id="48" href="#48" data-line-number="48">preds <span class="op">=</span> np.<span class="bu">round</span>(sigmoid(final_distribtion))</div>
-<div class="sourceLine" id="49" href="#49" data-line-number="49"><span class="bu">print</span>(<span class="st">&#39;Accuracy from scratch: </span><span class="sc">{0}</span><span class="st">&#39;</span>.<span class="bu">format</span>((preds <span class="op">==</span> y).<span class="bu">sum</span>().astype(<span class="bu">float</span>) <span class="op">/</span> <span class="bu">len</span>(preds)))</div>
-<div class="sourceLine" id="50" href="#50" data-line-number="50"><span class="bu">print</span>(<span class="st">&#39;Accuracy from scikit-learn: </span><span class="sc">{0}</span><span class="st">&#39;</span>.<span class="bu">format</span>(clf.score(X, y)))</div>
-<div class="sourceLine" id="51" href="#51" data-line-number="51"></div>
-<div class="sourceLine" id="52" href="#52" data-line-number="52">[output]</div>
-<div class="sourceLine" id="53" href="#53" data-line-number="53"><span class="co"># [-13.99400797] [[-5.02712572  8.23286799]]</span></div>
-<div class="sourceLine" id="54" href="#54" data-line-number="54"><span class="co"># [-13.58690551  -4.8809644    7.99812915]</span></div>
-<div class="sourceLine" id="55" href="#55" data-line-number="55"><span class="co"># Accuracy from scratch: 0.9948</span></div>
-<div class="sourceLine" id="56" href="#56" data-line-number="56"><span class="co"># Accuracy from scikit-learn: 0.9948</span></div></code></pre>
-<p>貌似跟<code>scikit-learn</code>的结果很接近，实在是太开心了。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -5225,7 +5099,7 @@ w_j := w_j + \alpha\sum_{i=1}^m(y^{(i)}-h_w(x^{(i)}))\cdot x_j)
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-count">32</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
