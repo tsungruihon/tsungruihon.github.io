@@ -90,18 +90,18 @@
 
 
 
-<meta name="description" content="KNN应该是分类算法里面最简单的一个了。这个笔记主要分享下KNN以及KD树。">
+<meta name="description" content="KNN(k-nearest neighbor)应该是分类和回归算法里面最简单的一个了。这个笔记主要分享下KNN以及KD树。 k近邻法假设给定一个训练数据集，其中的实例类别已定。分类时，对新的实例，根据其k个最近邻的训练实例的类别，通过多数表决等方式进行预测。因此，k近邻法不具有显式的学习过程。k近邻法实际上利用训练数据集对特征向量空间进行划分，并作为其分类的“模型”。 k值的选择、距离度量及分类决">
 <meta name="keywords" content="python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="KNN">
 <meta property="og:url" content="http://yoursite.com/2018/02/07/KNN/index.html">
 <meta property="og:site_name" content="彼得的博客">
-<meta property="og:description" content="KNN应该是分类算法里面最简单的一个了。这个笔记主要分享下KNN以及KD树。">
+<meta property="og:description" content="KNN(k-nearest neighbor)应该是分类和回归算法里面最简单的一个了。这个笔记主要分享下KNN以及KD树。 k近邻法假设给定一个训练数据集，其中的实例类别已定。分类时，对新的实例，根据其k个最近邻的训练实例的类别，通过多数表决等方式进行预测。因此，k近邻法不具有显式的学习过程。k近邻法实际上利用训练数据集对特征向量空间进行划分，并作为其分类的“模型”。 k值的选择、距离度量及分类决">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-07T06:03:54.534Z">
+<meta property="og:updated_time" content="2018-02-16T15:49:09.934Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="KNN">
-<meta name="twitter:description" content="KNN应该是分类算法里面最简单的一个了。这个笔记主要分享下KNN以及KD树。">
+<meta name="twitter:description" content="KNN(k-nearest neighbor)应该是分类和回归算法里面最简单的一个了。这个笔记主要分享下KNN以及KD树。 k近邻法假设给定一个训练数据集，其中的实例类别已定。分类时，对新的实例，根据其k个最近邻的训练实例的类别，通过多数表决等方式进行预测。因此，k近邻法不具有显式的学习过程。k近邻法实际上利用训练数据集对特征向量空间进行划分，并作为其分类的“模型”。 k值的选择、距离度量及分类决">
 
 
 
@@ -348,7 +348,12 @@
       
 
       
-        <p><code>KNN</code>应该是分类算法里面最简单的一个了。这个笔记主要分享下<code>KNN</code>以及<code>KD树</code>。</p>
+        <p><code>KNN(k-nearest neighbor)</code>应该是分类和回归算法里面最简单的一个了。这个笔记主要分享下<code>KNN</code>以及<code>KD树</code>。</p>
+<p><code>k近邻法</code>假设给定一个训练数据集，其中的实例类别已定。分类时，对新的实例，根据其k个最近邻的训练实例的类别，通过多数表决等方式进行预测。因此，<code>k近邻法</code>不具有显式的学习过程。<code>k近邻法</code>实际上利用训练数据集对特征向量空间进行划分，并作为其分类的“模型”。</p>
+<p><code>k值的选择</code>、<code>距离度量</code>及<code>分类决策规则</code>是<code>k近邻法</code>的三个基本要素。</p>
+<h2 id="距离度量"><u>距离度量</u></h2>
+<p>特征空间中两个实例点的距离是两个实例点相似程度的反映。</p>
+<p>设特征空间是n维实数向量空间<span class="math display">\[R^n\]</span></p>
 
       
     </div>
@@ -446,8 +451,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/pandas.jpeg"
@@ -509,6 +523,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#距离度量"><span class="nav-number">1.</span> <span class="nav-text">距离度量</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
