@@ -376,79 +376,79 @@
 <p>不管服务是由存储还是计算实现的，一个模块提供的所有服务都应该通过统一的方式使用。</p>
 </blockquote>
 <p>动态创建属性是一种元编程。在下面实例中，是使用动态属性访问JSON类数据。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">from</span> collections <span class="im">import</span> abc</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="kw">class</span> FrozenJSON:</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">    </div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, mapping):</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">        <span class="va">self</span>.__data <span class="op">=</span> <span class="bu">dict</span>(mapping)</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">        </div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">    <span class="kw">def</span> <span class="fu">__getattr__</span>(<span class="va">self</span>, name):</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9">        <span class="cf">if</span> <span class="bu">hasattr</span>(<span class="va">self</span>.__data, name):</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">            <span class="cf">return</span> <span class="bu">getattr</span>(<span class="va">self</span>.__data, name)</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">        <span class="cf">else</span>:</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">            <span class="cf">return</span> FrozenJSON.build(<span class="va">self</span>.__data[name])</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">        </div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">    <span class="at">@classmethod</span></div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">    <span class="kw">def</span> build(cls, obj):</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16">        <span class="cf">if</span> <span class="bu">isinstance</span>(obj, abc.Mapping):</div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17">            <span class="cf">return</span> cls(obj)</div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18">        <span class="cf">elif</span> <span class="bu">isinstance</span>(obj, abc.MutableSequence):</div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19">            <span class="cf">return</span> [cls.build(item) <span class="cf">for</span> item <span class="kw">in</span> obj]</div>
-<div class="sourceLine" id="20" href="#20" data-line-number="20">        <span class="cf">else</span>:</div>
-<div class="sourceLine" id="21" href="#21" data-line-number="21">            <span class="cf">return</span> obj</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> collections <span class="im">import</span> abc
+
+<span class="kw">class</span> FrozenJSON:
+    
+    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, mapping):
+        <span class="va">self</span>.__data <span class="op">=</span> <span class="bu">dict</span>(mapping)
+        
+    <span class="kw">def</span> <span class="fu">__getattr__</span>(<span class="va">self</span>, name):
+        <span class="cf">if</span> <span class="bu">hasattr</span>(<span class="va">self</span>.__data, name):
+            <span class="cf">return</span> <span class="bu">getattr</span>(<span class="va">self</span>.__data, name)
+        <span class="cf">else</span>:
+            <span class="cf">return</span> FrozenJSON.build(<span class="va">self</span>.__data[name])
+        
+    <span class="at">@classmethod</span>
+    <span class="kw">def</span> build(cls, obj):
+        <span class="cf">if</span> <span class="bu">isinstance</span>(obj, abc.Mapping):
+            <span class="cf">return</span> cls(obj)
+        <span class="cf">elif</span> <span class="bu">isinstance</span>(obj, abc.MutableSequence):
+            <span class="cf">return</span> [cls.build(item) <span class="cf">for</span> item <span class="kw">in</span> obj]
+        <span class="cf">else</span>:
+            <span class="cf">return</span> obj</code></pre></div>
 <p><code>FrozenJSON</code>类的关键是<code>__getattr__</code>方法。而有一点很重要，就是仅当无法使用常规的方式获取属性（即在实例、类或超类中找不到指定的属性），解释器才会调用特殊的<code>__getattr__</code>方法。</p>
 <p>一般而言通常都会把<code>__init__</code>成为构造方法，其实用于构建实例的是特殊方法<code>__new__</code>：这是个类方法（使用特殊方式处理，因此不必使用<code>@classmethod</code>装饰器），必须返回一个实例。返回的实例会作为第一个参数（即<code>self</code>)传给<code>__init__</code>方法。因为调用<code>__init__</code>方法时要传入实例，而且禁止返回任何值，所以<code>__init__</code>方法其实是“初始化方法”。真正的构造方法是<code>__new__</code>。</p>
 <p>下面使用<code>__new__</code>方法实现访问JSON类数据。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">from</span> collections <span class="im">import</span> abc</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="kw">class</span> FrozenJSON:</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">    </div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">    <span class="kw">def</span> <span class="fu">__new__</span>(cls, args):</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">        <span class="cf">if</span> <span class="bu">isinstance</span>(arg, abc.Mapping):</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">            <span class="cf">return</span> <span class="bu">super</span>().<span class="fu">__new__</span>(cls)</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">        <span class="cf">elif</span> <span class="bu">isinstance</span>(arg, abc.MutableSequence):</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9">            <span class="cf">return</span> [cls(item) <span class="cf">for</span> item <span class="kw">in</span> arg]</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">        <span class="cf">else</span>:</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">            <span class="cf">return</span> arg</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">    </div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, mapping):</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">        <span class="va">self</span>.__data <span class="op">=</span> {}</div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">        <span class="cf">for</span> key, value <span class="kw">in</span> mapping.items():</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16">            <span class="cf">if</span> iskeyword(key):</div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17">                key <span class="op">+=</span> <span class="st">&#39;_&#39;</span></div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18">            <span class="va">self</span>.__data[key] <span class="op">=</span> value</div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19">    </div>
-<div class="sourceLine" id="20" href="#20" data-line-number="20">    <span class="kw">def</span> <span class="fu">__getattr__</span>(<span class="va">self</span>, name):</div>
-<div class="sourceLine" id="21" href="#21" data-line-number="21">        <span class="cf">if</span> <span class="bu">hasattr</span>(<span class="va">self</span>.__data, name):</div>
-<div class="sourceLine" id="22" href="#22" data-line-number="22">            <span class="cf">return</span> <span class="bu">getattr</span>(<span class="va">self</span>.__data, name)</div>
-<div class="sourceLine" id="23" href="#23" data-line-number="23">        <span class="cf">else</span>:</div>
-<div class="sourceLine" id="24" href="#24" data-line-number="24">            <span class="cf">return</span> FrozenJSON(<span class="va">self</span>.__data[name])</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> collections <span class="im">import</span> abc
+
+<span class="kw">class</span> FrozenJSON:
+    
+    <span class="kw">def</span> <span class="fu">__new__</span>(cls, args):
+        <span class="cf">if</span> <span class="bu">isinstance</span>(arg, abc.Mapping):
+            <span class="cf">return</span> <span class="bu">super</span>().<span class="fu">__new__</span>(cls)
+        <span class="cf">elif</span> <span class="bu">isinstance</span>(arg, abc.MutableSequence):
+            <span class="cf">return</span> [cls(item) <span class="cf">for</span> item <span class="kw">in</span> arg]
+        <span class="cf">else</span>:
+            <span class="cf">return</span> arg
+    
+    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, mapping):
+        <span class="va">self</span>.__data <span class="op">=</span> {}
+        <span class="cf">for</span> key, value <span class="kw">in</span> mapping.items():
+            <span class="cf">if</span> iskeyword(key):
+                key <span class="op">+=</span> <span class="st">&#39;_&#39;</span>
+            <span class="va">self</span>.__data[key] <span class="op">=</span> value
+    
+    <span class="kw">def</span> <span class="fu">__getattr__</span>(<span class="va">self</span>, name):
+        <span class="cf">if</span> <span class="bu">hasattr</span>(<span class="va">self</span>.__data, name):
+            <span class="cf">return</span> <span class="bu">getattr</span>(<span class="va">self</span>.__data, name)
+        <span class="cf">else</span>:
+            <span class="cf">return</span> FrozenJSON(<span class="va">self</span>.__data[name])</code></pre></div>
 <p>这一版的<code>LineItem</code>类用到了<code>quantity</code>特性的两个实例：一个用于管理<code>weight</code>属性，另一个用于管理<code>price</code>属性。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="kw">class</span> LineItem:</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2">    weight <span class="op">=</span> quantity(<span class="st">&#39;weight&#39;</span>) <span class="co"># 使用工厂函数把第一个自定义的特性weight定义为类属性</span></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3">    price <span class="op">=</span> quantity(<span class="st">&#39;price&#39;</span>) <span class="co"># 构建另一个自定义的特性，price</span></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">    </div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, description, weight, price):</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">        <span class="va">self</span>.description <span class="op">=</span> description</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">        <span class="va">self</span>.weight <span class="op">=</span> weight <span class="co"># 特性已经激活，确保不能把weight设为负数或零</span></div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">        <span class="va">self</span>.price <span class="op">=</span> price <span class="co"># 使用特性获取实例中存储的值</span></div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9">        </div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">    <span class="kw">def</span> subtotal(<span class="va">self</span>):</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">        <span class="cf">return</span> <span class="va">self</span>.weight <span class="op">*</span> <span class="va">self</span>.price</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">    </div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13"><span class="kw">def</span> quantity(storage_name):</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">    </div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">    <span class="kw">def</span> qty_getter(instance):</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16">        <span class="cf">return</span> instance.__dict__[storage_name]</div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17">    </div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18">    <span class="kw">def</span> qty_setter(instance, value):</div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19">        <span class="cf">if</span> value <span class="op">&gt;</span> <span class="dv">0</span>:</div>
-<div class="sourceLine" id="20" href="#20" data-line-number="20">            instance.__dict__[storage_name] <span class="op">=</span> value</div>
-<div class="sourceLine" id="21" href="#21" data-line-number="21">        <span class="cf">else</span>:</div>
-<div class="sourceLine" id="22" href="#22" data-line-number="22">            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">&#39;value must be &gt; 0&#39;</span>)</div>
-<div class="sourceLine" id="23" href="#23" data-line-number="23">    </div>
-<div class="sourceLine" id="24" href="#24" data-line-number="24">    <span class="cf">return</span> <span class="bu">property</span>(qty_getter, qty_setter)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">class</span> LineItem:
+    weight <span class="op">=</span> quantity(<span class="st">&#39;weight&#39;</span>) <span class="co"># 使用工厂函数把第一个自定义的特性weight定义为类属性</span>
+    price <span class="op">=</span> quantity(<span class="st">&#39;price&#39;</span>) <span class="co"># 构建另一个自定义的特性，price</span>
+    
+    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, description, weight, price):
+        <span class="va">self</span>.description <span class="op">=</span> description
+        <span class="va">self</span>.weight <span class="op">=</span> weight <span class="co"># 特性已经激活，确保不能把weight设为负数或零</span>
+        <span class="va">self</span>.price <span class="op">=</span> price <span class="co"># 使用特性获取实例中存储的值</span>
+        
+    <span class="kw">def</span> subtotal(<span class="va">self</span>):
+        <span class="cf">return</span> <span class="va">self</span>.weight <span class="op">*</span> <span class="va">self</span>.price
+    
+<span class="kw">def</span> quantity(storage_name):
+    
+    <span class="kw">def</span> qty_getter(instance):
+        <span class="cf">return</span> instance.__dict__[storage_name]
+    
+    <span class="kw">def</span> qty_setter(instance, value):
+        <span class="cf">if</span> value <span class="op">&gt;</span> <span class="dv">0</span>:
+            instance.__dict__[storage_name] <span class="op">=</span> value
+        <span class="cf">else</span>:
+            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">&#39;value must be &gt; 0&#39;</span>)
+    
+    <span class="cf">return</span> <span class="bu">property</span>(qty_getter, qty_setter)</code></pre></div>
 <p><code>getattr(object, name[, default])</code></p>
 <p>从<code>object</code>对象中获取<code>name</code>字符串对应的属性。获取的属性可能来自对象所属的类或超类。</p>
 <p><code>hasattr(object, name)</code></p>
@@ -472,33 +472,33 @@
 <p><u>托管属性</u></p>
 <p>托管类中由描述符实例处理的公开属性，值存储在存储属性中。</p>
 <p>下面使用<code>Quantity</code>描述符管理<code>LineItem</code>的属性。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="co"># 描述符基于协议实现，无需创建子类</span></div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="kw">class</span> Quantity:</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3">    </div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, storage_name):</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">        <span class="co"># Quantity实例有个storage_name属性，这是托管实例存储值的属性名称</span></div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">        <span class="va">self</span>.storage_name <span class="op">=</span> storage_name</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">    <span class="co"># 尝试为托管属性赋值时，会调用__set__方法。</span></div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">    <span class="co"># self是描述符实例（即LineItem.weight或LineItem.price)</span></div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9">    <span class="co"># instance是托管实例（LineItem实例），value是要设定的值    </span></div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">    <span class="kw">def</span> <span class="fu">__set__</span>(<span class="va">self</span>, instance, value):</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">        <span class="cf">if</span> value <span class="op">&gt;</span> <span class="dv">0</span>:            </div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">            instance.__dict__[<span class="va">self</span>.storage_name] <span class="op">=</span> value</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">        <span class="cf">else</span>:</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">&#39;value must be &gt; 0&#39;</span>)</div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15"></div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16"><span class="kw">class</span> LineItem:</div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17">    </div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18">    weight <span class="op">=</span> Quantity(<span class="st">&#39;weight&#39;</span>)</div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19">    price <span class="op">=</span> Quantity(<span class="st">&#39;price&#39;</span>)</div>
-<div class="sourceLine" id="20" href="#20" data-line-number="20">    </div>
-<div class="sourceLine" id="21" href="#21" data-line-number="21">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, description, weight, price):</div>
-<div class="sourceLine" id="22" href="#22" data-line-number="22">        <span class="va">self</span>.description <span class="op">=</span> description</div>
-<div class="sourceLine" id="23" href="#23" data-line-number="23">        <span class="va">self</span>.weight <span class="op">=</span> weight</div>
-<div class="sourceLine" id="24" href="#24" data-line-number="24">        <span class="va">self</span>.price <span class="op">=</span> price</div>
-<div class="sourceLine" id="25" href="#25" data-line-number="25">    </div>
-<div class="sourceLine" id="26" href="#26" data-line-number="26">    <span class="kw">def</span> subtotal(<span class="va">self</span>):</div>
-<div class="sourceLine" id="27" href="#27" data-line-number="27">        <span class="cf">return</span> <span class="va">self</span>.weight <span class="op">*</span> <span class="va">self</span>.price</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="co"># 描述符基于协议实现，无需创建子类</span>
+<span class="kw">class</span> Quantity:
+    
+    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, storage_name):
+        <span class="co"># Quantity实例有个storage_name属性，这是托管实例存储值的属性名称</span>
+        <span class="va">self</span>.storage_name <span class="op">=</span> storage_name
+    <span class="co"># 尝试为托管属性赋值时，会调用__set__方法。</span>
+    <span class="co"># self是描述符实例（即LineItem.weight或LineItem.price)</span>
+    <span class="co"># instance是托管实例（LineItem实例），value是要设定的值    </span>
+    <span class="kw">def</span> <span class="fu">__set__</span>(<span class="va">self</span>, instance, value):
+        <span class="cf">if</span> value <span class="op">&gt;</span> <span class="dv">0</span>:            
+            instance.__dict__[<span class="va">self</span>.storage_name] <span class="op">=</span> value
+        <span class="cf">else</span>:
+            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">&#39;value must be &gt; 0&#39;</span>)
+
+<span class="kw">class</span> LineItem:
+    
+    weight <span class="op">=</span> Quantity(<span class="st">&#39;weight&#39;</span>)
+    price <span class="op">=</span> Quantity(<span class="st">&#39;price&#39;</span>)
+    
+    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, description, weight, price):
+        <span class="va">self</span>.description <span class="op">=</span> description
+        <span class="va">self</span>.weight <span class="op">=</span> weight
+        <span class="va">self</span>.price <span class="op">=</span> price
+    
+    <span class="kw">def</span> subtotal(<span class="va">self</span>):
+        <span class="cf">return</span> <span class="va">self</span>.weight <span class="op">*</span> <span class="va">self</span>.price</code></pre></div>
 <p>存储在描述符中的数据，会变成<code>LineItem</code>类的类属性，从而由全部<code>LineItem</code>实例共享。</p>
 
       

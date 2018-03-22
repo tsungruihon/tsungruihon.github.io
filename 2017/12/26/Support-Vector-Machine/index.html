@@ -530,8 +530,8 @@ K(x, z) = (x \cdot z + 1)^p
 <p>对应的支持向量机是一个<code>p次多项式分类器</code>。</p>
 <ul>
 <li><code>高斯核函数(Gaussian kernel function)</code> <span class="math display">\[
-K(x, z) = exp\left(-\frac{||x-z||^2}{2\sigma^2}\right)
-\]</span> 然后下面我们就可以尝试求解最优解了。</li>
+  K(x, z) = exp\left(-\frac{||x-z||^2}{2\sigma^2}\right)
+  \]</span> 然后下面我们就可以尝试求解最优解了。</li>
 </ul>
 <p>（1）选取适当的<code>核函数K(x, z)</code>和适当的参数<code>C</code>，构造并求解最优化问题 <span class="math display">\[
 \begin{aligned}
@@ -549,183 +549,183 @@ b^* = y_j - \sum_{i=1}^{N}\alpha_{i}^{*}y_iK(x_i \cdot x_j)
 f(x) = sign \left (\sum_{i=1}^{N}\alpha_{i}^{*}y_iK(x \cdot x_i) + b^{*}\right)
 \]</span> 解决了。</p>
 <p>下面我们就可以用<code>Python</code>来写一个<code>SVM算法</code>啦</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">import</span> time</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="im">import</span> random</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="im">import</span> logging</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"></div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="im">import</span> pandas <span class="im">as</span> pd</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="im">from</span> sklearn.cross_validation <span class="im">import</span> train_test_split</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"></div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="kw">class</span> SVM(<span class="bu">object</span>):</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10"></div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, kernel<span class="op">=</span><span class="st">&#39;linear&#39;</span>,epsilon <span class="op">=</span> <span class="fl">0.001</span>):</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">        <span class="va">self</span>.kernel <span class="op">=</span> kernel</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">        <span class="va">self</span>.epsilon <span class="op">=</span> epsilon</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14"></div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">    <span class="kw">def</span> _init_parameters(<span class="va">self</span>, features, labels):</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16"></div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17">        <span class="va">self</span>.X <span class="op">=</span> features</div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18">        <span class="va">self</span>.Y <span class="op">=</span> labels</div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19"></div>
-<div class="sourceLine" id="20" href="#20" data-line-number="20">        <span class="va">self</span>.b <span class="op">=</span> <span class="fl">0.0</span></div>
-<div class="sourceLine" id="21" href="#21" data-line-number="21">        <span class="va">self</span>.n <span class="op">=</span> <span class="bu">len</span>(features[<span class="dv">0</span>])</div>
-<div class="sourceLine" id="22" href="#22" data-line-number="22">        <span class="va">self</span>.N <span class="op">=</span> <span class="bu">len</span>(features)</div>
-<div class="sourceLine" id="23" href="#23" data-line-number="23">        <span class="va">self</span>.alpha <span class="op">=</span> [<span class="fl">0.0</span>] <span class="op">*</span> <span class="va">self</span>.N</div>
-<div class="sourceLine" id="24" href="#24" data-line-number="24">        <span class="va">self</span>.E <span class="op">=</span> [<span class="va">self</span>._E_(i) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.N)]</div>
-<div class="sourceLine" id="25" href="#25" data-line-number="25"></div>
-<div class="sourceLine" id="26" href="#26" data-line-number="26">        <span class="va">self</span>.C <span class="op">=</span> <span class="dv">1000</span></div>
-<div class="sourceLine" id="27" href="#27" data-line-number="27">        <span class="va">self</span>.Max_Interation <span class="op">=</span> <span class="dv">5000</span></div>
-<div class="sourceLine" id="28" href="#28" data-line-number="28"></div>
-<div class="sourceLine" id="29" href="#29" data-line-number="29"></div>
-<div class="sourceLine" id="30" href="#30" data-line-number="30">    <span class="kw">def</span> _satisfy_KKT(<span class="va">self</span>, i):</div>
-<div class="sourceLine" id="31" href="#31" data-line-number="31">        ygx <span class="op">=</span> <span class="va">self</span>.Y[i] <span class="op">*</span> <span class="va">self</span>._g_(i)</div>
-<div class="sourceLine" id="32" href="#32" data-line-number="32">        <span class="cf">if</span> <span class="bu">abs</span>(<span class="va">self</span>.alpha[i])<span class="op">&lt;</span><span class="va">self</span>.epsilon:</div>
-<div class="sourceLine" id="33" href="#33" data-line-number="33">            <span class="cf">return</span> ygx <span class="op">&gt;</span> <span class="dv">1</span> <span class="kw">or</span> ygx <span class="op">==</span> <span class="dv">1</span></div>
-<div class="sourceLine" id="34" href="#34" data-line-number="34">        <span class="cf">elif</span> <span class="bu">abs</span>(<span class="va">self</span>.alpha[i]<span class="op">-</span><span class="va">self</span>.C)<span class="op">&lt;</span><span class="va">self</span>.epsilon:</div>
-<div class="sourceLine" id="35" href="#35" data-line-number="35">            <span class="cf">return</span> ygx <span class="op">&lt;</span> <span class="dv">1</span> <span class="kw">or</span> ygx <span class="op">==</span> <span class="dv">1</span></div>
-<div class="sourceLine" id="36" href="#36" data-line-number="36">        <span class="cf">else</span>:</div>
-<div class="sourceLine" id="37" href="#37" data-line-number="37">            <span class="cf">return</span> <span class="bu">abs</span>(ygx<span class="dv">-1</span>) <span class="op">&lt;</span> <span class="va">self</span>.epsilon</div>
-<div class="sourceLine" id="38" href="#38" data-line-number="38"></div>
-<div class="sourceLine" id="39" href="#39" data-line-number="39">    <span class="kw">def</span> is_stop(<span class="va">self</span>):</div>
-<div class="sourceLine" id="40" href="#40" data-line-number="40">        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.N):</div>
-<div class="sourceLine" id="41" href="#41" data-line-number="41">            satisfy <span class="op">=</span> <span class="va">self</span>._satisfy_KKT(i)</div>
-<div class="sourceLine" id="42" href="#42" data-line-number="42"></div>
-<div class="sourceLine" id="43" href="#43" data-line-number="43">            <span class="cf">if</span> <span class="kw">not</span> satisfy:</div>
-<div class="sourceLine" id="44" href="#44" data-line-number="44">                <span class="cf">return</span> <span class="va">False</span></div>
-<div class="sourceLine" id="45" href="#45" data-line-number="45">        <span class="cf">return</span> <span class="va">True</span></div>
-<div class="sourceLine" id="46" href="#46" data-line-number="46"></div>
-<div class="sourceLine" id="47" href="#47" data-line-number="47">    <span class="kw">def</span> _select_two_parameters(<span class="va">self</span>):</div>
-<div class="sourceLine" id="48" href="#48" data-line-number="48"></div>
-<div class="sourceLine" id="49" href="#49" data-line-number="49">        index_list <span class="op">=</span> [i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.N)]</div>
-<div class="sourceLine" id="50" href="#50" data-line-number="50"></div>
-<div class="sourceLine" id="51" href="#51" data-line-number="51">        i1_list_1 <span class="op">=</span> <span class="bu">filter</span>(<span class="kw">lambda</span> i: <span class="va">self</span>.alpha[i] <span class="op">&gt;</span> <span class="dv">0</span> <span class="kw">and</span> <span class="va">self</span>.alpha[i] <span class="op">&lt;</span> <span class="va">self</span>.C, index_list)</div>
-<div class="sourceLine" id="52" href="#52" data-line-number="52">        i1_list_2 <span class="op">=</span> <span class="bu">list</span>(<span class="bu">set</span>(index_list) <span class="op">-</span> <span class="bu">set</span>(i1_list_1))</div>
-<div class="sourceLine" id="53" href="#53" data-line-number="53"></div>
-<div class="sourceLine" id="54" href="#54" data-line-number="54">        i1_list <span class="op">=</span> i1_list_1</div>
-<div class="sourceLine" id="55" href="#55" data-line-number="55">        i1_list.extend(i1_list_2)</div>
-<div class="sourceLine" id="56" href="#56" data-line-number="56"></div>
-<div class="sourceLine" id="57" href="#57" data-line-number="57">        <span class="cf">for</span> i <span class="kw">in</span> i1_list:</div>
-<div class="sourceLine" id="58" href="#58" data-line-number="58">            <span class="cf">if</span> <span class="va">self</span>._satisfy_KKT(i):</div>
-<div class="sourceLine" id="59" href="#59" data-line-number="59">                <span class="cf">continue</span></div>
-<div class="sourceLine" id="60" href="#60" data-line-number="60"></div>
-<div class="sourceLine" id="61" href="#61" data-line-number="61">            E1 <span class="op">=</span> <span class="va">self</span>.E[i]</div>
-<div class="sourceLine" id="62" href="#62" data-line-number="62">            max_ <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>)</div>
-<div class="sourceLine" id="63" href="#63" data-line-number="63"></div>
-<div class="sourceLine" id="64" href="#64" data-line-number="64">            <span class="cf">for</span> j <span class="kw">in</span> index_list:</div>
-<div class="sourceLine" id="65" href="#65" data-line-number="65">                <span class="cf">if</span> i <span class="op">==</span> j:</div>
-<div class="sourceLine" id="66" href="#66" data-line-number="66">                    <span class="cf">continue</span></div>
-<div class="sourceLine" id="67" href="#67" data-line-number="67"></div>
-<div class="sourceLine" id="68" href="#68" data-line-number="68">                E2 <span class="op">=</span> <span class="va">self</span>.E[j]</div>
-<div class="sourceLine" id="69" href="#69" data-line-number="69">                <span class="cf">if</span> <span class="bu">abs</span>(E1 <span class="op">-</span> E2) <span class="op">&gt;</span> max_[<span class="dv">0</span>]:</div>
-<div class="sourceLine" id="70" href="#70" data-line-number="70">                    max_ <span class="op">=</span> (<span class="bu">abs</span>(E1 <span class="op">-</span> E2), j)</div>
-<div class="sourceLine" id="71" href="#71" data-line-number="71"></div>
-<div class="sourceLine" id="72" href="#72" data-line-number="72">            <span class="cf">return</span> i, max_[<span class="dv">1</span>]</div>
-<div class="sourceLine" id="73" href="#73" data-line-number="73"></div>
-<div class="sourceLine" id="74" href="#74" data-line-number="74">    <span class="kw">def</span> _K_(<span class="va">self</span>, x1, x2):</div>
-<div class="sourceLine" id="75" href="#75" data-line-number="75"></div>
-<div class="sourceLine" id="76" href="#76" data-line-number="76">        <span class="cf">if</span> <span class="va">self</span>.kernel <span class="op">==</span> <span class="st">&#39;linear&#39;</span>:</div>
-<div class="sourceLine" id="77" href="#77" data-line-number="77">            <span class="cf">return</span> <span class="bu">sum</span>([x1[k] <span class="op">*</span> x2[k] <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.n)])</div>
-<div class="sourceLine" id="78" href="#78" data-line-number="78">        <span class="cf">if</span> <span class="va">self</span>.kernel <span class="op">==</span> <span class="st">&#39;poly&#39;</span>:</div>
-<div class="sourceLine" id="79" href="#79" data-line-number="79">            <span class="cf">return</span> (<span class="bu">sum</span>([x1[k] <span class="op">*</span> x2[k] <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.n)])<span class="op">+</span><span class="dv">1</span>)<span class="op">**</span><span class="dv">3</span></div>
-<div class="sourceLine" id="80" href="#80" data-line-number="80"></div>
-<div class="sourceLine" id="81" href="#81" data-line-number="81"></div>
-<div class="sourceLine" id="82" href="#82" data-line-number="82"></div>
-<div class="sourceLine" id="83" href="#83" data-line-number="83">        <span class="bu">print</span> <span class="st">&#39;没有定义核函数&#39;</span></div>
-<div class="sourceLine" id="84" href="#84" data-line-number="84">        <span class="cf">return</span> <span class="dv">0</span></div>
-<div class="sourceLine" id="85" href="#85" data-line-number="85"></div>
-<div class="sourceLine" id="86" href="#86" data-line-number="86">    <span class="kw">def</span> _g_(<span class="va">self</span>, i):</div>
-<div class="sourceLine" id="87" href="#87" data-line-number="87"></div>
-<div class="sourceLine" id="88" href="#88" data-line-number="88">        result <span class="op">=</span> <span class="va">self</span>.b</div>
-<div class="sourceLine" id="89" href="#89" data-line-number="89"></div>
-<div class="sourceLine" id="90" href="#90" data-line-number="90">        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.N):</div>
-<div class="sourceLine" id="91" href="#91" data-line-number="91">            result <span class="op">+=</span> <span class="va">self</span>.alpha[j] <span class="op">*</span> <span class="va">self</span>.Y[j] <span class="op">*</span> <span class="va">self</span>._K_(<span class="va">self</span>.X[i], <span class="va">self</span>.X[j])</div>
-<div class="sourceLine" id="92" href="#92" data-line-number="92"></div>
-<div class="sourceLine" id="93" href="#93" data-line-number="93">        <span class="cf">return</span> result</div>
-<div class="sourceLine" id="94" href="#94" data-line-number="94"></div>
-<div class="sourceLine" id="95" href="#95" data-line-number="95">    <span class="kw">def</span> _E_(<span class="va">self</span>, i):</div>
-<div class="sourceLine" id="96" href="#96" data-line-number="96"></div>
-<div class="sourceLine" id="97" href="#97" data-line-number="97">        <span class="cf">return</span> <span class="va">self</span>._g_(i) <span class="op">-</span> <span class="va">self</span>.Y[i]</div>
-<div class="sourceLine" id="98" href="#98" data-line-number="98"></div>
-<div class="sourceLine" id="99" href="#99" data-line-number="99">    <span class="kw">def</span> try_E(<span class="va">self</span>,i):</div>
-<div class="sourceLine" id="100" href="#100" data-line-number="100">        result <span class="op">=</span> <span class="va">self</span>.b<span class="op">-</span><span class="va">self</span>.Y[i]</div>
-<div class="sourceLine" id="101" href="#101" data-line-number="101">        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.N):</div>
-<div class="sourceLine" id="102" href="#102" data-line-number="102">            <span class="cf">if</span> <span class="va">self</span>.alpha[j]<span class="op">&lt;</span><span class="dv">0</span> <span class="kw">or</span> <span class="va">self</span>.alpha[j]<span class="op">&gt;</span><span class="va">self</span>.C:</div>
-<div class="sourceLine" id="103" href="#103" data-line-number="103">                <span class="cf">continue</span></div>
-<div class="sourceLine" id="104" href="#104" data-line-number="104">            result <span class="op">+=</span> <span class="va">self</span>.Y[j]<span class="op">*</span><span class="va">self</span>.alpha[j]<span class="op">*</span><span class="va">self</span>._K_(<span class="va">self</span>.X[i],<span class="va">self</span>.X[j])</div>
-<div class="sourceLine" id="105" href="#105" data-line-number="105">        <span class="cf">return</span> result</div>
-<div class="sourceLine" id="106" href="#106" data-line-number="106"></div>
-<div class="sourceLine" id="107" href="#107" data-line-number="107"></div>
-<div class="sourceLine" id="108" href="#108" data-line-number="108">    <span class="kw">def</span> train(<span class="va">self</span>, features, labels):</div>
-<div class="sourceLine" id="109" href="#109" data-line-number="109"></div>
-<div class="sourceLine" id="110" href="#110" data-line-number="110">        <span class="va">self</span>._init_parameters(features, labels)</div>
-<div class="sourceLine" id="111" href="#111" data-line-number="111"></div>
-<div class="sourceLine" id="112" href="#112" data-line-number="112">        <span class="cf">for</span> times <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.Max_Interation):</div>
-<div class="sourceLine" id="113" href="#113" data-line-number="113">            </div>
-<div class="sourceLine" id="114" href="#114" data-line-number="114">            logging.debug(<span class="st">&#39;iterater </span><span class="sc">%d</span><span class="st">&#39;</span> <span class="op">%</span> times)</div>
-<div class="sourceLine" id="115" href="#115" data-line-number="115"></div>
-<div class="sourceLine" id="116" href="#116" data-line-number="116">            i1, i2 <span class="op">=</span> <span class="va">self</span>._select_two_parameters()</div>
-<div class="sourceLine" id="117" href="#117" data-line-number="117"></div>
-<div class="sourceLine" id="118" href="#118" data-line-number="118">            L <span class="op">=</span> <span class="bu">max</span>(<span class="dv">0</span>, <span class="va">self</span>.alpha[i2] <span class="op">-</span> <span class="va">self</span>.alpha[i1])</div>
-<div class="sourceLine" id="119" href="#119" data-line-number="119">            H <span class="op">=</span> <span class="bu">min</span>(<span class="va">self</span>.C, <span class="va">self</span>.C <span class="op">+</span> <span class="va">self</span>.alpha[i2] <span class="op">-</span> <span class="va">self</span>.alpha[i1])</div>
-<div class="sourceLine" id="120" href="#120" data-line-number="120"></div>
-<div class="sourceLine" id="121" href="#121" data-line-number="121">            <span class="cf">if</span> <span class="va">self</span>.Y[i1] <span class="op">==</span> <span class="va">self</span>.Y[i2]:</div>
-<div class="sourceLine" id="122" href="#122" data-line-number="122">                L <span class="op">=</span> <span class="bu">max</span>(<span class="dv">0</span>, <span class="va">self</span>.alpha[i2] <span class="op">+</span> <span class="va">self</span>.alpha[i1] <span class="op">-</span> <span class="va">self</span>.C)</div>
-<div class="sourceLine" id="123" href="#123" data-line-number="123">                H <span class="op">=</span> <span class="bu">min</span>(<span class="va">self</span>.C, <span class="va">self</span>.alpha[i2] <span class="op">+</span> <span class="va">self</span>.alpha[i1])</div>
-<div class="sourceLine" id="124" href="#124" data-line-number="124"></div>
-<div class="sourceLine" id="125" href="#125" data-line-number="125">            E1 <span class="op">=</span> <span class="va">self</span>.E[i1]</div>
-<div class="sourceLine" id="126" href="#126" data-line-number="126">            E2 <span class="op">=</span> <span class="va">self</span>.E[i2]</div>
-<div class="sourceLine" id="127" href="#127" data-line-number="127">            eta <span class="op">=</span> <span class="va">self</span>._K_(<span class="va">self</span>.X[i1], <span class="va">self</span>.X[i1]) <span class="op">+</span> <span class="va">self</span>._K_(<span class="va">self</span>.X[i2], <span class="va">self</span>.X[i2]) <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> <span class="va">self</span>._K_(<span class="va">self</span>.X[i1], <span class="va">self</span>.X[i2])   </div>
-<div class="sourceLine" id="128" href="#128" data-line-number="128"></div>
-<div class="sourceLine" id="129" href="#129" data-line-number="129">            alpha2_new_unc <span class="op">=</span> <span class="va">self</span>.alpha[i2] <span class="op">+</span> <span class="va">self</span>.Y[i2] <span class="op">*</span> (E1 <span class="op">-</span> E2) <span class="op">/</span> eta     </div>
-<div class="sourceLine" id="130" href="#130" data-line-number="130"></div>
-<div class="sourceLine" id="131" href="#131" data-line-number="131">            alph2_new <span class="op">=</span> <span class="dv">0</span></div>
-<div class="sourceLine" id="132" href="#132" data-line-number="132">            <span class="cf">if</span> alpha2_new_unc <span class="op">&gt;</span> H:</div>
-<div class="sourceLine" id="133" href="#133" data-line-number="133">                alph2_new <span class="op">=</span> H</div>
-<div class="sourceLine" id="134" href="#134" data-line-number="134">            <span class="cf">elif</span> alpha2_new_unc <span class="op">&lt;</span> L:</div>
-<div class="sourceLine" id="135" href="#135" data-line-number="135">                alph2_new <span class="op">=</span> L</div>
-<div class="sourceLine" id="136" href="#136" data-line-number="136">            <span class="cf">else</span>:</div>
-<div class="sourceLine" id="137" href="#137" data-line-number="137">                alph2_new <span class="op">=</span> alpha2_new_unc</div>
-<div class="sourceLine" id="138" href="#138" data-line-number="138"></div>
-<div class="sourceLine" id="139" href="#139" data-line-number="139">            alph1_new <span class="op">=</span> <span class="va">self</span>.alpha[i1] <span class="op">+</span> <span class="va">self</span>.Y[i1] <span class="op">*</span> <span class="op">\</span></div>
-<div class="sourceLine" id="140" href="#140" data-line-number="140">                <span class="va">self</span>.Y[i2] <span class="op">*</span> (<span class="va">self</span>.alpha[i2] <span class="op">-</span> alph2_new)</div>
-<div class="sourceLine" id="141" href="#141" data-line-number="141"></div>
-<div class="sourceLine" id="142" href="#142" data-line-number="142">            b_new <span class="op">=</span> <span class="dv">0</span></div>
-<div class="sourceLine" id="143" href="#143" data-line-number="143">            b1_new <span class="op">=</span> <span class="op">-</span>E1 <span class="op">-</span> <span class="va">self</span>.Y[i1] <span class="op">*</span> <span class="va">self</span>._K_(<span class="va">self</span>.X[i1], <span class="va">self</span>.X[i1]) <span class="op">*</span> (alph1_new <span class="op">-</span> <span class="va">self</span>.alpha[i1]) <span class="op">-</span> <span class="va">self</span>.Y[i2] <span class="op">*</span> <span class="va">self</span>._K_(<span class="va">self</span>.X[i2], <span class="va">self</span>.X[i1]) <span class="op">*</span> (alph2_new <span class="op">-</span> <span class="va">self</span>.alpha[i2]) <span class="op">+</span> <span class="va">self</span>.b</div>
-<div class="sourceLine" id="144" href="#144" data-line-number="144">            b2_new <span class="op">=</span> <span class="op">-</span>E2 <span class="op">-</span> <span class="va">self</span>.Y[i1] <span class="op">*</span> <span class="va">self</span>._K_(<span class="va">self</span>.X[i1], <span class="va">self</span>.X[i2]) <span class="op">*</span> (alph1_new <span class="op">-</span> <span class="va">self</span>.alpha[i1]) <span class="op">-</span> <span class="va">self</span>.Y[i2] <span class="op">*</span> <span class="va">self</span>._K_(<span class="va">self</span>.X[i2], <span class="va">self</span>.X[i2]) <span class="op">*</span> (alph2_new <span class="op">-</span> <span class="va">self</span>.alpha[i2]) <span class="op">+</span> <span class="va">self</span>.b</div>
-<div class="sourceLine" id="145" href="#145" data-line-number="145"></div>
-<div class="sourceLine" id="146" href="#146" data-line-number="146">            <span class="cf">if</span> alph1_new <span class="op">&gt;</span> <span class="dv">0</span> <span class="kw">and</span> alph1_new <span class="op">&lt;</span> <span class="va">self</span>.C:</div>
-<div class="sourceLine" id="147" href="#147" data-line-number="147">                b_new <span class="op">=</span> b1_new</div>
-<div class="sourceLine" id="148" href="#148" data-line-number="148">            <span class="cf">elif</span> alph2_new <span class="op">&gt;</span> <span class="dv">0</span> <span class="kw">and</span> alph2_new <span class="op">&lt;</span> <span class="va">self</span>.C:</div>
-<div class="sourceLine" id="149" href="#149" data-line-number="149">                b_new <span class="op">=</span> b2_new</div>
-<div class="sourceLine" id="150" href="#150" data-line-number="150">            <span class="cf">else</span>:</div>
-<div class="sourceLine" id="151" href="#151" data-line-number="151">                b_new <span class="op">=</span> (b1_new <span class="op">+</span> b2_new) <span class="op">/</span> <span class="dv">2</span></div>
-<div class="sourceLine" id="152" href="#152" data-line-number="152"></div>
-<div class="sourceLine" id="153" href="#153" data-line-number="153">            <span class="va">self</span>.alpha[i1] <span class="op">=</span> alph1_new</div>
-<div class="sourceLine" id="154" href="#154" data-line-number="154">            <span class="va">self</span>.alpha[i2] <span class="op">=</span> alph2_new</div>
-<div class="sourceLine" id="155" href="#155" data-line-number="155">            <span class="va">self</span>.b <span class="op">=</span> b_new</div>
-<div class="sourceLine" id="156" href="#156" data-line-number="156"></div>
-<div class="sourceLine" id="157" href="#157" data-line-number="157">            <span class="va">self</span>.E[i1] <span class="op">=</span> <span class="va">self</span>._E_(i1)</div>
-<div class="sourceLine" id="158" href="#158" data-line-number="158">            <span class="va">self</span>.E[i2] <span class="op">=</span> <span class="va">self</span>._E_(i2)</div>
-<div class="sourceLine" id="159" href="#159" data-line-number="159"></div>
-<div class="sourceLine" id="160" href="#160" data-line-number="160"></div>
-<div class="sourceLine" id="161" href="#161" data-line-number="161">    <span class="kw">def</span> _predict_(<span class="va">self</span>,feature):</div>
-<div class="sourceLine" id="162" href="#162" data-line-number="162">        result <span class="op">=</span> <span class="va">self</span>.b</div>
-<div class="sourceLine" id="163" href="#163" data-line-number="163"></div>
-<div class="sourceLine" id="164" href="#164" data-line-number="164">        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.N):</div>
-<div class="sourceLine" id="165" href="#165" data-line-number="165">            result <span class="op">+=</span> <span class="va">self</span>.alpha[i]<span class="op">*</span><span class="va">self</span>.Y[i]<span class="op">*</span><span class="va">self</span>._K_(feature,<span class="va">self</span>.X[i])</div>
-<div class="sourceLine" id="166" href="#166" data-line-number="166"></div>
-<div class="sourceLine" id="167" href="#167" data-line-number="167">        <span class="cf">if</span> result <span class="op">&gt;</span> <span class="dv">0</span>:</div>
-<div class="sourceLine" id="168" href="#168" data-line-number="168">            <span class="cf">return</span> <span class="dv">1</span></div>
-<div class="sourceLine" id="169" href="#169" data-line-number="169">        <span class="cf">return</span> <span class="dv">-1</span></div>
-<div class="sourceLine" id="170" href="#170" data-line-number="170"></div>
-<div class="sourceLine" id="171" href="#171" data-line-number="171">    <span class="kw">def</span> predict(<span class="va">self</span>,features):</div>
-<div class="sourceLine" id="172" href="#172" data-line-number="172">        results <span class="op">=</span> []</div>
-<div class="sourceLine" id="173" href="#173" data-line-number="173"></div>
-<div class="sourceLine" id="174" href="#174" data-line-number="174">        <span class="cf">for</span> feature <span class="kw">in</span> features:</div>
-<div class="sourceLine" id="175" href="#175" data-line-number="175">            results.append(<span class="va">self</span>._predict_(feature))</div>
-<div class="sourceLine" id="176" href="#176" data-line-number="176"></div>
-<div class="sourceLine" id="177" href="#177" data-line-number="177">        <span class="cf">return</span> results</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> time
+<span class="im">import</span> random
+<span class="im">import</span> logging
+
+<span class="im">import</span> pandas <span class="im">as</span> pd
+<span class="im">from</span> sklearn.cross_validation <span class="im">import</span> train_test_split
+<span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score
+
+<span class="kw">class</span> SVM(<span class="bu">object</span>):
+
+    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, kernel<span class="op">=</span><span class="st">&#39;linear&#39;</span>,epsilon <span class="op">=</span> <span class="fl">0.001</span>):
+        <span class="va">self</span>.kernel <span class="op">=</span> kernel
+        <span class="va">self</span>.epsilon <span class="op">=</span> epsilon
+
+    <span class="kw">def</span> _init_parameters(<span class="va">self</span>, features, labels):
+
+        <span class="va">self</span>.X <span class="op">=</span> features
+        <span class="va">self</span>.Y <span class="op">=</span> labels
+
+        <span class="va">self</span>.b <span class="op">=</span> <span class="fl">0.0</span>
+        <span class="va">self</span>.n <span class="op">=</span> <span class="bu">len</span>(features[<span class="dv">0</span>])
+        <span class="va">self</span>.N <span class="op">=</span> <span class="bu">len</span>(features)
+        <span class="va">self</span>.alpha <span class="op">=</span> [<span class="fl">0.0</span>] <span class="op">*</span> <span class="va">self</span>.N
+        <span class="va">self</span>.E <span class="op">=</span> [<span class="va">self</span>._E_(i) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.N)]
+
+        <span class="va">self</span>.C <span class="op">=</span> <span class="dv">1000</span>
+        <span class="va">self</span>.Max_Interation <span class="op">=</span> <span class="dv">5000</span>
+
+
+    <span class="kw">def</span> _satisfy_KKT(<span class="va">self</span>, i):
+        ygx <span class="op">=</span> <span class="va">self</span>.Y[i] <span class="op">*</span> <span class="va">self</span>._g_(i)
+        <span class="cf">if</span> <span class="bu">abs</span>(<span class="va">self</span>.alpha[i])<span class="op">&lt;</span><span class="va">self</span>.epsilon:
+            <span class="cf">return</span> ygx <span class="op">&gt;</span> <span class="dv">1</span> <span class="kw">or</span> ygx <span class="op">==</span> <span class="dv">1</span>
+        <span class="cf">elif</span> <span class="bu">abs</span>(<span class="va">self</span>.alpha[i]<span class="op">-</span><span class="va">self</span>.C)<span class="op">&lt;</span><span class="va">self</span>.epsilon:
+            <span class="cf">return</span> ygx <span class="op">&lt;</span> <span class="dv">1</span> <span class="kw">or</span> ygx <span class="op">==</span> <span class="dv">1</span>
+        <span class="cf">else</span>:
+            <span class="cf">return</span> <span class="bu">abs</span>(ygx<span class="op">-</span><span class="dv">1</span>) <span class="op">&lt;</span> <span class="va">self</span>.epsilon
+
+    <span class="kw">def</span> is_stop(<span class="va">self</span>):
+        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.N):
+            satisfy <span class="op">=</span> <span class="va">self</span>._satisfy_KKT(i)
+
+            <span class="cf">if</span> <span class="kw">not</span> satisfy:
+                <span class="cf">return</span> <span class="va">False</span>
+        <span class="cf">return</span> <span class="va">True</span>
+
+    <span class="kw">def</span> _select_two_parameters(<span class="va">self</span>):
+
+        index_list <span class="op">=</span> [i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.N)]
+
+        i1_list_1 <span class="op">=</span> <span class="bu">filter</span>(<span class="kw">lambda</span> i: <span class="va">self</span>.alpha[i] <span class="op">&gt;</span> <span class="dv">0</span> <span class="kw">and</span> <span class="va">self</span>.alpha[i] <span class="op">&lt;</span> <span class="va">self</span>.C, index_list)
+        i1_list_2 <span class="op">=</span> <span class="bu">list</span>(<span class="bu">set</span>(index_list) <span class="op">-</span> <span class="bu">set</span>(i1_list_1))
+
+        i1_list <span class="op">=</span> i1_list_1
+        i1_list.extend(i1_list_2)
+
+        <span class="cf">for</span> i <span class="kw">in</span> i1_list:
+            <span class="cf">if</span> <span class="va">self</span>._satisfy_KKT(i):
+                <span class="cf">continue</span>
+
+            E1 <span class="op">=</span> <span class="va">self</span>.E[i]
+            max_ <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>)
+
+            <span class="cf">for</span> j <span class="kw">in</span> index_list:
+                <span class="cf">if</span> i <span class="op">==</span> j:
+                    <span class="cf">continue</span>
+
+                E2 <span class="op">=</span> <span class="va">self</span>.E[j]
+                <span class="cf">if</span> <span class="bu">abs</span>(E1 <span class="op">-</span> E2) <span class="op">&gt;</span> max_[<span class="dv">0</span>]:
+                    max_ <span class="op">=</span> (<span class="bu">abs</span>(E1 <span class="op">-</span> E2), j)
+
+            <span class="cf">return</span> i, max_[<span class="dv">1</span>]
+
+    <span class="kw">def</span> _K_(<span class="va">self</span>, x1, x2):
+
+        <span class="cf">if</span> <span class="va">self</span>.kernel <span class="op">==</span> <span class="st">&#39;linear&#39;</span>:
+            <span class="cf">return</span> <span class="bu">sum</span>([x1[k] <span class="op">*</span> x2[k] <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.n)])
+        <span class="cf">if</span> <span class="va">self</span>.kernel <span class="op">==</span> <span class="st">&#39;poly&#39;</span>:
+            <span class="cf">return</span> (<span class="bu">sum</span>([x1[k] <span class="op">*</span> x2[k] <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.n)])<span class="op">+</span><span class="dv">1</span>)<span class="op">**</span><span class="dv">3</span>
+
+
+
+        <span class="bu">print</span> <span class="st">&#39;没有定义核函数&#39;</span>
+        <span class="cf">return</span> <span class="dv">0</span>
+
+    <span class="kw">def</span> _g_(<span class="va">self</span>, i):
+
+        result <span class="op">=</span> <span class="va">self</span>.b
+
+        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.N):
+            result <span class="op">+=</span> <span class="va">self</span>.alpha[j] <span class="op">*</span> <span class="va">self</span>.Y[j] <span class="op">*</span> <span class="va">self</span>._K_(<span class="va">self</span>.X[i], <span class="va">self</span>.X[j])
+
+        <span class="cf">return</span> result
+
+    <span class="kw">def</span> _E_(<span class="va">self</span>, i):
+
+        <span class="cf">return</span> <span class="va">self</span>._g_(i) <span class="op">-</span> <span class="va">self</span>.Y[i]
+
+    <span class="kw">def</span> try_E(<span class="va">self</span>,i):
+        result <span class="op">=</span> <span class="va">self</span>.b<span class="op">-</span><span class="va">self</span>.Y[i]
+        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.N):
+            <span class="cf">if</span> <span class="va">self</span>.alpha[j]<span class="op">&lt;</span><span class="dv">0</span> <span class="kw">or</span> <span class="va">self</span>.alpha[j]<span class="op">&gt;</span><span class="va">self</span>.C:
+                <span class="cf">continue</span>
+            result <span class="op">+=</span> <span class="va">self</span>.Y[j]<span class="op">*</span><span class="va">self</span>.alpha[j]<span class="op">*</span><span class="va">self</span>._K_(<span class="va">self</span>.X[i],<span class="va">self</span>.X[j])
+        <span class="cf">return</span> result
+
+
+    <span class="kw">def</span> train(<span class="va">self</span>, features, labels):
+
+        <span class="va">self</span>._init_parameters(features, labels)
+
+        <span class="cf">for</span> times <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.Max_Interation):
+            
+            logging.debug(<span class="st">&#39;iterater </span><span class="sc">%d</span><span class="st">&#39;</span> <span class="op">%</span> times)
+
+            i1, i2 <span class="op">=</span> <span class="va">self</span>._select_two_parameters()
+
+            L <span class="op">=</span> <span class="bu">max</span>(<span class="dv">0</span>, <span class="va">self</span>.alpha[i2] <span class="op">-</span> <span class="va">self</span>.alpha[i1])
+            H <span class="op">=</span> <span class="bu">min</span>(<span class="va">self</span>.C, <span class="va">self</span>.C <span class="op">+</span> <span class="va">self</span>.alpha[i2] <span class="op">-</span> <span class="va">self</span>.alpha[i1])
+
+            <span class="cf">if</span> <span class="va">self</span>.Y[i1] <span class="op">==</span> <span class="va">self</span>.Y[i2]:
+                L <span class="op">=</span> <span class="bu">max</span>(<span class="dv">0</span>, <span class="va">self</span>.alpha[i2] <span class="op">+</span> <span class="va">self</span>.alpha[i1] <span class="op">-</span> <span class="va">self</span>.C)
+                H <span class="op">=</span> <span class="bu">min</span>(<span class="va">self</span>.C, <span class="va">self</span>.alpha[i2] <span class="op">+</span> <span class="va">self</span>.alpha[i1])
+
+            E1 <span class="op">=</span> <span class="va">self</span>.E[i1]
+            E2 <span class="op">=</span> <span class="va">self</span>.E[i2]
+            eta <span class="op">=</span> <span class="va">self</span>._K_(<span class="va">self</span>.X[i1], <span class="va">self</span>.X[i1]) <span class="op">+</span> <span class="va">self</span>._K_(<span class="va">self</span>.X[i2], <span class="va">self</span>.X[i2]) <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> <span class="va">self</span>._K_(<span class="va">self</span>.X[i1], <span class="va">self</span>.X[i2])   
+
+            alpha2_new_unc <span class="op">=</span> <span class="va">self</span>.alpha[i2] <span class="op">+</span> <span class="va">self</span>.Y[i2] <span class="op">*</span> (E1 <span class="op">-</span> E2) <span class="op">/</span> eta     
+
+            alph2_new <span class="op">=</span> <span class="dv">0</span>
+            <span class="cf">if</span> alpha2_new_unc <span class="op">&gt;</span> H:
+                alph2_new <span class="op">=</span> H
+            <span class="cf">elif</span> alpha2_new_unc <span class="op">&lt;</span> L:
+                alph2_new <span class="op">=</span> L
+            <span class="cf">else</span>:
+                alph2_new <span class="op">=</span> alpha2_new_unc
+
+            alph1_new <span class="op">=</span> <span class="va">self</span>.alpha[i1] <span class="op">+</span> <span class="va">self</span>.Y[i1] <span class="op">*</span> <span class="op">\</span>
+                <span class="va">self</span>.Y[i2] <span class="op">*</span> (<span class="va">self</span>.alpha[i2] <span class="op">-</span> alph2_new)
+
+            b_new <span class="op">=</span> <span class="dv">0</span>
+            b1_new <span class="op">=</span> <span class="op">-</span>E1 <span class="op">-</span> <span class="va">self</span>.Y[i1] <span class="op">*</span> <span class="va">self</span>._K_(<span class="va">self</span>.X[i1], <span class="va">self</span>.X[i1]) <span class="op">*</span> (alph1_new <span class="op">-</span> <span class="va">self</span>.alpha[i1]) <span class="op">-</span> <span class="va">self</span>.Y[i2] <span class="op">*</span> <span class="va">self</span>._K_(<span class="va">self</span>.X[i2], <span class="va">self</span>.X[i1]) <span class="op">*</span> (alph2_new <span class="op">-</span> <span class="va">self</span>.alpha[i2]) <span class="op">+</span> <span class="va">self</span>.b
+            b2_new <span class="op">=</span> <span class="op">-</span>E2 <span class="op">-</span> <span class="va">self</span>.Y[i1] <span class="op">*</span> <span class="va">self</span>._K_(<span class="va">self</span>.X[i1], <span class="va">self</span>.X[i2]) <span class="op">*</span> (alph1_new <span class="op">-</span> <span class="va">self</span>.alpha[i1]) <span class="op">-</span> <span class="va">self</span>.Y[i2] <span class="op">*</span> <span class="va">self</span>._K_(<span class="va">self</span>.X[i2], <span class="va">self</span>.X[i2]) <span class="op">*</span> (alph2_new <span class="op">-</span> <span class="va">self</span>.alpha[i2]) <span class="op">+</span> <span class="va">self</span>.b
+
+            <span class="cf">if</span> alph1_new <span class="op">&gt;</span> <span class="dv">0</span> <span class="kw">and</span> alph1_new <span class="op">&lt;</span> <span class="va">self</span>.C:
+                b_new <span class="op">=</span> b1_new
+            <span class="cf">elif</span> alph2_new <span class="op">&gt;</span> <span class="dv">0</span> <span class="kw">and</span> alph2_new <span class="op">&lt;</span> <span class="va">self</span>.C:
+                b_new <span class="op">=</span> b2_new
+            <span class="cf">else</span>:
+                b_new <span class="op">=</span> (b1_new <span class="op">+</span> b2_new) <span class="op">/</span> <span class="dv">2</span>
+
+            <span class="va">self</span>.alpha[i1] <span class="op">=</span> alph1_new
+            <span class="va">self</span>.alpha[i2] <span class="op">=</span> alph2_new
+            <span class="va">self</span>.b <span class="op">=</span> b_new
+
+            <span class="va">self</span>.E[i1] <span class="op">=</span> <span class="va">self</span>._E_(i1)
+            <span class="va">self</span>.E[i2] <span class="op">=</span> <span class="va">self</span>._E_(i2)
+
+
+    <span class="kw">def</span> _predict_(<span class="va">self</span>,feature):
+        result <span class="op">=</span> <span class="va">self</span>.b
+
+        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.N):
+            result <span class="op">+=</span> <span class="va">self</span>.alpha[i]<span class="op">*</span><span class="va">self</span>.Y[i]<span class="op">*</span><span class="va">self</span>._K_(feature,<span class="va">self</span>.X[i])
+
+        <span class="cf">if</span> result <span class="op">&gt;</span> <span class="dv">0</span>:
+            <span class="cf">return</span> <span class="dv">1</span>
+        <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span>
+
+    <span class="kw">def</span> predict(<span class="va">self</span>,features):
+        results <span class="op">=</span> []
+
+        <span class="cf">for</span> feature <span class="kw">in</span> features:
+            results.append(<span class="va">self</span>._predict_(feature))
+
+        <span class="cf">return</span> results</code></pre></div>
 <p>以上。</p>
 
       

@@ -377,101 +377,101 @@
 <p><code>str()</code></p>
 <p>以便于用户理解的方式返回对象的字符串表示形式。</p>
 <p>为了给对象提供其他的表示形式，还会用到另外两个特殊方法<code>__bytes__</code>和<code>__format__</code>。<code>bytes()</code>函数调用它获取对象的字节序列表示形式。<code>__format__</code>方法会被内置的<code>format()</code>函数和<code>str.format()</code>方法调用，使用特殊的格式代码显示对象的字符串表示形式。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">from</span> array <span class="im">import</span> array</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="im">import</span> math</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="kw">class</span> Vector2d:</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">    <span class="co"># typecode是属性，在Vector2d实例和字节序列之间转换时使用。</span></div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">    typecode <span class="op">=</span> <span class="st">&#39;d&#39;</span></div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">    </div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x, y):</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9">        <span class="co"># 在__init__方法中把x和y转换成浮点数，尽早捕获错误，以防调用Vector2d函数时传入不当参数。</span></div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">        <span class="va">self</span>.x <span class="op">=</span> <span class="bu">float</span>(x)</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">        <span class="va">self</span>.y <span class="op">=</span> <span class="bu">float</span>(y)</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">    </div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">    <span class="kw">def</span> <span class="fu">__iter__</span>(<span class="va">self</span>):</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">        <span class="co"># 定义__iter__方法，把vector2d实例变成可迭代的对象，这样才能拆包。</span></div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">        <span class="cf">return</span> (i <span class="cf">for</span> i <span class="kw">in</span> (<span class="va">self</span>.x, <span class="va">self</span>.y))</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16">    </div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17">    <span class="kw">def</span> <span class="fu">__repr__</span>(<span class="va">self</span>):</div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18">        class_name <span class="op">=</span> <span class="bu">type</span>(<span class="va">self</span>).<span class="va">__name__</span></div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19">        <span class="co"># __repr__方法使用{!r}获取各个分量的表示形式，然后插值，构成一个字符串</span></div>
-<div class="sourceLine" id="20" href="#20" data-line-number="20">        <span class="co"># 因为Vector2d实例是可迭代的对象，所以*self会把x和y分量提供给format函数</span></div>
-<div class="sourceLine" id="21" href="#21" data-line-number="21">        <span class="cf">return</span> <span class="st">&#39;</span><span class="sc">{}</span><span class="st">(</span><span class="sc">{!r}</span><span class="st">, </span><span class="sc">{!r}</span><span class="st">)&#39;</span>.<span class="bu">format</span>(class_name, <span class="op">*</span><span class="va">self</span>)</div>
-<div class="sourceLine" id="22" href="#22" data-line-number="22">    </div>
-<div class="sourceLine" id="23" href="#23" data-line-number="23">    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</div>
-<div class="sourceLine" id="24" href="#24" data-line-number="24">        <span class="co"># 从可迭代的Vector2d实例中可以轻松地得到一个元组，显示为一个有序对。</span></div>
-<div class="sourceLine" id="25" href="#25" data-line-number="25">        <span class="cf">return</span> <span class="bu">str</span>(<span class="bu">tuple</span>(<span class="va">self</span>))</div>
-<div class="sourceLine" id="26" href="#26" data-line-number="26">    </div>
-<div class="sourceLine" id="27" href="#27" data-line-number="27">    <span class="kw">def</span> <span class="fu">__bytes__</span>(<span class="va">self</span>):</div>
-<div class="sourceLine" id="28" href="#28" data-line-number="28">        <span class="co"># 为了生成字节序列，我们把typecode转换成字节序列</span></div>
-<div class="sourceLine" id="29" href="#29" data-line-number="29">        <span class="co"># 然后迭代Vector2d实例，得到一个数组，再把数组转换成字节序列</span></div>
-<div class="sourceLine" id="30" href="#30" data-line-number="30">        <span class="cf">return</span> (<span class="bu">bytes</span>([<span class="bu">ord</span>(<span class="va">self</span>.typecode)]) <span class="op">+</span> <span class="bu">bytes</span>(array(<span class="va">self</span>.typecode, <span class="va">self</span>)))</div>
-<div class="sourceLine" id="31" href="#31" data-line-number="31">    </div>
-<div class="sourceLine" id="32" href="#32" data-line-number="32">    <span class="kw">def</span> <span class="fu">__eq__</span>(<span class="va">self</span>, other):</div>
-<div class="sourceLine" id="33" href="#33" data-line-number="33">        <span class="co"># 为了快速比较所有分量，在操作数中构建元组</span></div>
-<div class="sourceLine" id="34" href="#34" data-line-number="34">        <span class="cf">return</span> <span class="bu">tuple</span>(<span class="va">self</span>) <span class="op">==</span> <span class="bu">tuple</span>(other)</div>
-<div class="sourceLine" id="35" href="#35" data-line-number="35">    </div>
-<div class="sourceLine" id="36" href="#36" data-line-number="36">    <span class="kw">def</span> <span class="fu">__abs__</span>(<span class="va">self</span>):</div>
-<div class="sourceLine" id="37" href="#37" data-line-number="37">        <span class="co"># 模是x和y分量构成的直角三角形的斜边长</span></div>
-<div class="sourceLine" id="38" href="#38" data-line-number="38">        <span class="cf">return</span> math.hypot(<span class="va">self</span>.x, <span class="va">self</span>.y)</div>
-<div class="sourceLine" id="39" href="#39" data-line-number="39">    </div>
-<div class="sourceLine" id="40" href="#40" data-line-number="40">    <span class="kw">def</span> __bool__(<span class="va">self</span>):</div>
-<div class="sourceLine" id="41" href="#41" data-line-number="41">        <span class="co"># __bool__方法使用abs(self)计算模，然后把结果转换成布尔值。</span></div>
-<div class="sourceLine" id="42" href="#42" data-line-number="42">        <span class="cf">return</span> <span class="bu">bool</span>(<span class="bu">abs</span>(<span class="va">self</span>))</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> array <span class="im">import</span> array
+<span class="im">import</span> math
+
+<span class="kw">class</span> Vector2d:
+    <span class="co"># typecode是属性，在Vector2d实例和字节序列之间转换时使用。</span>
+    typecode <span class="op">=</span> <span class="st">&#39;d&#39;</span>
+    
+    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x, y):
+        <span class="co"># 在__init__方法中把x和y转换成浮点数，尽早捕获错误，以防调用Vector2d函数时传入不当参数。</span>
+        <span class="va">self</span>.x <span class="op">=</span> <span class="bu">float</span>(x)
+        <span class="va">self</span>.y <span class="op">=</span> <span class="bu">float</span>(y)
+    
+    <span class="kw">def</span> <span class="fu">__iter__</span>(<span class="va">self</span>):
+        <span class="co"># 定义__iter__方法，把vector2d实例变成可迭代的对象，这样才能拆包。</span>
+        <span class="cf">return</span> (i <span class="cf">for</span> i <span class="kw">in</span> (<span class="va">self</span>.x, <span class="va">self</span>.y))
+    
+    <span class="kw">def</span> <span class="fu">__repr__</span>(<span class="va">self</span>):
+        class_name <span class="op">=</span> <span class="bu">type</span>(<span class="va">self</span>).<span class="va">__name__</span>
+        <span class="co"># __repr__方法使用{!r}获取各个分量的表示形式，然后插值，构成一个字符串</span>
+        <span class="co"># 因为Vector2d实例是可迭代的对象，所以*self会把x和y分量提供给format函数</span>
+        <span class="cf">return</span> <span class="st">&#39;</span><span class="sc">{}</span><span class="st">(</span><span class="sc">{!r}</span><span class="st">, </span><span class="sc">{!r}</span><span class="st">)&#39;</span>.<span class="bu">format</span>(class_name, <span class="op">*</span><span class="va">self</span>)
+    
+    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):
+        <span class="co"># 从可迭代的Vector2d实例中可以轻松地得到一个元组，显示为一个有序对。</span>
+        <span class="cf">return</span> <span class="bu">str</span>(<span class="bu">tuple</span>(<span class="va">self</span>))
+    
+    <span class="kw">def</span> <span class="fu">__bytes__</span>(<span class="va">self</span>):
+        <span class="co"># 为了生成字节序列，我们把typecode转换成字节序列</span>
+        <span class="co"># 然后迭代Vector2d实例，得到一个数组，再把数组转换成字节序列</span>
+        <span class="cf">return</span> (<span class="bu">bytes</span>([<span class="bu">ord</span>(<span class="va">self</span>.typecode)]) <span class="op">+</span> <span class="bu">bytes</span>(array(<span class="va">self</span>.typecode, <span class="va">self</span>)))
+    
+    <span class="kw">def</span> <span class="fu">__eq__</span>(<span class="va">self</span>, other):
+        <span class="co"># 为了快速比较所有分量，在操作数中构建元组</span>
+        <span class="cf">return</span> <span class="bu">tuple</span>(<span class="va">self</span>) <span class="op">==</span> <span class="bu">tuple</span>(other)
+    
+    <span class="kw">def</span> <span class="fu">__abs__</span>(<span class="va">self</span>):
+        <span class="co"># 模是x和y分量构成的直角三角形的斜边长</span>
+        <span class="cf">return</span> math.hypot(<span class="va">self</span>.x, <span class="va">self</span>.y)
+    
+    <span class="kw">def</span> __bool__(<span class="va">self</span>):
+        <span class="co"># __bool__方法使用abs(self)计算模，然后把结果转换成布尔值。</span>
+        <span class="cf">return</span> <span class="bu">bool</span>(<span class="bu">abs</span>(<span class="va">self</span>))</code></pre></div>
 <p>在把Vector2d实例转换成字节序列的同时，也应该可以能把字节序列转换成Vector2d实例。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="co"># 类方法使用classmethod装饰器修饰</span></div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="at">@classmethod</span></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="co"># 不用传入self参数；相反，要通过cls传入类本身</span></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="kw">def</span> frombytes(cls, octets):</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">    <span class="co"># 从第一个字节中读取typecode</span></div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">    typecode <span class="op">=</span> <span class="bu">chr</span>(octets[<span class="dv">0</span>])</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">    <span class="co"># 使用传入的octets字节序列创建一个memoryview，然后使用typecode转换</span></div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">    memv <span class="op">=</span> <span class="bu">memoryview</span>(octets[<span class="dv">1</span>:]).cast(typecode)</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9">    <span class="co"># 拆包转换后的memoryview，得到构造方法所需的一对参数</span></div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">    <span class="cf">return</span> cls(<span class="op">*</span>memev)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="co"># 类方法使用classmethod装饰器修饰</span>
+<span class="at">@classmethod</span>
+<span class="co"># 不用传入self参数；相反，要通过cls传入类本身</span>
+<span class="kw">def</span> frombytes(cls, octets):
+    <span class="co"># 从第一个字节中读取typecode</span>
+    typecode <span class="op">=</span> <span class="bu">chr</span>(octets[<span class="dv">0</span>])
+    <span class="co"># 使用传入的octets字节序列创建一个memoryview，然后使用typecode转换</span>
+    memv <span class="op">=</span> <span class="bu">memoryview</span>(octets[<span class="dv">1</span>:]).cast(typecode)
+    <span class="co"># 拆包转换后的memoryview，得到构造方法所需的一对参数</span>
+    <span class="cf">return</span> cls(<span class="op">*</span>memev)</code></pre></div>
 <p><code>classmethod</code>用于定义操作类，而不是操作实例的方法。<code>classmethod</code>改变了调用方法的方式，因此类方法的第一个参数是类本身，而不是实例。按照约定，类方法的第一个参数名为<code>cls</code>。</p>
 <p><code>staticmethod</code>装饰器也会改变方法的调用方式，但是第一个参数不是特殊的值。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="kw">class</span> Demo:</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2">...     <span class="op">@</span>classmethod</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3">...     <span class="kw">def</span> klassmeth(<span class="op">*</span>args):</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">...         <span class="cf">return</span> args <span class="co"># klassmeth返回全部位置参数</span></div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">...     <span class="op">@</span>staticmethod</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">...     <span class="kw">def</span> statmeth(<span class="op">*</span>args):</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">...         <span class="cf">return</span> args</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">...</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="op">&gt;&gt;&gt;</span> Demo.klassmeth() <span class="co"># 无论怎样调用Demo.klassmeth，它的第一个参数始终是Demo类</span></div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">(<span class="op">&lt;</span><span class="kw">class</span> <span class="st">&#39;__main__.Demo&#39;</span><span class="op">&gt;</span>,)</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11"><span class="op">&gt;&gt;&gt;</span> Demo.klassmeth(<span class="st">&#39;spam&#39;</span>)</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">(<span class="op">&lt;</span><span class="kw">class</span> <span class="st">&#39;__main__.Demo&#39;</span><span class="op">&gt;</span>, <span class="st">&#39;spam&#39;</span>)</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13"><span class="op">&gt;&gt;&gt;</span> Demo.statmeth()</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">()</div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15"><span class="op">&gt;&gt;&gt;</span> Demo.statmeth(<span class="st">&#39;spam&#39;</span>)</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16">(<span class="st">&#39;spam&#39;</span>,)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="kw">class</span> Demo:
+...     <span class="op">@</span>classmethod
+...     <span class="kw">def</span> klassmeth(<span class="op">*</span>args):
+...         <span class="cf">return</span> args <span class="co"># klassmeth返回全部位置参数</span>
+...     <span class="op">@</span>staticmethod
+...     <span class="kw">def</span> statmeth(<span class="op">*</span>args):
+...         <span class="cf">return</span> args
+...
+<span class="op">&gt;&gt;&gt;</span> Demo.klassmeth() <span class="co"># 无论怎样调用Demo.klassmeth，它的第一个参数始终是Demo类</span>
+(<span class="op">&lt;</span><span class="kw">class</span> <span class="st">&#39;__main__.Demo&#39;</span><span class="op">&gt;</span>,)
+<span class="op">&gt;&gt;&gt;</span> Demo.klassmeth(<span class="st">&#39;spam&#39;</span>)
+(<span class="op">&lt;</span><span class="kw">class</span> <span class="st">&#39;__main__.Demo&#39;</span><span class="op">&gt;</span>, <span class="st">&#39;spam&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> Demo.statmeth()
+()
+<span class="op">&gt;&gt;&gt;</span> Demo.statmeth(<span class="st">&#39;spam&#39;</span>)
+(<span class="st">&#39;spam&#39;</span>,)</code></pre></div>
 <p>下面我们把Vector2d实例变成可散列。要想创建可散列的类型，不一定要实现特性，也不一定要保护实例属性。只需正确地实现<code>__hash__</code>和<code>__eq__</code>方法即可。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">from</span> array <span class="im">import</span> array</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="im">import</span> math</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="kw">class</span> Vector2d:</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">    typecode <span class="op">=</span> <span class="st">&#39;d&#39;</span></div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">    </div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x, y):</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">        <span class="co"># 使用两个前导下划线（尾部没有下划线，或者有一个下划线），把属性标记为私有的。</span></div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9">        <span class="va">self</span>.__x <span class="op">=</span> <span class="bu">float</span>(x)</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">        <span class="va">self</span>.__y <span class="op">=</span> <span class="bu">float</span>(y)</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">    </div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">    <span class="co"># @property装饰器把读值方法标记为特性</span></div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">    <span class="at">@property</span></div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">    <span class="kw">def</span> x(<span class="va">self</span>):</div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">        <span class="cf">return</span> <span class="va">self</span>.__x</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16">    </div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17">    <span class="at">@property</span></div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18">    <span class="kw">def</span> y(<span class="va">self</span>):</div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19">        <span class="cf">return</span> <span class="va">self</span>.__y</div>
-<div class="sourceLine" id="20" href="#20" data-line-number="20">    </div>
-<div class="sourceLine" id="21" href="#21" data-line-number="21">    <span class="kw">def</span> <span class="fu">__iter__</span>(<span class="va">self</span>):</div>
-<div class="sourceLine" id="22" href="#22" data-line-number="22">        <span class="co"># 需要读取x和y分量的方法可以保持不变，通过self.x和self.y读取公开特性，而不必读取私有属性。</span></div>
-<div class="sourceLine" id="23" href="#23" data-line-number="23">        <span class="cf">return</span> (i <span class="cf">for</span> i <span class="kw">in</span> (<span class="va">self</span>.x, <span class="va">self</span>.y))</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> array <span class="im">import</span> array
+<span class="im">import</span> math
+
+<span class="kw">class</span> Vector2d:
+    typecode <span class="op">=</span> <span class="st">&#39;d&#39;</span>
+    
+    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x, y):
+        <span class="co"># 使用两个前导下划线（尾部没有下划线，或者有一个下划线），把属性标记为私有的。</span>
+        <span class="va">self</span>.__x <span class="op">=</span> <span class="bu">float</span>(x)
+        <span class="va">self</span>.__y <span class="op">=</span> <span class="bu">float</span>(y)
+    
+    <span class="co"># @property装饰器把读值方法标记为特性</span>
+    <span class="at">@property</span>
+    <span class="kw">def</span> x(<span class="va">self</span>):
+        <span class="cf">return</span> <span class="va">self</span>.__x
+    
+    <span class="at">@property</span>
+    <span class="kw">def</span> y(<span class="va">self</span>):
+        <span class="cf">return</span> <span class="va">self</span>.__y
+    
+    <span class="kw">def</span> <span class="fu">__iter__</span>(<span class="va">self</span>):
+        <span class="co"># 需要读取x和y分量的方法可以保持不变，通过self.x和self.y读取公开特性，而不必读取私有属性。</span>
+        <span class="cf">return</span> (i <span class="cf">for</span> i <span class="kw">in</span> (<span class="va">self</span>.x, <span class="va">self</span>.y))</code></pre></div>
 <p>为了使用底层的散列表提升访问速度，字典会消耗大量内存。如果要处理数百万个属性不多的实例，通过<code>__slots__</code>类属性，能节省大量内存，方法是让解释器在元组中存储实例属性，而不用字典。定义<code>__slot__</code>的方式是，创建一个类属性，使用<code>__slots__</code>这个名字，并把它的值设为一个字符串构成的可迭代对象，其中各个元素表示各个实例属性。但是有以下几点需要注意：</p>
 <ul>
 <li>每个子类都要定义<code>__slots__</code>属性，因为解释器会忽略继承的<code>__slots__</code>属性。</li>
@@ -479,317 +479,317 @@
 <li>如果不把<code>__weakref__</code>加入<code>__slots__</code>，实例就不能作为弱引用的目标。</li>
 </ul>
 <p>序列类型的构造方法最好接受可迭代的对象为参数，因为所有内置的序列类型都是这样做的。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">from</span> array <span class="im">import</span> array</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="im">import</span> reprlib</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="im">import</span> math</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"></div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="kw">class</span> Vector:</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">    typecode <span class="op">=</span> <span class="st">&#39;d&#39;</span></div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">    </div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, components):</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9">        <span class="co"># self._components是&quot;受保护的&quot;实例属性，把Vector的分量保存在一个数组中。</span></div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">        <span class="va">self</span>._components <span class="op">=</span> array(<span class="va">self</span>.typecode, components)</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">        </div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">    <span class="kw">def</span> <span class="fu">__iter__</span>(<span class="va">self</span>):</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">        <span class="co"># 为了迭代，我们使用self._components构建一个迭代器。</span></div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">        <span class="cf">return</span> <span class="bu">iter</span>(<span class="va">self</span>._components)</div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">    </div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16">    <span class="kw">def</span> <span class="fu">__repr__</span>(<span class="va">self</span>):</div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17">        <span class="co"># 使用reprlib.repr()函数获取self._components的有限长度表示形式</span></div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18">        components <span class="op">=</span> reprlib.<span class="bu">repr</span>(<span class="va">self</span>._components)</div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19">        <span class="co"># 把字符串插入Vector的构造方法调用之前，去掉前面的array（‘d’和后面的）</span></div>
-<div class="sourceLine" id="20" href="#20" data-line-number="20">        components <span class="op">=</span> components[components.find(<span class="st">&#39;[&#39;</span>):<span class="op">-</span><span class="dv">1</span>]</div>
-<div class="sourceLine" id="21" href="#21" data-line-number="21">        <span class="cf">return</span> <span class="st">&#39;Vector(</span><span class="sc">{}</span><span class="st">)&#39;</span>.<span class="bu">format</span>(components)</div>
-<div class="sourceLine" id="22" href="#22" data-line-number="22">    </div>
-<div class="sourceLine" id="23" href="#23" data-line-number="23">    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</div>
-<div class="sourceLine" id="24" href="#24" data-line-number="24">        <span class="cf">return</span> <span class="bu">str</span>(<span class="bu">tuple</span>(<span class="va">self</span>))</div>
-<div class="sourceLine" id="25" href="#25" data-line-number="25">    </div>
-<div class="sourceLine" id="26" href="#26" data-line-number="26">    <span class="kw">def</span> <span class="fu">__bytes__</span>(<span class="va">self</span>):</div>
-<div class="sourceLine" id="27" href="#27" data-line-number="27">        <span class="co"># 直接使用self._components构建bytes对象</span></div>
-<div class="sourceLine" id="28" href="#28" data-line-number="28">        <span class="cf">return</span> (<span class="bu">bytes</span>([<span class="bu">ord</span>(<span class="va">self</span>.typecode)]) <span class="op">+</span> <span class="bu">bytes</span>(<span class="va">self</span>._components))</div>
-<div class="sourceLine" id="29" href="#29" data-line-number="29">    </div>
-<div class="sourceLine" id="30" href="#30" data-line-number="30">    <span class="kw">def</span> <span class="fu">__eq__</span>(<span class="va">self</span>):</div>
-<div class="sourceLine" id="31" href="#31" data-line-number="31">        <span class="cf">return</span> <span class="bu">tuple</span>(<span class="va">self</span>) <span class="op">==</span> <span class="bu">tuple</span>(other)</div>
-<div class="sourceLine" id="32" href="#32" data-line-number="32">    </div>
-<div class="sourceLine" id="33" href="#33" data-line-number="33">    <span class="kw">def</span> <span class="fu">__abs__</span>(<span class="va">self</span>):</div>
-<div class="sourceLine" id="34" href="#34" data-line-number="34">        <span class="cf">return</span> math.sqrt(<span class="bu">sum</span>(x <span class="op">*</span> x <span class="cf">for</span> x <span class="kw">in</span> <span class="va">self</span>))</div>
-<div class="sourceLine" id="35" href="#35" data-line-number="35">    </div>
-<div class="sourceLine" id="36" href="#36" data-line-number="36">    <span class="kw">def</span> __bool__(<span class="va">self</span>):</div>
-<div class="sourceLine" id="37" href="#37" data-line-number="37">        <span class="cf">return</span> <span class="bu">bool</span>(<span class="bu">abs</span>(<span class="va">self</span>))</div>
-<div class="sourceLine" id="38" href="#38" data-line-number="38">    </div>
-<div class="sourceLine" id="39" href="#39" data-line-number="39">    <span class="at">@classmethod</span></div>
-<div class="sourceLine" id="40" href="#40" data-line-number="40">    <span class="kw">def</span> frombytes(cls, other):</div>
-<div class="sourceLine" id="41" href="#41" data-line-number="41">        typecode <span class="op">=</span> <span class="bu">chr</span>(octets[<span class="dv">0</span>])</div>
-<div class="sourceLine" id="42" href="#42" data-line-number="42">        memv <span class="op">=</span> <span class="bu">memoryview</span>(octets[<span class="dv">1</span>:]).cast(typecode)</div>
-<div class="sourceLine" id="43" href="#43" data-line-number="43">        <span class="cf">return</span> cls(memv)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> array <span class="im">import</span> array
+<span class="im">import</span> reprlib
+<span class="im">import</span> math
+
+<span class="kw">class</span> Vector:
+    typecode <span class="op">=</span> <span class="st">&#39;d&#39;</span>
+    
+    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, components):
+        <span class="co"># self._components是&quot;受保护的&quot;实例属性，把Vector的分量保存在一个数组中。</span>
+        <span class="va">self</span>._components <span class="op">=</span> array(<span class="va">self</span>.typecode, components)
+        
+    <span class="kw">def</span> <span class="fu">__iter__</span>(<span class="va">self</span>):
+        <span class="co"># 为了迭代，我们使用self._components构建一个迭代器。</span>
+        <span class="cf">return</span> <span class="bu">iter</span>(<span class="va">self</span>._components)
+    
+    <span class="kw">def</span> <span class="fu">__repr__</span>(<span class="va">self</span>):
+        <span class="co"># 使用reprlib.repr()函数获取self._components的有限长度表示形式</span>
+        components <span class="op">=</span> reprlib.<span class="bu">repr</span>(<span class="va">self</span>._components)
+        <span class="co"># 把字符串插入Vector的构造方法调用之前，去掉前面的array（‘d’和后面的）</span>
+        components <span class="op">=</span> components[components.find(<span class="st">&#39;[&#39;</span>):<span class="op">-</span><span class="dv">1</span>]
+        <span class="cf">return</span> <span class="st">&#39;Vector(</span><span class="sc">{}</span><span class="st">)&#39;</span>.<span class="bu">format</span>(components)
+    
+    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):
+        <span class="cf">return</span> <span class="bu">str</span>(<span class="bu">tuple</span>(<span class="va">self</span>))
+    
+    <span class="kw">def</span> <span class="fu">__bytes__</span>(<span class="va">self</span>):
+        <span class="co"># 直接使用self._components构建bytes对象</span>
+        <span class="cf">return</span> (<span class="bu">bytes</span>([<span class="bu">ord</span>(<span class="va">self</span>.typecode)]) <span class="op">+</span> <span class="bu">bytes</span>(<span class="va">self</span>._components))
+    
+    <span class="kw">def</span> <span class="fu">__eq__</span>(<span class="va">self</span>):
+        <span class="cf">return</span> <span class="bu">tuple</span>(<span class="va">self</span>) <span class="op">==</span> <span class="bu">tuple</span>(other)
+    
+    <span class="kw">def</span> <span class="fu">__abs__</span>(<span class="va">self</span>):
+        <span class="cf">return</span> math.sqrt(<span class="bu">sum</span>(x <span class="op">*</span> x <span class="cf">for</span> x <span class="kw">in</span> <span class="va">self</span>))
+    
+    <span class="kw">def</span> __bool__(<span class="va">self</span>):
+        <span class="cf">return</span> <span class="bu">bool</span>(<span class="bu">abs</span>(<span class="va">self</span>))
+    
+    <span class="at">@classmethod</span>
+    <span class="kw">def</span> frombytes(cls, other):
+        typecode <span class="op">=</span> <span class="bu">chr</span>(octets[<span class="dv">0</span>])
+        memv <span class="op">=</span> <span class="bu">memoryview</span>(octets[<span class="dv">1</span>:]).cast(typecode)
+        <span class="cf">return</span> cls(memv)</code></pre></div>
 <p>在面向对象编程中，协议是非正式的接口，只在文档中定义，在代码中不定义。任何类，只要使用标准签名和语义实现了这两个方法，就能用在任何期待序列的地方。下面讲讲切片原理。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="kw">class</span> MySeq:</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2">...     <span class="kw">def</span> <span class="fu">__getitem__</span>(<span class="va">self</span>, index):</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3">...             <span class="cf">return</span> index <span class="co"># 在这个示例中，__getitem__直接返回传给它的值</span></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">...</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> s <span class="op">=</span> MySeq()</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="op">&gt;&gt;&gt;</span> s[<span class="dv">1</span>] </div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="dv">1</span></div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="op">&gt;&gt;&gt;</span> s[<span class="dv">1</span>:<span class="dv">4</span>]</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="bu">slice</span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="va">None</span>)</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10"><span class="op">&gt;&gt;&gt;</span> s[<span class="dv">1</span>:<span class="dv">4</span>:<span class="dv">2</span>]</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11"><span class="bu">slice</span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">2</span>)</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12"><span class="op">&gt;&gt;&gt;</span> s[<span class="dv">1</span>:<span class="dv">4</span>:<span class="dv">2</span>, <span class="dv">9</span>] <span class="co"># 如果[]中有逗号，那么__getitem__收到的是元组</span></div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">(<span class="bu">slice</span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">2</span>), <span class="dv">9</span>)</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14"><span class="op">&gt;&gt;&gt;</span> s[<span class="dv">1</span>:<span class="dv">4</span>:<span class="dv">2</span>, <span class="dv">7</span>:<span class="dv">9</span>] <span class="co"># 元组中可以有多个切片对象</span></div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">(<span class="bu">slice</span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">2</span>), <span class="bu">slice</span>(<span class="dv">7</span>, <span class="dv">9</span>, <span class="va">None</span>))</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16"><span class="op">&gt;&gt;&gt;</span> <span class="bu">slice</span></div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17"><span class="op">&lt;</span><span class="kw">class</span> <span class="st">&#39;slice&#39;</span><span class="op">&gt;</span></div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18"><span class="op">&gt;&gt;&gt;</span> <span class="bu">dir</span>(<span class="bu">slice</span>) <span class="co"># 审查slice，发现它有start、stop和step数据属性，以及indices方法</span></div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19">[<span class="st">&#39;__class__&#39;</span>, <span class="st">&#39;__delattr__&#39;</span>, <span class="st">&#39;__dir__&#39;</span>, <span class="st">&#39;__doc__&#39;</span>, <span class="st">&#39;__eq__&#39;</span>, <span class="st">&#39;__format__&#39;</span>, <span class="st">&#39;__ge__&#39;</span>, <span class="st">&#39;__getattribute__&#39;</span>, <span class="st">&#39;__gt__&#39;</span>, <span class="st">&#39;__hash__&#39;</span>, <span class="st">&#39;__init__&#39;</span>, <span class="st">&#39;__init_subclass__&#39;</span>, <span class="st">&#39;__le__&#39;</span>, <span class="st">&#39;__lt__&#39;</span>, <span class="st">&#39;__ne__&#39;</span>, <span class="st">&#39;__new__&#39;</span>, <span class="st">&#39;__reduce__&#39;</span>, <span class="st">&#39;__reduce_ex__&#39;</span>, <span class="st">&#39;__repr__&#39;</span>, <span class="st">&#39;__setattr__&#39;</span>, <span class="st">&#39;__sizeof__&#39;</span>, <span class="st">&#39;__str__&#39;</span>, <span class="st">&#39;__subclasshook__&#39;</span>, <span class="st">&#39;indices&#39;</span>, <span class="st">&#39;start&#39;</span>, <span class="st">&#39;step&#39;</span>, <span class="st">&#39;stop&#39;</span>]</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="kw">class</span> MySeq:
+...     <span class="kw">def</span> <span class="fu">__getitem__</span>(<span class="va">self</span>, index):
+...             <span class="cf">return</span> index <span class="co"># 在这个示例中，__getitem__直接返回传给它的值</span>
+...
+<span class="op">&gt;&gt;&gt;</span> s <span class="op">=</span> MySeq()
+<span class="op">&gt;&gt;&gt;</span> s[<span class="dv">1</span>] 
+<span class="dv">1</span>
+<span class="op">&gt;&gt;&gt;</span> s[<span class="dv">1</span>:<span class="dv">4</span>]
+<span class="bu">slice</span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="va">None</span>)
+<span class="op">&gt;&gt;&gt;</span> s[<span class="dv">1</span>:<span class="dv">4</span>:<span class="dv">2</span>]
+<span class="bu">slice</span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">2</span>)
+<span class="op">&gt;&gt;&gt;</span> s[<span class="dv">1</span>:<span class="dv">4</span>:<span class="dv">2</span>, <span class="dv">9</span>] <span class="co"># 如果[]中有逗号，那么__getitem__收到的是元组</span>
+(<span class="bu">slice</span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">2</span>), <span class="dv">9</span>)
+<span class="op">&gt;&gt;&gt;</span> s[<span class="dv">1</span>:<span class="dv">4</span>:<span class="dv">2</span>, <span class="dv">7</span>:<span class="dv">9</span>] <span class="co"># 元组中可以有多个切片对象</span>
+(<span class="bu">slice</span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">2</span>), <span class="bu">slice</span>(<span class="dv">7</span>, <span class="dv">9</span>, <span class="va">None</span>))
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">slice</span>
+<span class="op">&lt;</span><span class="kw">class</span> <span class="st">&#39;slice&#39;</span><span class="op">&gt;</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">dir</span>(<span class="bu">slice</span>) <span class="co"># 审查slice，发现它有start、stop和step数据属性，以及indices方法</span>
+[<span class="st">&#39;__class__&#39;</span>, <span class="st">&#39;__delattr__&#39;</span>, <span class="st">&#39;__dir__&#39;</span>, <span class="st">&#39;__doc__&#39;</span>, <span class="st">&#39;__eq__&#39;</span>, <span class="st">&#39;__format__&#39;</span>, <span class="st">&#39;__ge__&#39;</span>, <span class="st">&#39;__getattribute__&#39;</span>, <span class="st">&#39;__gt__&#39;</span>, <span class="st">&#39;__hash__&#39;</span>, <span class="st">&#39;__init__&#39;</span>, <span class="st">&#39;__init_subclass__&#39;</span>, <span class="st">&#39;__le__&#39;</span>, <span class="st">&#39;__lt__&#39;</span>, <span class="st">&#39;__ne__&#39;</span>, <span class="st">&#39;__new__&#39;</span>, <span class="st">&#39;__reduce__&#39;</span>, <span class="st">&#39;__reduce_ex__&#39;</span>, <span class="st">&#39;__repr__&#39;</span>, <span class="st">&#39;__setattr__&#39;</span>, <span class="st">&#39;__sizeof__&#39;</span>, <span class="st">&#39;__str__&#39;</span>, <span class="st">&#39;__subclasshook__&#39;</span>, <span class="st">&#39;indices&#39;</span>, <span class="st">&#39;start&#39;</span>, <span class="st">&#39;step&#39;</span>, <span class="st">&#39;stop&#39;</span>]</code></pre></div>
 <p><code>indices</code>方法有非常大的作用，<code>help(slice.indices)</code>给出的信息如下</p>
 <pre><code>S.indices(len) -&gt; (start, stop, stride)
 
 给定长度为len的序列，计算S表示的扩展切片的起始和结尾索引，以及步幅。超出边界的索引会被截掉，这与常规切片的处理方式一样。</code></pre>
 <p>也就是说，<code>indices</code>方法开放了内置序列实现的棘手逻辑，用于优雅地处理缺失索引和负数索引，以及长度超过目标序列的切片。这个方法会“整顿”元组，把start、stop和stride都变成非负数，而且都落在指定长度序列的边界内。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="kw">def</span> <span class="fu">__len__</span>(<span class="va">self</span>):</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2">    <span class="cf">return</span> <span class="bu">len</span>(<span class="va">self</span>._components)</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="kw">def</span> <span class="fu">__getitem__</span>(<span class="va">self</span>, index):</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">    cls <span class="op">=</span> <span class="bu">type</span>(<span class="va">self</span>) <span class="co"># 获取实例所属的类（即Vector），供后面使用。</span></div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">    <span class="cf">if</span> <span class="bu">isinstance</span>(index, <span class="bu">slice</span>): <span class="co"># 如果index参数的值是slice对象。</span></div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">        <span class="cf">return</span> cls(<span class="va">self</span>._components[index]) <span class="co"># 调用类的构造方法，使用_components数组的切片构建一个新Vector实例。</span></div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">    <span class="cf">elif</span> <span class="bu">isinstance</span>(index, numbers.Integral):</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9">        <span class="cf">return</span> <span class="va">self</span>._components[index]</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">    <span class="cf">else</span>:</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">        msg <span class="op">=</span> <span class="st">&#39;</span><span class="sc">{cls.__name__}</span><span class="st"> indices must be integers&#39;</span></div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">        <span class="cf">raise</span> <span class="pp">TypeError</span>(msg.<span class="bu">format</span>(cls<span class="op">=</span>cls))</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">        </div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14"></div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">shortcut_names <span class="op">=</span> <span class="st">&#39;xyzt&#39;</span></div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16"></div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17"><span class="kw">def</span> <span class="fu">__getattr__</span>(<span class="va">self</span>, name):</div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18">    cls <span class="op">=</span> <span class="bu">type</span>(<span class="va">self</span>) <span class="co"># 获取Vector</span></div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19">    <span class="cf">if</span> <span class="bu">len</span>(name) <span class="op">==</span> <span class="dv">1</span>: <span class="co"># 如果属性名只有一个字母，可能是shrotcut_names中的一个</span></div>
-<div class="sourceLine" id="20" href="#20" data-line-number="20">        pos <span class="op">=</span> cls.shortcut_names.find(name) <span class="co"># 查找那个字母的位置</span></div>
-<div class="sourceLine" id="21" href="#21" data-line-number="21">        <span class="cf">if</span> <span class="dv">0</span> <span class="op">&lt;=</span> pos <span class="op">&lt;</span> <span class="bu">len</span>(<span class="va">self</span>._components): <span class="co"># 如果位置落在范围内，返回数组中对应的元素</span></div>
-<div class="sourceLine" id="22" href="#22" data-line-number="22">            <span class="cf">return</span> <span class="va">self</span>._components[pos] </div>
-<div class="sourceLine" id="23" href="#23" data-line-number="23">    msg <span class="op">=</span> <span class="st">&#39;{.__name__!r} object has no attribute </span><span class="sc">{!r}</span><span class="st">&#39;</span></div>
-<div class="sourceLine" id="24" href="#24" data-line-number="24">    <span class="cf">raise</span> <span class="pp">AttributeError</span>(msg.<span class="bu">format</span>(cls, name))</div>
-<div class="sourceLine" id="25" href="#25" data-line-number="25">    </div>
-<div class="sourceLine" id="26" href="#26" data-line-number="26"><span class="kw">def</span> <span class="fu">__setattr__</span>(<span class="va">self</span>, name, value):</div>
-<div class="sourceLine" id="27" href="#27" data-line-number="27">    cls <span class="op">=</span> <span class="bu">type</span>(<span class="va">self</span>)</div>
-<div class="sourceLine" id="28" href="#28" data-line-number="28">    <span class="cf">if</span> <span class="bu">len</span>(name) <span class="op">==</span> <span class="dv">1</span>: <span class="co"># 特别处理名称是单个字符的属性</span></div>
-<div class="sourceLine" id="29" href="#29" data-line-number="29">        <span class="cf">if</span> name <span class="kw">in</span> cls.shortcut_names: <span class="co"># 如果name是xyzt中的一个，设置特殊的错误消息</span></div>
-<div class="sourceLine" id="30" href="#30" data-line-number="30">            error <span class="op">=</span> <span class="st">&#39;readonly attribute </span><span class="sc">{attr_name!r}</span><span class="st">&#39;</span></div>
-<div class="sourceLine" id="31" href="#31" data-line-number="31">        <span class="cf">elif</span> name.islower():</div>
-<div class="sourceLine" id="32" href="#32" data-line-number="32">            error <span class="op">=</span> <span class="st">&quot;Can&#39;t set attribute &#39;a&#39; to &#39;z&#39; in </span><span class="sc">{cls_name!r}</span><span class="st">&quot;</span></div>
-<div class="sourceLine" id="33" href="#33" data-line-number="33">        <span class="cf">else</span>:</div>
-<div class="sourceLine" id="34" href="#34" data-line-number="34">            error <span class="op">=</span> <span class="st">&#39;&#39;</span></div>
-<div class="sourceLine" id="35" href="#35" data-line-number="35">        <span class="cf">if</span> error:</div>
-<div class="sourceLine" id="36" href="#36" data-line-number="36">            msg <span class="op">=</span> error.<span class="bu">format</span>(cls_name<span class="op">=</span>cls.<span class="va">__name__</span>, attr_name<span class="op">=</span>name)</div>
-<div class="sourceLine" id="37" href="#37" data-line-number="37">            <span class="cf">raise</span> <span class="pp">AttributeError</span>(msg)</div>
-<div class="sourceLine" id="38" href="#38" data-line-number="38">    <span class="bu">super</span>().<span class="fu">__setattr__</span>(name, value)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> <span class="fu">__len__</span>(<span class="va">self</span>):
+    <span class="cf">return</span> <span class="bu">len</span>(<span class="va">self</span>._components)
+
+<span class="kw">def</span> <span class="fu">__getitem__</span>(<span class="va">self</span>, index):
+    cls <span class="op">=</span> <span class="bu">type</span>(<span class="va">self</span>) <span class="co"># 获取实例所属的类（即Vector），供后面使用。</span>
+    <span class="cf">if</span> <span class="bu">isinstance</span>(index, <span class="bu">slice</span>): <span class="co"># 如果index参数的值是slice对象。</span>
+        <span class="cf">return</span> cls(<span class="va">self</span>._components[index]) <span class="co"># 调用类的构造方法，使用_components数组的切片构建一个新Vector实例。</span>
+    <span class="cf">elif</span> <span class="bu">isinstance</span>(index, numbers.Integral):
+        <span class="cf">return</span> <span class="va">self</span>._components[index]
+    <span class="cf">else</span>:
+        msg <span class="op">=</span> <span class="st">&#39;</span><span class="sc">{cls.__name__}</span><span class="st"> indices must be integers&#39;</span>
+        <span class="cf">raise</span> <span class="pp">TypeError</span>(msg.<span class="bu">format</span>(cls<span class="op">=</span>cls))
+        
+
+shortcut_names <span class="op">=</span> <span class="st">&#39;xyzt&#39;</span>
+
+<span class="kw">def</span> <span class="fu">__getattr__</span>(<span class="va">self</span>, name):
+    cls <span class="op">=</span> <span class="bu">type</span>(<span class="va">self</span>) <span class="co"># 获取Vector</span>
+    <span class="cf">if</span> <span class="bu">len</span>(name) <span class="op">==</span> <span class="dv">1</span>: <span class="co"># 如果属性名只有一个字母，可能是shrotcut_names中的一个</span>
+        pos <span class="op">=</span> cls.shortcut_names.find(name) <span class="co"># 查找那个字母的位置</span>
+        <span class="cf">if</span> <span class="dv">0</span> <span class="op">&lt;=</span> pos <span class="op">&lt;</span> <span class="bu">len</span>(<span class="va">self</span>._components): <span class="co"># 如果位置落在范围内，返回数组中对应的元素</span>
+            <span class="cf">return</span> <span class="va">self</span>._components[pos] 
+    msg <span class="op">=</span> <span class="st">&#39;{.__name__!r} object has no attribute </span><span class="sc">{!r}</span><span class="st">&#39;</span>
+    <span class="cf">raise</span> <span class="pp">AttributeError</span>(msg.<span class="bu">format</span>(cls, name))
+    
+<span class="kw">def</span> <span class="fu">__setattr__</span>(<span class="va">self</span>, name, value):
+    cls <span class="op">=</span> <span class="bu">type</span>(<span class="va">self</span>)
+    <span class="cf">if</span> <span class="bu">len</span>(name) <span class="op">==</span> <span class="dv">1</span>: <span class="co"># 特别处理名称是单个字符的属性</span>
+        <span class="cf">if</span> name <span class="kw">in</span> cls.shortcut_names: <span class="co"># 如果name是xyzt中的一个，设置特殊的错误消息</span>
+            error <span class="op">=</span> <span class="st">&#39;readonly attribute </span><span class="sc">{attr_name!r}</span><span class="st">&#39;</span>
+        <span class="cf">elif</span> name.islower():
+            error <span class="op">=</span> <span class="st">&quot;Can&#39;t set attribute &#39;a&#39; to &#39;z&#39; in </span><span class="sc">{cls_name!r}</span><span class="st">&quot;</span>
+        <span class="cf">else</span>:
+            error <span class="op">=</span> <span class="st">&#39;&#39;</span>
+        <span class="cf">if</span> error:
+            msg <span class="op">=</span> error.<span class="bu">format</span>(cls_name<span class="op">=</span>cls.<span class="va">__name__</span>, attr_name<span class="op">=</span>name)
+            <span class="cf">raise</span> <span class="pp">AttributeError</span>(msg)
+    <span class="bu">super</span>().<span class="fu">__setattr__</span>(name, value)</code></pre></div>
 <p><code>猴子补丁</code>是指在运行时修改类或模块，而不改动源码。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">import</span> collections</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3">Card <span class="op">=</span> collections.namedtuple(<span class="st">&#39;Card&#39;</span>, [<span class="st">&#39;rank&#39;</span>, <span class="st">&#39;suit&#39;</span>])</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"></div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="kw">class</span> FrenchDeck2(collections.MutableSequence):</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">    ranks <span class="op">=</span> [<span class="bu">str</span>(n) <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">11</span>)] <span class="op">+</span> <span class="bu">list</span>(<span class="st">&#39;JQKA&#39;</span>)</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">    suits <span class="op">=</span> <span class="st">&#39;spades diamonds clubs hearts&#39;</span>.split()</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">    </div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">        <span class="va">self</span>._cards <span class="op">=</span> [Card(rank, suit) <span class="cf">for</span> suit <span class="kw">in</span> <span class="va">self</span>.suits <span class="cf">for</span> rank <span class="kw">in</span> <span class="va">self</span>.ranks]</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">    </div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">    <span class="kw">def</span> <span class="fu">__len__</span>(<span class="va">self</span>):</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">        <span class="cf">return</span> <span class="bu">len</span>(<span class="va">self</span>._cards)</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">    </div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">    <span class="kw">def</span> <span class="fu">__getitem__</span>(<span class="va">self</span>, position):</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16">        <span class="cf">return</span> <span class="va">self</span>._cards[position]</div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17">    </div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18">    <span class="kw">def</span> <span class="fu">__setitem__</span>(<span class="va">self</span>, position, value): <span class="co"># 为了支持洗牌，只需实现__setitem__方法</span></div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19">        <span class="va">self</span>._cards[position] <span class="op">=</span> value</div>
-<div class="sourceLine" id="20" href="#20" data-line-number="20">        </div>
-<div class="sourceLine" id="21" href="#21" data-line-number="21">    <span class="kw">def</span> <span class="fu">__delitem__</span>(<span class="va">self</span>, position):</div>
-<div class="sourceLine" id="22" href="#22" data-line-number="22">        <span class="kw">del</span> <span class="va">self</span>._cards[position]</div>
-<div class="sourceLine" id="23" href="#23" data-line-number="23">        </div>
-<div class="sourceLine" id="24" href="#24" data-line-number="24">    <span class="kw">def</span> insert(<span class="va">self</span>, position, value):</div>
-<div class="sourceLine" id="25" href="#25" data-line-number="25">        <span class="va">self</span>._cards.insert(position, value)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> collections
+
+Card <span class="op">=</span> collections.namedtuple(<span class="st">&#39;Card&#39;</span>, [<span class="st">&#39;rank&#39;</span>, <span class="st">&#39;suit&#39;</span>])
+
+<span class="kw">class</span> FrenchDeck2(collections.MutableSequence):
+    ranks <span class="op">=</span> [<span class="bu">str</span>(n) <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">11</span>)] <span class="op">+</span> <span class="bu">list</span>(<span class="st">&#39;JQKA&#39;</span>)
+    suits <span class="op">=</span> <span class="st">&#39;spades diamonds clubs hearts&#39;</span>.split()
+    
+    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):
+        <span class="va">self</span>._cards <span class="op">=</span> [Card(rank, suit) <span class="cf">for</span> suit <span class="kw">in</span> <span class="va">self</span>.suits <span class="cf">for</span> rank <span class="kw">in</span> <span class="va">self</span>.ranks]
+    
+    <span class="kw">def</span> <span class="fu">__len__</span>(<span class="va">self</span>):
+        <span class="cf">return</span> <span class="bu">len</span>(<span class="va">self</span>._cards)
+    
+    <span class="kw">def</span> <span class="fu">__getitem__</span>(<span class="va">self</span>, position):
+        <span class="cf">return</span> <span class="va">self</span>._cards[position]
+    
+    <span class="kw">def</span> <span class="fu">__setitem__</span>(<span class="va">self</span>, position, value): <span class="co"># 为了支持洗牌，只需实现__setitem__方法</span>
+        <span class="va">self</span>._cards[position] <span class="op">=</span> value
+        
+    <span class="kw">def</span> <span class="fu">__delitem__</span>(<span class="va">self</span>, position):
+        <span class="kw">del</span> <span class="va">self</span>._cards[position]
+        
+    <span class="kw">def</span> insert(<span class="va">self</span>, position, value):
+        <span class="va">self</span>._cards.insert(position, value)</code></pre></div>
 <p>在Python中内置类型不会调用用户定义的类覆盖的特殊方法。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="kw">class</span> DoppelDict(<span class="bu">dict</span>):</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2">...     <span class="kw">def</span> <span class="fu">__setitem__</span>(<span class="va">self</span>, key, value):</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3">...             <span class="co"># DoppelDict.__setitem__方法会重复存入的值</span></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">...             <span class="bu">super</span>().<span class="fu">__setitem__</span>(key, [value] <span class="op">*</span> <span class="dv">2</span>) </div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">...</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="op">&gt;&gt;&gt;</span> dd <span class="op">=</span> DoppelDict(one<span class="op">=</span><span class="dv">1</span>)</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> dd</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">{<span class="st">&#39;one&#39;</span>: <span class="dv">1</span>}</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="op">&gt;&gt;&gt;</span> dd[<span class="st">&#39;two&#39;</span>] <span class="op">=</span> <span class="dv">2</span></div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10"><span class="op">&gt;&gt;&gt;</span> dd</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">{<span class="st">&#39;one&#39;</span>: <span class="dv">1</span>, <span class="st">&#39;two&#39;</span>: [<span class="dv">2</span>, <span class="dv">2</span>]}</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12"><span class="op">&gt;&gt;&gt;</span> dd.update(three<span class="op">=</span><span class="dv">3</span>)</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13"><span class="op">&gt;&gt;&gt;</span> dd</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">{<span class="st">&#39;one&#39;</span>: <span class="dv">1</span>, <span class="st">&#39;two&#39;</span>: [<span class="dv">2</span>, <span class="dv">2</span>], <span class="st">&#39;three&#39;</span>: <span class="dv">3</span>}</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="kw">class</span> DoppelDict(<span class="bu">dict</span>):
+...     <span class="kw">def</span> <span class="fu">__setitem__</span>(<span class="va">self</span>, key, value):
+...             <span class="co"># DoppelDict.__setitem__方法会重复存入的值</span>
+...             <span class="bu">super</span>().<span class="fu">__setitem__</span>(key, [value] <span class="op">*</span> <span class="dv">2</span>) 
+...
+<span class="op">&gt;&gt;&gt;</span> dd <span class="op">=</span> DoppelDict(one<span class="op">=</span><span class="dv">1</span>)
+<span class="op">&gt;&gt;&gt;</span> dd
+{<span class="st">&#39;one&#39;</span>: <span class="dv">1</span>}
+<span class="op">&gt;&gt;&gt;</span> dd[<span class="st">&#39;two&#39;</span>] <span class="op">=</span> <span class="dv">2</span>
+<span class="op">&gt;&gt;&gt;</span> dd
+{<span class="st">&#39;one&#39;</span>: <span class="dv">1</span>, <span class="st">&#39;two&#39;</span>: [<span class="dv">2</span>, <span class="dv">2</span>]}
+<span class="op">&gt;&gt;&gt;</span> dd.update(three<span class="op">=</span><span class="dv">3</span>)
+<span class="op">&gt;&gt;&gt;</span> dd
+{<span class="st">&#39;one&#39;</span>: <span class="dv">1</span>, <span class="st">&#39;two&#39;</span>: [<span class="dv">2</span>, <span class="dv">2</span>], <span class="st">&#39;three&#39;</span>: <span class="dv">3</span>}</code></pre></div>
 <p>原生类型的这种行为违背了面向对象编程的一个基本原则：始终应该从实例（self）所属的类开始搜索方法，即使在超类实现的类中调用也是如此。</p>
 <p>直接子类化内置类型（如<code>dict</code>、<code>list</code>或<code>str</code>）容易出错，因为内置类型的方法通常会忽略用户覆盖的方法。不要子类化内置类型，用户自己定义的类应该继承<code>collections</code>模块中的类，例如<code>UserDict</code>、<code>UserList</code>和<code>UserString</code>。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="kw">class</span> DoppelDict2(collections.UserDict):</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2">...     <span class="kw">def</span> <span class="fu">__setitem__</span>(<span class="va">self</span>, key, value):</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3">...             <span class="bu">super</span>().<span class="fu">__setitem__</span>(key, [value] <span class="op">*</span> <span class="dv">2</span>)</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">...</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> dd <span class="op">=</span> DoppelDict2(one<span class="op">=</span><span class="dv">1</span>)</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="op">&gt;&gt;&gt;</span> dd</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">{<span class="st">&#39;one&#39;</span>: [<span class="dv">1</span>, <span class="dv">1</span>]}</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="op">&gt;&gt;&gt;</span> dd[<span class="st">&#39;two&#39;</span>] <span class="op">=</span> <span class="dv">2</span></div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="op">&gt;&gt;&gt;</span> dd</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">{<span class="st">&#39;one&#39;</span>: [<span class="dv">1</span>, <span class="dv">1</span>], <span class="st">&#39;two&#39;</span>: [<span class="dv">2</span>, <span class="dv">2</span>]}</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11"><span class="op">&gt;&gt;&gt;</span> dd.update(one<span class="op">=</span><span class="dv">1</span>)</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12"><span class="op">&gt;&gt;&gt;</span> dd</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">{<span class="st">&#39;one&#39;</span>: [<span class="dv">1</span>, <span class="dv">1</span>], <span class="st">&#39;two&#39;</span>: [<span class="dv">2</span>, <span class="dv">2</span>]}</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14"><span class="op">&gt;&gt;&gt;</span> dd.update(three<span class="op">=</span><span class="dv">3</span>)</div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15"><span class="op">&gt;&gt;&gt;</span> dd</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16">{<span class="st">&#39;one&#39;</span>: [<span class="dv">1</span>, <span class="dv">1</span>], <span class="st">&#39;two&#39;</span>: [<span class="dv">2</span>, <span class="dv">2</span>], <span class="st">&#39;three&#39;</span>: [<span class="dv">3</span>, <span class="dv">3</span>]}</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="kw">class</span> DoppelDict2(collections.UserDict):
+...     <span class="kw">def</span> <span class="fu">__setitem__</span>(<span class="va">self</span>, key, value):
+...             <span class="bu">super</span>().<span class="fu">__setitem__</span>(key, [value] <span class="op">*</span> <span class="dv">2</span>)
+...
+<span class="op">&gt;&gt;&gt;</span> dd <span class="op">=</span> DoppelDict2(one<span class="op">=</span><span class="dv">1</span>)
+<span class="op">&gt;&gt;&gt;</span> dd
+{<span class="st">&#39;one&#39;</span>: [<span class="dv">1</span>, <span class="dv">1</span>]}
+<span class="op">&gt;&gt;&gt;</span> dd[<span class="st">&#39;two&#39;</span>] <span class="op">=</span> <span class="dv">2</span>
+<span class="op">&gt;&gt;&gt;</span> dd
+{<span class="st">&#39;one&#39;</span>: [<span class="dv">1</span>, <span class="dv">1</span>], <span class="st">&#39;two&#39;</span>: [<span class="dv">2</span>, <span class="dv">2</span>]}
+<span class="op">&gt;&gt;&gt;</span> dd.update(one<span class="op">=</span><span class="dv">1</span>)
+<span class="op">&gt;&gt;&gt;</span> dd
+{<span class="st">&#39;one&#39;</span>: [<span class="dv">1</span>, <span class="dv">1</span>], <span class="st">&#39;two&#39;</span>: [<span class="dv">2</span>, <span class="dv">2</span>]}
+<span class="op">&gt;&gt;&gt;</span> dd.update(three<span class="op">=</span><span class="dv">3</span>)
+<span class="op">&gt;&gt;&gt;</span> dd
+{<span class="st">&#39;one&#39;</span>: [<span class="dv">1</span>, <span class="dv">1</span>], <span class="st">&#39;two&#39;</span>: [<span class="dv">2</span>, <span class="dv">2</span>], <span class="st">&#39;three&#39;</span>: [<span class="dv">3</span>, <span class="dv">3</span>]}</code></pre></div>
 <p>上述问题只发生在C语言实现的内置类型内部的方法委托上，而且只影响直接继承内置类型的用户自定义类。</p>
 <p>在向量中添加加法。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="kw">def</span> <span class="fu">__add__</span>(<span class="va">self</span>, other):</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2">    <span class="cf">try</span>:</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3">        <span class="co"># pairs是个生成器，它会生成（a，b）形式的元组，其中a来自self， b来自other。</span></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">        <span class="co"># 如果self和other的长度不同，使用fillvalue填充较短的那个可迭代对象。</span></div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">        pairs <span class="op">=</span> itertools.zip_longest(<span class="va">self</span>, other, fillvalue<span class="op">=</span><span class="fl">0.0</span>)</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">        <span class="co"># 构建一个新Vector实例，使用生成器表达式计算pairs中各个元素的和。</span></div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">        <span class="cf">return</span> Vector(a <span class="op">+</span> b <span class="cf">for</span> a, b <span class="kw">in</span> pairs)</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">    <span class="cf">except</span> <span class="pp">TypeError</span>:</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9">        <span class="cf">return</span> <span class="va">NotImplemented</span></div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10"></div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11"><span class="kw">def</span> <span class="fu">__radd__</span>(<span class="va">self</span>, other):</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">    <span class="cf">return</span> <span class="va">self</span> <span class="op">+</span> other</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> <span class="fu">__add__</span>(<span class="va">self</span>, other):
+    <span class="cf">try</span>:
+        <span class="co"># pairs是个生成器，它会生成（a，b）形式的元组，其中a来自self， b来自other。</span>
+        <span class="co"># 如果self和other的长度不同，使用fillvalue填充较短的那个可迭代对象。</span>
+        pairs <span class="op">=</span> itertools.zip_longest(<span class="va">self</span>, other, fillvalue<span class="op">=</span><span class="fl">0.0</span>)
+        <span class="co"># 构建一个新Vector实例，使用生成器表达式计算pairs中各个元素的和。</span>
+        <span class="cf">return</span> Vector(a <span class="op">+</span> b <span class="cf">for</span> a, b <span class="kw">in</span> pairs)
+    <span class="cf">except</span> <span class="pp">TypeError</span>:
+        <span class="cf">return</span> <span class="va">NotImplemented</span>
+
+<span class="kw">def</span> <span class="fu">__radd__</span>(<span class="va">self</span>, other):
+    <span class="cf">return</span> <span class="va">self</span> <span class="op">+</span> other</code></pre></div>
 <p>下面增加*运算符方法</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">from</span> array <span class="im">import</span> array</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="im">import</span> reprlib</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="im">import</span> math</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="im">import</span> functools</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="im">import</span> operator</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="im">import</span> itertools</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="im">import</span> numbers</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"></div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="kw">class</span> Vector:</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">    typecode <span class="op">=</span> <span class="st">&#39;d&#39;</span></div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">    </div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, components):</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">        <span class="va">self</span>._components <span class="op">=</span> array(<span class="va">self</span>.typecode, components)</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">    </div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">    <span class="kw">def</span> <span class="fu">__mul__</span>(<span class="va">self</span>, scalar):</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16">        <span class="cf">if</span> <span class="bu">isinstance</span>(scalar, number.Real):</div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17">            <span class="cf">return</span> Vector(n <span class="op">*</span> scalar <span class="cf">for</span> n <span class="va">self</span>)</div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18">        <span class="cf">else</span>:</div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19">            <span class="cf">return</span> <span class="va">NotImplemented</span></div>
-<div class="sourceLine" id="20" href="#20" data-line-number="20">    </div>
-<div class="sourceLine" id="21" href="#21" data-line-number="21">    <span class="kw">def</span> <span class="fu">__rmul__</span>(<span class="va">self</span>, scalar):</div>
-<div class="sourceLine" id="22" href="#22" data-line-number="22">        <span class="cf">return</span> <span class="va">self</span><span class="op">*</span> scalar</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> array <span class="im">import</span> array
+<span class="im">import</span> reprlib
+<span class="im">import</span> math
+<span class="im">import</span> functools
+<span class="im">import</span> operator
+<span class="im">import</span> itertools
+<span class="im">import</span> numbers
+
+<span class="kw">class</span> Vector:
+    typecode <span class="op">=</span> <span class="st">&#39;d&#39;</span>
+    
+    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, components):
+        <span class="va">self</span>._components <span class="op">=</span> array(<span class="va">self</span>.typecode, components)
+    
+    <span class="kw">def</span> <span class="fu">__mul__</span>(<span class="va">self</span>, scalar):
+        <span class="cf">if</span> <span class="bu">isinstance</span>(scalar, number.Real):
+            <span class="cf">return</span> Vector(n <span class="op">*</span> scalar <span class="cf">for</span> n <span class="va">self</span>)
+        <span class="cf">else</span>:
+            <span class="cf">return</span> <span class="va">NotImplemented</span>
+    
+    <span class="kw">def</span> <span class="fu">__rmul__</span>(<span class="va">self</span>, scalar):
+        <span class="cf">return</span> <span class="va">self</span><span class="op">*</span> scalar</code></pre></div>
 <p>下面介绍一些中缀运算符方法的名称</p>
 <table>
 <thead>
 <tr class="header">
-<th style="text-align: center;">运算符</th>
-<th style="text-align: center;">正向方法</th>
-<th style="text-align: center;">反向方法</th>
-<th style="text-align: center;">就地方法</th>
-<th style="text-align: center;">说明</th>
+<th align="center">运算符</th>
+<th align="center">正向方法</th>
+<th align="center">反向方法</th>
+<th align="center">就地方法</th>
+<th align="center">说明</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">+</td>
-<td style="text-align: center;">__add__</td>
-<td style="text-align: center;">__radd__</td>
-<td style="text-align: center;">__iadd__</td>
-<td style="text-align: center;">加法或拼接</td>
+<td align="center">+</td>
+<td align="center">__add__</td>
+<td align="center">__radd__</td>
+<td align="center">__iadd__</td>
+<td align="center">加法或拼接</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">-</td>
-<td style="text-align: center;">__sub__</td>
-<td style="text-align: center;">__rsub__</td>
-<td style="text-align: center;">__isub__</td>
-<td style="text-align: center;">减法</td>
+<td align="center">-</td>
+<td align="center">__sub__</td>
+<td align="center">__rsub__</td>
+<td align="center">__isub__</td>
+<td align="center">减法</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">*</td>
-<td style="text-align: center;">__mul__</td>
-<td style="text-align: center;">__rmul__</td>
-<td style="text-align: center;">__imul__</td>
-<td style="text-align: center;">乘法或重复复制</td>
+<td align="center">*</td>
+<td align="center">__mul__</td>
+<td align="center">__rmul__</td>
+<td align="center">__imul__</td>
+<td align="center">乘法或重复复制</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">/</td>
-<td style="text-align: center;">__truediv__</td>
-<td style="text-align: center;">__rtruediv__</td>
-<td style="text-align: center;">__itruediv__</td>
-<td style="text-align: center;">除法</td>
+<td align="center">/</td>
+<td align="center">__truediv__</td>
+<td align="center">__rtruediv__</td>
+<td align="center">__itruediv__</td>
+<td align="center">除法</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">//</td>
-<td style="text-align: center;">__floordiv__</td>
-<td style="text-align: center;">__rfloordiv__</td>
-<td style="text-align: center;">__ifloordiv__</td>
-<td style="text-align: center;">整除</td>
+<td align="center">//</td>
+<td align="center">__floordiv__</td>
+<td align="center">__rfloordiv__</td>
+<td align="center">__ifloordiv__</td>
+<td align="center">整除</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">%</td>
-<td style="text-align: center;">__mod__</td>
-<td style="text-align: center;">__rmod__</td>
-<td style="text-align: center;">__imod__</td>
-<td style="text-align: center;">取模</td>
+<td align="center">%</td>
+<td align="center">__mod__</td>
+<td align="center">__rmod__</td>
+<td align="center">__imod__</td>
+<td align="center">取模</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">divmod( )</td>
-<td style="text-align: center;">__divmod__</td>
-<td style="text-align: center;">__rdivmod__</td>
-<td style="text-align: center;">__idivmod__</td>
-<td style="text-align: center;">返回由整除的商和模数组成的元组</td>
+<td align="center">divmod( )</td>
+<td align="center">__divmod__</td>
+<td align="center">__rdivmod__</td>
+<td align="center">__idivmod__</td>
+<td align="center">返回由整除的商和模数组成的元组</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">**，pow( )</td>
-<td style="text-align: center;">__pow__</td>
-<td style="text-align: center;">__rpow__</td>
-<td style="text-align: center;">__ipow__</td>
-<td style="text-align: center;">取幂*</td>
+<td align="center">**，pow( )</td>
+<td align="center">__pow__</td>
+<td align="center">__rpow__</td>
+<td align="center">__ipow__</td>
+<td align="center">取幂*</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">@</td>
-<td style="text-align: center;">__matmul__</td>
-<td style="text-align: center;">__rmatmul__</td>
-<td style="text-align: center;">__imatmul__</td>
-<td style="text-align: center;">矩阵乘法#</td>
+<td align="center">@</td>
+<td align="center">__matmul__</td>
+<td align="center">__rmatmul__</td>
+<td align="center">__imatmul__</td>
+<td align="center">矩阵乘法#</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">&amp;</td>
-<td style="text-align: center;">__and__</td>
-<td style="text-align: center;">__rand__</td>
-<td style="text-align: center;">__iand__</td>
-<td style="text-align: center;">位与</td>
+<td align="center">&amp;</td>
+<td align="center">__and__</td>
+<td align="center">__rand__</td>
+<td align="center">__iand__</td>
+<td align="center">位与</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">|</td>
-<td style="text-align: center;">__or__</td>
-<td style="text-align: center;">__ror__</td>
-<td style="text-align: center;">__ior__</td>
-<td style="text-align: center;">位或</td>
+<td align="center">|</td>
+<td align="center">__or__</td>
+<td align="center">__ror__</td>
+<td align="center">__ior__</td>
+<td align="center">位或</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">^</td>
-<td style="text-align: center;">__xor__</td>
-<td style="text-align: center;">__rxor__</td>
-<td style="text-align: center;">__ixor__</td>
-<td style="text-align: center;">位异或</td>
+<td align="center">^</td>
+<td align="center">__xor__</td>
+<td align="center">__rxor__</td>
+<td align="center">__ixor__</td>
+<td align="center">位异或</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">&lt;&lt;</td>
-<td style="text-align: center;">__lshift__</td>
-<td style="text-align: center;">__rlshift__</td>
-<td style="text-align: center;">__ilshift__</td>
-<td style="text-align: center;">按位左移</td>
+<td align="center">&lt;&lt;</td>
+<td align="center">__lshift__</td>
+<td align="center">__rlshift__</td>
+<td align="center">__ilshift__</td>
+<td align="center">按位左移</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">&gt;&gt;</td>
-<td style="text-align: center;">__rshift__</td>
-<td style="text-align: center;">__rrshift__</td>
-<td style="text-align: center;">__irshift__</td>
-<td style="text-align: center;">按位右移</td>
+<td align="center">&gt;&gt;</td>
+<td align="center">__rshift__</td>
+<td align="center">__rrshift__</td>
+<td align="center">__irshift__</td>
+<td align="center">按位右移</td>
 </tr>
 </tbody>
 </table>

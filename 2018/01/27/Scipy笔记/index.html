@@ -465,29 +465,25 @@
 <h3 id="简介">简介</h3>
 <p><code>Python</code>中常用的统计工具有 <code>Numpy</code>, <code>Pandas</code>, <code>PyMC</code>, <code>StatsModels</code>等。Scipy 中的子库 scipy.stats 中包含很多统计上的方法。</p>
 <p>导入 numpy 和 matplotlib：</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">import</span> numpy <span class="im">as</span> np</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> numpy <span class="im">as</span> np
+<span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</code></pre></div>
 <h3 id="概率分布">概率分布</h3>
 <ul>
-<li>常见的连续概率分布有：
-<ul>
+<li>常见的连续概率分布有：</li>
 <li>均匀分布</li>
 <li>正态分布</li>
 <li>学生t分布</li>
 <li>F分布</li>
-<li>Gamma分布</li>
-</ul></li>
-<li>离散概率分布：
-<ul>
+<li><p>Gamma分布</p></li>
+<li>离散概率分布：</li>
 <li>伯努利分布</li>
-<li>几何分布</li>
-</ul></li>
+<li><p>几何分布</p></li>
 </ul>
 <p>这些都可以在 <code>scipy.stats</code>中找到。</p>
 <h3 id="连续分布">连续分布</h3>
 <h3 id="正态分布">正态分布</h3>
 <p>以<code>正态分布</code>为例，先导入<code>正态分布</code>：</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">from</span> scipy.stats <span class="im">import</span> norm</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> scipy.stats <span class="im">import</span> norm</code></pre></div>
 <p>它包含四类常用的函数：</p>
 <ul>
 <li><code>norm.cdf</code> 返回对应的<a href="https://zh.wikipedia.org/wiki/%E7%B4%AF%E7%A7%AF%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0" target="_blank" rel="noopener">累计分布函数</a>值</li>
@@ -495,190 +491,238 @@
 <li><code>norm.rvs</code> 产生指定参数的随机变量</li>
 <li><code>norm.fit</code> 返回给定数据下，各参数的<a href="https://zh.wikipedia.org/wiki/%E6%9C%80%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1" target="_blank" rel="noopener">最大似然估计</a>（MLE）值</li>
 </ul>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="co"># 从正态分布产生500个随机点：</span></div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> x_norm <span class="op">=</span> norm.rvs(size<span class="op">=</span><span class="dv">500</span>)</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> <span class="bu">type</span>(x_norm)</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">numpy.ndarray</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"></div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> h <span class="op">=</span> plt.hist(x_norm)</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="st">&#39;count: &#39;</span>, h[<span class="dv">0</span>])</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9">count:  [   <span class="fl">2.</span>   <span class="fl">10.</span>   <span class="fl">20.</span>   <span class="fl">66.</span>  <span class="fl">119.</span>  <span class="fl">119.</span>  <span class="fl">102.</span>   <span class="fl">42.</span>   <span class="fl">17.</span>    <span class="fl">3.</span>]</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="st">&#39;bin centers&#39;</span>, h[<span class="dv">1</span>])</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11"><span class="bu">bin</span> centers [<span class="op">-</span><span class="fl">3.46</span> <span class="fl">-2.81</span> <span class="fl">-2.16</span> <span class="fl">-1.51</span> <span class="fl">-0.86</span> <span class="fl">-0.21</span>  <span class="fl">0.43</span>  <span class="fl">1.08</span>  <span class="fl">1.73</span>  <span class="fl">2.38</span>  <span class="fl">3.03</span>]</div></code></pre>
-<p><img src="/images/scipy/output_9_1.png"></p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="co"># 从正态分布产生500个随机点：</span>
+
+<span class="op">&gt;&gt;&gt;</span> x_norm <span class="op">=</span> norm.rvs(size<span class="op">=</span><span class="dv">500</span>)
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">type</span>(x_norm)
+numpy.ndarray
+
+<span class="op">&gt;&gt;&gt;</span> h <span class="op">=</span> plt.hist(x_norm)
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="st">&#39;count: &#39;</span>, h[<span class="dv">0</span>])
+count:  [   <span class="dv">2</span>.   <span class="dv">10</span>.   <span class="dv">20</span>.   <span class="dv">66</span>.  <span class="dv">119</span>.  <span class="dv">119</span>.  <span class="dv">102</span>.   <span class="dv">42</span>.   <span class="dv">17</span>.    <span class="dv">3</span>.]
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="st">&#39;bin centers&#39;</span>, h[<span class="dv">1</span>])
+<span class="bu">bin</span> centers [<span class="op">-</span><span class="fl">3.46</span> <span class="op">-</span><span class="fl">2.81</span> <span class="op">-</span><span class="fl">2.16</span> <span class="op">-</span><span class="fl">1.51</span> <span class="op">-</span><span class="fl">0.86</span> <span class="op">-</span><span class="fl">0.21</span>  <span class="fl">0.43</span>  <span class="fl">1.08</span>  <span class="fl">1.73</span>  <span class="fl">2.38</span>  <span class="fl">3.03</span>]</code></pre></div>
+<div class="figure">
+<img src="/images/scipy/output_9_1.png">
+
+</div>
 <p>归一化直方图（用出现频率代替次数），将划分区间变为 20（默认 10）:<img src="/images/scipy/output_11_0.png" alt="output_11_0"></p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="co"># 在这组数据下，正态分布参数的最大似然估计值为：</span></div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> x_mean, x_std <span class="op">=</span> norm.fit(x_norm)</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="st">&#39;mean &#39;</span>, x_mean)</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">mean  <span class="fl">-0.036045620814</span></div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="st">&#39;x_std&#39;</span>, x_std)</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">x_std <span class="fl">1.00480461409</span></div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"></div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="co"># 将真实的概率密度函数与直方图进行比较：</span></div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10"><span class="op">&gt;&gt;&gt;</span> h <span class="op">=</span> plt.hist(x_norm, normed<span class="op">=</span><span class="va">True</span>, bins<span class="op">=</span><span class="dv">20</span>)</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">50</span>)</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm.pdf(x), <span class="st">&#39;r-&#39;</span>)</div></code></pre>
-<p><img src="/images/scipy/output_15_0.png"></p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="co"># 导入积分函数：</span></div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> scipy.integrate <span class="im">import</span> trapz</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="co"># 通过积分，计算落在某个区间的概率大小：</span></div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"></div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="op">&gt;&gt;&gt;</span> x1 <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">108</span>)</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> trapz(norm.pdf(x1), x1)</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="st">&#39;</span><span class="sc">{:.2f}</span><span class="st"> of the values lie between -2 and 2&#39;</span>.<span class="bu">format</span>(p))</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="fl">0.95</span> of the values lie between <span class="dv">-2</span> <span class="kw">and</span> <span class="dv">2</span></div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10"></div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11"><span class="op">&gt;&gt;&gt;</span> plt.fill_between(x1, norm.pdf(x1), color<span class="op">=</span><span class="st">&#39;red&#39;</span>)</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, norm.pdf(x), <span class="st">&#39;k-&#39;</span>)</div></code></pre>
-<p><img src="/images/scipy/output_19_2.png"></p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="co"># 在这组数据下，正态分布参数的最大似然估计值为：</span>
+
+<span class="op">&gt;&gt;&gt;</span> x_mean, x_std <span class="op">=</span> norm.fit(x_norm)
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="st">&#39;mean &#39;</span>, x_mean)
+mean  <span class="op">-</span><span class="fl">0.036045620814</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="st">&#39;x_std&#39;</span>, x_std)
+x_std <span class="fl">1.00480461409</span>
+
+<span class="co"># 将真实的概率密度函数与直方图进行比较：</span>
+<span class="op">&gt;&gt;&gt;</span> h <span class="op">=</span> plt.hist(x_norm, normed<span class="op">=</span><span class="va">True</span>, bins<span class="op">=</span><span class="dv">20</span>)
+<span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">50</span>)
+<span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm.pdf(x), <span class="st">&#39;r-&#39;</span>)</code></pre></div>
+<div class="figure">
+<img src="/images/scipy/output_15_0.png">
+
+</div>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="co"># 导入积分函数：</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> scipy.integrate <span class="im">import</span> trapz
+
+<span class="co"># 通过积分，计算落在某个区间的概率大小：</span>
+
+<span class="op">&gt;&gt;&gt;</span> x1 <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">108</span>)
+<span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> trapz(norm.pdf(x1), x1)
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="st">&#39;</span><span class="sc">{:.2f}</span><span class="st"> of the values lie between -2 and 2&#39;</span>.<span class="bu">format</span>(p))
+<span class="fl">0.95</span> of the values lie between <span class="op">-</span><span class="dv">2</span> <span class="kw">and</span> <span class="dv">2</span>
+
+<span class="op">&gt;&gt;&gt;</span> plt.fill_between(x1, norm.pdf(x1), color<span class="op">=</span><span class="st">&#39;red&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> plt.plot(x, norm.pdf(x), <span class="st">&#39;k-&#39;</span>)</code></pre></div>
+<div class="figure">
+<img src="/images/scipy/output_19_2.png">
+
+</div>
 <p>默认情况，<code>正态分布</code>的参数为均值0，标准差1，即标准正态分布。可以通过<code>loc</code>和<code>scale</code>来调整这些参数，一种方法是调用相关函数时进行输入：</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm.pdf(x, loc<span class="op">=</span><span class="dv">0</span>, scale<span class="op">=</span><span class="dv">1</span>))</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm.pdf(x, loc<span class="op">=</span><span class="fl">0.5</span>, scale<span class="op">=</span><span class="dv">2</span>))</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm.pdf(x, loc<span class="op">=-</span><span class="fl">0.5</span>, scale<span class="op">=</span>.<span class="dv">5</span>))</div></code></pre>
-<p><img src="/images/scipy/output_21_0.png"></p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm.pdf(x, loc<span class="op">=</span><span class="dv">0</span>, scale<span class="op">=</span><span class="dv">1</span>))
+<span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm.pdf(x, loc<span class="op">=</span><span class="fl">0.5</span>, scale<span class="op">=</span><span class="dv">2</span>))
+<span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm.pdf(x, loc<span class="op">=-</span><span class="fl">0.5</span>, scale<span class="op">=</span>.<span class="dv">5</span>))</code></pre></div>
+<div class="figure">
+<img src="/images/scipy/output_21_0.png">
+
+</div>
 <p>另一种则是将 <code>loc</code>, <code>scale</code> 作为参数直接输给 <code>norm</code> 生成相应的分布：</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm(loc<span class="op">=</span><span class="dv">0</span>, scale<span class="op">=</span><span class="dv">1</span>).pdf(x))</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm(loc<span class="op">=</span><span class="fl">0.5</span>, scale<span class="op">=</span><span class="dv">2</span>).pdf(x))</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm(loc<span class="op">=-</span><span class="fl">0.5</span>, scale<span class="op">=</span>.<span class="dv">5</span>).pdf(x))</div></code></pre>
-<p><img src="/images/scipy/output_23_0.png"></p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm(loc<span class="op">=</span><span class="dv">0</span>, scale<span class="op">=</span><span class="dv">1</span>).pdf(x))
+<span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm(loc<span class="op">=</span><span class="fl">0.5</span>, scale<span class="op">=</span><span class="dv">2</span>).pdf(x))
+<span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, norm(loc<span class="op">=-</span><span class="fl">0.5</span>, scale<span class="op">=</span>.<span class="dv">5</span>).pdf(x))</code></pre></div>
+<div class="figure">
+<img src="/images/scipy/output_23_0.png">
+
+</div>
 <p>其他连续分布</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">from</span> scipy.stats <span class="im">import</span> lognorm, t, dweibull</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> scipy.stats <span class="im">import</span> lognorm, t, dweibull</code></pre></div>
 <p>支持与<code>norm</code> 类似的操作，如概率密度函数等。</p>
 <p>不同参数的对数正态分布：</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.linspace(<span class="fl">0.01</span>, <span class="dv">3</span>, <span class="dv">100</span>)</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, lognorm.pdf(x, <span class="dv">1</span>), label<span class="op">=</span><span class="st">&#39;s=1&#39;</span>)</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, lognorm.pdf(x, <span class="dv">2</span>), label<span class="op">=</span><span class="st">&#39;s=2&#39;</span>)</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, lognorm.pdf(x, <span class="fl">.1</span>), label<span class="op">=</span><span class="st">&#39;s=0.1&#39;</span>)</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"></div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> plt.legend()</div></code></pre>
-<p><img src="/images/scipy/output_27_1.png"></p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.linspace(<span class="fl">0.01</span>, <span class="dv">3</span>, <span class="dv">100</span>)
+
+<span class="op">&gt;&gt;&gt;</span> plt.plot(x, lognorm.pdf(x, <span class="dv">1</span>), label<span class="op">=</span><span class="st">&#39;s=1&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> plt.plot(x, lognorm.pdf(x, <span class="dv">2</span>), label<span class="op">=</span><span class="st">&#39;s=2&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> plt.plot(x, lognorm.pdf(x, .<span class="dv">1</span>), label<span class="op">=</span><span class="st">&#39;s=0.1&#39;</span>)
+
+<span class="op">&gt;&gt;&gt;</span> plt.legend()</code></pre></div>
+<div class="figure">
+<img src="/images/scipy/output_27_1.png">
+
+</div>
 <p>不同的<code>韦氏分布</code>：</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.linspace(<span class="fl">0.01</span>, <span class="dv">3</span>, <span class="dv">100</span>)</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, dweibull.pdf(x, <span class="dv">1</span>), label<span class="op">=</span><span class="st">&#39;s=1, constant failure rate&#39;</span>)</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, dweibull.pdf(x, <span class="dv">2</span>), label<span class="op">=</span><span class="st">&#39;s=2, increasing failure rate&#39;</span>)</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, dweibull.pdf(x, <span class="fl">.1</span>), label<span class="op">=</span><span class="st">&#39;0&lt;s&lt;1, decreasing failure rate&#39;</span>)</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"></div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> plt.legend()</div></code></pre>
-<p><img src="/images/scipy/output_29_1.png"></p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">100</span>)</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, t.pdf(x, <span class="dv">1</span>), label<span class="op">=</span><span class="st">&#39;df=1&#39;</span>)</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, t.pdf(x, <span class="dv">2</span>), label<span class="op">=</span><span class="st">&#39;df=2&#39;</span>)</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, t.pdf(x, <span class="dv">100</span>), label<span class="op">=</span><span class="st">&#39;df=100&#39;</span>)</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="op">&gt;&gt;&gt;</span> plt.plot(x[::<span class="dv">5</span>], norm.pdf(x[::<span class="dv">5</span>]), <span class="st">&#39;kx&#39;</span>, label<span class="op">=</span><span class="st">&#39;normal&#39;</span>)</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"></div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="op">&gt;&gt;&gt;</span> plt.legend()</div></code></pre>
-<p><img src="/images/scipy/output_30_1.png"></p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.linspace(<span class="fl">0.01</span>, <span class="dv">3</span>, <span class="dv">100</span>)
+
+<span class="op">&gt;&gt;&gt;</span> plt.plot(x, dweibull.pdf(x, <span class="dv">1</span>), label<span class="op">=</span><span class="st">&#39;s=1, constant failure rate&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> plt.plot(x, dweibull.pdf(x, <span class="dv">2</span>), label<span class="op">=</span><span class="st">&#39;s=2, increasing failure rate&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> plt.plot(x, dweibull.pdf(x, .<span class="dv">1</span>), label<span class="op">=</span><span class="st">&#39;0&lt;s&lt;1, decreasing failure rate&#39;</span>)
+
+<span class="op">&gt;&gt;&gt;</span> plt.legend()</code></pre></div>
+<div class="figure">
+<img src="/images/scipy/output_29_1.png">
+
+</div>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">100</span>)
+
+<span class="op">&gt;&gt;&gt;</span> plt.plot(x, t.pdf(x, <span class="dv">1</span>), label<span class="op">=</span><span class="st">&#39;df=1&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> plt.plot(x, t.pdf(x, <span class="dv">2</span>), label<span class="op">=</span><span class="st">&#39;df=2&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> plt.plot(x, t.pdf(x, <span class="dv">100</span>), label<span class="op">=</span><span class="st">&#39;df=100&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> plt.plot(x[::<span class="dv">5</span>], norm.pdf(x[::<span class="dv">5</span>]), <span class="st">&#39;kx&#39;</span>, label<span class="op">=</span><span class="st">&#39;normal&#39;</span>)
+
+<span class="op">&gt;&gt;&gt;</span> plt.legend()</code></pre></div>
+<div class="figure">
+<img src="/images/scipy/output_30_1.png">
+
+</div>
 <h2 id="离散分布">离散分布</h2>
 <p>导入离散分布：</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">from</span> scipy.stats <span class="im">import</span> binom, poisson, randint</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> scipy.stats <span class="im">import</span> binom, poisson, randint</code></pre></div>
 <p>离散分布没有概率密度函数，但是有概率质量函数。离散均匀分布的概率质量函数<code>（PMF）</code>：</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="op">%</span>matplotlib inline</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> high <span class="op">=</span> <span class="dv">10</span></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> low <span class="op">=</span> <span class="dv">-10</span></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"></div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.arange(low, high<span class="op">+</span><span class="dv">1</span>, <span class="fl">0.5</span>)</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.stem(x, randint(low, high).pmf(x))</div></code></pre>
-<p><img src="/images/scipy/output_34_1.png"></p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="op">%</span>matplotlib inline
+<span class="op">&gt;&gt;&gt;</span> high <span class="op">=</span> <span class="dv">10</span>
+<span class="op">&gt;&gt;&gt;</span> low <span class="op">=</span> <span class="op">-</span><span class="dv">10</span>
+
+<span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.arange(low, high<span class="op">+</span><span class="dv">1</span>, <span class="fl">0.5</span>)
+<span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.stem(x, randint(low, high).pmf(x))</code></pre></div>
+<div class="figure">
+<img src="/images/scipy/output_34_1.png">
+
+</div>
 <h3 id="二项分布">二项分布：</h3>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> num_trails <span class="op">=</span> <span class="dv">60</span></div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.arange(num_trails)</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, binom(num_trails, <span class="fl">0.5</span>).pmf(x), <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="st">&#39;p=0.5&#39;</span>)</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, binom(num_trails, <span class="fl">0.2</span>).pmf(x), <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="st">&#39;p=0.2&#39;</span>)</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"></div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> plt.legend()</div></code></pre>
-<p><img src="/images/scipy/output_36_1.png"></p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> num_trails <span class="op">=</span> <span class="dv">60</span>
+<span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.arange(num_trails)
+
+<span class="op">&gt;&gt;&gt;</span> plt.plot(x, binom(num_trails, <span class="fl">0.5</span>).pmf(x), <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="st">&#39;p=0.5&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> plt.plot(x, binom(num_trails, <span class="fl">0.2</span>).pmf(x), <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="st">&#39;p=0.2&#39;</span>)
+
+<span class="op">&gt;&gt;&gt;</span> plt.legend()</code></pre></div>
+<div class="figure">
+<img src="/images/scipy/output_36_1.png">
+
+</div>
 <h3 id="泊松分布">泊松分布：</h3>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">21</span>)</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, poisson(<span class="dv">1</span>).pmf(x), <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="vs">r&#39;$\lambda$=1&#39;</span>)</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, poisson(<span class="dv">4</span>).pmf(x), <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="vs">r&#39;$\lambda$=4&#39;</span>)</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, poisson(<span class="dv">9</span>).pmf(x), <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="vs">r&#39;$\lambda$=9&#39;</span>)</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"></div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> plt.legend()</div></code></pre>
-<p><img src="/images/scipy/output_38_1.png"></p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">21</span>)
+
+<span class="op">&gt;&gt;&gt;</span> plt.plot(x, poisson(<span class="dv">1</span>).pmf(x), <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="vs">r&#39;$\lambda$=1&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> plt.plot(x, poisson(<span class="dv">4</span>).pmf(x), <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="vs">r&#39;$\lambda$=4&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> plt.plot(x, poisson(<span class="dv">9</span>).pmf(x), <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="vs">r&#39;$\lambda$=9&#39;</span>)
+
+<span class="op">&gt;&gt;&gt;</span> plt.legend()</code></pre></div>
+<div class="figure">
+<img src="/images/scipy/output_38_1.png">
+
+</div>
 <h3 id="导入相关的函数">导入相关的函数：</h3>
 <ul>
 <li><code>正态分布</code></li>
 <li><code>独立双样本 t 检验</code>，<code>配对样本 t 检验</code>，<code>单样本 t 检验</code></li>
 <li><code>学生 t 分布</code></li>
 </ul>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">from</span> scipy.stats <span class="im">import</span> norm</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="im">from</span> scipy.stats <span class="im">import</span> ttest_ind, ttest_rel, ttest_1samp</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="im">from</span> scipy.stats <span class="im">import</span> t</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> scipy.stats <span class="im">import</span> norm
+<span class="im">from</span> scipy.stats <span class="im">import</span> ttest_ind, ttest_rel, ttest_1samp
+<span class="im">from</span> scipy.stats <span class="im">import</span> t</code></pre></div>
 <h3 id="独立样本-t-检验">独立样本 t 检验</h3>
 <h3 id="两组参数不同的正态分布">两组参数不同的正态分布：</h3>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> n1 <span class="op">=</span> norm(loc<span class="op">=</span><span class="fl">0.3</span>, scale<span class="op">=</span><span class="fl">1.0</span>)</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> n2 <span class="op">=</span> norm(loc<span class="op">=</span><span class="dv">0</span>, scale<span class="op">=</span><span class="fl">1.0</span>)</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="co"># 从分布中产生两组随机样本：</span></div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> n1_samples <span class="op">=</span> n1.rvs(size<span class="op">=</span><span class="dv">100</span>)</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="op">&gt;&gt;&gt;</span> n2_samples <span class="op">=</span> n2.rvs(size<span class="op">=</span><span class="dv">100</span>)</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"></div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="co"># 将两组样本混合在一起：</span></div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="op">&gt;&gt;&gt;</span> samples <span class="op">=</span> np.hstack((n1_samples, n2_samples))</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10"></div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11"><span class="co"># 最大似然参数估计：</span></div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12"><span class="op">&gt;&gt;&gt;</span> loc, scale <span class="op">=</span> norm.fit(samples)</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13"><span class="op">&gt;&gt;&gt;</span> n <span class="op">=</span> norm(loc<span class="op">=</span>loc, scale<span class="op">=</span>scale)</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14"></div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15"><span class="co"># 比较</span></div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">100</span>)</div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17"><span class="op">&gt;&gt;&gt;</span> plt.hist([samples, n1_samples, n2_samples], normed<span class="op">=</span><span class="va">True</span>)</div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, n.pdf(x), <span class="st">&#39;b-&#39;</span>)</div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, n1.pdf(x), <span class="st">&#39;g-&#39;</span>)</div>
-<div class="sourceLine" id="20" href="#20" data-line-number="20"><span class="op">&gt;&gt;&gt;</span> plt.plot(x, n2.pdf(x), <span class="st">&#39;r-&#39;</span>)</div></code></pre>
-<p><img src="/images/scipy/output_42_1.png"></p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="co"># 独立双样本 t 检验的目的在于判断两组样本之间是否有显著差异：p 值小，说明这两个样本有显著性差异。</span></div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> t_val, p <span class="op">=</span> ttest_ind(n1_samples, n2_samples)</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="st">&#39;t = </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(t_val))</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">t <span class="op">=</span> <span class="fl">2.4883708971185237</span></div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="st">&#39;p-value = </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(p))</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">p<span class="op">-</span>value <span class="op">=</span> <span class="fl">0.013658121015263052</span></div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"></div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="co"># p值计算原理</span></div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="co"># p值对应的部分是下图中的红色区域，边界范围由 t 值决定。</span></div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10"><span class="op">&gt;&gt;&gt;</span> pop_size <span class="op">=</span> <span class="dv">35</span></div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11"><span class="op">&gt;&gt;&gt;</span> my_t <span class="op">=</span> t(pop_size) <span class="co"># 传入参数为自由度，这里自由度为50</span></div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12"></div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, my_t.pdf(x), <span class="st">&#39;b-&#39;</span>)</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14"><span class="op">&gt;&gt;&gt;</span> lower_x <span class="op">=</span> x[x<span class="op">&lt;=</span> <span class="op">-</span><span class="bu">abs</span>(t_val)]</div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15"><span class="op">&gt;&gt;&gt;</span> upper_x <span class="op">=</span> x[x<span class="op">&gt;=</span> <span class="bu">abs</span>(t_val)]</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16"></div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.fill_between(lower_x, my_t.pdf(lower_x), color<span class="op">=</span><span class="st">&#39;red&#39;</span>)</div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.fill_between(upper_x, my_t.pdf(upper_x), color<span class="op">=</span><span class="st">&#39;red&#39;</span>)</div></code></pre>
-<p><img src="/images/scipy/output_46_0.png"></p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> n1 <span class="op">=</span> norm(loc<span class="op">=</span><span class="fl">0.3</span>, scale<span class="op">=</span><span class="fl">1.0</span>)
+<span class="op">&gt;&gt;&gt;</span> n2 <span class="op">=</span> norm(loc<span class="op">=</span><span class="dv">0</span>, scale<span class="op">=</span><span class="fl">1.0</span>)
+
+<span class="co"># 从分布中产生两组随机样本：</span>
+<span class="op">&gt;&gt;&gt;</span> n1_samples <span class="op">=</span> n1.rvs(size<span class="op">=</span><span class="dv">100</span>)
+<span class="op">&gt;&gt;&gt;</span> n2_samples <span class="op">=</span> n2.rvs(size<span class="op">=</span><span class="dv">100</span>)
+
+<span class="co"># 将两组样本混合在一起：</span>
+<span class="op">&gt;&gt;&gt;</span> samples <span class="op">=</span> np.hstack((n1_samples, n2_samples))
+
+<span class="co"># 最大似然参数估计：</span>
+<span class="op">&gt;&gt;&gt;</span> loc, scale <span class="op">=</span> norm.fit(samples)
+<span class="op">&gt;&gt;&gt;</span> n <span class="op">=</span> norm(loc<span class="op">=</span>loc, scale<span class="op">=</span>scale)
+
+<span class="co"># 比较</span>
+<span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">100</span>)
+<span class="op">&gt;&gt;&gt;</span> plt.hist([samples, n1_samples, n2_samples], normed<span class="op">=</span><span class="va">True</span>)
+<span class="op">&gt;&gt;&gt;</span> plt.plot(x, n.pdf(x), <span class="st">&#39;b-&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> plt.plot(x, n1.pdf(x), <span class="st">&#39;g-&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> plt.plot(x, n2.pdf(x), <span class="st">&#39;r-&#39;</span>)</code></pre></div>
+<div class="figure">
+<img src="/images/scipy/output_42_1.png">
+
+</div>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="co"># 独立双样本 t 检验的目的在于判断两组样本之间是否有显著差异：p 值小，说明这两个样本有显著性差异。</span>
+<span class="op">&gt;&gt;&gt;</span> t_val, p <span class="op">=</span> ttest_ind(n1_samples, n2_samples)
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="st">&#39;t = </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(t_val))
+t <span class="op">=</span> <span class="fl">2.4883708971185237</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="st">&#39;p-value = </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(p))
+p<span class="op">-</span>value <span class="op">=</span> <span class="fl">0.013658121015263052</span>
+
+<span class="co"># p值计算原理</span>
+<span class="co"># p值对应的部分是下图中的红色区域，边界范围由 t 值决定。</span>
+<span class="op">&gt;&gt;&gt;</span> pop_size <span class="op">=</span> <span class="dv">35</span>
+<span class="op">&gt;&gt;&gt;</span> my_t <span class="op">=</span> t(pop_size) <span class="co"># 传入参数为自由度，这里自由度为50</span>
+
+<span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, my_t.pdf(x), <span class="st">&#39;b-&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> lower_x <span class="op">=</span> x[x<span class="op">&lt;=</span> <span class="op">-</span><span class="bu">abs</span>(t_val)]
+<span class="op">&gt;&gt;&gt;</span> upper_x <span class="op">=</span> x[x<span class="op">&gt;=</span> <span class="bu">abs</span>(t_val)]
+
+<span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.fill_between(lower_x, my_t.pdf(lower_x), color<span class="op">=</span><span class="st">&#39;red&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.fill_between(upper_x, my_t.pdf(upper_x), color<span class="op">=</span><span class="st">&#39;red&#39;</span>)</code></pre></div>
+<div class="figure">
+<img src="/images/scipy/output_46_0.png">
+
+</div>
 <h2 id="曲线拟合"><u>曲线拟合</u></h2>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">100</span>)</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> y <span class="op">=</span> <span class="dv">4</span> <span class="op">*</span> x <span class="op">+</span> <span class="fl">1.5</span></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> noise_y <span class="op">=</span> y <span class="op">+</span> np.random.randn(y.shape[<span class="op">-</span><span class="dv">1</span>]) <span class="op">*</span> <span class="fl">2.5</span></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, noise_y, <span class="st">&#39;rx&#39;</span>)</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, y, <span class="st">&#39;b:&#39;</span>)</div></code></pre>
-<p><img src="/images/scipy/output_49_0.png"></p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">100</span>)
+<span class="op">&gt;&gt;&gt;</span> y <span class="op">=</span> <span class="dv">4</span> <span class="op">*</span> x <span class="op">+</span> <span class="fl">1.5</span>
+<span class="op">&gt;&gt;&gt;</span> noise_y <span class="op">=</span> y <span class="op">+</span> np.random.randn(y.shape[<span class="op">-</span><span class="dv">1</span>]) <span class="op">*</span> <span class="fl">2.5</span>
+<span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, noise_y, <span class="st">&#39;rx&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, y, <span class="st">&#39;b:&#39;</span>)</code></pre></div>
+<div class="figure">
+<img src="/images/scipy/output_49_0.png">
+
+</div>
 <p>进行线性拟合，polyfit 是多项式拟合函数，线性拟合即一阶多项式：</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> coeff <span class="op">=</span> np.polyfit(x, noise_y, <span class="dv">1</span>)</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> coeff</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3">array([ <span class="fl">4.05681667</span>,  <span class="fl">1.61039447</span>])</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"></div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="co"># 一阶多项式 y = a_1 x + a_0 拟合，返回两个系数 [a_1, a_0]。</span></div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="co"># 画出拟合曲线：</span></div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, noise_y, <span class="st">&#39;rx&#39;</span>)</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, coeff[<span class="dv">0</span>] <span class="op">*</span> x <span class="op">+</span> coeff[<span class="dv">1</span>], <span class="st">&#39;k-&#39;</span>)</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, y, <span class="st">&#39;b--&#39;</span>)</div></code></pre>
-<p><img src="/images/scipy/output_53_0.png"></p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> coeff <span class="op">=</span> np.polyfit(x, noise_y, <span class="dv">1</span>)
+<span class="op">&gt;&gt;&gt;</span> coeff
+array([ <span class="fl">4.05681667</span>,  <span class="fl">1.61039447</span>])
+
+<span class="co"># 一阶多项式 y = a_1 x + a_0 拟合，返回两个系数 [a_1, a_0]。</span>
+<span class="co"># 画出拟合曲线：</span>
+<span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, noise_y, <span class="st">&#39;rx&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, coeff[<span class="dv">0</span>] <span class="op">*</span> x <span class="op">+</span> coeff[<span class="dv">1</span>], <span class="st">&#39;k-&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, y, <span class="st">&#39;b--&#39;</span>)</code></pre></div>
+<div class="figure">
+<img src="/images/scipy/output_53_0.png">
+
+</div>
 <p>还可以用<code>poly1d</code> 生成一个以传入的 <code>coeff</code> 为参数的多项式函数：</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> f <span class="op">=</span> np.poly1d(coeff)</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, noise_y, <span class="st">&#39;rx&#39;</span>)</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, f(x))</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(f)</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="fl">4.057</span> x <span class="op">+</span> <span class="fl">1.61</span></div></code></pre>
-<p><img src="/images/scipy/output_55_0.png"></p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> f <span class="op">=</span> np.poly1d(coeff)
+<span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, noise_y, <span class="st">&#39;rx&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> p <span class="op">=</span> plt.plot(x, f(x))
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(f)
+<span class="fl">4.057</span> x <span class="op">+</span> <span class="fl">1.61</span></code></pre></div>
+<div class="figure">
+<img src="/images/scipy/output_55_0.png">
+
+</div>
 
       
     </div>

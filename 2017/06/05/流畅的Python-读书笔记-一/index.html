@@ -372,139 +372,139 @@
       
         <p>这周正式开始阅读另一本Python的书籍《流畅的Python》，这周阅读的部分有<code>Python数据模型</code>、<code>序列构成的数组</code>和<code>字典和集合</code>。下面分享我的读书笔记。</p>
 <p>首先书中用一个简单的代码展示了如何实现<code>__getitem__</code>和<code>__len__</code>特殊方法。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">import</span> collections</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3">Card <span class="op">=</span> collections.namedtuple(<span class="st">&#39;Card&#39;</span>, [<span class="st">&#39;rank&#39;</span>, <span class="st">&#39;suit&#39;</span>])</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"></div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="kw">class</span> FrenchDeck:</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">    ranks <span class="op">=</span> [<span class="bu">str</span>(n) <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">11</span>)] <span class="op">+</span> <span class="bu">list</span>(<span class="st">&#39;JQKA&#39;</span>)</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">    suits <span class="op">=</span> <span class="st">&#39;spades diamonds clubs hearts&#39;</span>.split()</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">    </div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">        <span class="va">self</span>._cards <span class="op">=</span> [Card(rank, suit) <span class="cf">for</span> suit <span class="kw">in</span> <span class="va">self</span>.suits <span class="cf">for</span> rank <span class="kw">in</span> <span class="va">self</span>.ranks]</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">        </div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">    <span class="kw">def</span> <span class="fu">__len__</span>(<span class="va">self</span>):</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">        <span class="cf">return</span> <span class="bu">len</span>(<span class="va">self</span>._cards)</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">    </div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">    <span class="kw">def</span> <span class="fu">__getitem__</span>(<span class="va">self</span>, position):</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16">        <span class="cf">return</span> <span class="va">self</span>._cards[position]</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> collections
+
+Card <span class="op">=</span> collections.namedtuple(<span class="st">&#39;Card&#39;</span>, [<span class="st">&#39;rank&#39;</span>, <span class="st">&#39;suit&#39;</span>])
+
+<span class="kw">class</span> FrenchDeck:
+    ranks <span class="op">=</span> [<span class="bu">str</span>(n) <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">11</span>)] <span class="op">+</span> <span class="bu">list</span>(<span class="st">&#39;JQKA&#39;</span>)
+    suits <span class="op">=</span> <span class="st">&#39;spades diamonds clubs hearts&#39;</span>.split()
+    
+    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):
+        <span class="va">self</span>._cards <span class="op">=</span> [Card(rank, suit) <span class="cf">for</span> suit <span class="kw">in</span> <span class="va">self</span>.suits <span class="cf">for</span> rank <span class="kw">in</span> <span class="va">self</span>.ranks]
+        
+    <span class="kw">def</span> <span class="fu">__len__</span>(<span class="va">self</span>):
+        <span class="cf">return</span> <span class="bu">len</span>(<span class="va">self</span>._cards)
+    
+    <span class="kw">def</span> <span class="fu">__getitem__</span>(<span class="va">self</span>, position):
+        <span class="cf">return</span> <span class="va">self</span>._cards[position]</code></pre></div>
 <p>针对上述代码，我最大的启发就是Python特殊方法真的很有用。通过实现<code>__getitem__</code>和<code>__len__</code>特殊方法，我们直接可以用<code>len()</code>计算卡片的长度，而且这个函数也变成了可迭代的。</p>
 <ul>
 <li>给扑克牌排序的函数。</li>
 </ul>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1">suit_values <span class="op">=</span> <span class="bu">dict</span>(spades<span class="op">=</span><span class="dv">3</span>, hearts<span class="op">=</span><span class="dv">2</span>, diamonds<span class="op">=</span><span class="dv">1</span>, clubs<span class="op">=</span><span class="dv">0</span>)</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="kw">def</span> spades_high(card):</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">    rank_value <span class="op">=</span> FrenchDeck.ranks.index(card.rank)</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">    <span class="co"># 为每一个颜色和数字的牌添加区分值</span></div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">    value <span class="op">=</span> rank_value <span class="op">*</span> <span class="bu">len</span>(suit_values) <span class="op">+</span> suit_values[card.suit]   </div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">    <span class="cf">return</span> value</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"></div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9">deck <span class="op">=</span> FrenchDeck()</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10"></div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11"><span class="cf">for</span> card <span class="kw">in</span> <span class="bu">sorted</span>(deck, key<span class="op">=</span>spades_high):</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">    <span class="bu">print</span>(card)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">suit_values <span class="op">=</span> <span class="bu">dict</span>(spades<span class="op">=</span><span class="dv">3</span>, hearts<span class="op">=</span><span class="dv">2</span>, diamonds<span class="op">=</span><span class="dv">1</span>, clubs<span class="op">=</span><span class="dv">0</span>)
+
+<span class="kw">def</span> spades_high(card):
+    rank_value <span class="op">=</span> FrenchDeck.ranks.index(card.rank)
+    <span class="co"># 为每一个颜色和数字的牌添加区分值</span>
+    value <span class="op">=</span> rank_value <span class="op">*</span> <span class="bu">len</span>(suit_values) <span class="op">+</span> suit_values[card.suit]   
+    <span class="cf">return</span> value
+
+deck <span class="op">=</span> FrenchDeck()
+
+<span class="cf">for</span> card <span class="kw">in</span> <span class="bu">sorted</span>(deck, key<span class="op">=</span>spades_high):
+    <span class="bu">print</span>(card)</code></pre></div>
 <ul>
 <li>二维向量类的定义</li>
 </ul>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">from</span> math <span class="im">import</span> hypot</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="kw">class</span> Vector:</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">    </div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x<span class="op">=</span><span class="dv">0</span>, y<span class="op">=</span><span class="dv">0</span>):</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">        <span class="va">self</span>.x <span class="op">=</span> x</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">        <span class="va">self</span>.y <span class="op">=</span> y</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">    </div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9">    <span class="kw">def</span> <span class="fu">__repr__</span>(<span class="va">self</span>):</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">        <span class="cf">return</span> <span class="st">&#39;Vector(</span><span class="sc">%r</span><span class="st">, </span><span class="sc">%r</span><span class="st">)&#39;</span> <span class="op">%</span> (<span class="va">self</span>.x, <span class="va">self</span>.y)</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">    </div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">    <span class="kw">def</span> <span class="fu">__abs__</span>(<span class="va">self</span>):</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">        <span class="cf">return</span> hypot(<span class="va">self</span>.x, <span class="va">self</span>.y)</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">    </div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">    <span class="kw">def</span> __bool__(<span class="va">self</span>):</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16">        <span class="cf">return</span> <span class="bu">bool</span>(<span class="bu">abs</span>(<span class="va">self</span>))</div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17">    </div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18">    <span class="kw">def</span> <span class="fu">__add__</span>(<span class="va">self</span>, other):</div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19">        x <span class="op">=</span> <span class="va">self</span>.x <span class="op">+</span> other.x</div>
-<div class="sourceLine" id="20" href="#20" data-line-number="20">        y <span class="op">=</span> <span class="va">self</span>.y <span class="op">+</span> other.y</div>
-<div class="sourceLine" id="21" href="#21" data-line-number="21">        <span class="cf">return</span> Vector(x, y)</div>
-<div class="sourceLine" id="22" href="#22" data-line-number="22"></div>
-<div class="sourceLine" id="23" href="#23" data-line-number="23">    <span class="kw">def</span> <span class="fu">__mul__</span>(<span class="va">self</span>, scalar):</div>
-<div class="sourceLine" id="24" href="#24" data-line-number="24">        <span class="cf">return</span> Vector(<span class="va">self</span>.x <span class="op">*</span> scalar, <span class="va">self</span>.y <span class="op">*</span> scalar)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> math <span class="im">import</span> hypot
+
+<span class="kw">class</span> Vector:
+    
+    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x<span class="op">=</span><span class="dv">0</span>, y<span class="op">=</span><span class="dv">0</span>):
+        <span class="va">self</span>.x <span class="op">=</span> x
+        <span class="va">self</span>.y <span class="op">=</span> y
+    
+    <span class="kw">def</span> <span class="fu">__repr__</span>(<span class="va">self</span>):
+        <span class="cf">return</span> <span class="st">&#39;Vector(</span><span class="sc">%r</span><span class="st">, </span><span class="sc">%r</span><span class="st">)&#39;</span> <span class="op">%</span> (<span class="va">self</span>.x, <span class="va">self</span>.y)
+    
+    <span class="kw">def</span> <span class="fu">__abs__</span>(<span class="va">self</span>):
+        <span class="cf">return</span> hypot(<span class="va">self</span>.x, <span class="va">self</span>.y)
+    
+    <span class="kw">def</span> __bool__(<span class="va">self</span>):
+        <span class="cf">return</span> <span class="bu">bool</span>(<span class="bu">abs</span>(<span class="va">self</span>))
+    
+    <span class="kw">def</span> <span class="fu">__add__</span>(<span class="va">self</span>, other):
+        x <span class="op">=</span> <span class="va">self</span>.x <span class="op">+</span> other.x
+        y <span class="op">=</span> <span class="va">self</span>.y <span class="op">+</span> other.y
+        <span class="cf">return</span> Vector(x, y)
+
+    <span class="kw">def</span> <span class="fu">__mul__</span>(<span class="va">self</span>, scalar):
+        <span class="cf">return</span> Vector(<span class="va">self</span>.x <span class="op">*</span> scalar, <span class="va">self</span>.y <span class="op">*</span> scalar)</code></pre></div>
 <p>真的好美。</p>
 <p>另外<code>__repr__</code>和<code>__str__</code>的区别在于，<code>__str__</code>是在<code>str()</code>函数被使用，或是在用print函数打印一个对象的时候才被调用，并且它返回的字符串对终端用户更友好。</p>
 <ul>
 <li>使用列表推导式计算笛卡尔积</li>
 </ul>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> colors <span class="op">=</span> [<span class="st">&#39;black&#39;</span>, <span class="st">&#39;white&#39;</span>]</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> sizes <span class="op">=</span> [<span class="st">&#39;S&#39;</span>,<span class="st">&#39;M&#39;</span>,<span class="st">&#39;L&#39;</span>]</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> tshirts <span class="op">=</span> [(color, size) <span class="cf">for</span> color <span class="kw">in</span> colors <span class="cf">for</span> size <span class="kw">in</span> sizes]</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(tshirts)</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">[(<span class="st">&#39;black&#39;</span>, <span class="st">&#39;S&#39;</span>),</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"> (<span class="st">&#39;black&#39;</span>, <span class="st">&#39;M&#39;</span>),</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"> (<span class="st">&#39;black&#39;</span>, <span class="st">&#39;L&#39;</span>),</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"> (<span class="st">&#39;white&#39;</span>, <span class="st">&#39;S&#39;</span>),</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"> (<span class="st">&#39;white&#39;</span>, <span class="st">&#39;M&#39;</span>),</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10"> (<span class="st">&#39;white&#39;</span>, <span class="st">&#39;L&#39;</span>)]</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> colors <span class="op">=</span> [<span class="st">&#39;black&#39;</span>, <span class="st">&#39;white&#39;</span>]
+<span class="op">&gt;&gt;&gt;</span> sizes <span class="op">=</span> [<span class="st">&#39;S&#39;</span>,<span class="st">&#39;M&#39;</span>,<span class="st">&#39;L&#39;</span>]
+<span class="op">&gt;&gt;&gt;</span> tshirts <span class="op">=</span> [(color, size) <span class="cf">for</span> color <span class="kw">in</span> colors <span class="cf">for</span> size <span class="kw">in</span> sizes]
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(tshirts)
+[(<span class="st">&#39;black&#39;</span>, <span class="st">&#39;S&#39;</span>),
+ (<span class="st">&#39;black&#39;</span>, <span class="st">&#39;M&#39;</span>),
+ (<span class="st">&#39;black&#39;</span>, <span class="st">&#39;L&#39;</span>),
+ (<span class="st">&#39;white&#39;</span>, <span class="st">&#39;S&#39;</span>),
+ (<span class="st">&#39;white&#39;</span>, <span class="st">&#39;M&#39;</span>),
+ (<span class="st">&#39;white&#39;</span>, <span class="st">&#39;L&#39;</span>)]</code></pre></div>
 <ul>
 <li>使用生成器表达式计算笛卡尔积</li>
 </ul>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> colors <span class="op">=</span> [<span class="st">&#39;black&#39;</span>, <span class="st">&#39;white&#39;</span>]</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> sizes <span class="op">=</span> [<span class="st">&#39;S&#39;</span>, <span class="st">&#39;M&#39;</span>, <span class="st">&#39;L&#39;</span>]</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> tshirt <span class="kw">in</span> (<span class="st">&#39;</span><span class="sc">%s</span><span class="st"> </span><span class="sc">%s</span><span class="st">&#39;</span> <span class="op">%</span> (c, s) <span class="cf">for</span> c <span class="kw">in</span> colors <span class="cf">for</span> s <span class="kw">in</span> sizes):</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">...    <span class="bu">print</span>(tshirt)</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">...</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">black S</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">black M</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">black L</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9">white S</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">white M</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">white L</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> colors <span class="op">=</span> [<span class="st">&#39;black&#39;</span>, <span class="st">&#39;white&#39;</span>]
+<span class="op">&gt;&gt;&gt;</span> sizes <span class="op">=</span> [<span class="st">&#39;S&#39;</span>, <span class="st">&#39;M&#39;</span>, <span class="st">&#39;L&#39;</span>]
+<span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> tshirt <span class="kw">in</span> (<span class="st">&#39;</span><span class="sc">%s</span><span class="st"> </span><span class="sc">%s</span><span class="st">&#39;</span> <span class="op">%</span> (c, s) <span class="cf">for</span> c <span class="kw">in</span> colors <span class="cf">for</span> s <span class="kw">in</span> sizes):
+...    <span class="bu">print</span>(tshirt)
+...
+black S
+black M
+black L
+white S
+white M
+white L</code></pre></div>
 <ul>
 <li>用元组用作记录</li>
 </ul>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> lax_coordinates <span class="op">=</span> (<span class="fl">33.9425</span>, <span class="fl">-118.408056</span>)</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> city, year, pop, chg, area <span class="op">=</span> (<span class="st">&#39;Tokyo&#39;</span>, <span class="dv">2003</span>, <span class="dv">32450</span>, <span class="fl">0.66</span>, <span class="dv">8014</span>)</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> traveler_ids <span class="op">=</span> [(<span class="st">&#39;USA&#39;</span>, <span class="st">&#39;31195855&#39;</span>), (<span class="st">&#39;BRA&#39;</span>, <span class="st">&#39;CE342567&#39;</span>), (<span class="st">&#39;ESP&#39;</span>, <span class="st">&#39;XDA205856&#39;</span>)]</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> passport <span class="kw">in</span> <span class="bu">sorted</span>(traveler_ids):</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">...    <span class="bu">print</span>(<span class="st">&#39;</span><span class="sc">%s</span><span class="st">/</span><span class="sc">%s</span><span class="st">&#39;</span> <span class="op">%</span> passport)</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">...</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">BRA<span class="op">/</span>CE342567</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">ESP<span class="op">/</span>XDA205856</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9">USA<span class="op">/</span><span class="dv">31195855</span></div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10"><span class="co"># for 循环可以分别提取元组里的元素，也叫做拆包(unpacking)。因为元组中第二个元素对我们没什么用，所以它赋值给“_&quot;占位符。</span></div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11"><span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> country, _ <span class="kw">in</span> traveler_ids:</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">...    <span class="bu">print</span>(country)</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">...</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">USA</div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">BRA</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16">ESP</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> lax_coordinates <span class="op">=</span> (<span class="fl">33.9425</span>, <span class="op">-</span><span class="fl">118.408056</span>)
+<span class="op">&gt;&gt;&gt;</span> city, year, pop, chg, area <span class="op">=</span> (<span class="st">&#39;Tokyo&#39;</span>, <span class="dv">2003</span>, <span class="dv">32450</span>, <span class="fl">0.66</span>, <span class="dv">8014</span>)
+<span class="op">&gt;&gt;&gt;</span> traveler_ids <span class="op">=</span> [(<span class="st">&#39;USA&#39;</span>, <span class="st">&#39;31195855&#39;</span>), (<span class="st">&#39;BRA&#39;</span>, <span class="st">&#39;CE342567&#39;</span>), (<span class="st">&#39;ESP&#39;</span>, <span class="st">&#39;XDA205856&#39;</span>)]
+<span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> passport <span class="kw">in</span> <span class="bu">sorted</span>(traveler_ids):
+...    <span class="bu">print</span>(<span class="st">&#39;</span><span class="sc">%s</span><span class="st">/</span><span class="sc">%s</span><span class="st">&#39;</span> <span class="op">%</span> passport)
+...
+BRA<span class="op">/</span>CE342567
+ESP<span class="op">/</span>XDA205856
+USA<span class="op">/</span><span class="dv">31195855</span>
+<span class="co"># for 循环可以分别提取元组里的元素，也叫做拆包(unpacking)。因为元组中第二个元素对我们没什么用，所以它赋值给“_&quot;占位符。</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> country, _ <span class="kw">in</span> traveler_ids:
+...    <span class="bu">print</span>(country)
+...
+USA
+BRA
+ESP</code></pre></div>
 <ul>
 <li>定义和使用具名元组</li>
 </ul>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> collections <span class="im">import</span> namedtuple</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> City <span class="op">=</span> namedtuple(<span class="st">&#39;City&#39;</span>, <span class="st">&#39;name country population coordinates&#39;</span>)</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> tokyo <span class="op">=</span> City(<span class="st">&#39;Tokyo&#39;</span>, <span class="st">&#39;JP&#39;</span>, <span class="st">&#39;36.933&#39;</span>, (<span class="fl">35.689722</span>, <span class="fl">139.691667</span>))</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> tokyo</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">City(name<span class="op">=</span><span class="st">&#39;Tokyo&#39;</span>, country<span class="op">=</span><span class="st">&#39;JP&#39;</span>, population<span class="op">=</span><span class="st">&#39;36.933&#39;</span>, coordinates<span class="op">=</span>(<span class="fl">35.689722</span>, <span class="fl">139.691667</span>))</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="op">&gt;&gt;&gt;</span> City._fields</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">(<span class="st">&#39;name&#39;</span>, <span class="st">&#39;country&#39;</span>, <span class="st">&#39;population&#39;</span>, <span class="st">&#39;coordinates&#39;</span>)</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="op">&gt;&gt;&gt;</span> LatLong <span class="op">=</span> namedtuple(<span class="st">&#39;LatLong&#39;</span>, <span class="st">&#39;lat long&#39;</span>)</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="op">&gt;&gt;&gt;</span> delhi_data <span class="op">=</span> (<span class="st">&#39;Delhi NCR&#39;</span>, <span class="st">&#39;IN&#39;</span>, <span class="fl">21.935</span>, LatLong(<span class="fl">28.613889</span>, <span class="fl">77.208889</span>))</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10"><span class="op">&gt;&gt;&gt;</span> delhi <span class="op">=</span> City._make(delhi_data)</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11"><span class="op">&gt;&gt;&gt;</span> delhi._asdict()</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">OrderedDict([(<span class="st">&#39;name&#39;</span>, <span class="st">&#39;Delhi NCR&#39;</span>),</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">             (<span class="st">&#39;country&#39;</span>, <span class="st">&#39;IN&#39;</span>),</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">             (<span class="st">&#39;population&#39;</span>, <span class="fl">21.935</span>),</div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">             (<span class="st">&#39;coordinates&#39;</span>, LatLong(lat<span class="op">=</span><span class="fl">28.613889</span>, <span class="bu">long</span><span class="op">=</span><span class="fl">77.208889</span>))])</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16"></div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17"><span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> key, value <span class="kw">in</span> delhi._asdict().items():</div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18">...    <span class="bu">print</span>(key <span class="op">+</span> <span class="st">&#39;:&#39;</span>, value)</div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19">...    </div>
-<div class="sourceLine" id="20" href="#20" data-line-number="20">(<span class="st">&#39;name:&#39;</span>, <span class="st">&#39;Delhi NCR&#39;</span>)</div>
-<div class="sourceLine" id="21" href="#21" data-line-number="21">(<span class="st">&#39;country:&#39;</span>, <span class="st">&#39;IN&#39;</span>)</div>
-<div class="sourceLine" id="22" href="#22" data-line-number="22">(<span class="st">&#39;population:&#39;</span>, <span class="fl">21.935</span>)</div>
-<div class="sourceLine" id="23" href="#23" data-line-number="23">(<span class="st">&#39;coordinates:&#39;</span>, LatLong(lat<span class="op">=</span><span class="fl">28.613889</span>, <span class="bu">long</span><span class="op">=</span><span class="fl">77.208889</span>))</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> collections <span class="im">import</span> namedtuple
+<span class="op">&gt;&gt;&gt;</span> City <span class="op">=</span> namedtuple(<span class="st">&#39;City&#39;</span>, <span class="st">&#39;name country population coordinates&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> tokyo <span class="op">=</span> City(<span class="st">&#39;Tokyo&#39;</span>, <span class="st">&#39;JP&#39;</span>, <span class="st">&#39;36.933&#39;</span>, (<span class="fl">35.689722</span>, <span class="fl">139.691667</span>))
+<span class="op">&gt;&gt;&gt;</span> tokyo
+City(name<span class="op">=</span><span class="st">&#39;Tokyo&#39;</span>, country<span class="op">=</span><span class="st">&#39;JP&#39;</span>, population<span class="op">=</span><span class="st">&#39;36.933&#39;</span>, coordinates<span class="op">=</span>(<span class="fl">35.689722</span>, <span class="fl">139.691667</span>))
+<span class="op">&gt;&gt;&gt;</span> City._fields
+(<span class="st">&#39;name&#39;</span>, <span class="st">&#39;country&#39;</span>, <span class="st">&#39;population&#39;</span>, <span class="st">&#39;coordinates&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> LatLong <span class="op">=</span> namedtuple(<span class="st">&#39;LatLong&#39;</span>, <span class="st">&#39;lat long&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> delhi_data <span class="op">=</span> (<span class="st">&#39;Delhi NCR&#39;</span>, <span class="st">&#39;IN&#39;</span>, <span class="fl">21.935</span>, LatLong(<span class="fl">28.613889</span>, <span class="fl">77.208889</span>))
+<span class="op">&gt;&gt;&gt;</span> delhi <span class="op">=</span> City._make(delhi_data)
+<span class="op">&gt;&gt;&gt;</span> delhi._asdict()
+OrderedDict([(<span class="st">&#39;name&#39;</span>, <span class="st">&#39;Delhi NCR&#39;</span>),
+             (<span class="st">&#39;country&#39;</span>, <span class="st">&#39;IN&#39;</span>),
+             (<span class="st">&#39;population&#39;</span>, <span class="fl">21.935</span>),
+             (<span class="st">&#39;coordinates&#39;</span>, LatLong(lat<span class="op">=</span><span class="fl">28.613889</span>, <span class="bu">long</span><span class="op">=</span><span class="fl">77.208889</span>))])
+
+<span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> key, value <span class="kw">in</span> delhi._asdict().items():
+...    <span class="bu">print</span>(key <span class="op">+</span> <span class="st">&#39;:&#39;</span>, value)
+...    
+(<span class="st">&#39;name:&#39;</span>, <span class="st">&#39;Delhi NCR&#39;</span>)
+(<span class="st">&#39;country:&#39;</span>, <span class="st">&#39;IN&#39;</span>)
+(<span class="st">&#39;population:&#39;</span>, <span class="fl">21.935</span>)
+(<span class="st">&#39;coordinates:&#39;</span>, LatLong(lat<span class="op">=</span><span class="fl">28.613889</span>, <span class="bu">long</span><span class="op">=</span><span class="fl">77.208889</span>))</code></pre></div>
 <ul>
 <li>切片知识</li>
 </ul>
@@ -517,57 +517,57 @@
 <thead>
 <tr class="header">
 <th>类别</th>
-<th style="text-align: left;">方法名</th>
+<th align="left">方法名</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>字符串／字节序列表示形式</td>
-<td style="text-align: left;">__repr__、__str__、__format__、__bytes__</td>
+<td align="left">__repr__、__str__、__format__、__bytes__</td>
 </tr>
 <tr class="even">
 <td>数值转换</td>
-<td style="text-align: left;">__abs__、__bool__、__complex__、__int__、__float__、__hash__ __index__</td>
+<td align="left">__abs__、__bool__、__complex__、__int__、__float__、__hash__ __index__</td>
 </tr>
 <tr class="odd">
 <td>集合模拟</td>
-<td style="text-align: left;">__len__、__getitem__、__setitem__、__delitem__、__contains__</td>
+<td align="left">__len__、__getitem__、__setitem__、__delitem__、__contains__</td>
 </tr>
 <tr class="even">
 <td>迭代枚举</td>
-<td style="text-align: left;">__iter__、__reversed__、__next__</td>
+<td align="left">__iter__、__reversed__、__next__</td>
 </tr>
 <tr class="odd">
 <td>可调用模拟</td>
-<td style="text-align: left;">__call__</td>
+<td align="left">__call__</td>
 </tr>
 <tr class="even">
 <td>上下文管理</td>
-<td style="text-align: left;">__enter__、__exit__</td>
+<td align="left">__enter__、__exit__</td>
 </tr>
 <tr class="odd">
 <td>实例创建和销毁</td>
-<td style="text-align: left;">__new__、__init__、__del__</td>
+<td align="left">__new__、__init__、__del__</td>
 </tr>
 <tr class="even">
 <td>属性管理</td>
-<td style="text-align: left;">__getattr__、__getattribute__、__setattr__、__delattr__、__dir__</td>
+<td align="left">__getattr__、__getattribute__、__setattr__、__delattr__、__dir__</td>
 </tr>
 <tr class="odd">
 <td>属性描述符</td>
-<td style="text-align: left;">__get__、__set__、__delete__</td>
+<td align="left">__get__、__set__、__delete__</td>
 </tr>
 <tr class="even">
 <td>跟类相关的服务</td>
-<td style="text-align: left;">__prepare__、__instancecheck__、__subclasscheck__</td>
+<td align="left">__prepare__、__instancecheck__、__subclasscheck__</td>
 </tr>
 </tbody>
 </table>
 <h4 id="跟运算符相关的特殊方法"><u>跟运算符相关的特殊方法</u></h4>
 <table style="width:71%;">
 <colgroup>
-<col style="width: 13%">
-<col style="width: 56%">
+<col width="13%">
+<col width="56%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -611,154 +611,154 @@
 <thead>
 <tr class="header">
 <th></th>
-<th style="text-align: center;">列表</th>
-<th style="text-align: center;">元组</th>
+<th align="center">列表</th>
+<th align="center">元组</th>
 <th></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>s.__add__(s2)</td>
-<td style="text-align: center;">●</td>
-<td style="text-align: center;">●</td>
+<td align="center">●</td>
+<td align="center">●</td>
 <td>s + s2, 拼接</td>
 </tr>
 <tr class="even">
 <td>s.__iadd__(s2)</td>
-<td style="text-align: center;">●</td>
-<td style="text-align: center;"></td>
+<td align="center">●</td>
+<td align="center"></td>
 <td>s += s2, 就地拼接</td>
 </tr>
 <tr class="odd">
 <td>s.append(e)</td>
-<td style="text-align: center;">●</td>
-<td style="text-align: center;"></td>
+<td align="center">●</td>
+<td align="center"></td>
 <td>在尾部添加一个新元素</td>
 </tr>
 <tr class="even">
 <td>s.clear( )</td>
-<td style="text-align: center;">●</td>
-<td style="text-align: center;"></td>
+<td align="center">●</td>
+<td align="center"></td>
 <td>删除所有元素</td>
 </tr>
 <tr class="odd">
 <td>s.__contains__(e)</td>
-<td style="text-align: center;">●</td>
-<td style="text-align: center;">●</td>
+<td align="center">●</td>
+<td align="center">●</td>
 <td>s是否包含e</td>
 </tr>
 <tr class="even">
 <td>s.copy( )</td>
-<td style="text-align: center;">●</td>
-<td style="text-align: center;"></td>
+<td align="center">●</td>
+<td align="center"></td>
 <td>列表的浅复制</td>
 </tr>
 <tr class="odd">
 <td>s.count(e)</td>
-<td style="text-align: center;">●</td>
-<td style="text-align: center;">●</td>
+<td align="center">●</td>
+<td align="center">●</td>
 <td>e在s中出现的次数</td>
 </tr>
 <tr class="even">
 <td>s.__delitem__(p)</td>
-<td style="text-align: center;">●</td>
-<td style="text-align: center;"></td>
+<td align="center">●</td>
+<td align="center"></td>
 <td>把位于p的元素删除</td>
 </tr>
 <tr class="odd">
 <td>s.extend(it)</td>
-<td style="text-align: center;">●</td>
-<td style="text-align: center;"></td>
+<td align="center">●</td>
+<td align="center"></td>
 <td>把可迭代对象it追加给s</td>
 </tr>
 <tr class="even">
 <td>s.__getitem__(p)</td>
-<td style="text-align: center;">●</td>
-<td style="text-align: center;">●</td>
+<td align="center">●</td>
+<td align="center">●</td>
 <td>s[p], 获取位置p的元素</td>
 </tr>
 <tr class="odd">
 <td>s.__getnewargs__( )</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">●</td>
+<td align="center"></td>
+<td align="center">●</td>
 <td>在pickle中支持更加优化的序列化</td>
 </tr>
 <tr class="even">
 <td>s.index(e)</td>
-<td style="text-align: center;">●</td>
-<td style="text-align: center;">●</td>
+<td align="center">●</td>
+<td align="center">●</td>
 <td>在s中找到元素e第一次出现的位置</td>
 </tr>
 <tr class="odd">
 <td>s.insert(p, e)</td>
-<td style="text-align: center;">●</td>
-<td style="text-align: center;"></td>
+<td align="center">●</td>
+<td align="center"></td>
 <td>在位置p之前插入元素e</td>
 </tr>
 <tr class="even">
 <td>s.__iter__( )</td>
-<td style="text-align: center;">●</td>
-<td style="text-align: center;">●</td>
+<td align="center">●</td>
+<td align="center">●</td>
 <td>获取s的迭代器</td>
 </tr>
 <tr class="odd">
 <td>s.__len__( )</td>
-<td style="text-align: center;">●</td>
-<td style="text-align: center;">●</td>
+<td align="center">●</td>
+<td align="center">●</td>
 <td>len(s), 元素的数量</td>
 </tr>
 <tr class="even">
 <td>s.__mul__(n)</td>
-<td style="text-align: center;">●</td>
-<td style="text-align: center;">●</td>
+<td align="center">●</td>
+<td align="center">●</td>
 <td>s * n, n个s 的重复拼接</td>
 </tr>
 <tr class="odd">
 <td>s.__imul__(n)</td>
-<td style="text-align: center;">●</td>
-<td style="text-align: center;"></td>
+<td align="center">●</td>
+<td align="center"></td>
 <td>s *= n, 就地重复拼接</td>
 </tr>
 <tr class="even">
 <td>s.__rml__(n)</td>
-<td style="text-align: center;">●</td>
-<td style="text-align: center;">●</td>
+<td align="center">●</td>
+<td align="center">●</td>
 <td>n * s, 反向拼接 *</td>
 </tr>
 <tr class="odd">
 <td>s.pop([p])</td>
-<td style="text-align: center;">●</td>
-<td style="text-align: center;"></td>
+<td align="center">●</td>
+<td align="center"></td>
 <td>删除最后或者是（可选的）位于p的元素，并返回它的值</td>
 </tr>
 <tr class="even">
 <td>s.remove(e)</td>
-<td style="text-align: center;">●</td>
-<td style="text-align: center;"></td>
+<td align="center">●</td>
+<td align="center"></td>
 <td>删除s中的第一次出现的e</td>
 </tr>
 <tr class="odd">
 <td>s.reverse( )</td>
-<td style="text-align: center;">●</td>
-<td style="text-align: center;"></td>
+<td align="center">●</td>
+<td align="center"></td>
 <td>就地把s的元素倒序排列</td>
 </tr>
 <tr class="even">
 <td>s.__reversed( )</td>
-<td style="text-align: center;">●</td>
-<td style="text-align: center;"></td>
+<td align="center">●</td>
+<td align="center"></td>
 <td>返回s的倒叙迭代器</td>
 </tr>
 <tr class="odd">
 <td>s.__setitem__(p, e)</td>
-<td style="text-align: center;">●</td>
-<td style="text-align: center;"></td>
+<td align="center">●</td>
+<td align="center"></td>
 <td>s[p] = e， 把元素e放在位置p，替代已经在那个位置的元素</td>
 </tr>
 <tr class="even">
 <td>s.sort([key], [reverse])</td>
-<td style="text-align: center;">●</td>
-<td style="text-align: center;"></td>
+<td align="center">●</td>
+<td align="center"></td>
 <td>就地对s中的元素进行排序，可选的参数有键(key)和是否倒叙（reverse）</td>
 </tr>
 </tbody>
@@ -770,42 +770,50 @@
 <ul>
 <li>字典推导的应用</li>
 </ul>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1">DIAL_CODES <span class="op">=</span> [</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2">    (<span class="dv">86</span>, <span class="st">&#39;China&#39;</span>),</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3">    (<span class="dv">91</span>, <span class="st">&#39;India&#39;</span>),</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">    (<span class="dv">1</span>, <span class="st">&#39;United States&#39;</span>),</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">    (<span class="dv">62</span>, <span class="st">&#39;Indonesia&#39;</span>),</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">    (<span class="dv">55</span>, <span class="st">&#39;Brazil&#39;</span>),</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">    (<span class="dv">92</span>, <span class="st">&#39;Pakistan&#39;</span>),</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">    (<span class="dv">880</span>, <span class="st">&#39;Bangladesh&#39;</span>),</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9">    (<span class="dv">234</span>, <span class="st">&#39;Nigeria&#39;</span>),</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">    (<span class="dv">7</span>, <span class="st">&#39;Russia&#39;</span>),</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">    (<span class="dv">81</span>, <span class="st">&#39;Japan&#39;</span>),</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">]</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">country_code <span class="op">=</span> {country: code <span class="cf">for</span> code, country <span class="kw">in</span> DIAL_CODES}</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">country_code</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">DIAL_CODES <span class="op">=</span> [
+    (<span class="dv">86</span>, <span class="st">&#39;China&#39;</span>),
+    (<span class="dv">91</span>, <span class="st">&#39;India&#39;</span>),
+    (<span class="dv">1</span>, <span class="st">&#39;United States&#39;</span>),
+    (<span class="dv">62</span>, <span class="st">&#39;Indonesia&#39;</span>),
+    (<span class="dv">55</span>, <span class="st">&#39;Brazil&#39;</span>),
+    (<span class="dv">92</span>, <span class="st">&#39;Pakistan&#39;</span>),
+    (<span class="dv">880</span>, <span class="st">&#39;Bangladesh&#39;</span>),
+    (<span class="dv">234</span>, <span class="st">&#39;Nigeria&#39;</span>),
+    (<span class="dv">7</span>, <span class="st">&#39;Russia&#39;</span>),
+    (<span class="dv">81</span>, <span class="st">&#39;Japan&#39;</span>),
+]
+country_code <span class="op">=</span> {country: code <span class="cf">for</span> code, country <span class="kw">in</span> DIAL_CODES}
+country_code</code></pre></div>
 <p>散列表其实是一个稀疏数组（总是有空白元素的数组称为稀疏数组）。散列表里的单元叫做表元（bucket）。在dict的散列表当中，每个键值对都占用一个表元，每个表元都有两个部分，一个是对键的引用，另一个是对值的引用。因为所有表元的大小一致，所以可以通过偏移量来读取某个表元。</p>
 <p>而如果要把一个对象放入散列表，首先要计算元素键的散列值。Python中可以通过<code>hash( )</code>方法来做这件事情。</p>
 <p>有几个方面需要注意：</p>
-<ol type="1">
-<li><p><u>散列值和相等性</u></p>
-<p>如果两个对象在比较的时候是相等的，那它们的散列值必须相等。为了让散列值能够胜任散列表索引这一角色，它们必须在索引空间中尽量分散开来。因此在最理想的情况下，越是相似但不相等的对象，它们的散列值的差别应该是越大。</p></li>
-<li><p><u>散列表算法</u></p>
-<p>为了获取<code>mydict[search_key]</code>背后的值 ，Python首先会调用<code>hash(search_key)</code>来计算search_key的散列值，把这个值最低的几位数字当作偏移量，在散列表里查找表元（具体取几位，得看当前散列表的大小）。</p></li>
-<li><p><u>键必须是可散列的</u></p>
+<ol style="list-style-type: decimal">
+<li><u>散列值和相等性</u></li>
+</ol>
+<p>如果两个对象在比较的时候是相等的，那它们的散列值必须相等。为了让散列值能够胜任散列表索引这一角色，它们必须在索引空间中尽量分散开来。因此在最理想的情况下，越是相似但不相等的对象，它们的散列值的差别应该是越大。</p>
+<ol start="2" style="list-style-type: decimal">
+<li><u>散列表算法</u></li>
+</ol>
+<p>为了获取<code>mydict[search_key]</code>背后的值 ，Python首先会调用<code>hash(search_key)</code>来计算search_key的散列值，把这个值最低的几位数字当作偏移量，在散列表里查找表元（具体取几位，得看当前散列表的大小）。</p>
+<ol start="3" style="list-style-type: decimal">
+<li><u>键必须是可散列的</u></li>
+</ol>
 <p>一个可散列的对象必须满足以下要求：</p>
-<ol type="1">
+<ol style="list-style-type: decimal">
 <li><p>支持<code>hash()</code>函数，并且通过<code>__hash__()</code>方法所得到的散列值是不变的。</p></li>
 <li><p>支持通过<code>__eq__()</code>方法来检测相等性。</p></li>
 <li><p>若 a == b为真，则hash(a) == hash(b) 也为真。</p></li>
-</ol></li>
-<li><p><u>字典在内存上的开销巨大</u></p>
-<p>由于字典使用了散列表，而散列表又必须是稀疏的，这导致它在空间上的效率低下。</p></li>
+</ol>
+<ol start="4" style="list-style-type: decimal">
+<li><u>字典在内存上的开销巨大</u></li>
+</ol>
+<p>由于字典使用了散列表，而散列表又必须是稀疏的，这导致它在空间上的效率低下。</p>
+<ol start="5" style="list-style-type: decimal">
 <li><p><u>键查询很快</u></p></li>
 <li><p><u>键的次序取决于添加顺序</u></p></li>
-<li><p><u>往字典里添加新键可能会改变已有键的顺序</u></p>
-<p>不要对字典同时进行迭代和修改。</p></li>
+<li><p><u>往字典里添加新键可能会改变已有键的顺序</u></p></li>
 </ol>
+<p>不要对字典同时进行迭代和修改。</p>
 
       
     </div>

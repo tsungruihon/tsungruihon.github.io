@@ -372,83 +372,83 @@
       
         <p>这一节主要介绍<code>Python3</code>的关键字。</p>
 <p>首先，通过使用<code>import keyword</code>我们可以看到<code>python3</code>的关键字列表。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">import</span> keyword</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="bu">print</span>(keyword.kwlist)</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">[output]</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">[<span class="st">&#39;False&#39;</span>, <span class="st">&#39;None&#39;</span>, <span class="st">&#39;True&#39;</span>, <span class="st">&#39;and&#39;</span>, <span class="st">&#39;as&#39;</span>, <span class="st">&#39;assert&#39;</span>, <span class="st">&#39;break&#39;</span>, <span class="st">&#39;class&#39;</span>, <span class="st">&#39;continue&#39;</span>, <span class="st">&#39;def&#39;</span>, <span class="st">&#39;del&#39;</span>, <span class="st">&#39;elif&#39;</span>, <span class="st">&#39;else&#39;</span>, <span class="st">&#39;except&#39;</span>, <span class="st">&#39;finally&#39;</span>, <span class="st">&#39;for&#39;</span>, <span class="st">&#39;from&#39;</span>, <span class="st">&#39;global&#39;</span>, <span class="st">&#39;if&#39;</span>, <span class="st">&#39;import&#39;</span>, <span class="st">&#39;in&#39;</span>, <span class="st">&#39;is&#39;</span>, <span class="st">&#39;lambda&#39;</span>, <span class="st">&#39;nonlocal&#39;</span>, <span class="st">&#39;not&#39;</span>, <span class="st">&#39;or&#39;</span>, <span class="st">&#39;pass&#39;</span>, <span class="st">&#39;raise&#39;</span>, <span class="st">&#39;return&#39;</span>, <span class="st">&#39;try&#39;</span>, <span class="st">&#39;while&#39;</span>, <span class="st">&#39;with&#39;</span>, <span class="st">&#39;yield&#39;</span>]</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> keyword
+<span class="bu">print</span>(keyword.kwlist)
+
+[output]
+[<span class="st">&#39;False&#39;</span>, <span class="st">&#39;None&#39;</span>, <span class="st">&#39;True&#39;</span>, <span class="st">&#39;and&#39;</span>, <span class="st">&#39;as&#39;</span>, <span class="st">&#39;assert&#39;</span>, <span class="st">&#39;break&#39;</span>, <span class="st">&#39;class&#39;</span>, <span class="st">&#39;continue&#39;</span>, <span class="st">&#39;def&#39;</span>, <span class="st">&#39;del&#39;</span>, <span class="st">&#39;elif&#39;</span>, <span class="st">&#39;else&#39;</span>, <span class="st">&#39;except&#39;</span>, <span class="st">&#39;finally&#39;</span>, <span class="st">&#39;for&#39;</span>, <span class="st">&#39;from&#39;</span>, <span class="st">&#39;global&#39;</span>, <span class="st">&#39;if&#39;</span>, <span class="st">&#39;import&#39;</span>, <span class="st">&#39;in&#39;</span>, <span class="st">&#39;is&#39;</span>, <span class="st">&#39;lambda&#39;</span>, <span class="st">&#39;nonlocal&#39;</span>, <span class="st">&#39;not&#39;</span>, <span class="st">&#39;or&#39;</span>, <span class="st">&#39;pass&#39;</span>, <span class="st">&#39;raise&#39;</span>, <span class="st">&#39;return&#39;</span>, <span class="st">&#39;try&#39;</span>, <span class="st">&#39;while&#39;</span>, <span class="st">&#39;with&#39;</span>, <span class="st">&#39;yield&#39;</span>]</code></pre></div>
 <p>下面我们来看看这33个关键字的各种解释。</p>
 <h2 id="true-false"><strong>True</strong>, <strong>False</strong></h2>
 <p><code>True</code>和<code>False</code>主要是比较运算和逻辑运算的结果体现。例如</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="dv">1</span> <span class="op">==</span> <span class="dv">1</span></div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="va">True</span></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> <span class="dv">5</span> <span class="op">&gt;</span> <span class="dv">3</span></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="va">True</span></div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> <span class="va">True</span> <span class="kw">or</span> <span class="va">False</span></div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="va">True</span></div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> <span class="dv">10</span> <span class="op">&lt;=</span> <span class="dv">1</span></div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="va">False</span></div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="op">&gt;&gt;&gt;</span> <span class="dv">3</span> <span class="op">&gt;</span> <span class="dv">7</span></div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10"><span class="va">False</span></div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11"><span class="op">&gt;&gt;&gt;</span> <span class="va">True</span> <span class="kw">and</span> <span class="va">False</span></div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12"><span class="va">False</span></div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13"><span class="op">&gt;&gt;&gt;</span> <span class="va">True</span> <span class="op">==</span> <span class="dv">1</span></div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14"><span class="va">True</span></div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15"><span class="op">&gt;&gt;&gt;</span> <span class="va">False</span> <span class="op">==</span> <span class="dv">0</span></div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16"><span class="va">True</span></div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17"><span class="op">&gt;&gt;&gt;</span> <span class="va">True</span> <span class="op">+</span> <span class="va">True</span></div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18"><span class="dv">2</span></div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="dv">1</span> <span class="op">==</span> <span class="dv">1</span>
+<span class="va">True</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="dv">5</span> <span class="op">&gt;</span> <span class="dv">3</span>
+<span class="va">True</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="va">True</span> <span class="kw">or</span> <span class="va">False</span>
+<span class="va">True</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="dv">10</span> <span class="op">&lt;=</span> <span class="dv">1</span>
+<span class="va">False</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="dv">3</span> <span class="op">&gt;</span> <span class="dv">7</span>
+<span class="va">False</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="va">True</span> <span class="kw">and</span> <span class="va">False</span>
+<span class="va">False</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="va">True</span> <span class="op">==</span> <span class="dv">1</span>
+<span class="va">True</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="va">False</span> <span class="op">==</span> <span class="dv">0</span>
+<span class="va">True</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="va">True</span> <span class="op">+</span> <span class="va">True</span>
+<span class="dv">2</span></code></pre></div>
 <h2 id="none">None</h2>
 <p><code>None</code>在<code>Python</code>中是一个特殊的实例(<code>&lt;class 'NoneType'&gt;</code>)，代表着缺失值或者空值。</p>
 <p>当函数没有<code>return</code>声明的时候，函数将会返回<code>None</code></p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="va">None</span> <span class="op">==</span> <span class="dv">0</span></div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="va">False</span></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> <span class="va">None</span> <span class="op">==</span> []</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="va">False</span></div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> <span class="va">None</span> <span class="op">==</span> <span class="va">False</span></div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="va">False</span></div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> <span class="va">None</span></div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="op">&gt;&gt;&gt;</span> y <span class="op">=</span> <span class="va">None</span></div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="op">&gt;&gt;&gt;</span> x <span class="op">==</span> y</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10"><span class="va">True</span></div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11"><span class="op">&gt;&gt;&gt;</span> <span class="kw">def</span> a_void_function():</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">...     a <span class="op">=</span> <span class="dv">1</span></div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">...     b <span class="op">=</span> <span class="dv">2</span></div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">...     c <span class="op">=</span> a <span class="op">+</span> b</div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">...</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> a_void_function()</div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(x)</div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18"><span class="va">None</span></div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="va">None</span> <span class="op">==</span> <span class="dv">0</span>
+<span class="va">False</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="va">None</span> <span class="op">==</span> []
+<span class="va">False</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="va">None</span> <span class="op">==</span> <span class="va">False</span>
+<span class="va">False</span>
+<span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> <span class="va">None</span>
+<span class="op">&gt;&gt;&gt;</span> y <span class="op">=</span> <span class="va">None</span>
+<span class="op">&gt;&gt;&gt;</span> x <span class="op">==</span> y
+<span class="va">True</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="kw">def</span> a_void_function():
+...     a <span class="op">=</span> <span class="dv">1</span>
+...     b <span class="op">=</span> <span class="dv">2</span>
+...     c <span class="op">=</span> a <span class="op">+</span> b
+...
+<span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> a_void_function()
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(x)
+<span class="va">None</span></code></pre></div>
 <h2 id="and-or-not">and, or, not</h2>
 <p>只有操作数都是<code>True</code>，<code>and</code>结果才会输出<code>True</code>。</p>
 <table>
 <thead>
 <tr class="header">
-<th style="text-align: center;">A</th>
-<th style="text-align: center;">B</th>
-<th style="text-align: center;">A and B</th>
+<th align="center">A</th>
+<th align="center">B</th>
+<th align="center">A and B</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">True</td>
-<td style="text-align: center;">True</td>
-<td style="text-align: center;">True</td>
+<td align="center">True</td>
+<td align="center">True</td>
+<td align="center">True</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">True</td>
-<td style="text-align: center;">False</td>
-<td style="text-align: center;">False</td>
+<td align="center">True</td>
+<td align="center">False</td>
+<td align="center">False</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">False</td>
-<td style="text-align: center;">True</td>
-<td style="text-align: center;">False</td>
+<td align="center">False</td>
+<td align="center">True</td>
+<td align="center">False</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">False</td>
-<td style="text-align: center;">False</td>
-<td style="text-align: center;">False</td>
+<td align="center">False</td>
+<td align="center">False</td>
+<td align="center">False</td>
 </tr>
 </tbody>
 </table>
@@ -456,31 +456,31 @@
 <table>
 <thead>
 <tr class="header">
-<th style="text-align: center;">A</th>
-<th style="text-align: center;">B</th>
-<th style="text-align: center;">A or B</th>
+<th align="center">A</th>
+<th align="center">B</th>
+<th align="center">A or B</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">True</td>
-<td style="text-align: center;">True</td>
-<td style="text-align: center;">True</td>
+<td align="center">True</td>
+<td align="center">True</td>
+<td align="center">True</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">True</td>
-<td style="text-align: center;">False</td>
-<td style="text-align: center;">True</td>
+<td align="center">True</td>
+<td align="center">False</td>
+<td align="center">True</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">False</td>
-<td style="text-align: center;">True</td>
-<td style="text-align: center;">True</td>
+<td align="center">False</td>
+<td align="center">True</td>
+<td align="center">True</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">False</td>
-<td style="text-align: center;">False</td>
-<td style="text-align: center;">False</td>
+<td align="center">False</td>
+<td align="center">False</td>
+<td align="center">False</td>
 </tr>
 </tbody>
 </table>
@@ -488,138 +488,138 @@
 <table>
 <thead>
 <tr class="header">
-<th style="text-align: center;">not A</th>
-<th style="text-align: center;">A</th>
+<th align="center">not A</th>
+<th align="center">A</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">False</td>
-<td style="text-align: center;">True</td>
+<td align="center">False</td>
+<td align="center">True</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">True</td>
-<td style="text-align: center;">False</td>
+<td align="center">True</td>
+<td align="center">False</td>
 </tr>
 </tbody>
 </table>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="va">True</span> <span class="kw">and</span> <span class="va">False</span></div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="va">False</span></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> <span class="va">True</span> <span class="kw">or</span> <span class="va">False</span></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="va">True</span></div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> <span class="kw">not</span> <span class="va">False</span></div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="va">True</span></div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="va">True</span> <span class="kw">and</span> <span class="va">False</span>
+<span class="va">False</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="va">True</span> <span class="kw">or</span> <span class="va">False</span>
+<span class="va">True</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="kw">not</span> <span class="va">False</span>
+<span class="va">True</span></code></pre></div>
 <h2 id="as">as</h2>
 <p><code>as</code>是用于在导入模块的时候给模块的别称。例如</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="im">import</span> math <span class="im">as</span> myAlias</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> myAlias.cos(myAlias.pi)</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="fl">-1.0</span></div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="im">import</span> math <span class="im">as</span> myAlias
+<span class="op">&gt;&gt;&gt;</span> myAlias.cos(myAlias.pi)
+<span class="op">-</span><span class="fl">1.0</span></code></pre></div>
 <h2 id="assert">assert</h2>
 <p><code>assert</code>是用来程序调试的。assert语句用来声明某个条件是真的,当assert语句失败的时候，会引发一AssertionError。例如</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> <span class="dv">4</span></div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> <span class="cf">assert</span> a <span class="op">&lt;</span> <span class="dv">5</span></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> <span class="cf">assert</span> a <span class="op">&gt;</span> <span class="dv">5</span></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">Traceback (most recent call last):</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">  File <span class="st">&quot;&lt;stdin&gt;&quot;</span>, line <span class="dv">1</span>, <span class="kw">in</span> <span class="op">&lt;</span>module<span class="op">&gt;</span></div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="pp">AssertionError</span></div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> <span class="dv">4</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="cf">assert</span> a <span class="op">&lt;</span> <span class="dv">5</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="cf">assert</span> a <span class="op">&gt;</span> <span class="dv">5</span>
+Traceback (most recent call last):
+  File <span class="st">&quot;&lt;stdin&gt;&quot;</span>, line <span class="dv">1</span>, <span class="kw">in</span> <span class="op">&lt;</span>module<span class="op">&gt;</span>
+<span class="pp">AssertionError</span></code></pre></div>
 <p>为了更好的理解输出，我们还可以在信息打印中提供更具体的信息。信息会在<code>AssertionError</code>中体现出来。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="cf">assert</span> a <span class="op">&gt;</span> <span class="dv">5</span>, <span class="st">&quot;The value of a is too small&quot;</span></div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2">Traceback (most recent call last):</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3">  File <span class="st">&quot;&lt;stdin&gt;&quot;</span>, line <span class="dv">1</span>, <span class="kw">in</span> <span class="op">&lt;</span>module<span class="op">&gt;</span></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="pp">AssertionError</span>: The value of a <span class="kw">is</span> too small</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="cf">assert</span> a <span class="op">&gt;</span> <span class="dv">5</span>, <span class="st">&quot;The value of a is too small&quot;</span>
+Traceback (most recent call last):
+  File <span class="st">&quot;&lt;stdin&gt;&quot;</span>, line <span class="dv">1</span>, <span class="kw">in</span> <span class="op">&lt;</span>module<span class="op">&gt;</span>
+<span class="pp">AssertionError</span>: The value of a <span class="kw">is</span> too small</code></pre></div>
 <p>在这里，我们应该可以发现</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="cf">assert</span> condition, message</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="cf">assert</span> condition, message</code></pre></div>
 <p>等同于</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="cf">if</span> <span class="kw">not</span> condition:</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2">    <span class="cf">raise</span> <span class="pp">AssertionError</span>(message)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="cf">if</span> <span class="kw">not</span> condition:
+    <span class="cf">raise</span> <span class="pp">AssertionError</span>(message)</code></pre></div>
 <h2 id="break-continue">break, continue</h2>
 <p><code>break</code>和<code>continue</code>主要用于<code>for</code>和<code>while</code>语句里，用于改变它们正常的行为。</p>
 <p><code>break</code>会结束它所在的最小循环，并且将控制流向循环后面的语句。而<code>continue</code>会使当下的循环结束，但不会影响整个循环。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">11</span>):</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2">...     <span class="cf">if</span> i <span class="op">==</span> <span class="dv">5</span>:</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3">...         <span class="cf">break</span></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">...     <span class="bu">print</span>(i)</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">...</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="dv">1</span></div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="dv">2</span></div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="dv">3</span></div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="dv">4</span></div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10"><span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">11</span>):</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">...     <span class="cf">if</span> i <span class="op">==</span> <span class="dv">5</span>:</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">...         <span class="cf">continue</span></div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">...     <span class="bu">print</span>(i)</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">...</div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15"><span class="dv">1</span></div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16"><span class="dv">2</span></div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17"><span class="dv">3</span></div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18"><span class="dv">4</span></div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19"><span class="dv">6</span></div>
-<div class="sourceLine" id="20" href="#20" data-line-number="20"><span class="dv">7</span></div>
-<div class="sourceLine" id="21" href="#21" data-line-number="21"><span class="dv">8</span></div>
-<div class="sourceLine" id="22" href="#22" data-line-number="22"><span class="dv">9</span></div>
-<div class="sourceLine" id="23" href="#23" data-line-number="23"><span class="dv">10</span></div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">11</span>):
+...     <span class="cf">if</span> i <span class="op">==</span> <span class="dv">5</span>:
+...         <span class="cf">break</span>
+...     <span class="bu">print</span>(i)
+...
+<span class="dv">1</span>
+<span class="dv">2</span>
+<span class="dv">3</span>
+<span class="dv">4</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">11</span>):
+...     <span class="cf">if</span> i <span class="op">==</span> <span class="dv">5</span>:
+...         <span class="cf">continue</span>
+...     <span class="bu">print</span>(i)
+...
+<span class="dv">1</span>
+<span class="dv">2</span>
+<span class="dv">3</span>
+<span class="dv">4</span>
+<span class="dv">6</span>
+<span class="dv">7</span>
+<span class="dv">8</span>
+<span class="dv">9</span>
+<span class="dv">10</span></code></pre></div>
 <h2 id="class">class</h2>
 <p><code>class</code>用于定义类。</p>
 <p>类是相关属性和方法的集合，它是用于表示<code>a real world situation</code>。 这种把数据和方法集合在一个类的思想就是面对对象编程的中心思想。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="kw">class</span> ExampleClass:</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2">...     <span class="kw">def</span> function1(parameters):</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3">...         <span class="cf">pass</span></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">...     <span class="kw">def</span> function2(parameters):</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">...         <span class="cf">pass</span></div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">...</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="kw">class</span> ExampleClass:
+...     <span class="kw">def</span> function1(parameters):
+...         <span class="cf">pass</span>
+...     <span class="kw">def</span> function2(parameters):
+...         <span class="cf">pass</span>
+...</code></pre></div>
 <h2 id="def">def</h2>
 <p><code>def</code>用来定义函数。它们可以共同完成一些特定的任务，函数能够帮助我们将代码组织成可管理的块，也可以完成一些重复性的任务。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="kw">def</span> function1(parameters):</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2">...     <span class="cf">pass</span></div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="kw">def</span> function1(parameters):
+...     <span class="cf">pass</span></code></pre></div>
 <h2 id="del">del</h2>
 <p><code>del</code>用于删除指向对象的指针。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> b <span class="op">=</span> <span class="dv">5</span></div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> <span class="kw">del</span> a</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> a</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">Traceback (most recent call last):</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">  File <span class="st">&quot;&lt;stdin&gt;&quot;</span>, line <span class="dv">1</span>, <span class="kw">in</span> <span class="op">&lt;</span>module<span class="op">&gt;</span></div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="pp">NameError</span>: name <span class="st">&#39;a&#39;</span> <span class="kw">is</span> <span class="kw">not</span> defined</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> b</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="dv">5</span></div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> b <span class="op">=</span> <span class="dv">5</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="kw">del</span> a
+<span class="op">&gt;&gt;&gt;</span> a
+Traceback (most recent call last):
+  File <span class="st">&quot;&lt;stdin&gt;&quot;</span>, line <span class="dv">1</span>, <span class="kw">in</span> <span class="op">&lt;</span>module<span class="op">&gt;</span>
+<span class="pp">NameError</span>: name <span class="st">&#39;a&#39;</span> <span class="kw">is</span> <span class="kw">not</span> defined
+<span class="op">&gt;&gt;&gt;</span> b
+<span class="dv">5</span></code></pre></div>
 <p>同样，<code>del</code>也可以用于将列表或者字典里面的元素删除。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> [<span class="st">&#39;x&#39;</span>, <span class="st">&#39;y&#39;</span>, <span class="st">&#39;z&#39;</span>]</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> <span class="kw">del</span> a[<span class="dv">1</span>]</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> a</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">[<span class="st">&#39;x&#39;</span>, <span class="st">&#39;z&#39;</span>]</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> [<span class="st">&#39;x&#39;</span>, <span class="st">&#39;y&#39;</span>, <span class="st">&#39;z&#39;</span>]
+<span class="op">&gt;&gt;&gt;</span> <span class="kw">del</span> a[<span class="dv">1</span>]
+<span class="op">&gt;&gt;&gt;</span> a
+[<span class="st">&#39;x&#39;</span>, <span class="st">&#39;z&#39;</span>]</code></pre></div>
 <h2 id="if-else-elif">if, else, elif</h2>
 <p>用于条件语句。</p>
 <h2 id="except-raise-try">except, raise, try</h2>
 <p><code>except</code>、<code>raise</code>和<code>try</code>是用于处理异常。常见的异常有<code>IOError</code>, <code>ValueError</code>, <code>ZeroDivisionError</code>, <code>ImportError</code>, <code>NameError</code>, <code>TypeError</code>等等。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="kw">def</span> reciprocal(num):</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2">    <span class="cf">try</span>:</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3">        r <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>num</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">    <span class="cf">except</span>:</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">        <span class="bu">print</span>(<span class="st">&#39;Exception caught&#39;</span>)</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">        <span class="cf">return</span></div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">    <span class="cf">return</span> r</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"></div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="bu">print</span>(reciprocal(<span class="dv">10</span>))</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10"><span class="bu">print</span>(reciprocal(<span class="dv">0</span>))</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11"></div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">[output]</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13"><span class="fl">0.1</span></div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14"><span class="pp">Exception</span> caught</div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15"><span class="va">None</span></div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> reciprocal(num):
+    <span class="cf">try</span>:
+        r <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>num
+    <span class="cf">except</span>:
+        <span class="bu">print</span>(<span class="st">&#39;Exception caught&#39;</span>)
+        <span class="cf">return</span>
+    <span class="cf">return</span> r
+
+<span class="bu">print</span>(reciprocal(<span class="dv">10</span>))
+<span class="bu">print</span>(reciprocal(<span class="dv">0</span>))
+
+[output]
+<span class="fl">0.1</span>
+<span class="pp">Exception</span> caught
+<span class="va">None</span></code></pre></div>
 <p>同时我们还可以显性说明错误。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="cf">if</span> num <span class="op">==</span> <span class="dv">0</span>:</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2">    <span class="cf">raise</span> <span class="pp">ZeroDivisionError</span>(<span class="st">&#39;cannot divide&#39;</span>)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="cf">if</span> num <span class="op">==</span> <span class="dv">0</span>:
+    <span class="cf">raise</span> <span class="pp">ZeroDivisionError</span>(<span class="st">&#39;cannot divide&#39;</span>)</code></pre></div>
 <h2 id="finally">finally</h2>
 <p><code>finally</code>确保代码块的内容会被执行，即使有一个并没有被事先预备的异常。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="cf">try</span>:</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2">    Try<span class="op">-</span>block</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="cf">except</span> exception1:</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">    Exception1<span class="op">-</span>block</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="cf">except</span> exception2:</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">    Exception2<span class="op">-</span>block</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="cf">else</span>:</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">    Else<span class="op">-</span>block</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="cf">finally</span>:</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">    Finally<span class="op">-</span>block</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="cf">try</span>:
+    Try<span class="op">-</span>block
+<span class="cf">except</span> exception1:
+    Exception1<span class="op">-</span>block
+<span class="cf">except</span> exception2:
+    Exception2<span class="op">-</span>block
+<span class="cf">else</span>:
+    Else<span class="op">-</span>block
+<span class="cf">finally</span>:
+    Finally<span class="op">-</span>block</code></pre></div>
 <h2 id="for">for</h2>
 <p><code>for</code>循环啦，这个就不用多说什么啦。</p>
 <h2 id="from-import">from, import</h2>
@@ -628,72 +628,72 @@
 <p><code>global</code>是用来声明在函数里面的变量为全局变量。</p>
 <p>如果需要读取全局变量的值，那么其实没有必要声明变量为<code>global</code>。</p>
 <p>如果需要在函数里面修改全局变量的值，那我们必须用<code>global</code>来声明它。否则一个相同命名的局部变量就会被创造出来。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> globvar <span class="op">=</span> <span class="dv">10</span></div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> <span class="kw">def</span> read1():</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3">...     <span class="bu">print</span>(globvar)</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">...</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> <span class="kw">def</span> write1():</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">...     <span class="kw">global</span> globvar</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">...     globvar <span class="op">=</span> <span class="dv">5</span></div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">...</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="op">&gt;&gt;&gt;</span> <span class="kw">def</span> write2():</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">...     globvar <span class="op">=</span> <span class="dv">15</span></div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">...</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12"><span class="op">&gt;&gt;&gt;</span> read1()</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13"><span class="dv">10</span></div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14"><span class="op">&gt;&gt;&gt;</span> write1()</div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15"><span class="op">&gt;&gt;&gt;</span> read1()</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16"><span class="dv">5</span></div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17"><span class="op">&gt;&gt;&gt;</span> write2()</div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18"><span class="op">&gt;&gt;&gt;</span> read1()</div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19"><span class="dv">5</span></div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> globvar <span class="op">=</span> <span class="dv">10</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="kw">def</span> read1():
+...     <span class="bu">print</span>(globvar)
+...
+<span class="op">&gt;&gt;&gt;</span> <span class="kw">def</span> write1():
+...     <span class="kw">global</span> globvar
+...     globvar <span class="op">=</span> <span class="dv">5</span>
+...
+<span class="op">&gt;&gt;&gt;</span> <span class="kw">def</span> write2():
+...     globvar <span class="op">=</span> <span class="dv">15</span>
+...
+<span class="op">&gt;&gt;&gt;</span> read1()
+<span class="dv">10</span>
+<span class="op">&gt;&gt;&gt;</span> write1()
+<span class="op">&gt;&gt;&gt;</span> read1()
+<span class="dv">5</span>
+<span class="op">&gt;&gt;&gt;</span> write2()
+<span class="op">&gt;&gt;&gt;</span> read1()
+<span class="dv">5</span></code></pre></div>
 <h2 id="in">in</h2>
 <p><code>in</code>是用来测试一个序列里面是否包含一个对象或者值。如果包含，将会返回<code>True</code>，否则返回<code>False</code>。另外一个作用就是用来结合<code>for</code>遍历序列。</p>
 <h2 id="is">is</h2>
 <p><code>is</code>是用来测试对象的标识。<code>==</code>用来判断两个变量是否相等，<code>is</code>用来判断两个变量是否指向同一个对象。</p>
 <p>我们知道针对<code>True</code>、<code>False</code>和<code>None</code>只有一个实例，所以它们是独有的。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="va">True</span> <span class="kw">is</span> <span class="va">True</span></div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="va">True</span></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> <span class="va">False</span> <span class="kw">is</span> <span class="va">False</span></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="va">True</span></div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> <span class="va">None</span> <span class="kw">is</span> <span class="va">None</span></div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="va">True</span></div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span></div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="va">True</span> <span class="kw">is</span> <span class="va">True</span>
+<span class="va">True</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="va">False</span> <span class="kw">is</span> <span class="va">False</span>
+<span class="va">True</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="va">None</span> <span class="kw">is</span> <span class="va">None</span>
+<span class="va">True</span>
+<span class="op">&gt;&gt;&gt;</span></code></pre></div>
 <p>一个空的列表或者字典跟空的是相等的，但它们并不是独有的对象因为它们在内存中是单独分配的。这是因为列表和字典是可变对象。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> [] <span class="op">==</span> []</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="va">True</span></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> [] <span class="kw">is</span> []</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="va">False</span></div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> {} <span class="op">==</span> {}</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="va">True</span></div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> {} <span class="kw">is</span> {}</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="va">False</span></div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> [] <span class="op">==</span> []
+<span class="va">True</span>
+<span class="op">&gt;&gt;&gt;</span> [] <span class="kw">is</span> []
+<span class="va">False</span>
+<span class="op">&gt;&gt;&gt;</span> {} <span class="op">==</span> {}
+<span class="va">True</span>
+<span class="op">&gt;&gt;&gt;</span> {} <span class="kw">is</span> {}
+<span class="va">False</span></code></pre></div>
 <p>不像列表和字典，字符串和元组都是不可变对象（就是一旦定义后值就不会发生变化）。因此，两个相同的字符串或者元组是相同的，它们都指向相同的内存地址。</p>
 <h2 id="lambda">lambda</h2>
 <p><code>lambda</code>用于创造匿名函数（也就是没有名字的函数）。这是一个不包含<code>return</code>语句的内联函数，它由一个被评估和返回的表达式组成。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> <span class="kw">lambda</span> x: x <span class="op">*</span><span class="dv">2</span></div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">6</span>):</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3">...     <span class="bu">print</span>(a(i))</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">...</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="dv">2</span></div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="dv">4</span></div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="dv">6</span></div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="dv">8</span></div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="dv">10</span></div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> <span class="kw">lambda</span> x: x <span class="op">*</span><span class="dv">2</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">6</span>):
+...     <span class="bu">print</span>(a(i))
+...
+<span class="dv">2</span>
+<span class="dv">4</span>
+<span class="dv">6</span>
+<span class="dv">8</span>
+<span class="dv">10</span></code></pre></div>
 <h2 id="nonlocal">nonlocal</h2>
 <p><code>nonlocal</code>的用法和<code>global</code>的用法非常相似。<code>nonlocal</code>用于声明在嵌套函数里面的变量并不属于外部函数。如果我们需要修改在嵌套函数里的非局部变量的值，我们必须用<code>nonlocal</code>来声明。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="kw">def</span> outer_function():</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2">...     a <span class="op">=</span> <span class="dv">5</span></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3">...     <span class="kw">def</span> inner_function():</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">...          <span class="kw">nonlocal</span> a</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">...          a <span class="op">=</span> <span class="dv">10</span></div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">...          <span class="bu">print</span>(<span class="st">&#39;Inner function: &#39;</span>, a)</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">...     inner_function()</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">...     <span class="bu">print</span>(<span class="st">&#39;Outer function: &#39;</span>, a)</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9">...</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10"><span class="op">&gt;&gt;&gt;</span> outer_function()</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">Inner function:  <span class="dv">10</span></div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">Outer function:  <span class="dv">10</span></div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="kw">def</span> outer_function():
+...     a <span class="op">=</span> <span class="dv">5</span>
+...     <span class="kw">def</span> inner_function():
+...          <span class="kw">nonlocal</span> a
+...          a <span class="op">=</span> <span class="dv">10</span>
+...          <span class="bu">print</span>(<span class="st">&#39;Inner function: &#39;</span>, a)
+...     inner_function()
+...     <span class="bu">print</span>(<span class="st">&#39;Outer function: &#39;</span>, a)
+...
+<span class="op">&gt;&gt;&gt;</span> outer_function()
+Inner function:  <span class="dv">10</span>
+Outer function:  <span class="dv">10</span></code></pre></div>
 <h2 id="pass">pass</h2>
 <p><code>pass</code>嘛，就是作为一个占位符，当执行它的时候什么都不会发生。</p>
 <h2 id="return">return</h2>
@@ -703,19 +703,19 @@
 <h2 id="with">with</h2>
 <p>基本思想是with所求值的对象必须有一个__enter__( )方法，一个__exit__( )方法。</p>
 <p>with语句的执行逻辑如下：紧跟with后面的语句被求值后，返回对象的__enter__( )方法被调用，这个方法的返回值将被赋值给as后面的变量。当with后面的代码块全部被执行完之后，将调用前面返回对象的__exit__( )方法。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;example.txt&#39;</span>, <span class="st">&#39;w&#39;</span>) <span class="im">as</span> my_file:</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2">    my_file.write(<span class="st">&#39;Hello world!&#39;</span>)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;example.txt&#39;</span>, <span class="st">&#39;w&#39;</span>) <span class="im">as</span> my_file:
+    my_file.write(<span class="st">&#39;Hello world!&#39;</span>)</code></pre></div>
 <h2 id="yield">yield</h2>
 <p><code>yield</code>在函数里面像<code>return</code>，但<code>yield</code>返回的是一个生成器。生成器是一个一次只能生成一个对象或者值的迭代器。一个很大的列表的会占用非常大的内存，而生成器将会很好的应对这类情况，因为它每次只会生成一个值，也就是实时地生成数据，而不是把所有的值都存放在内存中。</p>
 <p>在生成器中，我们可以用<code>next()</code>方法生成值。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> g <span class="op">=</span> (<span class="dv">2</span> <span class="op">**</span> x <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>))</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> <span class="bu">next</span>(g)</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="dv">1</span></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> <span class="bu">next</span>(g)</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="dv">2</span></div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="op">&gt;&gt;&gt;</span> <span class="bu">next</span>(g)</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="dv">4</span></div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="op">&gt;&gt;&gt;</span></div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> g <span class="op">=</span> (<span class="dv">2</span> <span class="op">**</span> x <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>))
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">next</span>(g)
+<span class="dv">1</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">next</span>(g)
+<span class="dv">2</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">next</span>(g)
+<span class="dv">4</span>
+<span class="op">&gt;&gt;&gt;</span></code></pre></div>
 <p>哇，不知不觉就结束了，结束得毫无征兆。</p>
 
       

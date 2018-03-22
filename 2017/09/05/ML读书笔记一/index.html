@@ -385,137 +385,138 @@
 <p>为了让机器学习算法理解原始数据，需要对数据进行预处理。</p>
 <p>1.<u>均值移除</u></p>
 <p>通常会把每个特征的平均值移除，以保证特征均值为0（即标准化处理）。这样做可以消除特征彼此的偏差（bias）。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">import</span> numpy <span class="im">as</span> np</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="im">from</span> sklearn <span class="im">import</span> preprocessing</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">data <span class="op">=</span> np.array([</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">  [<span class="dv">3</span>, <span class="fl">-1.5</span>, <span class="dv">2</span>, <span class="fl">-5.4</span>],</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">  [<span class="dv">0</span>, <span class="dv">4</span>, <span class="fl">-0.3</span>, <span class="fl">2.1</span>],</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">  [<span class="dv">1</span>, <span class="fl">3.3</span>, <span class="fl">-1.9</span>, <span class="fl">-4.3</span>]</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">])</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9">data_standardized <span class="op">=</span> preprocessing.scale(data)</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10"><span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">Mean =&quot;</span>, data_standardized.mean(axis<span class="op">=</span><span class="dv">0</span>)</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11"><span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">Std deviation =&quot;</span>, data_standardized.std(axis<span class="op">=</span><span class="dv">0</span>)</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12"></div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">[Result]</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">Mean <span class="op">=</span>  [  <span class="fl">5.55111512e-17</span>  <span class="fl">-1.11022302e-16</span>  <span class="fl">-7.40148683e-17</span>  <span class="fl">-7.40148683e-17</span>]</div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">Std deviation <span class="op">=</span> [ <span class="fl">1.</span>  <span class="fl">1.</span>  <span class="fl">1.</span>  <span class="fl">1.</span>]</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> numpy <span class="im">as</span> np
+<span class="im">from</span> sklearn <span class="im">import</span> preprocessing
+
+data <span class="op">=</span> np.array([
+  [<span class="dv">3</span>, <span class="op">-</span><span class="fl">1.5</span>, <span class="dv">2</span>, <span class="op">-</span><span class="fl">5.4</span>],
+  [<span class="dv">0</span>, <span class="dv">4</span>, <span class="op">-</span><span class="fl">0.3</span>, <span class="fl">2.1</span>],
+  [<span class="dv">1</span>, <span class="fl">3.3</span>, <span class="op">-</span><span class="fl">1.9</span>, <span class="op">-</span><span class="fl">4.3</span>]
+])
+data_standardized <span class="op">=</span> preprocessing.scale(data)
+<span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">Mean =&quot;</span>, data_standardized.mean(axis<span class="op">=</span><span class="dv">0</span>)
+<span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">Std deviation =&quot;</span>, data_standardized.std(axis<span class="op">=</span><span class="dv">0</span>)
+
+[Result]
+Mean <span class="op">=</span>  [  <span class="fl">5.55111512e-17</span>  <span class="op">-</span><span class="fl">1.11022302e-16</span>  <span class="op">-</span><span class="fl">7.40148683e-17</span>  <span class="op">-</span><span class="fl">7.40148683e-17</span>]
+Std deviation <span class="op">=</span> [ <span class="dv">1</span>.  <span class="dv">1</span>.  <span class="dv">1</span>.  <span class="dv">1</span>.]</code></pre></div>
 <p>2.<u>范围缩放</u>（Scaling）</p>
 <p>数据点中每个特征的数值范围可能变化很大，因此，有时将特征的数值范围缩放到合理的大小是非常重要。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1">data_scaler <span class="op">=</span> preprocessing.MinMaxScaler(feature_range<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>))</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2">data_scaled<span class="op">=</span> data_scaler.fit_transform(data)</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">Min max scaled data =&quot;</span>, data_scaled</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"></div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">[Result]</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">Min <span class="bu">max</span> scaled data <span class="op">=</span></div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">[[ <span class="fl">1.</span>          <span class="fl">0.</span>          <span class="fl">1.</span>          <span class="fl">0.</span>        ]</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"> [ <span class="fl">0.</span>          <span class="fl">1.</span>          <span class="fl">0.41025641</span>  <span class="fl">1.</span>        ]</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"> [ <span class="fl">0.33333333</span>  <span class="fl">0.87272727</span>  <span class="fl">0.</span>          <span class="fl">0.14666667</span>]]</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">data_scaler <span class="op">=</span> preprocessing.MinMaxScaler(feature_range<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>))
+data_scaled<span class="op">=</span> data_scaler.fit_transform(data)
+<span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">Min max scaled data =&quot;</span>, data_scaled
+
+[Result]
+Min <span class="bu">max</span> scaled data <span class="op">=</span>
+[[ <span class="dv">1</span>.          <span class="dv">0</span>.          <span class="dv">1</span>.          <span class="dv">0</span>.        ]
+ [ <span class="dv">0</span>.          <span class="dv">1</span>.          <span class="fl">0.41025641</span>  <span class="dv">1</span>.        ]
+ [ <span class="fl">0.33333333</span>  <span class="fl">0.87272727</span>  <span class="dv">0</span>.          <span class="fl">0.14666667</span>]]</code></pre></div>
 <p>3.<u>归一化</u>（Normalization）</p>
 <p>数据归一化用于对特征向量的值进行调整，保证每个特征向量的值都缩放到相同的数值范围。确保数据点没有因为特征的基本性质而产生较大差异，确保数据处于同一数量级，提高不同特征数据的可比性。</p>
 <p>常用的归一化形式就是将特征向量调整为L1范数，使特征向量的数值之和为1。L0范数是指向量中非0的元素个数。如果用L0范数来规则化一个参数矩阵W，会希望W大部分元素都是0。L1范数和L2范数都可以实现矩阵稀疏，L1因具有比L0更好的优化求解特征而被广泛应用。而参数稀疏能够更好的进行特征选择以及增强解释性。L2范数在回归里面也叫“岭回归(<code>Ridge Regression</code>)”，也被称为权值衰减weight decay。岭回归能够改善模型过拟合问题。在L2范数中，限制了参数的变化波动范围，降低了标准差。总的而言，L2范数可以防止过拟合，提升模型的泛化能力。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1">data_normalized <span class="op">=</span> preprocessing.normalize(data, norm<span class="op">=</span><span class="st">&#39;l1&#39;</span>)</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">L1 normalized data =&quot;</span>, data_normalized</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">[Result]</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">Min <span class="bu">max</span> scaled data <span class="op">=</span></div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">[[ <span class="fl">1.</span>          <span class="fl">0.</span>          <span class="fl">1.</span>          <span class="fl">0.</span>        ]</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"> [ <span class="fl">0.</span>          <span class="fl">1.</span>          <span class="fl">0.41025641</span>  <span class="fl">1.</span>        ]</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"> [ <span class="fl">0.33333333</span>  <span class="fl">0.87272727</span>  <span class="fl">0.</span>          <span class="fl">0.14666667</span>]]</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">data_normalized <span class="op">=</span> preprocessing.normalize(data, norm<span class="op">=</span><span class="st">&#39;l1&#39;</span>)
+<span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">L1 normalized data =&quot;</span>, data_normalized
+
+[Result]
+Min <span class="bu">max</span> scaled data <span class="op">=</span>
+[[ <span class="dv">1</span>.          <span class="dv">0</span>.          <span class="dv">1</span>.          <span class="dv">0</span>.        ]
+ [ <span class="dv">0</span>.          <span class="dv">1</span>.          <span class="fl">0.41025641</span>  <span class="dv">1</span>.        ]
+ [ <span class="fl">0.33333333</span>  <span class="fl">0.87272727</span>  <span class="dv">0</span>.          <span class="fl">0.14666667</span>]]</code></pre></div>
 <p>4.<u>二值化</u>（Binarization）</p>
 <p>二值化用于将数值特征向量转换为布尔类型向量。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1">data_binarized <span class="op">=</span> preprocessing.Binarizer(threshold<span class="op">=</span><span class="fl">1.4</span>).transform(data)</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">Binarized data =&quot;</span>, data_binarized</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">[Result]</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">Binarized data <span class="op">=</span></div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">[[ <span class="fl">1.</span>  <span class="fl">0.</span>  <span class="fl">1.</span>  <span class="fl">0.</span>]</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"> [ <span class="fl">0.</span>  <span class="fl">1.</span>  <span class="fl">0.</span>  <span class="fl">1.</span>]</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"> [ <span class="fl">0.</span>  <span class="fl">1.</span>  <span class="fl">0.</span>  <span class="fl">0.</span>]]</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">data_binarized <span class="op">=</span> preprocessing.Binarizer(threshold<span class="op">=</span><span class="fl">1.4</span>).transform(data)
+<span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">Binarized data =&quot;</span>, data_binarized
+
+[Result]
+Binarized data <span class="op">=</span>
+[[ <span class="dv">1</span>.  <span class="dv">0</span>.  <span class="dv">1</span>.  <span class="dv">0</span>.]
+ [ <span class="dv">0</span>.  <span class="dv">1</span>.  <span class="dv">0</span>.  <span class="dv">1</span>.]
+ [ <span class="dv">0</span>.  <span class="dv">1</span>.  <span class="dv">0</span>.  <span class="dv">0</span>.]]</code></pre></div>
 <p>5.<u>独热编码</u></p>
 <p>独热编码可以看作是一种收紧（tighten）特征向量的工具。它把特征向量的每个特征与特征的非重复总数相对应，通过<em>one of k</em>的形式对每个值进行编码。特征向量的每个特征值都按照这种方式编码，能够更有效地表示空间。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1">encoder <span class="op">=</span> preprocessing.OneHotEncoder()</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2">encoder.fit([[<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">12</span>], [<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">3</span>], [<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">12</span>], [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">3</span>]])</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3">encoder_vector <span class="op">=</span> encoder.transform([[<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">3</span>]]).toarray()</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">Encoded vector </span><span class="ch">\n</span><span class="st">&quot;</span>, encoder_vector</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"></div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">[Result]</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">Encoded vector <span class="op">=</span></div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">[[ <span class="fl">0.</span>  <span class="fl">0.</span>  <span class="fl">1.</span>  <span class="fl">0.</span>  <span class="fl">1.</span>  <span class="fl">0.</span>  <span class="fl">0.</span>  <span class="fl">0.</span>  <span class="fl">1.</span>  <span class="fl">1.</span>  <span class="fl">0.</span>]]</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">encoder <span class="op">=</span> preprocessing.OneHotEncoder()
+encoder.fit([[<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">12</span>], [<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">3</span>], [<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">12</span>], [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">3</span>]])
+encoder_vector <span class="op">=</span> encoder.transform([[<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">3</span>]]).toarray()
+<span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">Encoded vector </span><span class="ch">\n</span><span class="st">&quot;</span>, encoder_vector
+
+[Result]
+Encoded vector <span class="op">=</span>
+[[ <span class="dv">0</span>.  <span class="dv">0</span>.  <span class="dv">1</span>.  <span class="dv">0</span>.  <span class="dv">1</span>.  <span class="dv">0</span>.  <span class="dv">0</span>.  <span class="dv">0</span>.  <span class="dv">1</span>.  <span class="dv">1</span>.  <span class="dv">0</span>.]]</code></pre></div>
 <h4 id="二标记编码方法">二、标记编码方法</h4>
 <p>在监督学习中，经常需要处理各种标记。标记编码就是把单词标记转换成数值形式，让算法懂得如何操作标记。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">from</span> sklearn <span class="im">import</span> preprocessing</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3">label_encoder <span class="op">=</span> preprocessing.LabelEncoder()</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">input_classes <span class="op">=</span> [<span class="st">&#39;audi&#39;</span>, <span class="st">&#39;ford&#39;</span>, <span class="st">&#39;audi&#39;</span>, <span class="st">&#39;toyota&#39;</span>, <span class="st">&#39;ford&#39;</span>, <span class="st">&#39;bmw&#39;</span>]</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">label_encoder.fit(input_classes)</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st"> Class mapping:&quot;</span></div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="cf">for</span> i, item <span class="kw">in</span> <span class="bu">enumerate</span>(label_encoder.classes_):</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">    <span class="bu">print</span> item, <span class="st">&#39;--&gt;&#39;</span>, i</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"></div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">[Result]</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">Class mapping:</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">audi <span class="op">--&gt;</span> <span class="dv">0</span></div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">bmw <span class="op">--&gt;</span> <span class="dv">1</span></div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">ford <span class="op">--&gt;</span> <span class="dv">2</span></div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">toyota <span class="op">--&gt;</span> <span class="dv">3</span></div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> sklearn <span class="im">import</span> preprocessing
+
+label_encoder <span class="op">=</span> preprocessing.LabelEncoder()
+input_classes <span class="op">=</span> [<span class="st">&#39;audi&#39;</span>, <span class="st">&#39;ford&#39;</span>, <span class="st">&#39;audi&#39;</span>, <span class="st">&#39;toyota&#39;</span>, <span class="st">&#39;ford&#39;</span>, <span class="st">&#39;bmw&#39;</span>]
+label_encoder.fit(input_classes)
+<span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st"> Class mapping:&quot;</span>
+<span class="cf">for</span> i, item <span class="kw">in</span> <span class="bu">enumerate</span>(label_encoder.classes_):
+    <span class="bu">print</span> item, <span class="st">&#39;--&gt;&#39;</span>, i
+
+[Result]
+Class mapping:
+audi <span class="op">--&gt;</span> <span class="dv">0</span>
+bmw <span class="op">--&gt;</span> <span class="dv">1</span>
+ford <span class="op">--&gt;</span> <span class="dv">2</span>
+toyota <span class="op">--&gt;</span> <span class="dv">3</span></code></pre></div>
 <p>同样，如果需要一组标记，也能非常轻松地转换它们。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1">labels <span class="op">=</span> [<span class="st">&#39;toyota&#39;</span>, <span class="st">&#39;ford&#39;</span>, <span class="st">&#39;audi&#39;</span>]</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2">encoded_labels <span class="op">=</span> label_encoder.transform(labels)</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">Labels =&quot;</span>, labels</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="bu">print</span> <span class="st">&quot;Encoded labels =&quot;</span>, <span class="bu">list</span>(encoded_labels)</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"></div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">[Result]</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">Labels <span class="op">=</span> [<span class="st">&#39;toyota&#39;</span>, <span class="st">&#39;ford&#39;</span>, <span class="st">&#39;audi&#39;</span>]</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8">Encoded labels <span class="op">=</span> [<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">0</span>]</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"></div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">encoded_labels <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>]</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">decoded_labels <span class="op">=</span> label_encoder.inverse_transform(encoded_labels)</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12"><span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">Encoded labels =&quot;</span>, encoded_labels</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13"><span class="bu">print</span> <span class="st">&quot;Decoded labels =&quot;</span>, <span class="bu">list</span>(decoded_labels)</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14"></div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">[Result]</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16">Encoded labels <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>]</div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17">Decoded labels <span class="op">=</span> [<span class="st">&#39;ford&#39;</span>, <span class="st">&#39;bmw&#39;</span>, <span class="st">&#39;audi&#39;</span>, <span class="st">&#39;bmw&#39;</span>]</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">labels <span class="op">=</span> [<span class="st">&#39;toyota&#39;</span>, <span class="st">&#39;ford&#39;</span>, <span class="st">&#39;audi&#39;</span>]
+encoded_labels <span class="op">=</span> label_encoder.transform(labels)
+<span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">Labels =&quot;</span>, labels
+<span class="bu">print</span> <span class="st">&quot;Encoded labels =&quot;</span>, <span class="bu">list</span>(encoded_labels)
+
+[Result]
+Labels <span class="op">=</span> [<span class="st">&#39;toyota&#39;</span>, <span class="st">&#39;ford&#39;</span>, <span class="st">&#39;audi&#39;</span>]
+Encoded labels <span class="op">=</span> [<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">0</span>]
+
+encoded_labels <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>]
+decoded_labels <span class="op">=</span> label_encoder.inverse_transform(encoded_labels)
+<span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">Encoded labels =&quot;</span>, encoded_labels
+<span class="bu">print</span> <span class="st">&quot;Decoded labels =&quot;</span>, <span class="bu">list</span>(decoded_labels)
+
+[Result]
+Encoded labels <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>]
+Decoded labels <span class="op">=</span> [<span class="st">&#39;ford&#39;</span>, <span class="st">&#39;bmw&#39;</span>, <span class="st">&#39;audi&#39;</span>, <span class="st">&#39;bmw&#39;</span>]</code></pre></div>
 <h4 id="三创建线性回归器">三、创建线性回归器</h4>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">import</span> sys</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="im">import</span> numpy <span class="im">as</span> np</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"></div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">filename <span class="op">=</span> sys.argv[<span class="dv">1</span>]</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">X <span class="op">=</span> []</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">y <span class="op">=</span> []</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="cf">with</span> <span class="bu">open</span>(filename, <span class="st">&#39;r&#39;</span>) <span class="im">as</span> f:</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9">    <span class="cf">for</span> line <span class="kw">in</span> f.readlines():</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">        xt, yt <span class="op">=</span> [<span class="bu">float</span>(i) <span class="cf">for</span> i <span class="kw">in</span> line.split(<span class="st">&#39;,&#39;</span>)]</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">        X.append(xt)</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">        y.append(yt)</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">    </div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">num_training <span class="op">=</span> <span class="bu">int</span>(<span class="fl">0.8</span> <span class="op">*</span> <span class="bu">len</span>(X))</div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">num_test <span class="op">=</span> <span class="bu">len</span>(X) <span class="op">-</span> num_training</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16"></div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17">X_train <span class="op">=</span> np.array(X[:num_training]).reshape((num_training, <span class="dv">1</span>))</div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18">y_train <span class="op">=</span> np.array(y[:num_training])</div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19"></div>
-<div class="sourceLine" id="20" href="#20" data-line-number="20">X_test <span class="op">=</span> np.array(X[num_training:]).reshape((num_test, <span class="dv">1</span>))</div>
-<div class="sourceLine" id="21" href="#21" data-line-number="21">y_test <span class="op">=</span> np.array(y[num_training:])</div>
-<div class="sourceLine" id="22" href="#22" data-line-number="22"></div>
-<div class="sourceLine" id="23" href="#23" data-line-number="23"><span class="im">from</span> sklearn <span class="im">import</span> linear_model</div>
-<div class="sourceLine" id="24" href="#24" data-line-number="24"></div>
-<div class="sourceLine" id="25" href="#25" data-line-number="25">linear_regressor <span class="op">=</span> linear_model.LinearRegression()</div>
-<div class="sourceLine" id="26" href="#26" data-line-number="26"></div>
-<div class="sourceLine" id="27" href="#27" data-line-number="27">y_test_pred <span class="op">=</span> linear_regressor.predict(X_test)</div>
-<div class="sourceLine" id="28" href="#28" data-line-number="28"></div>
-<div class="sourceLine" id="29" href="#29" data-line-number="29"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</div>
-<div class="sourceLine" id="30" href="#30" data-line-number="30"></div>
-<div class="sourceLine" id="31" href="#31" data-line-number="31">plt.scatter(X_test, y_test, color<span class="op">=</span><span class="st">&#39;green&#39;</span>)</div>
-<div class="sourceLine" id="32" href="#32" data-line-number="32">plt.plot(X_test, y_test_pred, color<span class="op">=</span><span class="st">&#39;black&#39;</span>, linewidth<span class="op">=</span><span class="dv">4</span>)</div>
-<div class="sourceLine" id="33" href="#33" data-line-number="33">plt.xticks(())</div>
-<div class="sourceLine" id="34" href="#34" data-line-number="34">plt.yticks(())</div>
-<div class="sourceLine" id="35" href="#35" data-line-number="35">plt.show()</div></code></pre>
-<figure>
-<img src="/images/linear.png" alt="linear"><figcaption>linear</figcaption>
-</figure>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> sys
+
+<span class="im">import</span> numpy <span class="im">as</span> np
+
+filename <span class="op">=</span> sys.argv[<span class="dv">1</span>]
+X <span class="op">=</span> []
+y <span class="op">=</span> []
+<span class="cf">with</span> <span class="bu">open</span>(filename, <span class="st">&#39;r&#39;</span>) <span class="im">as</span> f:
+    <span class="cf">for</span> line <span class="kw">in</span> f.readlines():
+        xt, yt <span class="op">=</span> [<span class="bu">float</span>(i) <span class="cf">for</span> i <span class="kw">in</span> line.split(<span class="st">&#39;,&#39;</span>)]
+        X.append(xt)
+        y.append(yt)
+    
+num_training <span class="op">=</span> <span class="bu">int</span>(<span class="fl">0.8</span> <span class="op">*</span> <span class="bu">len</span>(X))
+num_test <span class="op">=</span> <span class="bu">len</span>(X) <span class="op">-</span> num_training
+
+X_train <span class="op">=</span> np.array(X[:num_training]).reshape((num_training, <span class="dv">1</span>))
+y_train <span class="op">=</span> np.array(y[:num_training])
+
+X_test <span class="op">=</span> np.array(X[num_training:]).reshape((num_test, <span class="dv">1</span>))
+y_test <span class="op">=</span> np.array(y[num_training:])
+
+<span class="im">from</span> sklearn <span class="im">import</span> linear_model
+
+linear_regressor <span class="op">=</span> linear_model.LinearRegression()
+
+y_test_pred <span class="op">=</span> linear_regressor.predict(X_test)
+
+<span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
+
+plt.scatter(X_test, y_test, color<span class="op">=</span><span class="st">&#39;green&#39;</span>)
+plt.plot(X_test, y_test_pred, color<span class="op">=</span><span class="st">&#39;black&#39;</span>, linewidth<span class="op">=</span><span class="dv">4</span>)
+plt.xticks(())
+plt.yticks(())
+plt.show()</code></pre></div>
+<div class="figure">
+<img src="/images/linear.png" alt="linear">
+<p class="caption">linear</p>
+</div>
 <h4 id="四计算回归准确性">四、计算回归准确性</h4>
 <p>现在建立了回归器，接下来就是评价回归器的拟合效果。</p>
 <ul>
@@ -523,259 +524,265 @@
 <li><p>均方误差（Mean Squared Error）：给定数据集的所有数据点的误差的平方的平均值。</p></li>
 <li><p>中位数绝对误差（Median Absolute Error）：给定所有数据集的所有数据点的误差的中位数。这个指标的主要优点是可以消除异常值的干扰。</p></li>
 <li><p>解释方差分（Explained Variance Score）：用于衡量模型对数据集波动的解释能力，如果得分1.0分，表明模型是完美的。</p></li>
-<li><p>R方得分（R2 Score）：指确定性相关系数，用于衡量模型对未知样本预测的效果。最好的得分是1.0。</p>
-<p>一般都是保证均方误差最低，解释方差分最高。</p>
-<figure>
-<img src="/images/r2.png" alt="r2"><figcaption>r2</figcaption>
-</figure>
-<figure>
-<img src="/images/explained_variance.png" alt="explained_variance"><figcaption>explained_variance</figcaption>
-</figure></li>
+<li><p>R方得分（R2 Score）：指确定性相关系数，用于衡量模型对未知样本预测的效果。最好的得分是1.0。</p></li>
 </ul>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">import</span> sklearn.metrics <span class="im">as</span> sm</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="bu">print</span> <span class="st">&quot;Mean absolute error =&quot;</span>, <span class="bu">round</span>(sm.mean_absolute_error(y_test, y_test_pred), <span class="dv">2</span>)</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="bu">print</span> <span class="st">&quot;Mean squared error =&quot;</span>, <span class="bu">round</span>(sm.mean_squared_error(y_test, y_test_pred), <span class="dv">2</span>)</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="bu">print</span> <span class="st">&quot;Median absolute error =&quot;</span>, <span class="bu">round</span>(sm.median_absolute_error(y_test, y_test_pred), <span class="dv">2</span>)</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="bu">print</span> <span class="st">&quot;Explained variance score =&quot;</span>, <span class="bu">round</span>(sm.explained_variance_score(y_test, y_test_pred), <span class="dv">2</span>)</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="bu">print</span> <span class="st">&quot;R2 score =&quot;</span>, <span class="bu">round</span>(sm.r2_score(y_test, y_test_pred), <span class="dv">2</span>)</div></code></pre>
+<p>一般都是保证均方误差最低，解释方差分最高。</p>
+<div class="figure">
+<img src="/images/r2.png" alt="r2">
+<p class="caption">r2</p>
+</div>
+<div class="figure">
+<img src="/images/explained_variance.png" alt="explained_variance">
+<p class="caption">explained_variance</p>
+</div>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> sklearn.metrics <span class="im">as</span> sm
+
+<span class="bu">print</span> <span class="st">&quot;Mean absolute error =&quot;</span>, <span class="bu">round</span>(sm.mean_absolute_error(y_test, y_test_pred), <span class="dv">2</span>)
+<span class="bu">print</span> <span class="st">&quot;Mean squared error =&quot;</span>, <span class="bu">round</span>(sm.mean_squared_error(y_test, y_test_pred), <span class="dv">2</span>)
+<span class="bu">print</span> <span class="st">&quot;Median absolute error =&quot;</span>, <span class="bu">round</span>(sm.median_absolute_error(y_test, y_test_pred), <span class="dv">2</span>)
+<span class="bu">print</span> <span class="st">&quot;Explained variance score =&quot;</span>, <span class="bu">round</span>(sm.explained_variance_score(y_test, y_test_pred), <span class="dv">2</span>)
+<span class="bu">print</span> <span class="st">&quot;R2 score =&quot;</span>, <span class="bu">round</span>(sm.r2_score(y_test, y_test_pred), <span class="dv">2</span>)</code></pre></div>
 <h4 id="五创建岭回归器">五、创建岭回归器</h4>
 <p>线性回归的主要问题是对异常值敏感，由于异常值误差的绝对值很大，因此会引起问题，从而破坏整个模型。为了避免这个问题，利用岭回归引入正则化项的系数作为阈值来消除异常值的影响。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">import</span> sys</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="im">import</span> numpy <span class="im">as</span> np</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"></div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">filename <span class="op">=</span> sys.argv[<span class="dv">1</span>]</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">X <span class="op">=</span> []</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">y <span class="op">=</span> []</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="cf">with</span> <span class="bu">open</span>(filename, <span class="st">&#39;r&#39;</span>) <span class="im">as</span> f:</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9">    <span class="cf">for</span> line <span class="kw">in</span> f.readlines():</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">        data <span class="op">=</span> [<span class="bu">float</span>(i) <span class="cf">for</span> i <span class="kw">in</span> line.split(<span class="st">&#39;,&#39;</span>)]</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">        xt, yt <span class="op">=</span> data[:<span class="op">-</span><span class="dv">1</span>], data[<span class="op">-</span><span class="dv">1</span>]</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">        X.append(xt)</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">        y.append(yt)</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">        </div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">num_training <span class="op">=</span> <span class="bu">int</span>(<span class="fl">0.8</span> <span class="op">*</span> <span class="bu">len</span>(X))</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16">num_test <span class="op">=</span> <span class="bu">len</span>(X) <span class="op">-</span> num_training</div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17"></div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18">X_train <span class="op">=</span> np.array(X[:num_training])</div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19">y_train <span class="op">=</span> np.array(y[:num_training])</div>
-<div class="sourceLine" id="20" href="#20" data-line-number="20"></div>
-<div class="sourceLine" id="21" href="#21" data-line-number="21"><span class="im">from</span> sklearn <span class="im">import</span> linear_model</div>
-<div class="sourceLine" id="22" href="#22" data-line-number="22"></div>
-<div class="sourceLine" id="23" href="#23" data-line-number="23">linear_regressor <span class="op">=</span> linear_model.LinearRegression()</div>
-<div class="sourceLine" id="24" href="#24" data-line-number="24"><span class="co"># alpha参数控制回归器的复杂程度，当alpha趋于0时，岭回归就是用普通最小二乘法的线形回归器</span></div>
-<div class="sourceLine" id="25" href="#25" data-line-number="25"><span class="co"># 如果希望模型对异常值不那么敏感，就需要设置一个较大的alpha值</span></div>
-<div class="sourceLine" id="26" href="#26" data-line-number="26">ridge_regressor <span class="op">=</span> linear_model.Ridge(alpha<span class="op">=</span><span class="fl">0.01</span>, fit_intercept<span class="op">=</span><span class="va">True</span>, max_iter<span class="op">=</span><span class="dv">10000</span>)</div>
-<div class="sourceLine" id="27" href="#27" data-line-number="27"></div>
-<div class="sourceLine" id="28" href="#28" data-line-number="28">linear_regressor.fit(X_train, y_train)</div>
-<div class="sourceLine" id="29" href="#29" data-line-number="29">ridge_regressor.fit(X_train, y_train)</div>
-<div class="sourceLine" id="30" href="#30" data-line-number="30"></div>
-<div class="sourceLine" id="31" href="#31" data-line-number="31">y_test_pred <span class="op">=</span> linear_regressor.predict(X_test)</div>
-<div class="sourceLine" id="32" href="#32" data-line-number="32">y_test_pred_ridge <span class="op">=</span> ridge_regressor.predict(X_test)</div>
-<div class="sourceLine" id="33" href="#33" data-line-number="33"></div>
-<div class="sourceLine" id="34" href="#34" data-line-number="34"><span class="im">import</span> sklearn.metrics <span class="im">as</span> sm</div>
-<div class="sourceLine" id="35" href="#35" data-line-number="35"></div>
-<div class="sourceLine" id="36" href="#36" data-line-number="36"><span class="bu">print</span> <span class="st">&quot;LINEAR:&quot;</span></div>
-<div class="sourceLine" id="37" href="#37" data-line-number="37"><span class="bu">print</span> <span class="st">&quot;Mean absolute error =&quot;</span>, <span class="bu">round</span>(sm.mean_absolute_error(y_test, y_test_pred), <span class="dv">2</span>) </div>
-<div class="sourceLine" id="38" href="#38" data-line-number="38"><span class="bu">print</span> <span class="st">&quot;Mean squared error =&quot;</span>, <span class="bu">round</span>(sm.mean_squared_error(y_test, y_test_pred), <span class="dv">2</span>) </div>
-<div class="sourceLine" id="39" href="#39" data-line-number="39"><span class="bu">print</span> <span class="st">&quot;Median absolute error =&quot;</span>, <span class="bu">round</span>(sm.median_absolute_error(y_test, y_test_pred), <span class="dv">2</span>) </div>
-<div class="sourceLine" id="40" href="#40" data-line-number="40"><span class="bu">print</span> <span class="st">&quot;Explained variance score =&quot;</span>, <span class="bu">round</span>(sm.explained_variance_score(y_test, y_test_pred), <span class="dv">2</span>) </div>
-<div class="sourceLine" id="41" href="#41" data-line-number="41"><span class="bu">print</span> <span class="st">&quot;R2 score =&quot;</span>, <span class="bu">round</span>(sm.r2_score(y_test, y_test_pred), <span class="dv">2</span>)</div>
-<div class="sourceLine" id="42" href="#42" data-line-number="42"></div>
-<div class="sourceLine" id="43" href="#43" data-line-number="43"><span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">RIDGE:&quot;</span></div>
-<div class="sourceLine" id="44" href="#44" data-line-number="44"><span class="bu">print</span> <span class="st">&quot;Mean absolute error =&quot;</span>, <span class="bu">round</span>(sm.mean_absolute_error(y_test, y_test_pred_ridge), <span class="dv">2</span>) </div>
-<div class="sourceLine" id="45" href="#45" data-line-number="45"><span class="bu">print</span> <span class="st">&quot;Mean squared error =&quot;</span>, <span class="bu">round</span>(sm.mean_squared_error(y_test, y_test_pred_ridge), <span class="dv">2</span>) </div>
-<div class="sourceLine" id="46" href="#46" data-line-number="46"><span class="bu">print</span> <span class="st">&quot;Median absolute error =&quot;</span>, <span class="bu">round</span>(sm.median_absolute_error(y_test, y_test_pred_ridge), <span class="dv">2</span>) </div>
-<div class="sourceLine" id="47" href="#47" data-line-number="47"><span class="bu">print</span> <span class="st">&quot;Explained variance score =&quot;</span>, <span class="bu">round</span>(sm.explained_variance_score(y_test, y_test_pred_ridge), <span class="dv">2</span>) </div>
-<div class="sourceLine" id="48" href="#48" data-line-number="48"><span class="bu">print</span> <span class="st">&quot;R2 score =&quot;</span>, <span class="bu">round</span>(sm.r2_score(y_test, y_test_pred_ridge), <span class="dv">2</span>)</div>
-<div class="sourceLine" id="49" href="#49" data-line-number="49"></div>
-<div class="sourceLine" id="50" href="#50" data-line-number="50">[Result]</div>
-<div class="sourceLine" id="51" href="#51" data-line-number="51">LINEAR:</div>
-<div class="sourceLine" id="52" href="#52" data-line-number="52">Mean absolute error <span class="op">=</span> <span class="fl">3.95</span></div>
-<div class="sourceLine" id="53" href="#53" data-line-number="53">Mean squared error <span class="op">=</span> <span class="fl">23.15</span></div>
-<div class="sourceLine" id="54" href="#54" data-line-number="54">Median absolute error <span class="op">=</span> <span class="fl">3.69</span></div>
-<div class="sourceLine" id="55" href="#55" data-line-number="55">Explained variance score <span class="op">=</span> <span class="fl">0.84</span></div>
-<div class="sourceLine" id="56" href="#56" data-line-number="56">R2 score <span class="op">=</span> <span class="fl">0.83</span></div>
-<div class="sourceLine" id="57" href="#57" data-line-number="57"></div>
-<div class="sourceLine" id="58" href="#58" data-line-number="58">RIDGE:</div>
-<div class="sourceLine" id="59" href="#59" data-line-number="59">Mean absolute error <span class="op">=</span> <span class="fl">3.95</span></div>
-<div class="sourceLine" id="60" href="#60" data-line-number="60">Mean squared error <span class="op">=</span> <span class="fl">23.15</span></div>
-<div class="sourceLine" id="61" href="#61" data-line-number="61">Median absolute error <span class="op">=</span> <span class="fl">3.69</span></div>
-<div class="sourceLine" id="62" href="#62" data-line-number="62">Explained variance score <span class="op">=</span> <span class="fl">0.84</span></div>
-<div class="sourceLine" id="63" href="#63" data-line-number="63">R2 score <span class="op">=</span> <span class="fl">0.83</span></div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> sys
+
+<span class="im">import</span> numpy <span class="im">as</span> np
+
+filename <span class="op">=</span> sys.argv[<span class="dv">1</span>]
+X <span class="op">=</span> []
+y <span class="op">=</span> []
+<span class="cf">with</span> <span class="bu">open</span>(filename, <span class="st">&#39;r&#39;</span>) <span class="im">as</span> f:
+    <span class="cf">for</span> line <span class="kw">in</span> f.readlines():
+        data <span class="op">=</span> [<span class="bu">float</span>(i) <span class="cf">for</span> i <span class="kw">in</span> line.split(<span class="st">&#39;,&#39;</span>)]
+        xt, yt <span class="op">=</span> data[:<span class="op">-</span><span class="dv">1</span>], data[<span class="op">-</span><span class="dv">1</span>]
+        X.append(xt)
+        y.append(yt)
+        
+num_training <span class="op">=</span> <span class="bu">int</span>(<span class="fl">0.8</span> <span class="op">*</span> <span class="bu">len</span>(X))
+num_test <span class="op">=</span> <span class="bu">len</span>(X) <span class="op">-</span> num_training
+
+X_train <span class="op">=</span> np.array(X[:num_training])
+y_train <span class="op">=</span> np.array(y[:num_training])
+
+<span class="im">from</span> sklearn <span class="im">import</span> linear_model
+
+linear_regressor <span class="op">=</span> linear_model.LinearRegression()
+<span class="co"># alpha参数控制回归器的复杂程度，当alpha趋于0时，岭回归就是用普通最小二乘法的线形回归器</span>
+<span class="co"># 如果希望模型对异常值不那么敏感，就需要设置一个较大的alpha值</span>
+ridge_regressor <span class="op">=</span> linear_model.Ridge(alpha<span class="op">=</span><span class="fl">0.01</span>, fit_intercept<span class="op">=</span><span class="va">True</span>, max_iter<span class="op">=</span><span class="dv">10000</span>)
+
+linear_regressor.fit(X_train, y_train)
+ridge_regressor.fit(X_train, y_train)
+
+y_test_pred <span class="op">=</span> linear_regressor.predict(X_test)
+y_test_pred_ridge <span class="op">=</span> ridge_regressor.predict(X_test)
+
+<span class="im">import</span> sklearn.metrics <span class="im">as</span> sm
+
+<span class="bu">print</span> <span class="st">&quot;LINEAR:&quot;</span>
+<span class="bu">print</span> <span class="st">&quot;Mean absolute error =&quot;</span>, <span class="bu">round</span>(sm.mean_absolute_error(y_test, y_test_pred), <span class="dv">2</span>) 
+<span class="bu">print</span> <span class="st">&quot;Mean squared error =&quot;</span>, <span class="bu">round</span>(sm.mean_squared_error(y_test, y_test_pred), <span class="dv">2</span>) 
+<span class="bu">print</span> <span class="st">&quot;Median absolute error =&quot;</span>, <span class="bu">round</span>(sm.median_absolute_error(y_test, y_test_pred), <span class="dv">2</span>) 
+<span class="bu">print</span> <span class="st">&quot;Explained variance score =&quot;</span>, <span class="bu">round</span>(sm.explained_variance_score(y_test, y_test_pred), <span class="dv">2</span>) 
+<span class="bu">print</span> <span class="st">&quot;R2 score =&quot;</span>, <span class="bu">round</span>(sm.r2_score(y_test, y_test_pred), <span class="dv">2</span>)
+
+<span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">RIDGE:&quot;</span>
+<span class="bu">print</span> <span class="st">&quot;Mean absolute error =&quot;</span>, <span class="bu">round</span>(sm.mean_absolute_error(y_test, y_test_pred_ridge), <span class="dv">2</span>) 
+<span class="bu">print</span> <span class="st">&quot;Mean squared error =&quot;</span>, <span class="bu">round</span>(sm.mean_squared_error(y_test, y_test_pred_ridge), <span class="dv">2</span>) 
+<span class="bu">print</span> <span class="st">&quot;Median absolute error =&quot;</span>, <span class="bu">round</span>(sm.median_absolute_error(y_test, y_test_pred_ridge), <span class="dv">2</span>) 
+<span class="bu">print</span> <span class="st">&quot;Explained variance score =&quot;</span>, <span class="bu">round</span>(sm.explained_variance_score(y_test, y_test_pred_ridge), <span class="dv">2</span>) 
+<span class="bu">print</span> <span class="st">&quot;R2 score =&quot;</span>, <span class="bu">round</span>(sm.r2_score(y_test, y_test_pred_ridge), <span class="dv">2</span>)
+
+[Result]
+LINEAR:
+Mean absolute error <span class="op">=</span> <span class="fl">3.95</span>
+Mean squared error <span class="op">=</span> <span class="fl">23.15</span>
+Median absolute error <span class="op">=</span> <span class="fl">3.69</span>
+Explained variance score <span class="op">=</span> <span class="fl">0.84</span>
+R2 score <span class="op">=</span> <span class="fl">0.83</span>
+
+RIDGE:
+Mean absolute error <span class="op">=</span> <span class="fl">3.95</span>
+Mean squared error <span class="op">=</span> <span class="fl">23.15</span>
+Median absolute error <span class="op">=</span> <span class="fl">3.69</span>
+Explained variance score <span class="op">=</span> <span class="fl">0.84</span>
+R2 score <span class="op">=</span> <span class="fl">0.83</span></code></pre></div>
 <h4 id="六创建多项式回归器">六、创建多项式回归器</h4>
 <p>线性回归模型有一个主要的局限性，就是只能把输入数据拟合成直线，而多项式回归模型通过拟合多项式方程式来克服这类问题，从而提高模型的准确性。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> PolynomialFeatures</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"></div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="co"># 把多项式的次数设置为10</span></div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4">polynomial <span class="op">=</span> PolynomialFeatures(degree<span class="op">=</span><span class="dv">10</span>)</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5">X_train_transformed <span class="op">=</span> polynomial.fit_transform(X_train)</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6">datapoint <span class="op">=</span> [<span class="fl">0.39</span>, <span class="fl">2.78</span>, <span class="fl">7.11</span>]</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7">poly_datapoint <span class="op">=</span> polynomial.fit_transform(datapoint)</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"></div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9">poly_linear_model <span class="op">=</span> linear_model.LinearRegression()</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">poly_linear_model.fit(X_train_transformed, y_train)</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11"><span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">Linear regression:</span><span class="ch">\n</span><span class="st">&quot;</span>, linear_regressor.predict(datapoint)[<span class="dv">0</span>]</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12"><span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">Polynomial regression:</span><span class="ch">\n</span><span class="st">&quot;</span>, poly_linear_model.predict(poly_datapoint)[<span class="dv">0</span>]</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13"></div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">sgd_regressor <span class="op">=</span> linear_model.SGDRegressor(loss<span class="op">=</span><span class="st">&#39;huber&#39;</span>, n_iter<span class="op">=</span><span class="dv">50</span>)</div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">sgd_regressor.fit(X_train, y_train)</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16"><span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">SGD regressor:</span><span class="ch">\n</span><span class="st">&quot;</span>, sgd_regressor.predict(datapoint)</div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17"></div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18">[Result]</div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19">Linear regression:</div>
-<div class="sourceLine" id="20" href="#20" data-line-number="20">[<span class="op">-</span><span class="fl">11.0587295</span>]</div>
-<div class="sourceLine" id="21" href="#21" data-line-number="21"></div>
-<div class="sourceLine" id="22" href="#22" data-line-number="22">Polynomial regression:</div>
-<div class="sourceLine" id="23" href="#23" data-line-number="23">[<span class="op">-</span><span class="fl">8.149308</span>]</div>
-<div class="sourceLine" id="24" href="#24" data-line-number="24"></div>
-<div class="sourceLine" id="25" href="#25" data-line-number="25">SGD regressor:</div>
-<div class="sourceLine" id="26" href="#26" data-line-number="26">[<span class="op">-</span><span class="fl">7.9607662</span>]</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> PolynomialFeatures
+
+<span class="co"># 把多项式的次数设置为10</span>
+polynomial <span class="op">=</span> PolynomialFeatures(degree<span class="op">=</span><span class="dv">10</span>)
+X_train_transformed <span class="op">=</span> polynomial.fit_transform(X_train)
+datapoint <span class="op">=</span> [<span class="fl">0.39</span>, <span class="fl">2.78</span>, <span class="fl">7.11</span>]
+poly_datapoint <span class="op">=</span> polynomial.fit_transform(datapoint)
+
+poly_linear_model <span class="op">=</span> linear_model.LinearRegression()
+poly_linear_model.fit(X_train_transformed, y_train)
+<span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">Linear regression:</span><span class="ch">\n</span><span class="st">&quot;</span>, linear_regressor.predict(datapoint)[<span class="dv">0</span>]
+<span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">Polynomial regression:</span><span class="ch">\n</span><span class="st">&quot;</span>, poly_linear_model.predict(poly_datapoint)[<span class="dv">0</span>]
+
+sgd_regressor <span class="op">=</span> linear_model.SGDRegressor(loss<span class="op">=</span><span class="st">&#39;huber&#39;</span>, n_iter<span class="op">=</span><span class="dv">50</span>)
+sgd_regressor.fit(X_train, y_train)
+<span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">SGD regressor:</span><span class="ch">\n</span><span class="st">&quot;</span>, sgd_regressor.predict(datapoint)
+
+[Result]
+Linear regression:
+[<span class="op">-</span><span class="fl">11.0587295</span>]
+
+Polynomial regression:
+[<span class="op">-</span><span class="fl">8.149308</span>]
+
+SGD regressor:
+[<span class="op">-</span><span class="fl">7.9607662</span>]</code></pre></div>
 <h4 id="七估算房屋价格">七、估算房屋价格</h4>
 <p>下面将使用<code>AdaBoost</code>算法的决策树回归器(<code>decision tree regressor</code>)来解决房屋估价这一问题。</p>
 <p>决策树是一个树状模型，每个节点都做出一个决策，从而影响结果。叶子节点表示输出数值，分支表示根据输入特征做出的中间决策。<code>Adaboost</code>算法是指自适应增强(<code>Adaptive boosting</code>)算法，这是一种利用其他系统增强模型准确性的技术。这种技术将不同版本的算法结果进行组合，用加权汇总的方式获得最终结果，被称为弱学习(<code>weak learners</code>)。<code>Adaboost</code>算法在每个阶段获取的信息都会反馈到模型中，这样学习器就可以在后一阶段重点训练难以分类的样本。这种学习方式可以增强系统的准确性。</p>
 <p>首先使用<code>Adaboost</code>算法对数据集合进行回归拟合，再计算误差，然后根据误差评估结果，用同样的数据集重新拟合。可以把这些看作是回归器的调优过程，直到达到预期的准确性。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">import</span> numpy <span class="im">as</span> np</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestRegressor, AdaBoostRegressor</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeRegressor</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="im">from</span> sklearn <span class="im">import</span> datasets</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error, explained_variance_score</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="im">from</span> sklearn.utils <span class="im">import</span> shuffle</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"></div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"><span class="kw">def</span> plot_feature_importance(feature_importances, title, feature_names):</div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10">    <span class="co"># Normalize the importance values</span></div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">    feature_importances <span class="op">=</span> <span class="fl">100.0</span> <span class="op">*</span> (feature_importances <span class="op">/</span> <span class="bu">max</span>(feature_importances))</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">    </div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">    <span class="co"># 将得分从高到低排序</span></div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">    index_sorted <span class="op">=</span> np.flipud(np.argsort(feature_importances))</div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">    </div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16">    <span class="co"># Arrange the X ticks</span></div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17">    pos <span class="op">=</span> np.arange(index_sorted.shape[<span class="dv">0</span>]) <span class="op">+</span> <span class="fl">0.5</span></div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18">    </div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19">    <span class="co"># Plot the bar graph</span></div>
-<div class="sourceLine" id="20" href="#20" data-line-number="20">    plt.figure()</div>
-<div class="sourceLine" id="21" href="#21" data-line-number="21">    plt.bar(pos, feature_importances[index_sorted], align<span class="op">=</span><span class="st">&#39;center&#39;</span>)</div>
-<div class="sourceLine" id="22" href="#22" data-line-number="22">    plt.xticks(pos, feature_names[index_sorted])</div>
-<div class="sourceLine" id="23" href="#23" data-line-number="23">    plt.ylabel(<span class="st">&#39;Relative Importances&#39;</span>)</div>
-<div class="sourceLine" id="24" href="#24" data-line-number="24">    plt.title(title)</div>
-<div class="sourceLine" id="25" href="#25" data-line-number="25">    plt.show()</div>
-<div class="sourceLine" id="26" href="#26" data-line-number="26">    </div>
-<div class="sourceLine" id="27" href="#27" data-line-number="27"><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</div>
-<div class="sourceLine" id="28" href="#28" data-line-number="28">    </div>
-<div class="sourceLine" id="29" href="#29" data-line-number="29">    <span class="co"># Load housing data</span></div>
-<div class="sourceLine" id="30" href="#30" data-line-number="30">    housing_data <span class="op">=</span> datasets.load_boston()</div>
-<div class="sourceLine" id="31" href="#31" data-line-number="31">    </div>
-<div class="sourceLine" id="32" href="#32" data-line-number="32">    <span class="co"># Shuffle the data</span></div>
-<div class="sourceLine" id="33" href="#33" data-line-number="33">    X, y <span class="op">=</span> shuffle(housing_data, data, housing_data.target, random_state<span class="op">=</span><span class="dv">7</span>)</div>
-<div class="sourceLine" id="34" href="#34" data-line-number="34">    </div>
-<div class="sourceLine" id="35" href="#35" data-line-number="35">    num_training <span class="op">=</span> <span class="bu">int</span>(<span class="fl">0.8</span> <span class="op">*</span> <span class="bu">len</span>(X))</div>
-<div class="sourceLine" id="36" href="#36" data-line-number="36">    X_train, y_train <span class="op">=</span> X[:num_training], y[:num_training]</div>
-<div class="sourceLine" id="37" href="#37" data-line-number="37">    X_test, y_test <span class="op">=</span> X[num_training:], y[num_training:]</div>
-<div class="sourceLine" id="38" href="#38" data-line-number="38">    </div>
-<div class="sourceLine" id="39" href="#39" data-line-number="39">    <span class="co"># Fit decision tree regression model</span></div>
-<div class="sourceLine" id="40" href="#40" data-line-number="40">    dt_regressor <span class="op">=</span> DecisionTreeRegressor(max_depth<span class="op">=</span><span class="dv">4</span>)</div>
-<div class="sourceLine" id="41" href="#41" data-line-number="41">    dt_regressor.fit(X_train, y_train)</div>
-<div class="sourceLine" id="42" href="#42" data-line-number="42">    </div>
-<div class="sourceLine" id="43" href="#43" data-line-number="43">    <span class="co"># Fit decision tree regression model with AdaBoost</span></div>
-<div class="sourceLine" id="44" href="#44" data-line-number="44">    ab_regressor <span class="op">=</span> AdaBoostRegressor(DecisionTreeRegressor(max_depth<span class="op">=</span><span class="dv">4</span>), n_estimators<span class="op">=</span><span class="dv">400</span>, random_state<span class="op">=</span><span class="dv">7</span>)</div>
-<div class="sourceLine" id="45" href="#45" data-line-number="45">    </div>
-<div class="sourceLine" id="46" href="#46" data-line-number="46">    <span class="co"># Evaluate performance of Decision Tree regressor</span></div>
-<div class="sourceLine" id="47" href="#47" data-line-number="47">    y_pred_dt <span class="op">=</span> dt_regressor.predict(X_test)</div>
-<div class="sourceLine" id="48" href="#48" data-line-number="48">    mse <span class="op">=</span> mean_squared_error(y_test, y_pred_dt)</div>
-<div class="sourceLine" id="49" href="#49" data-line-number="49">    env <span class="op">=</span> explained_variance_score(y_test, y_pred_dt)</div>
-<div class="sourceLine" id="50" href="#50" data-line-number="50">    <span class="bu">print</span> <span class="st">&quot;####</span><span class="ch">\n</span><span class="st"> Decision Tree performance ####&quot;</span></div>
-<div class="sourceLine" id="51" href="#51" data-line-number="51">    <span class="bu">print</span> <span class="st">&quot;Mean squared error =&quot;</span>, <span class="bu">round</span>(mse, <span class="dv">2</span>)</div>
-<div class="sourceLine" id="52" href="#52" data-line-number="52">    <span class="bu">print</span> <span class="st">&quot;Explained variance score =&quot;</span>, <span class="bu">round</span>(evs, <span class="dv">2</span>)</div>
-<div class="sourceLine" id="53" href="#53" data-line-number="53">    </div>
-<div class="sourceLine" id="54" href="#54" data-line-number="54">    <span class="co"># Evaluate performance of AdaBoost</span></div>
-<div class="sourceLine" id="55" href="#55" data-line-number="55">    y_pred_dt_ab <span class="op">=</span> dt_regressor.predict(X_test)</div>
-<div class="sourceLine" id="56" href="#56" data-line-number="56">    mse <span class="op">=</span> mean_squared_error(y_test, y_pred_dt_ab)</div>
-<div class="sourceLine" id="57" href="#57" data-line-number="57">    env <span class="op">=</span> explained_variance_score(y_test, y_pred_dt_ab)</div>
-<div class="sourceLine" id="58" href="#58" data-line-number="58">    <span class="bu">print</span> <span class="st">&quot;####</span><span class="ch">\n</span><span class="st"> Decision Tree performance ####&quot;</span></div>
-<div class="sourceLine" id="59" href="#59" data-line-number="59">    <span class="bu">print</span> <span class="st">&quot;Mean squared error =&quot;</span>, <span class="bu">round</span>(mse, <span class="dv">2</span>)</div>
-<div class="sourceLine" id="60" href="#60" data-line-number="60">    <span class="bu">print</span> <span class="st">&quot;Explained variance score =&quot;</span>, <span class="bu">round</span>(evs, <span class="dv">2</span>)</div>
-<div class="sourceLine" id="61" href="#61" data-line-number="61">    </div>
-<div class="sourceLine" id="62" href="#62" data-line-number="62">    <span class="co"># Plot relative feature importances</span></div>
-<div class="sourceLine" id="63" href="#63" data-line-number="63">    plot_feature_importances(dt_regressor.feature_importances_,</div>
-<div class="sourceLine" id="64" href="#64" data-line-number="64">                            <span class="st">&#39;Decision Tree regressor&#39;</span>, housing_data.feature_names)</div>
-<div class="sourceLine" id="65" href="#65" data-line-number="65">    plot_feature_importances(ab_regressor.feature_importances_,</div>
-<div class="sourceLine" id="66" href="#66" data-line-number="66">                            <span class="st">&#39;AdaBoost regressor&#39;</span>, housing_data.feature_names)</div>
-<div class="sourceLine" id="67" href="#67" data-line-number="67">    </div>
-<div class="sourceLine" id="68" href="#68" data-line-number="68">[Result]</div>
-<div class="sourceLine" id="69" href="#69" data-line-number="69"><span class="co">#### Decision Tree performance ####</span></div>
-<div class="sourceLine" id="70" href="#70" data-line-number="70">Mean squared error <span class="op">=</span> <span class="fl">14.79</span></div>
-<div class="sourceLine" id="71" href="#71" data-line-number="71">Explained variance score <span class="op">=</span> <span class="fl">0.82</span></div>
-<div class="sourceLine" id="72" href="#72" data-line-number="72"></div>
-<div class="sourceLine" id="73" href="#73" data-line-number="73"><span class="co">#### AdaBoost performance ####</span></div>
-<div class="sourceLine" id="74" href="#74" data-line-number="74">Mean squared error <span class="op">=</span> <span class="fl">7.64</span></div>
-<div class="sourceLine" id="75" href="#75" data-line-number="75">Explained variance score <span class="op">=</span> <span class="fl">0.91</span></div></code></pre>
-<figure>
-<img src="/images/Decision_tree.png" alt="AdaBoost"><figcaption>AdaBoost</figcaption>
-</figure>
-<figure>
-<img src="/images/Decision_tree.png" alt="Decision_tree"><figcaption>Decision_tree</figcaption>
-</figure>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> numpy <span class="im">as</span> np
+<span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestRegressor, AdaBoostRegressor
+<span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeRegressor
+<span class="im">from</span> sklearn <span class="im">import</span> datasets
+<span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error, explained_variance_score
+<span class="im">from</span> sklearn.utils <span class="im">import</span> shuffle
+<span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
+
+<span class="kw">def</span> plot_feature_importance(feature_importances, title, feature_names):
+    <span class="co"># Normalize the importance values</span>
+    feature_importances <span class="op">=</span> <span class="fl">100.0</span> <span class="op">*</span> (feature_importances <span class="op">/</span> <span class="bu">max</span>(feature_importances))
+    
+    <span class="co"># 将得分从高到低排序</span>
+    index_sorted <span class="op">=</span> np.flipud(np.argsort(feature_importances))
+    
+    <span class="co"># Arrange the X ticks</span>
+    pos <span class="op">=</span> np.arange(index_sorted.shape[<span class="dv">0</span>]) <span class="op">+</span> <span class="fl">0.5</span>
+    
+    <span class="co"># Plot the bar graph</span>
+    plt.figure()
+    plt.bar(pos, feature_importances[index_sorted], align<span class="op">=</span><span class="st">&#39;center&#39;</span>)
+    plt.xticks(pos, feature_names[index_sorted])
+    plt.ylabel(<span class="st">&#39;Relative Importances&#39;</span>)
+    plt.title(title)
+    plt.show()
+    
+<span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:
+    
+    <span class="co"># Load housing data</span>
+    housing_data <span class="op">=</span> datasets.load_boston()
+    
+    <span class="co"># Shuffle the data</span>
+    X, y <span class="op">=</span> shuffle(housing_data, data, housing_data.target, random_state<span class="op">=</span><span class="dv">7</span>)
+    
+    num_training <span class="op">=</span> <span class="bu">int</span>(<span class="fl">0.8</span> <span class="op">*</span> <span class="bu">len</span>(X))
+    X_train, y_train <span class="op">=</span> X[:num_training], y[:num_training]
+    X_test, y_test <span class="op">=</span> X[num_training:], y[num_training:]
+    
+    <span class="co"># Fit decision tree regression model</span>
+    dt_regressor <span class="op">=</span> DecisionTreeRegressor(max_depth<span class="op">=</span><span class="dv">4</span>)
+    dt_regressor.fit(X_train, y_train)
+    
+    <span class="co"># Fit decision tree regression model with AdaBoost</span>
+    ab_regressor <span class="op">=</span> AdaBoostRegressor(DecisionTreeRegressor(max_depth<span class="op">=</span><span class="dv">4</span>), n_estimators<span class="op">=</span><span class="dv">400</span>, random_state<span class="op">=</span><span class="dv">7</span>)
+    
+    <span class="co"># Evaluate performance of Decision Tree regressor</span>
+    y_pred_dt <span class="op">=</span> dt_regressor.predict(X_test)
+    mse <span class="op">=</span> mean_squared_error(y_test, y_pred_dt)
+    env <span class="op">=</span> explained_variance_score(y_test, y_pred_dt)
+    <span class="bu">print</span> <span class="st">&quot;####</span><span class="ch">\n</span><span class="st"> Decision Tree performance ####&quot;</span>
+    <span class="bu">print</span> <span class="st">&quot;Mean squared error =&quot;</span>, <span class="bu">round</span>(mse, <span class="dv">2</span>)
+    <span class="bu">print</span> <span class="st">&quot;Explained variance score =&quot;</span>, <span class="bu">round</span>(evs, <span class="dv">2</span>)
+    
+    <span class="co"># Evaluate performance of AdaBoost</span>
+    y_pred_dt_ab <span class="op">=</span> dt_regressor.predict(X_test)
+    mse <span class="op">=</span> mean_squared_error(y_test, y_pred_dt_ab)
+    env <span class="op">=</span> explained_variance_score(y_test, y_pred_dt_ab)
+    <span class="bu">print</span> <span class="st">&quot;####</span><span class="ch">\n</span><span class="st"> Decision Tree performance ####&quot;</span>
+    <span class="bu">print</span> <span class="st">&quot;Mean squared error =&quot;</span>, <span class="bu">round</span>(mse, <span class="dv">2</span>)
+    <span class="bu">print</span> <span class="st">&quot;Explained variance score =&quot;</span>, <span class="bu">round</span>(evs, <span class="dv">2</span>)
+    
+    <span class="co"># Plot relative feature importances</span>
+    plot_feature_importances(dt_regressor.feature_importances_,
+                            <span class="st">&#39;Decision Tree regressor&#39;</span>, housing_data.feature_names)
+    plot_feature_importances(ab_regressor.feature_importances_,
+                            <span class="st">&#39;AdaBoost regressor&#39;</span>, housing_data.feature_names)
+    
+[Result]
+<span class="co">#### Decision Tree performance ####</span>
+Mean squared error <span class="op">=</span> <span class="fl">14.79</span>
+Explained variance score <span class="op">=</span> <span class="fl">0.82</span>
+
+<span class="co">#### AdaBoost performance ####</span>
+Mean squared error <span class="op">=</span> <span class="fl">7.64</span>
+Explained variance score <span class="op">=</span> <span class="fl">0.91</span></code></pre></div>
+<div class="figure">
+<img src="/images/Decision_tree.png" alt="AdaBoost">
+<p class="caption">AdaBoost</p>
+</div>
+<div class="figure">
+<img src="/images/Decision_tree.png" alt="Decision_tree">
+<p class="caption">Decision_tree</p>
+</div>
 <h4 id="八评估共享单车的需求分布">八、评估共享单车的需求分布</h4>
 <p>下面用随机森林回归器(<code>random forest regressor</code>)来解决共享单车的需求分布问题。随机森林是一个决策树集合，它基本上就是用一组由数据集的若干子集构建的决策树构成，再用决策树平均值改善整体学习效果。</p>
-<pre class="sourceCode python"><code class="sourceCode python"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="im">import</span> numpy <span class="im">as</span> np</div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestRegressor</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="im">from</span> sklearn <span class="im">import</span> preprocessing</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error, explained_variance_score</div>
-<div class="sourceLine" id="5" href="#5" data-line-number="5"><span class="im">from</span> sklearn.utils <span class="im">import</span> shuffle</div>
-<div class="sourceLine" id="6" href="#6" data-line-number="6"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</div>
-<div class="sourceLine" id="7" href="#7" data-line-number="7"></div>
-<div class="sourceLine" id="8" href="#8" data-line-number="8"><span class="im">from</span> housing <span class="im">import</span> plot_feature_importances</div>
-<div class="sourceLine" id="9" href="#9" data-line-number="9"></div>
-<div class="sourceLine" id="10" href="#10" data-line-number="10"><span class="kw">def</span> load_dataset(filename):</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">    file_reader <span class="op">=</span> csv.reader(<span class="bu">open</span>(filename, <span class="st">&#39;rb&#39;</span>), delimiter<span class="op">=</span><span class="st">&#39;,&#39;</span>)</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">    X, y <span class="op">=</span> [], []</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">    <span class="cf">for</span> row <span class="kw">in</span> file_reader:</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">        X.append(row[<span class="dv">2</span>:<span class="dv">13</span>])</div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">        y.append(row[<span class="op">-</span><span class="dv">1</span>])</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16">    </div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17">    <span class="co"># Extract feature names</span></div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18">    features_names <span class="op">=</span> np.array(X[<span class="dv">0</span>])</div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19">    </div>
-<div class="sourceLine" id="20" href="#20" data-line-number="20">    <span class="co"># Remove the first row because they are feature names</span></div>
-<div class="sourceLine" id="21" href="#21" data-line-number="21">    <span class="cf">return</span> np.array(X[<span class="dv">1</span>:]).astype(np.float32), np.array(y[<span class="dv">1</span>:]).astype(np.float32), feature_names</div>
-<div class="sourceLine" id="22" href="#22" data-line-number="22"></div>
-<div class="sourceLine" id="23" href="#23" data-line-number="23"><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</div>
-<div class="sourceLine" id="24" href="#24" data-line-number="24">    </div>
-<div class="sourceLine" id="25" href="#25" data-line-number="25">    <span class="co"># Load the dataset from the input file</span></div>
-<div class="sourceLine" id="26" href="#26" data-line-number="26">    X, y, feature_names <span class="op">=</span> load_datasets(sys.argv[<span class="dv">1</span>])</div>
-<div class="sourceLine" id="27" href="#27" data-line-number="27">    X, y <span class="op">=</span> shuffle(X, y, random_state<span class="op">=</span><span class="dv">7</span>)</div>
-<div class="sourceLine" id="28" href="#28" data-line-number="28">    </div>
-<div class="sourceLine" id="29" href="#29" data-line-number="29">    <span class="co"># Split the data</span></div>
-<div class="sourceLine" id="30" href="#30" data-line-number="30">    num_training <span class="op">=</span> <span class="bu">int</span>(<span class="fl">0.9</span> <span class="op">*</span> <span class="bu">len</span>(X))</div>
-<div class="sourceLine" id="31" href="#31" data-line-number="31">    X_train, y_train <span class="op">=</span> X[:num_training], y[:num_training]</div>
-<div class="sourceLine" id="32" href="#32" data-line-number="32">    X_test, y_test <span class="op">=</span> X[num_training:], y[num_training:]</div>
-<div class="sourceLine" id="33" href="#33" data-line-number="33">    </div>
-<div class="sourceLine" id="34" href="#34" data-line-number="34">    <span class="co"># Fit Random Forest regression model</span></div>
-<div class="sourceLine" id="35" href="#35" data-line-number="35">    <span class="co"># n_estimator是评估器的数量，表示随机森林需要使用的决策树数量</span></div>
-<div class="sourceLine" id="36" href="#36" data-line-number="36">    <span class="co"># max_depth是指每个决策树的最大深度</span></div>
-<div class="sourceLine" id="37" href="#37" data-line-number="37">    <span class="co"># min_samples_split是指决策树分裂一个节点需要用到的最小数据样本量</span></div>
-<div class="sourceLine" id="38" href="#38" data-line-number="38">    rf_regressor <span class="op">=</span> RandomForestRegressor(n_estimator<span class="op">=</span><span class="dv">1000</span>, max_depth<span class="op">=</span><span class="dv">10</span>, min_samples_split<span class="op">=</span><span class="dv">2</span>)</div>
-<div class="sourceLine" id="39" href="#39" data-line-number="39">    rf_regressor.fit(X_train, y_train)</div>
-<div class="sourceLine" id="40" href="#40" data-line-number="40">    </div>
-<div class="sourceLine" id="41" href="#41" data-line-number="41">    y_pred <span class="op">=</span> rf_regressor.predict(X_test)</div>
-<div class="sourceLine" id="42" href="#42" data-line-number="42">    mse <span class="op">=</span> mean_squared_error(y_test, y_pred)</div>
-<div class="sourceLine" id="43" href="#43" data-line-number="43">    evs <span class="op">=</span> explained_variance_score(y_test, y_pred)</div>
-<div class="sourceLine" id="44" href="#44" data-line-number="44">    <span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st"> #### Random Forest regressor performance ####&quot;</span></div>
-<div class="sourceLine" id="45" href="#45" data-line-number="45">    <span class="bu">print</span> <span class="st">&quot;Mean squared error =&quot;</span>, <span class="bu">round</span>(mse, <span class="dv">2</span>)</div>
-<div class="sourceLine" id="46" href="#46" data-line-number="46">    <span class="bu">print</span> <span class="st">&quot;Explained variance score = &quot;</span>, <span class="bu">round</span>(mse, <span class="dv">2</span>)</div>
-<div class="sourceLine" id="47" href="#47" data-line-number="47"></div>
-<div class="sourceLine" id="48" href="#48" data-line-number="48">[Result]</div>
-<div class="sourceLine" id="49" href="#49" data-line-number="49"><span class="co">#### Random Forest regressor performance ####</span></div>
-<div class="sourceLine" id="50" href="#50" data-line-number="50">Mean squared error <span class="op">=</span> <span class="fl">362009.79</span></div>
-<div class="sourceLine" id="51" href="#51" data-line-number="51">Explained variance score <span class="op">=</span> <span class="fl">0.89</span></div></code></pre>
-<figure>
-<img src="/images/By%20day.png" alt="By day"><figcaption>By day</figcaption>
-</figure>
-<figure>
-<img src="/images/By%20hour.png" alt="By hour"><figcaption>By hour</figcaption>
-</figure>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> numpy <span class="im">as</span> np
+<span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestRegressor
+<span class="im">from</span> sklearn <span class="im">import</span> preprocessing
+<span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error, explained_variance_score
+<span class="im">from</span> sklearn.utils <span class="im">import</span> shuffle
+<span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
+
+<span class="im">from</span> housing <span class="im">import</span> plot_feature_importances
+
+<span class="kw">def</span> load_dataset(filename):
+    file_reader <span class="op">=</span> csv.reader(<span class="bu">open</span>(filename, <span class="st">&#39;rb&#39;</span>), delimiter<span class="op">=</span><span class="st">&#39;,&#39;</span>)
+    X, y <span class="op">=</span> [], []
+    <span class="cf">for</span> row <span class="kw">in</span> file_reader:
+        X.append(row[<span class="dv">2</span>:<span class="dv">13</span>])
+        y.append(row[<span class="op">-</span><span class="dv">1</span>])
+    
+    <span class="co"># Extract feature names</span>
+    features_names <span class="op">=</span> np.array(X[<span class="dv">0</span>])
+    
+    <span class="co"># Remove the first row because they are feature names</span>
+    <span class="cf">return</span> np.array(X[<span class="dv">1</span>:]).astype(np.float32), np.array(y[<span class="dv">1</span>:]).astype(np.float32), feature_names
+
+<span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:
+    
+    <span class="co"># Load the dataset from the input file</span>
+    X, y, feature_names <span class="op">=</span> load_datasets(sys.argv[<span class="dv">1</span>])
+    X, y <span class="op">=</span> shuffle(X, y, random_state<span class="op">=</span><span class="dv">7</span>)
+    
+    <span class="co"># Split the data</span>
+    num_training <span class="op">=</span> <span class="bu">int</span>(<span class="fl">0.9</span> <span class="op">*</span> <span class="bu">len</span>(X))
+    X_train, y_train <span class="op">=</span> X[:num_training], y[:num_training]
+    X_test, y_test <span class="op">=</span> X[num_training:], y[num_training:]
+    
+    <span class="co"># Fit Random Forest regression model</span>
+    <span class="co"># n_estimator是评估器的数量，表示随机森林需要使用的决策树数量</span>
+    <span class="co"># max_depth是指每个决策树的最大深度</span>
+    <span class="co"># min_samples_split是指决策树分裂一个节点需要用到的最小数据样本量</span>
+    rf_regressor <span class="op">=</span> RandomForestRegressor(n_estimator<span class="op">=</span><span class="dv">1000</span>, max_depth<span class="op">=</span><span class="dv">10</span>, min_samples_split<span class="op">=</span><span class="dv">2</span>)
+    rf_regressor.fit(X_train, y_train)
+    
+    y_pred <span class="op">=</span> rf_regressor.predict(X_test)
+    mse <span class="op">=</span> mean_squared_error(y_test, y_pred)
+    evs <span class="op">=</span> explained_variance_score(y_test, y_pred)
+    <span class="bu">print</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st"> #### Random Forest regressor performance ####&quot;</span>
+    <span class="bu">print</span> <span class="st">&quot;Mean squared error =&quot;</span>, <span class="bu">round</span>(mse, <span class="dv">2</span>)
+    <span class="bu">print</span> <span class="st">&quot;Explained variance score = &quot;</span>, <span class="bu">round</span>(mse, <span class="dv">2</span>)
+
+[Result]
+<span class="co">#### Random Forest regressor performance ####</span>
+Mean squared error <span class="op">=</span> <span class="fl">362009.79</span>
+Explained variance score <span class="op">=</span> <span class="fl">0.89</span></code></pre></div>
+<div class="figure">
+<img src="/images/By%20day.png" alt="By day">
+<p class="caption">By day</p>
+</div>
+<div class="figure">
+<img src="/images/By%20hour.png" alt="By hour">
+<p class="caption">By hour</p>
+</div>
 
       
     </div>
