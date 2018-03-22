@@ -101,7 +101,7 @@
 <meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202018-03-22%20at%208.48.18%20PM.png">
 <meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202018-03-10%20at%206.24.38%20PM.png">
 <meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202018-03-22%20at%209.23.32%20PM.png">
-<meta property="og:updated_time" content="2018-03-22T13:45:21.010Z">
+<meta property="og:updated_time" content="2018-03-22T14:10:18.220Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ensemble Learning">
 <meta name="twitter:description" content="集成学习(Ensemble Learning)本身不是一个单独的机器学习算法，而是通过构建并结合多个机器学习器来完成学习任务。集成学习可以用于分类问题集成、回归问题集成、特征选取集成、异常点检测集成等。集成算法的目的是根据某个算法组合多个基础模型的预测值从而提高模型的泛化能力。 主要有两种方法：  Averaging方法：个体学习器之间不存在强依赖关系，一系列个体学习器可以并行生成，基本上是独立的">
@@ -419,8 +419,46 @@ w_i &amp; \ge 0, \ \ \  \sum_{i=1}^{T}w_i = 1
                                    max_features<span class="op">=</span><span class="fl">1.0</span>, bootstrap<span class="op">=</span><span class="va">True</span>, bootstrap_features<span class="op">=</span><span class="va">False</span>, 
                                    oob_score<span class="op">=</span><span class="va">False</span>, warm_start<span class="op">=</span><span class="va">False</span>, n_jobs<span class="op">=</span><span class="dv">1</span>, random_state<span class="op">=</span><span class="va">None</span>, 
                                    verbose<span class="op">=</span><span class="dv">0</span>)</code></pre></div>
+<ul>
+<li>算法</li>
+</ul>
+<p>输入：样本集D，弱学习器算法，弱分类器迭代次数T。</p>
+<p>输出：最终的强分类器<code>f(x)</code></p>
+<ol style="list-style-type: decimal">
+<li>对于t=1, 2, …, T，对训训练集进行第t次随机采样，共采集m次，得到包含m个样本的采样集Dm。然后用采样集Dm训练第m个弱学习器Gm(x)</li>
+<li>如果是分类算法预测，则T个弱学习器投出最多票数的类别或类别之一为最终类别。如果是回归算法，T个弱学习器得到的回归结果进行算术平均得到的值为最终的模型输出。</li>
+</ol>
 <h3 id="随机森林"><u>随机森林</u></h3>
-<p><code>随机森林</code>是<code>bagging</code>的一个特化进阶版，也就是说随机森林的弱学习器都是<code>CART决策树</code>，而且随机森林在<code>bagging</code>的样本随机采样基础上，又加上了特征的随机选择。</p>
+<p><code>随机森林</code>是<code>bagging</code>的一个特化进阶版，也就是说随机森林的弱学习器都是<code>CART决策树</code>，而且随机森林在<code>bagging</code>的样本随机采样基础上，又加上了特征的随机选择。随机森林通过随机选择节点上的一部分样本特征，这个数字小于n，假设为n_sub，然后在这些随机选择的n_sub个样本特征中，选择一个最优特征来做决策树的左右子树划分，这样进一步增强了模型的泛化能力。</p>
+<p>如果n_sub=n，则此时随机森林的CART决策树和普通CART决策树没有区别，n_sub越小，则模型越健壮，但对训练集的拟合程度越差。也就是说，n_sub越小，模型的方差会减小，也就是说预测值和预测值的期望值的差越小，数据扰动造成的影响较小，但是偏差会越大，也就是说期望预测和真实标记的误差越大，也就是说学习算法本身的拟合能力越差。换句话说，就是模型过于简单了。</p>
+<p>这个时候一般会通过<code>cross validation</code>调参获取一个合适的n_sub值。</p>
+<ul>
+<li>算法</li>
+</ul>
+<p>输入：样本集D，弱学习器算法，弱分类器迭代次数T。</p>
+<p>输出：最终的强分类器<code>f(x)</code></p>
+<ol style="list-style-type: decimal">
+<li>对于t=1, 2, …, T，对训训练集进行第t次随机采样，共采集m次，得到包含m个样本的采样集Dm。用采样集Dm训练第m个决策树模型Gm(x)，在训练决策树模型的节点时候，在节点上所有的样本特征中选择一部分样本特征，在这些随机选择的部分样本特征中选择一个最优的特征来做决策树的左右子树划分</li>
+<li>如果是分类算法预测，则T个弱学习器投出最多票数的类别或者类别之一为最终类别。如果是回归算法，T个弱学习器得到的回归结果进行算术平均得到的值为最终的模型输出。</li>
+</ol>
+<ul>
+<li>优点</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>训练可以高度并行化，具有速度优势</li>
+<li>由于可以随机选择决策树节点划分特征，这样在样本特征维度很高时候，仍然能够高效的训练模型。</li>
+<li>在训练后，可以给出各个特征对于输出的重要性。</li>
+<li>由于采用了随机采样，训练出的模型方差小，泛化能力强</li>
+<li>实现比较简单</li>
+<li>对部分特征不敏感</li>
+</ol>
+<ul>
+<li>缺点</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>在某些噪音比较大的样本集上，随机森林模型容易过拟合</li>
+<li>取值划分比较多的特征容易对随机森林的决策产生更大的影响</li>
+</ol>
 
       
     </div>
