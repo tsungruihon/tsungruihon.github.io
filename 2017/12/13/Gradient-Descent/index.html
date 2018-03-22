@@ -98,16 +98,12 @@
 <meta property="og:site_name" content="彼得的博客">
 <meta property="og:description" content="从六月份开始，已经看了很多Python机器学习的书籍和教程，但是依然有些摸不着头脑。现在看来，其实一方面是太过注重应用层面而没有关注实质性的数学层面内容。而如果慢慢看算法公式，其实很多疑点都会被解决。我觉得自己对于这方面是有着一个近乎极度疯狂的执迷，很想弄明白里面的运作机制。 而今天这一内容里面，我将分享自己对机器学习算法里面的梯度下降方法做一个笔记和总结。 在进行解释梯度下降方法之前，需要对方向">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202017-12-15%20at%203.27.56%20PM.png">
-<meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202017-12-15%20at%203.35.26%20PM.png">
-<meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202017-12-15%20at%203.36.02%20PM.png">
 <meta property="og:image" content="http://yoursite.com/images/Figure_1.png">
-<meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202017-12-16%20at%201.33.45%20AM.png">
-<meta property="og:updated_time" content="2017-12-15T17:40:17.147Z">
+<meta property="og:updated_time" content="2018-03-22T09:07:40.702Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Gradient Descent">
 <meta name="twitter:description" content="从六月份开始，已经看了很多Python机器学习的书籍和教程，但是依然有些摸不着头脑。现在看来，其实一方面是太过注重应用层面而没有关注实质性的数学层面内容。而如果慢慢看算法公式，其实很多疑点都会被解决。我觉得自己对于这方面是有着一个近乎极度疯狂的执迷，很想弄明白里面的运作机制。 而今天这一内容里面，我将分享自己对机器学习算法里面的梯度下降方法做一个笔记和总结。 在进行解释梯度下降方法之前，需要对方向">
-<meta name="twitter:image" content="http://yoursite.com/images/Screen%20Shot%202017-12-15%20at%203.27.56%20PM.png">
+<meta name="twitter:image" content="http://yoursite.com/images/Figure_1.png">
 
 
 
@@ -383,11 +379,14 @@
 <p>对于<strong>方向导数</strong>，设 z = f(x, y) 在M0(x0, y0)处可微，则f(x, y)在M0点任意方向<strong><em>l</em></strong> = （cosa, cosb)存在方向导数且： <span class="math display">\[
 \frac{\partial f(x_0, y_0)}{\partial l} = \frac{\partial f(x_0, y_0)}{\partial x}cos\alpha+\frac{\partial f(x_0, y_0)}{\partial y}cos\beta
 \]</span> 对于梯度，函数z = f(x, y)在点M0的方向导数计算公式可改写成：</p>
-<div class="figure">
-<img src="/images/Screen%20Shot%202017-12-15%20at%203.27.56%20PM.png" alt="Screen Shot 2017-12-15 at 3.27.56 PM">
-<p class="caption">Screen Shot 2017-12-15 at 3.27.56 PM</p>
-</div>
-<p>在这里向量: <span class="math display">\[
+<p><span class="math display">\[
+\begin{aligned}
+\frac{\partial f(x_0, y_0)}{\partial l} &amp; = (\frac{\partial f(x_0, y_0)}{\partial x}, \frac{\partial f(x_0, y_0)}{\partial y})· (cos \alpha, cos \beta) \\ \\ 
+&amp; = grad(x_0, y_0)·l \\
+ \\
+&amp; = |gradf(x_0, y_0)|cos&lt;grad(x_0, y_0), l&gt;
+\end{aligned}
+\]</span> 在这里向量: <span class="math display">\[
 grad  f(x_0, y_0) = (\frac{\partial f(x_0, y_0)}{x} , \frac{\partial f(x_0, y_0)}{\partial y} ）
 \]</span></p>
 <p>称为z = f(x, y) 在点M0的梯度（向量）。</p>
@@ -399,17 +398,18 @@ grad  f(x_0, y_0) = (\frac{\partial f(x_0, y_0)}{x} , \frac{\partial f(x_0, y_0)
 &gt; \]</span> &gt;</p>
 <p>其中x是自变量，比如说房子面积，θ是权重参数，也就是我们需要使用梯度下降求解的具体值。</p>
 <p>然后我们还需要引入损失函数（<code>Loss Function</code>或者叫<code>Cost Function</code>)，目的是为了在梯度下降时用来衡量更新后的参数是否是向着正确的方向前进。如下损失函数(m表示训练集样本数量)</p>
-<div class="figure">
-<img src="/images/Screen%20Shot%202017-12-15%20at%203.35.26%20PM.png" alt="Screen Shot 2017-12-15 at 3.35.26 PM">
-<p class="caption">Screen Shot 2017-12-15 at 3.35.26 PM</p>
-</div>
-<p>因为我们的目的，是要找到这个损失函数的值最小的参数下的目标函数<code>h(x)</code>，所以面对这种情况，我们其实很容易想到偏导数。结合方向导数以及梯度这一个概念，我们可以得到某个样本数据在函数中下降速度最快的方向。也就是说，我们希望能够对<code>Loss Function</code>求最优解，而我们可以通过求<code>Loss Function</code>的梯度然后不断更新参数来得到。如果我们得到了<code>Loss Function</code>的最优解，那么我们也就能得到目标函数<code>h(x)</code>。</p>
+<p><span class="math display">\[
+J(\theta) = \sum_{i=1}^{m}\frac{1}{2}·(h_\theta(x^{(i)}) - y^{(i)})^2
+\]</span> 因为我们的目的，是要找到这个损失函数的值最小的参数下的目标函数<code>h(x)</code>，所以面对这种情况，我们其实很容易想到偏导数。结合方向导数以及梯度这一个概念，我们可以得到某个样本数据在函数中下降速度最快的方向。也就是说，我们希望能够对<code>Loss Function</code>求最优解，而我们可以通过求<code>Loss Function</code>的梯度然后不断更新参数来得到。如果我们得到了<code>Loss Function</code>的最优解，那么我们也就能得到目标函数<code>h(x)</code>。</p>
 <p>下面将对<code>Loss Function</code>进行某一个参数θi的偏导数：</p>
-<div class="figure">
-<img src="/images/Screen%20Shot%202017-12-15%20at%203.36.02%20PM.png" alt="Screen Shot 2017-12-15 at 3.36.02 PM">
-<p class="caption">Screen Shot 2017-12-15 at 3.36.02 PM</p>
-</div>
-<p>在求出<code>Loss Function</code>对于某一个参数的偏导数之后，我们实际上已经求得到了<code>Loss Function</code>在某一点M0下变化速度最快的方向，也就是确定θi的值。这个时候，只要逐步迭代，就可以求出在给定的数据集中，<code>Loss Function</code>最优解下的目标函数，也就是所有θ的最优解。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{\partial}{\partial \theta_j}J(\theta) &amp;= \frac{\partial}{\partial \theta_j}\frac{1}{2}·(h_\theta(x) - y)^2 \\\\
+&amp; = 2 · \frac{1}{2}·(h_\theta(x) - y) · \frac{\partial}{\partial \theta_j}(h_\theta(x) - y) \\\\
+&amp; = (h_\theta(x) - y)  \cdot \frac{\partial}{\partial \theta_j}(\sum_{i=0}^{n}\theta_ix_i- y) \\\\
+&amp; = h_\theta(x) - y) x_j
+\end{aligned}
+\]</span> 在求出<code>Loss Function</code>对于某一个参数的偏导数之后，我们实际上已经求得到了<code>Loss Function</code>在某一点M0下变化速度最快的方向，也就是确定θi的值。这个时候，只要逐步迭代，就可以求出在给定的数据集中，<code>Loss Function</code>最优解下的目标函数，也就是所有θ的最优解。</p>
 <p>于是对于这一个最基本的线性回归例子，我们就可以直接上<code>Python</code>代码了。</p>
 <div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> numpy <span class="im">as</span> np
 <span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
@@ -451,14 +451,17 @@ result<span class="op">=</span>[h(xi) <span class="cf">for</span> xi <span class
 
 plt.show()</code></pre></div>
 <div class="figure">
-<img src="/images/Figure_1.png" alt="Figure_1">
-<p class="caption">Figure_1</p>
+<img src="/images/Figure_1.png">
+
 </div>
 <p>然而， 这样的写法对于效率而言是一个十分大的问题，，整个程序跑下来的时间十分长。这个时候，就想到了<strong>梯度下降矢量化</strong>，通过矢量化，能够将运算过程转为线性代数的计算，利用逆矩阵和矩阵乘法，整个计算速度大大提高。</p>
-<div class="figure">
-<img src="/images/Screen%20Shot%202017-12-16%20at%201.33.45%20AM.png" alt="Screen Shot 2017-12-16 at 1.33.45 AM">
-<p class="caption">Screen Shot 2017-12-16 at 1.33.45 AM</p>
-</div>
+<p><span class="math display">\[
+\begin{aligned}
+h_\theta(x) &amp;= \theta_0 + \theta_1x_1 + \theta_2x_2  \\\\
+J(\theta) &amp; = \frac{1}{2m}\sum_{i=1}^{m}(h_\theta(x^{(i)}) - y^{(i)})^{2} \\\\
+\theta_j &amp;:= \theta_j - \alpha\frac{1}{m}\sum_{i=1}^{m}(h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)}
+\end{aligned}
+\]</span></p>
 <div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> numpy <span class="im">as</span> np
 <span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
 <span class="co">#y=2 * (x1) + (x2) + 3 </span>
@@ -498,8 +501,6 @@ theta1 <span class="op">=</span>  <span class="fl">2.02720821766</span> theta2 <
 cost: <span class="fl">0.0354239310129</span>
 [Finished <span class="kw">in</span> <span class="fl">0.</span>7s]</code></pre></div>
 <p>只能说，经过矢量化运算后的梯度下降效率真的很高。还没有矢量化的梯度下降，在相同迭代次数和学习速度下的所需时间接近67s，而目前矢量化后的时间是0.7s，足足快了一百倍。</p>
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
 
       
     </div>
