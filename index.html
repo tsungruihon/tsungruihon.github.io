@@ -376,10 +376,23 @@
         
           
             <p>集成学习<code>(Ensemble Learning)</code>本身不是一个单独的机器学习算法，而是通过构建并结合多个机器学习器来完成学习任务。集成学习可以用于分类问题集成、回归问题集成、特征选取集成、异常点检测集成等。集成算法的目的是根据某个算法组合多个基础模型的预测值从而提高模型的泛化能力。</p>
+<p>主要有两种方法：</p>
+<ul>
+<li><code>Averaging方法</code>：个体学习器之间不存在强依赖关系，一系列个体学习器可以并行生成，基本上是独立的建多个模型然后对它们的预测结果做平均，从而降低泛化误差。代表算法是<code>bagging(boostrap aggregating)</code>和<code>随机森林(random forest)</code>。</li>
+<li><code>Boosting方法</code>：个体学习器之间存在强依赖关系，一系列个体学习器基本都需要串行生成，是有序列的、有依赖的建立多个基模型，后一个模型用来修正上一个模型的bias。代表算法是<code>boosting</code>系列算法。</li>
+</ul>
 <div class="figure">
 <img src="/images/Screen%20Shot%202018-03-22%20at%208.48.18%20PM.png">
 
 </div>
+<h3 id="bagging"><u>Bagging</u></h3>
+<div class="figure">
+<img src="/images/Screen%20Shot%202018-03-22%20at%209.23.32%20PM.png">
+
+</div>
+<p><code>随机采样(bootstrap)</code>就是从我们的训练集里面采集固定个数的样本，但是每采集一个样本后，都将样本放回。也就是说，之前采集到的样本在放回后有可能继续被采集到。对于<code>Bagging</code>算法，一般会随机采集和训练样本数m一样个数的样本。这样得到的采样集和训练集样本的个数相同，但是样本内容不同。如果我们对有m个样本训练集做T次的随机采样，则由于随机性，T个采样集各不相同。</p>
+<p>在每次抽样中，每个样本都可能会有<code>36.8%</code>的概率没有被抽中，所以我们可以设置<code>oob_score=True</code>来用训练好的模型去预测这部分没有被抽取的数据，评判模型的好坏，这样就不会浪费数据集。</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">sklearn.ensemble.BaggingClassifier(base_estimator<span class="op">=</span><span class="va">None</span>, n_estimators<span class="op">=</span><span class="dv">10</span>, max_samples<span class="op">=</span><span class="fl">1.0</span>, max_features<span class="op">=</span><span class="fl">1.0</span>, bootstrap<span class="op">=</span><span class="va">True</span>, bootstrap_features<span class="op">=</span><span class="va">False</span>, oob_score<span class="op">=</span><span class="va">False</span>, warm_start<span class="op">=</span><span class="va">False</span>, n_jobs<span class="op">=</span><span class="dv">1</span>, random_state<span class="op">=</span><span class="va">None</span>, verbose<span class="op">=</span><span class="dv">0</span>)</code></pre></div>
 
           
         
