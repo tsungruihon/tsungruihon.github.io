@@ -277,6 +277,150 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/16/Scrapy抓取京东评论/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peter Tsung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pandas.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="彼得的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/05/16/Scrapy抓取京东评论/" itemprop="url">
+                  Scrapy抓取京东评论
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-16T21:09:57+08:00">
+                2017-05-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Scrapy爬虫/" itemprop="url" rel="index">
+                    <span itemprop="name">Scrapy爬虫</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近用Scrapy写了一个抓取京东评论的爬虫。其实京东评论爬虫的难度不大，因为通过抓包分析，发现京东专门有一个url专门存放评论信息，而且json格式。这简直是爬虫的最佳数据格式。</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">http:<span class="op">//</span>club.jd.com<span class="op">/</span>comment<span class="op">/</span>productPageComments.action?callback<span class="op">=&amp;</span>productId<span class="op">=</span><span class="dv">3014239</span><span class="op">&amp;</span>score<span class="op">=</span><span class="dv">0</span><span class="op">&amp;</span>sortType<span class="op">=</span><span class="dv">5</span><span class="op">&amp;</span>page<span class="op">=</span><span class="dv">0</span><span class="op">&amp;</span>pageSize<span class="op">=</span><span class="dv">10</span><span class="op">&amp;</span>isShadowSku<span class="op">=</span><span class="dv">0</span></code></pre></div>
+<p>但有个很奇怪的地方就是，京东评论每一页只有10条评论，但是没关系，用一个循环就搞定了。代码放在github上，有兴趣可以了解一下。<a>https://github.com/tsungruihon/jd_comment_scrapy</a></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/16/Map-Filter、三元运算符、装饰器、Global-Return/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1397,7 +1541,7 @@ red</code></pre></div>
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
