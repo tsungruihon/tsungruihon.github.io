@@ -101,7 +101,8 @@
 <meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202018-03-22%20at%208.48.18%20PM.png">
 <meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202018-03-10%20at%206.24.38%20PM.png">
 <meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202018-03-22%20at%209.23.32%20PM.png">
-<meta property="og:updated_time" content="2018-03-22T14:10:18.220Z">
+<meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202018-03-22%20at%2010.31.01%20PM.png">
+<meta property="og:updated_time" content="2018-03-22T14:37:27.882Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ensemble Learning">
 <meta name="twitter:description" content="集成学习(Ensemble Learning)本身不是一个单独的机器学习算法，而是通过构建并结合多个机器学习器来完成学习任务。集成学习可以用于分类问题集成、回归问题集成、特征选取集成、异常点检测集成等。集成算法的目的是根据某个算法组合多个基础模型的预测值从而提高模型的泛化能力。 主要有两种方法：  Averaging方法：个体学习器之间不存在强依赖关系，一系列个体学习器可以并行生成，基本上是独立的">
@@ -459,6 +460,14 @@ w_i &amp; \ge 0, \ \ \  \sum_{i=1}^{T}w_i = 1
 <li>在某些噪音比较大的样本集上，随机森林模型容易过拟合</li>
 <li>取值划分比较多的特征容易对随机森林的决策产生更大的影响</li>
 </ol>
+<h3 id="boosting"><u>Boosting</u></h3>
+<div class="figure">
+<img src="/images/Screen%20Shot%202018-03-22%20at%2010.31.01%20PM.png">
+
+</div>
+<p>从图上可以看出，<code>Boosting</code>算法的工作机制是首先从训练集用初始权重训练出一个弱分析器1，根据弱学习器的学习误差率表现来更新训练样本的权重，使得之前弱学习器1学习误差率高的训练样本点的权重变高，使得这些误差率高的点在后面的弱学习器2中得到更多的重视。然后基于调整权重后的训练集来训练学习器2.如此重复进行，直到弱学习器数达到事先指定的数目T，最终将这T个弱学习器通过集合策略进行整合，得到最终的强学习器。</p>
+<p><code>Boosting</code>系列算法里最著名算法主要有<code>AdaBoost</code>算法提升树(<code>boosting tree</code>)系列算法。提升树系列最广泛的是梯度提升树(<code>Gradient Boosting Tree</code>)。</p>
+<h3 id="boostingadaboost"><u>Boosting——AdaBoost</u></h3>
 
       
     </div>
@@ -638,7 +647,7 @@ w_i &amp; \ge 0, \ \ \  \sum_{i=1}^{T}w_i = 1
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一集成学习之结合策略"><span class="nav-number">1.</span> <span class="nav-text">一、集成学习之结合策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#平均法"><span class="nav-number">2.</span> <span class="nav-text">平均法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#投票法"><span class="nav-number">3.</span> <span class="nav-text">投票法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#学习法"><span class="nav-number">4.</span> <span class="nav-text">学习法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二集成方法"><span class="nav-number">5.</span> <span class="nav-text">二、集成方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bagging"><span class="nav-number">6.</span> <span class="nav-text">Bagging</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#随机森林"><span class="nav-number">7.</span> <span class="nav-text">随机森林</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一集成学习之结合策略"><span class="nav-number">1.</span> <span class="nav-text">一、集成学习之结合策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#平均法"><span class="nav-number">2.</span> <span class="nav-text">平均法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#投票法"><span class="nav-number">3.</span> <span class="nav-text">投票法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#学习法"><span class="nav-number">4.</span> <span class="nav-text">学习法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二集成方法"><span class="nav-number">5.</span> <span class="nav-text">二、集成方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bagging"><span class="nav-number">6.</span> <span class="nav-text">Bagging</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#随机森林"><span class="nav-number">7.</span> <span class="nav-text">随机森林</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#boosting"><span class="nav-number">8.</span> <span class="nav-text">Boosting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#boostingadaboost"><span class="nav-number">9.</span> <span class="nav-text">Boosting——AdaBoost</span></a></li></ol></div>
             
 
           </div>

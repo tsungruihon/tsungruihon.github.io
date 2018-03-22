@@ -460,6 +460,14 @@ w_i &amp; \ge 0, \ \ \  \sum_{i=1}^{T}w_i = 1
 <li>在某些噪音比较大的样本集上，随机森林模型容易过拟合</li>
 <li>取值划分比较多的特征容易对随机森林的决策产生更大的影响</li>
 </ol>
+<h3 id="boosting"><u>Boosting</u></h3>
+<div class="figure">
+<img src="/images/Screen%20Shot%202018-03-22%20at%2010.31.01%20PM.png">
+
+</div>
+<p>从图上可以看出，<code>Boosting</code>算法的工作机制是首先从训练集用初始权重训练出一个弱分析器1，根据弱学习器的学习误差率表现来更新训练样本的权重，使得之前弱学习器1学习误差率高的训练样本点的权重变高，使得这些误差率高的点在后面的弱学习器2中得到更多的重视。然后基于调整权重后的训练集来训练学习器2.如此重复进行，直到弱学习器数达到事先指定的数目T，最终将这T个弱学习器通过集合策略进行整合，得到最终的强学习器。</p>
+<p><code>Boosting</code>系列算法里最著名算法主要有<code>AdaBoost</code>算法提升树(<code>boosting tree</code>)系列算法。提升树系列最广泛的是梯度提升树(<code>Gradient Boosting Tree</code>)。</p>
+<h3 id="boostingadaboost"><u>Boosting——AdaBoost</u></h3>
 
           
         
