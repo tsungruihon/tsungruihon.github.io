@@ -102,7 +102,7 @@
 <meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202018-03-10%20at%206.24.38%20PM.png">
 <meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202018-03-22%20at%209.23.32%20PM.png">
 <meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202018-03-22%20at%2010.31.01%20PM.png">
-<meta property="og:updated_time" content="2018-03-22T15:23:35.360Z">
+<meta property="og:updated_time" content="2018-03-22T15:27:56.091Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ensemble Learning">
 <meta name="twitter:description" content="集成学习(Ensemble Learning)本身不是一个单独的机器学习算法，而是通过构建并结合多个机器学习器来完成学习任务。集成学习可以用于分类问题集成、回归问题集成、特征选取集成、异常点检测集成等。集成算法的目的是根据某个算法组合多个基础模型的预测值从而提高模型的泛化能力。 主要有两种方法：  Averaging方法：个体学习器之间不存在强依赖关系，一系列个体学习器可以并行生成，基本上是独立的">
@@ -511,7 +511,11 @@ D(k)=(w_{l1}, w_{l2}, ..., w_{lN}); \ \ \ \ w_{li}=\frac{1}{N};\ \ \ \ \  i= 1, 
  \]</span></p>
 <p>则对应的第k+1个弱分类器的样本集权重系数为 <span class="math display">\[
  \begin{aligned}
- w_{k+1, i} &amp;= \frac{w_{ki}}{Z_k}exp(-\alpha_ky_iG_k(x_i)) ,  \ \ \ Z 为规范化因子 \\\\
+ w_{k+1, i} &amp; = \begin{cases}
+ \frac{w_{ki}}{Z_k}e^{-\alpha_m}, \ \ \ \ G_m(x_i) = y_i\\[2ex]
+ \frac{w_{ki}}{Z_k}e^{\alpha_m}, \ \ \ \ G_m(x_i) \neq y_i
+ \end{cases}\\\\
+   &amp; Z 为规范化因子 \\\\
  Z_k &amp;= \sum_{i=1}^{m}w_{ki}exp(-\alpha_ky_iG_k(x_i))
  \end{aligned}
  \]</span> 从<code>w_{k+1, i}</code>计算公式可以看出，如果第i个样本分类错误，则yiGk(xi)&lt;0, 导致样本的权重在第k+1个弱分类器中增大，如果分类正确，则样本权重在第k+1个弱分类器中减少</p></li>

@@ -511,7 +511,11 @@ D(k)=(w_{l1}, w_{l2}, ..., w_{lN}); \ \ \ \ w_{li}=\frac{1}{N};\ \ \ \ \  i= 1, 
  \]</span></p>
 <p>则对应的第k+1个弱分类器的样本集权重系数为 <span class="math display">\[
  \begin{aligned}
- w_{k+1, i} &amp;= \frac{w_{ki}}{Z_k}exp(-\alpha_ky_iG_k(x_i)) ,  \ \ \ Z 为规范化因子 \\\\
+ w_{k+1, i} &amp; = \begin{cases}
+ \frac{w_{ki}}{Z_k}e^{-\alpha_m}, \ \ \ \ G_m(x_i) = y_i\\[2ex]
+ \frac{w_{ki}}{Z_k}e^{\alpha_m}, \ \ \ \ G_m(x_i) \neq y_i
+ \end{cases}\\\\
+   &amp; Z 为规范化因子 \\\\
  Z_k &amp;= \sum_{i=1}^{m}w_{ki}exp(-\alpha_ky_iG_k(x_i))
  \end{aligned}
  \]</span> 从<code>w_{k+1, i}</code>计算公式可以看出，如果第i个样本分类错误，则yiGk(xi)&lt;0, 导致样本的权重在第k+1个弱分类器中增大，如果分类正确，则样本权重在第k+1个弱分类器中减少</p></li>
