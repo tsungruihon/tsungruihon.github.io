@@ -98,7 +98,7 @@
 <meta property="og:site_name" content="彼得的博客">
 <meta property="og:description" content="今天终于有时间来总结一下决策树了。 决策树是一种用于分类或者回归的无参数学习的监督方法。决策树的特点是它总是在沿着特征做切分，随着层层递进，这个划分会越来越细。 决策树学习包括三个步骤： 特征选择、决策树的生成和决策树的修剪。 用决策树分类，从根节点开始，对实例的某一特征进行测试，根据测试结果，将实例分配到其子结点。每一个子结点对应着该特征的一个取值。如此递归地对实例进行测试并分配，直至达到叶节点">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-22T07:35:58.083Z">
+<meta property="og:updated_time" content="2018-03-22T08:27:09.317Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Decision Tree">
 <meta name="twitter:description" content="今天终于有时间来总结一下决策树了。 决策树是一种用于分类或者回归的无参数学习的监督方法。决策树的特点是它总是在沿着特征做切分，随着层层递进，这个划分会越来越细。 决策树学习包括三个步骤： 特征选择、决策树的生成和决策树的修剪。 用决策树分类，从根节点开始，对实例的某一特征进行测试，根据测试结果，将实例分配到其子结点。每一个子结点对应着该特征的一个取值。如此递归地对实例进行测试并分配，直至达到叶节点">
@@ -490,10 +490,12 @@ H_A(D) &amp;= -\sum_{i=1}^{n}\frac{|D_i|}{D}log_2\frac{D_i}{D},   \ \ \ n是特�
 </ol>
 <ul>
 <li>问题：</li>
+</ul>
+<ol style="list-style-type: decimal">
 <li>不能处理连续值</li>
 <li>容易偏向取值较多的特征</li>
 <li>过拟合</li>
-</ul>
+</ol>
 <p><code>ID3</code>算法生成的树容易产生过拟合，而且它不能直接处理连续型特征，只有事先将连续型特征转换成离散型，才能在<code>ID3</code>算法中使用。但这种转换过程会破坏连续型变量的内在性值。</p>
 <div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> majorityCnt(classList):
     classCount<span class="op">=</span>{}
@@ -535,13 +537,19 @@ H_A(D) &amp;= -\sum_{i=1}^{n}\frac{|D_i|}{D}log_2\frac{D_i}{D},   \ \ \ n是特�
 </ol>
 <ul>
 <li>优点</li>
+</ul>
+<ol style="list-style-type: decimal">
 <li><code>C4.5</code>在生成过程中，用信息增益比来选择特征，与<code>ID3</code>算法相似，而且它可以处理连续的和有缺失值的数据。</li>
+</ol>
+<ul>
 <li>缺点</li>
+</ul>
+<ol style="list-style-type: decimal">
 <li>生成的是多叉树</li>
 <li>只能用于分类</li>
 <li>使用了熵模型，涉及大量的对数运算，很耗时</li>
-</ul>
-<h3 id="cartclassification-and-regression-tree算法"><u>CART(Classification and regression tree)算法</u></h3>
+</ol>
+<h3 id="cartclassification-and-regression-tree算法"><u>CART</u>(Classification and regression tree)算法</h3>
 <p><code>CART</code>是目前最主流的决策树算法，既能生成分类树，也能生成回归树。</p>
 <h3 id="cart分类树"><u>CART分类树</u></h3>
 <p><code>CART</code>在处理连续值的时候，思想与<code>C4.5</code>是类似的，唯一的不同就是<code>CART</code>使用<code>基尼系数</code>最小化准则作为特征选择指标。<code>基尼系数</code>代表了模型的不纯度，基尼系数越小，则不纯度越低，特征越好。</p>
