@@ -497,19 +497,18 @@ D(k)=(w_{l1}, w_{l2}, ..., w_{lN}); \ \ \ \ w_{li}=\frac{1}{N};\ \ \ \ \  i= 1, 
  G_m(x) :\mathcal{X} \to \{-1, +1\}
  \]</span></p></li>
 <li><p>计算Gm(x)在训练数据集上的分类误差率。第m个弱分类器Gm(x)在训练集上的加权误差率为</p></li>
-<li><p><span class="math display">\[
- e_k = P(G_m(x_i) \neq y_i) = \sum_{i=1}^{m}w_{mi}I \ \ \ (G_m(_i)\neq y_i)
- \]</span></p></li>
-<li><p>计算弱分类器Gm(x)的权重系数</p></li>
-<li><p><span class="math display">\[
+</ul>
+<p><span class="math display">\[
+   e_k = P(G_m(x_i) \neq y_i) = \sum_{i=1}^{m}w_{mi}I \ \ \ (G_m(_i)\neq y_i)
+   \]</span></p>
+<p>​</p>
+<ul>
+<li><p>计算弱分类器Gm(x)的权重系数 <span class="math display">\[
  \alpha_k = \frac{1}{2}log\frac{1- e_k}{e_k}
- \]</span></p>
-<p>从上式可以看出，如果分类误差ek越大，则对应的弱分类器权重ak越小。也就是说，误差率小的弱分类器权重系数越大。</p></li>
-<li><p>更新样本权重D，假设第k个弱分类器的样本集权重系数为</p></li>
-<li><p><span class="math display">\[
+ \]</span> 从上式可以看出，如果分类误差ek越大，则对应的弱分类器权重ak越小。也就是说，误差率小的弱分类器权重系数越大。</p></li>
+<li><p>更新样本权重D，假设第k个弱分类器的样本集权重系数为 <span class="math display">\[
  D(k)=(w_{k1}, w_{k2}, ..., w_{km})
- \]</span></p>
-<p>则对应的第k+1个弱分类器的样本集权重系数为 <span class="math display">\[
+ \]</span> 则对应的第k+1个弱分类器的样本集权重系数为 <span class="math display">\[
  \begin{aligned}
  w_{k+1, i} &amp; = \begin{cases}
  \frac{w_{ki}}{Z_k}e^{-\alpha_m}, \ \ \ \ G_m(x_i) = y_i\\[2ex]
