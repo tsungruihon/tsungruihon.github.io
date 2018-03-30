@@ -102,7 +102,7 @@
 <meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202018-03-10%20at%206.24.38%20PM.png">
 <meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202018-03-22%20at%209.23.32%20PM.png">
 <meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202018-03-22%20at%2010.31.01%20PM.png">
-<meta property="og:updated_time" content="2018-03-23T01:27:24.756Z">
+<meta property="og:updated_time" content="2018-03-23T02:22:38.753Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ensemble Learning">
 <meta name="twitter:description" content="集成学习(Ensemble Learning)本身不是一个单独的机器学习算法，而是通过构建并结合多个机器学习器来完成学习任务。集成学习可以用于分类问题集成、回归问题集成、特征选取集成、异常点检测集成等。集成算法的目的是根据某个算法组合多个基础模型的预测值从而提高模型的泛化能力。 主要有两种方法：  Averaging方法：个体学习器之间不存在强依赖关系，一系列个体学习器可以并行生成，基本上是独立的">
@@ -503,9 +503,9 @@ D(k)=(w_{l1}, w_{l2}, ..., w_{lN}); \ \ \ \ w_{li}=\frac{1}{N};\ \ \ \ \  i= 1, 
    \]</span></p>
 <p>​</p>
 <ul>
-<li><p>计算弱分类器Gm(x)的权重系数 <span class="math display">\[
+<li><p>计算<code>弱分类器Gm(x)的权重系数</code> <span class="math display">\[
  \alpha_k = \frac{1}{2}log\frac{1- e_k}{e_k}
- \]</span> 从上式可以看出，如果分类误差ek越大，则对应的弱分类器权重ak越小。也就是说，误差率小的弱分类器权重系数越大。</p></li>
+ \]</span> 从上式可以看出，如果分类误差ek越大，则对应的<code>弱分类器权重ak</code>越小。也就是说，误差率小的<code>弱分类器权重系数</code>越大。</p></li>
 <li><p>更新样本权重D，假设第k个弱分类器的样本集权重系数为 <span class="math display">\[
  D(k)=(w_{k1}, w_{k2}, ..., w_{km})
  \]</span> 则对应的第k+1个弱分类器的样本集权重系数为 <span class="math display">\[
