@@ -90,18 +90,18 @@
 
 
 
-<meta name="description" content="最近工作中接触了很多NLP的知识，用TF-IDF特别多。然后今天上了一个NLP的课程，觉得老师把TF-IDF讲得非常简单易懂。下面我就来梳理一下TF-IDF吧。 首先，我们在处理一句话的时候，我们应该是希望有以下两点：  对于关键词而言，其具有较强的标示性 对于关键词而言，停用词应该自动排除  而TF-IDF有以下好处：  可以查询关键词 TF-IDF其实表示的是每个单词的重要性 可以为每个文章，">
+<meta name="description" content="最近工作中接触了很多NLP的知识，用TF-IDF特别多。然后今天上了一个NLP的课程，觉得老师把TF-IDF讲得非常简单易懂。下面我就来梳理一下TF-IDF吧。 首先，我们在处理一句话的时候，我们应该是希望有以下两点：  对于关键词而言，其具有较强的标示性 对于关键词而言，停用词应该自动排除  而TF-IDF有以下好处：  可以查询关键词 TF-IDF其实表示的是每个单词的重要性，TF-IDF倾向">
 <meta name="keywords" content="NLP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="TF-IDF">
 <meta property="og:url" content="http://yoursite.com/2018/04/07/TF-IDF/index.html">
 <meta property="og:site_name" content="彼得的博客">
-<meta property="og:description" content="最近工作中接触了很多NLP的知识，用TF-IDF特别多。然后今天上了一个NLP的课程，觉得老师把TF-IDF讲得非常简单易懂。下面我就来梳理一下TF-IDF吧。 首先，我们在处理一句话的时候，我们应该是希望有以下两点：  对于关键词而言，其具有较强的标示性 对于关键词而言，停用词应该自动排除  而TF-IDF有以下好处：  可以查询关键词 TF-IDF其实表示的是每个单词的重要性 可以为每个文章，">
+<meta property="og:description" content="最近工作中接触了很多NLP的知识，用TF-IDF特别多。然后今天上了一个NLP的课程，觉得老师把TF-IDF讲得非常简单易懂。下面我就来梳理一下TF-IDF吧。 首先，我们在处理一句话的时候，我们应该是希望有以下两点：  对于关键词而言，其具有较强的标示性 对于关键词而言，停用词应该自动排除  而TF-IDF有以下好处：  可以查询关键词 TF-IDF其实表示的是每个单词的重要性，TF-IDF倾向">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-07T08:55:55.672Z">
+<meta property="og:updated_time" content="2018-04-07T09:40:15.675Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TF-IDF">
-<meta name="twitter:description" content="最近工作中接触了很多NLP的知识，用TF-IDF特别多。然后今天上了一个NLP的课程，觉得老师把TF-IDF讲得非常简单易懂。下面我就来梳理一下TF-IDF吧。 首先，我们在处理一句话的时候，我们应该是希望有以下两点：  对于关键词而言，其具有较强的标示性 对于关键词而言，停用词应该自动排除  而TF-IDF有以下好处：  可以查询关键词 TF-IDF其实表示的是每个单词的重要性 可以为每个文章，">
+<meta name="twitter:description" content="最近工作中接触了很多NLP的知识，用TF-IDF特别多。然后今天上了一个NLP的课程，觉得老师把TF-IDF讲得非常简单易懂。下面我就来梳理一下TF-IDF吧。 首先，我们在处理一句话的时候，我们应该是希望有以下两点：  对于关键词而言，其具有较强的标示性 对于关键词而言，停用词应该自动排除  而TF-IDF有以下好处：  可以查询关键词 TF-IDF其实表示的是每个单词的重要性，TF-IDF倾向">
 
 
 
@@ -379,7 +379,7 @@
 <p>而<code>TF-IDF</code>有以下好处：</p>
 <ul>
 <li>可以查询关键词</li>
-<li><code>TF-IDF</code>其实表示的是每个单词的重要性</li>
+<li><code>TF-IDF</code>其实表示的是每个单词的重要性，<code>TF-IDF</code>倾向于过滤掉常见的词语，保留重要的词语。也就是说，字词的重要性随着它在文件中出现的次数成正比增加，但同时会随着它在语料库中出现的频率成反比下降。</li>
 <li>可以为每个文章，句子建模。</li>
 </ul>
 <p><code>TF-IDF</code>分为两个部分：</p>
@@ -388,13 +388,47 @@
   tf = \frac{Term_{num}}{Word_{num}}
   \]</span> ​</p></li>
 <li><p>一个是<code>IDF(inverse document frequency)</code>。</p></li>
-<li><p><code>log(D/D_w)</code>; <code>D_w</code> is all the related documents. <span class="math display">\[
+<li><p><code>log(D/D_w)</code>; <code>D_w</code> is all the related documents. 而在这里为什么用<code>log</code>，我认为是为了抑制高频词汇的重要性。 <span class="math display">\[
 idf = log(\frac{D_{all}}{D_w})
 \]</span></p></li>
 </ul>
 <p><span class="math display">\[
 tfidf = tf \cdot idf
 \]</span></p>
+<p>那么下面我们就可以来手写一个<code>TF-IDF</code>了。当然，<code>sklearn</code>里面就有<code>TF-IDF</code>的<code>API</code></p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> pandas <span class="im">as</span> pd
+<span class="im">import</span> jieba
+<span class="im">import</span> numpy <span class="im">as</span> np
+<span class="im">from</span> collections <span class="im">import</span> Counter
+<span class="im">from</span> functools <span class="im">import</span> <span class="bu">reduce</span>
+<span class="im">import</span> operator <span class="im">as</span> op
+
+<span class="kw">def</span> cut(string): <span class="cf">return</span> jieba.cut(string)
+
+<span class="co"># 统计每个分词在某一特定文档的频率</span>
+<span class="kw">def</span> term_frequency(word, i):
+    words <span class="op">=</span> cut(content.iloc[i].content)
+    word_counts <span class="op">=</span> Counter(words)
+    <span class="cf">return</span> word_counts[word] <span class="op">/</span> <span class="bu">sum</span>(word_counts.values())
+
+<span class="co"># 统计前n篇文章中的分词出现次数，然后返回一个列表</span>
+<span class="kw">def</span> documents_words_counter(docu_num):
+    <span class="cf">return</span> [Counter(cut(<span class="bu">str</span>(content.iloc[i].content))) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(docu_num)]
+
+<span class="kw">def</span> inverse_document_frequency(word):
+    <span class="cf">return</span> np.log(<span class="bu">len</span>(documents_words_counter(docu_num) <span class="op">/</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> counter <span class="kw">in</span> documents_words_counter <span class="cf">if</span> word <span class="kw">in</span> counter)))
+
+<span class="kw">def</span> tfidf(word, i): <span class="cf">return</span> term_frequency(word, i) <span class="op">*</span> inverse_document_frequency(word)
+
+<span class="co"># 然后我们用tfidf的结果，去表示一个文档，然后去判断两个文档的相似性。</span>
+<span class="co"># words ==&gt; vector ==&gt; 意思相似程度</span>
+<span class="kw">def</span> doc_vec(w, i):
+    all_words_counter <span class="op">=</span> <span class="bu">reduce</span>(op.add, documents_words_counter(docu_num)):
+    <span class="cf">return</span> [tfidf(w, <span class="dv">1</span>) <span class="cf">for</span> w <span class="kw">in</span> all_words_counter]
+
+<span class="co"># scikit-learn的Example用法</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> TfidfVectorizer
+<span class="op">&gt;&gt;&gt;</span> X <span class="op">=</span> TfidfVectorizer().fit_transform(sequnece)</code></pre></div>
 
       
     </div>
