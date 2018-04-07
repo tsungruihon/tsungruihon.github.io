@@ -277,6 +277,340 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/21/Mutation、Slots、虚拟环境和Collections/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peter Tsung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pandas.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="彼得的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/05/21/Mutation、Slots、虚拟环境和Collections/" itemprop="url">
+                  Mutation、Slots、虚拟环境和Collections
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-21T18:50:26+08:00">
+                2017-05-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-Notes/" itemprop="url" rel="index">
+                    <span itemprop="name">Python_Notes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这周继续阅读<em>Python tips</em>来了解Python知识，这周主要要深入了解的是<code>Mutation</code>、<code>__slots__</code>、<code>虚拟环境(Virtualenv)</code>和<code>Collections</code>。下面将分享我的阅读笔记。</p>
+<h2 id="一mutation">一、Mutation</h2>
+<p>首先我们来看一个例子。</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> foo <span class="op">=</span> [<span class="st">&#39;hi&#39;</span>]
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(foo)
+[<span class="st">&#39;hi&#39;</span>]
+<span class="op">&gt;&gt;&gt;</span> bar <span class="op">=</span> foo
+<span class="op">&gt;&gt;&gt;</span> bar <span class="op">+=</span>[<span class="st">&#39;bye&#39;</span>]
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(foo)
+[<span class="st">&#39;hi&#39;</span>, <span class="st">&#39;bye&#39;</span>]</code></pre></div>
+<p>从上我们可以看出，每当将一个变量赋值为另一个可变类型的变量时，对这个数据的任意改动会同时反映到这两个变量上去。针对可变数据类型，新变量只不过是老变量的一个别名而已。下面我们来看一个列表的例子。</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="kw">def</span> add_to(num, target<span class="op">=</span>[]):
+...    target.append(num)
+...    <span class="cf">return</span> target
+<span class="op">&gt;&gt;&gt;</span> add_to(<span class="dv">1</span>)
+[<span class="dv">1</span>]
+<span class="op">&gt;&gt;&gt;</span> add_to(<span class="dv">2</span>)
+[<span class="dv">1</span>, <span class="dv">2</span>]
+<span class="op">&gt;&gt;&gt;</span> add_to(<span class="dv">3</span>)
+[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</code></pre></div>
+<p>上面这个例子，是因为列表是可变类型的数据结构。在Python中当函数被定义时，默认参数只会运算一次，而不是每次被调用时都会重新运算。我们应该尽量避免将可变类型参数定义为默认参数。如果我们想上面的例子每次重新运算。那我们可以这样做</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="kw">def</span> add_to(element, target<span class="op">=</span><span class="va">None</span>):
+...    <span class="cf">if</span> target <span class="kw">is</span> <span class="va">None</span>:
+...        target <span class="op">=</span> []
+...    target.append(element)
+...    <span class="cf">return</span> target
+...
+<span class="op">&gt;&gt;&gt;</span> add_to(<span class="dv">1</span>)
+[<span class="dv">1</span>]
+<span class="op">&gt;&gt;&gt;</span> add_to(<span class="dv">2</span>)
+[<span class="dv">2</span>]</code></pre></div>
+<p>每次调用函数时，函数都没有传入target参数，因此一个新的列表会被创建。</p>
+<h2 id="二__slots__">二、__slots__</h2>
+<p>在Python中，每个类都有实例属性。默认情况下Python用一个字典来保存一个对象的实例属性。它允许我们在运行时去设置任意的新属性。</p>
+<p>但是对于有着已知属性的小类来说，这个字典浪费了很多内存。Python不能在对象创建时直接分配一个固定量的内存来保存所有的属性。因此如果创建很多对象，则会消耗很多内存。而使用__slots__相当于告诉Python不要使用字典，而且只给一个固定集合的属性分配空间。</p>
+<p>下面我们来看看在有与没有使用__slots__情况下的精确内存占用。</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="im">import</span> ipython_memory_usage.ipython_memory_usage <span class="im">as</span> imu
+<span class="op">&gt;&gt;&gt;</span> imu.start_watching_memory()
+used <span class="fl">0.2383</span> MiB RAM <span class="kw">in</span> <span class="fl">6.</span>24s, peaked <span class="fl">0.00</span> MiB above current, total RAM usage <span class="fl">41.67</span> MiB
+<span class="op">&gt;&gt;&gt;</span> cd Desktop<span class="op">/</span>python_exercise<span class="op">/</span>
+<span class="op">/</span>Users<span class="op">/</span>petertseng<span class="op">/</span>Desktop<span class="op">/</span>python_exercise
+used <span class="fl">0.0586</span> MiB RAM <span class="kw">in</span> <span class="fl">0.</span>10s, peaked <span class="fl">0.00</span> MiB above current, total RAM usage <span class="fl">41.73</span> MiB
+<span class="op">&gt;&gt;&gt;</span> <span class="op">%</span>cat slots.py
+<span class="co">#!/usr/bin/env python</span>
+<span class="co"># encoding: utf-8</span>
+
+<span class="kw">class</span> MyClass(<span class="bu">object</span>):
+    __slots__ <span class="op">=</span> [<span class="st">&#39;name&#39;</span>, <span class="st">&#39;identifier&#39;</span>]
+    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, identifier):
+        <span class="va">self</span>.name <span class="op">=</span> name
+        <span class="va">self</span>.identifier <span class="op">=</span> identifier
+
+num <span class="op">=</span> <span class="dv">1024</span> <span class="op">*</span> <span class="dv">256</span>
+x <span class="op">=</span> [MyClass(<span class="dv">1</span>,<span class="dv">1</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(num)]
+
+used <span class="fl">0.0117</span> MiB RAM <span class="kw">in</span> <span class="fl">0.</span>23s, peaked <span class="fl">0.00</span> MiB above current, total RAM usage <span class="fl">41.74</span> MiB
+<span class="op">&gt;&gt;&gt;</span> <span class="op">%</span>cat noslots.py
+<span class="co">#!/usr/bin/env python</span>
+<span class="co"># encoding: utf-8</span>
+
+<span class="kw">class</span> MyClass(<span class="bu">object</span>):
+    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, identifier):
+        <span class="va">self</span>.name <span class="op">=</span> name
+        <span class="va">self</span>.identifier <span class="op">=</span> identifier
+
+num <span class="op">=</span> <span class="dv">1024</span> <span class="op">*</span> <span class="dv">256</span>
+x <span class="op">=</span> [MyClass(<span class="dv">1</span>,<span class="dv">1</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(num)]
+
+used <span class="fl">0.0078</span> MiB RAM <span class="kw">in</span> <span class="fl">0.</span>24s, peaked <span class="fl">0.00</span> MiB above current, total RAM usage <span class="fl">41.75</span> MiB
+<span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> slots <span class="im">import</span> <span class="op">*</span>
+used <span class="fl">24.5312</span> MiB RAM <span class="kw">in</span> <span class="fl">0.</span>33s, peaked <span class="fl">0.00</span> MiB above current, total RAM usage <span class="fl">66.28</span> MiB
+<span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> noslots <span class="im">import</span> <span class="op">*</span>
+used <span class="fl">91.6484</span> MiB RAM <span class="kw">in</span> <span class="fl">0.</span>45s, peaked <span class="fl">0.00</span> MiB above current, total RAM usage <span class="fl">157.93</span> MiB</code></pre></div>
+<p>由此可见，使用__slots__能够在满足已知小类的属性分配以及对内存的节省。</p>
+<h2 id="三虚拟环境virtualenv">三、虚拟环境(Virtualenv)</h2>
+<p>虚拟环境是针对每个程序创建独立（隔离）的Python环境，而不是在全局安装所依赖的模块。</p>
+<p>因为我用的是<code>anaconda</code>，所以在创建虚拟环境的步骤会不一样。</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="co"># 先更新conda</span>
+conda update conda
+
+<span class="co"># 利用conda创建虚拟环境</span>
+conda create <span class="op">-</span>n yourenvname python<span class="op">=</span>x.x anaconda
+
+<span class="co"># 激活虚拟环境</span>
+source activate yourenvname
+
+<span class="co"># 安装额外的Python安装包</span>
+conda install <span class="op">-</span>n yourenvname [package]
+
+<span class="co"># 退出虚拟环境</span>
+source deactivate
+
+<span class="co"># 删除虚拟环境</span>
+conda remove <span class="op">-</span>n yourenvname <span class="op">-</span><span class="bu">all</span></code></pre></div>
+<h2 id="四collections">四、Collections</h2>
+<p>之前就有了解过Python的<code>Collections</code>，感觉这就是Python的一大神器。这里挑部分做总结分享。</p>
+<h3 id="defaultdict"><u>defaultdict</u></h3>
+<p>正如之前笔记所记录，使用<code>defaultdict</code>不需要检查key是否存在，因为如果不存在，它会自动帮你加上。</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> collections <span class="im">import</span> defaultdict
+<span class="op">&gt;&gt;&gt;</span> colors <span class="op">=</span> (
+... (<span class="st">&#39;Yasoob&#39;</span>, <span class="st">&#39;Yellow&#39;</span>),
+... (<span class="st">&#39;Ali&#39;</span>,<span class="st">&#39;Blue&#39;</span>),
+... (<span class="st">&#39;Arham&#39;</span>,<span class="st">&#39;Green&#39;</span>),
+... (<span class="st">&#39;Ali&#39;</span>,<span class="st">&#39;Black&#39;</span>),
+... (<span class="st">&#39;Yasoob&#39;</span>,<span class="st">&#39;Red&#39;</span>),
+... (<span class="st">&#39;Ahmed&#39;</span>,<span class="st">&#39;Silver&#39;</span>),
+... )
+...
+<span class="op">&gt;&gt;&gt;</span> favourite_colors <span class="op">=</span> defaultdict(<span class="bu">list</span>)
+<span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> name, color <span class="kw">in</span> colors:
+...    favourite_colors[name].append(color)
+...    
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(favourite_colors)
+defaultdict(<span class="op">&lt;</span><span class="bu">type</span> <span class="st">&#39;list&#39;</span><span class="op">&gt;</span>, {<span class="st">&#39;Arham&#39;</span>: [<span class="st">&#39;Green&#39;</span>], <span class="st">&#39;Yasoob&#39;</span>: [<span class="st">&#39;Yellow&#39;</span>, <span class="st">&#39;Red&#39;</span>], <span class="st">&#39;Ahmed&#39;</span>: [<span class="st">&#39;Silver&#39;</span>], <span class="st">&#39;Ali&#39;</span>: [<span class="st">&#39;Blue&#39;</span>, <span class="st">&#39;Black&#39;</span>]})</code></pre></div>
+<p>而且，当我们需要在一个字典中对一个键进行嵌套赋值时候，使用<code>defaultdict</code>能绕过键不存在所引发的异常。</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="im">import</span> collections
+<span class="op">&gt;&gt;&gt;</span> tree <span class="op">=</span> <span class="kw">lambda</span>: collections.defaultdict(tree)
+<span class="op">&gt;&gt;&gt;</span> some_dict <span class="op">=</span> tree()
+<span class="op">&gt;&gt;&gt;</span> some_dict[<span class="st">&#39;colors&#39;</span>][<span class="st">&#39;favourite&#39;</span>] <span class="op">=</span> <span class="st">&quot;Yellow&quot;</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="im">import</span> json
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(json.dumps(some_dict))
+{<span class="st">&quot;colors&quot;</span>: {<span class="st">&quot;favourite&quot;</span>: <span class="st">&quot;Yellow&quot;</span>}}</code></pre></div>
+<h3 id="counter"><u>Counter</u></h3>
+<p><code>Counter</code>是一个计数器，可以帮助我们针对某项数据进行计数。</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> collections <span class="im">import</span> Counter
+<span class="op">&gt;&gt;&gt;</span> colors <span class="op">=</span> (
+... (<span class="st">&#39;Yasoob&#39;</span>, <span class="st">&#39;Yellow&#39;</span>),
+... (<span class="st">&#39;Ali&#39;</span>,<span class="st">&#39;Blue&#39;</span>),
+... (<span class="st">&#39;Arham&#39;</span>,<span class="st">&#39;Green&#39;</span>),
+... (<span class="st">&#39;Ali&#39;</span>,<span class="st">&#39;Black&#39;</span>),
+... (<span class="st">&#39;Yasoob&#39;</span>,<span class="st">&#39;Red&#39;</span>),
+... (<span class="st">&#39;Ahmed&#39;</span>,<span class="st">&#39;Silver&#39;</span>),
+... )
+...
+<span class="op">&gt;&gt;&gt;</span> favs <span class="op">=</span> Counter(name <span class="cf">for</span> name, color <span class="kw">in</span> colors)
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(favs)
+Counter({<span class="st">&#39;Yasoob&#39;</span>: <span class="dv">2</span>, <span class="st">&#39;Ali&#39;</span>: <span class="dv">2</span>, <span class="st">&#39;Arham&#39;</span>: <span class="dv">1</span>, <span class="st">&#39;Ahmed&#39;</span>: <span class="dv">1</span>})</code></pre></div>
+<h3 id="deque"><u>Deque</u></h3>
+<p><code>deque</code>提供了一个双端队列，你可以从头／尾两端添加或删除元素。</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> collections <span class="im">import</span> deque
+<span class="op">&gt;&gt;&gt;</span> d <span class="op">=</span> deque()
+<span class="op">&gt;&gt;&gt;</span> d.append(<span class="st">&#39;1&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> d.append(<span class="st">&#39;2&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span> d
+deque([<span class="st">&#39;1&#39;</span>, <span class="st">&#39;2&#39;</span>])
+<span class="op">&gt;&gt;&gt;</span> d.popleft()
+<span class="co">&#39;1&#39;</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span> d
+deque([<span class="st">&#39;2&#39;</span>])
+<span class="op">&gt;&gt;&gt;</span> d.append(<span class="st">&#39;1&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> d.pop()
+<span class="co">&#39;1&#39;</span></code></pre></div>
+<h3 id="nametuple"><u>Nametuple</u></h3>
+<p>一个元组是一个不可变的列表，可以存储一个数据的序列。</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> collections <span class="im">import</span> namedtuple
+<span class="op">&gt;&gt;&gt;</span> Animal <span class="op">=</span> namedtuple(<span class="st">&#39;Animal&#39;</span>, <span class="st">&#39;name age type&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> perry <span class="op">=</span> Animal(name<span class="op">=</span><span class="st">&#39;perry&#39;</span>, age<span class="op">=</span><span class="dv">31</span>, <span class="bu">type</span><span class="op">=</span><span class="st">&#39;cat&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(perry)
+Animal(name<span class="op">=</span><span class="st">&#39;perry&#39;</span>, age<span class="op">=</span><span class="dv">31</span>, <span class="bu">type</span><span class="op">=</span><span class="st">&#39;cat&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(perry.name)
+perry</code></pre></div>
+<p>我们可以用名字来访问<code>nametuple</code>中的数据，我们再继续分析它。一个命名元组<code>nametuple</code>有两个必需的参数。它们是元组名称和字段名称。</p>
+<p>在上面的例子中，元组名称是Animal，字段名称是name，age和type。这样会让代码变得更容易维护。而且<code>namedtuple</code>的每个实例没有对象字典，所以它们很轻量，与普通的元组相比，并不需要更多的内存。所以它们比字典更快。</p>
+<p>下面将一个命名元组转换为字典。</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> collections <span class="im">import</span> namedtuple
+<span class="op">&gt;&gt;&gt;</span> Animal <span class="op">=</span> namedtuple(<span class="st">&#39;Animal&#39;</span>, <span class="st">&#39;name age type&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> perry <span class="op">=</span> Animal(name<span class="op">=</span><span class="st">&#39;perry&#39;</span>, age<span class="op">=</span><span class="dv">31</span>, <span class="bu">type</span><span class="op">=</span><span class="st">&#39;cat&#39;</span>)
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(perry._asdict())
+OrderedDict([(<span class="st">&#39;name&#39;</span>, <span class="st">&#39;perry&#39;</span>), (<span class="st">&#39;age&#39;</span>, <span class="dv">31</span>), (<span class="st">&#39;type&#39;</span>, <span class="st">&#39;cat&#39;</span>)])</code></pre></div>
+<h3 id="ordereddict"><u>OrderedDict</u></h3>
+<p>Python中默认的dict是无序的，但有些时候需要保持字典的有序性，这个时候可以使用<code>OrderedDict</code>，它是dict的一个subclass（子类），且保持了有序性。</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="co"># 以下是将无序的dict使用OrderedDict方法来让dict变得有序。</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> collections <span class="im">import</span> OrderedDict
+<span class="op">&gt;&gt;&gt;</span> d <span class="op">=</span> {<span class="st">&#39;Guava&#39;</span>: <span class="dv">3</span>, <span class="st">&#39;Persimmon&#39;</span>: <span class="dv">1</span>, <span class="st">&#39;Pitaya&#39;</span>:<span class="dv">4</span>, <span class="st">&#39;Sugarcane&#39;</span>:<span class="dv">2</span>}
+<span class="co"># 将d按照key排序</span>
+<span class="op">&gt;&gt;&gt;</span> OrderedDict(<span class="bu">sorted</span>(d.items(), key<span class="op">=</span><span class="kw">lambda</span> t: t[<span class="dv">0</span>]))
+OrderedDict([(<span class="st">&#39;Guava&#39;</span>, <span class="dv">3</span>), (<span class="st">&#39;Persimmon&#39;</span>, <span class="dv">1</span>), (<span class="st">&#39;Pitaya&#39;</span>, <span class="dv">4</span>), (<span class="st">&#39;Sugarcane&#39;</span>, <span class="dv">2</span>)])
+<span class="co"># 将d按照value排序</span>
+<span class="op">&gt;&gt;&gt;</span> OrderedDict(<span class="bu">sorted</span>(d.items(), key<span class="op">=</span><span class="kw">lambda</span> t: t[<span class="dv">1</span>]))
+OrderedDict([(<span class="st">&#39;Persimmon&#39;</span>, <span class="dv">1</span>), (<span class="st">&#39;Sugarcane&#39;</span>, <span class="dv">2</span>), (<span class="st">&#39;Guava&#39;</span>, <span class="dv">3</span>), (<span class="st">&#39;Pitaya&#39;</span>, <span class="dv">4</span>)])
+<span class="co"># 将d按照key的长度排序</span>
+<span class="op">&gt;&gt;&gt;</span> OrderedDict(<span class="bu">sorted</span>(d.items(), key<span class="op">=</span><span class="kw">lambda</span> t: <span class="bu">len</span>(t[<span class="dv">0</span>])))
+OrderedDict([(<span class="st">&#39;Guava&#39;</span>, <span class="dv">3</span>), (<span class="st">&#39;Pitaya&#39;</span>, <span class="dv">4</span>), (<span class="st">&#39;Sugarcane&#39;</span>, <span class="dv">2</span>), (<span class="st">&#39;Persimmon&#39;</span>, <span class="dv">1</span>)])
+<span class="co"># 使用popitem(last=True)方法可以使我们按照LIFO(Last in first out)的顺序删除dict中最后一个插入的键值对。</span>
+<span class="co"># 使用popitem(last=False)方法就按照FIFO(First in first out)的顺序删除dict中的键值对。</span>
+<span class="op">&gt;&gt;&gt;</span> d <span class="op">=</span> {<span class="st">&#39;Guava&#39;</span>: <span class="dv">3</span>, <span class="st">&#39;Persimmon&#39;</span>: <span class="dv">1</span>, <span class="st">&#39;Pitaya&#39;</span>:<span class="dv">4</span>, <span class="st">&#39;Sugarcane&#39;</span>:<span class="dv">2</span>}
+<span class="op">&gt;&gt;&gt;</span> d <span class="op">=</span> OrderedDict(<span class="bu">sorted</span>(d.items(), key<span class="op">=</span><span class="kw">lambda</span> t: t[<span class="dv">0</span>]))
+<span class="op">&gt;&gt;&gt;</span> d
+OrderedDict([(<span class="st">&#39;Guava&#39;</span>, <span class="dv">3</span>), (<span class="st">&#39;Persimmon&#39;</span>, <span class="dv">1</span>), (<span class="st">&#39;Pitaya&#39;</span>, <span class="dv">4</span>), (<span class="st">&#39;Sugarcane&#39;</span>, <span class="dv">2</span>)])
+<span class="op">&gt;&gt;&gt;</span> d.popitem() <span class="co"># 默认是popitem(last=True)</span>
+(<span class="st">&#39;Sugarcane&#39;</span>, <span class="dv">2</span>)
+<span class="op">&gt;&gt;&gt;</span> d.popitem(last<span class="op">=</span><span class="va">False</span>)
+(<span class="st">&#39;Guava&#39;</span>, <span class="dv">3</span>)</code></pre></div>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/16/Scrapy抓取京东评论/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1541,7 +1875,7 @@ red</code></pre></div>
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-count">34</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1563,7 +1897,7 @@ red</code></pre></div>
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -277,6 +277,172 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/07/TF-IDF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peter Tsung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pandas.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="彼得的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/04/07/TF-IDF/" itemprop="url">
+                  TF-IDF
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-07T16:25:17+08:00">
+                2018-04-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine_learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近工作中接触了很多<code>NLP</code>的知识，用<code>TF-IDF</code>特别多。然后今天上了一个<code>NLP</code>的课程，觉得老师把<code>TF-IDF</code>讲得非常简单易懂。下面我就来梳理一下<code>TF-IDF</code>吧。</p>
+<p>首先，我们在处理一句话的时候，我们应该是希望有以下两点：</p>
+<ol style="list-style-type: decimal">
+<li>对于关键词而言，其具有较强的标示性</li>
+<li>对于关键词而言，停用词应该自动排除</li>
+</ol>
+<p>而<code>TF-IDF</code>有以下好处：</p>
+<ul>
+<li>可以查询关键词</li>
+<li><code>TF-IDF</code>其实表示的是每个单词的重要性</li>
+<li>可以为每个文章，句子建模。</li>
+</ul>
+<p><code>TF-IDF</code>分为两个部分：</p>
+<ul>
+<li><p>一个是<code>TF(Term Frequency)</code> <span class="math display">\[
+  tf = \frac{Term_{num}}{Word_{num}}
+  \]</span> ​</p></li>
+<li><p>一个是<code>IDF(inverse document frequency)</code>。</p></li>
+<li><p><code>log(D/D_w)</code>; <code>D_w</code> is all the related documents. <span class="math display">\[
+idf = log(\frac{D_{all}}{D_w})
+\]</span></p></li>
+</ul>
+<p><span class="math display">\[
+tfidf = tf \cdot idf
+\]</span></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/22/Ensemble-Learning/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -5249,184 +5415,6 @@ f(x) = sign \left (\sum_{i=1}^{N}\alpha_{i}^{*}y_iK(x \cdot x_i) + b^{*}\right)
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/22/分类结果混淆矩阵/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Peter Tsung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pandas.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="彼得的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/12/22/分类结果混淆矩阵/" itemprop="url">
-                  分类结果混淆矩阵
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-22T22:25:43+08:00">
-                2017-12-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
-                    <span itemprop="name">Machine Learning</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <table>
-<thead>
-<tr class="header">
-<th align="center"></th>
-<th align="center">预测结果</th>
-<th align="center"></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="center"><strong>真实结果</strong></td>
-<td align="center">正例（Yes）</td>
-<td align="center">反例（No）</td>
-</tr>
-<tr class="even">
-<td align="center">正例（Yes）</td>
-<td align="center">TP</td>
-<td align="center">FN</td>
-</tr>
-<tr class="odd">
-<td align="center">反例（No）</td>
-<td align="center">FP</td>
-<td align="center">TN</td>
-</tr>
-</tbody>
-</table>
-<p><span class="math display">\[
-\begin{aligned}
-Precision  &amp; = \frac {TP}{TP + FP} \\
-\\
-Recall &amp; = \frac {TP}{TP + FN}
-\end{aligned}
-\]</span></p>
-<ul>
-<li><code>查准率(Precision)</code>: 指在所有预测为正例的情况中，预测正例且实际正例的比例。<code>查准率</code>关注的是预测正例正确占所有预测为正例情况的比例，白话文就是说，<code>查准率</code>关注的是你预测了一大堆正例的例子，然后里面有多少是预测正确的，就是准不准嘛。</li>
-<li><code>查全率(Recall)</code>: 指在实际为正例的情况中，预测为正例的比例。白话文就是说，<code>查全率</code>关注的是你正确预测了一大堆正例，数量为A，真实情况下正例的数量是B，然后看B里面有多少比例的A，然后去判断预测正确的情况全不全。</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -5476,7 +5464,7 @@ Recall &amp; = \frac {TP}{TP + FN}
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-count">34</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -5498,7 +5486,7 @@ Recall &amp; = \frac {TP}{TP + FN}
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
