@@ -277,230 +277,6 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/20/Notes/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Peter Tsung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pandas.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="彼得的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2018/04/20/Notes/" itemprop="url">
-                  FastText优化文档
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-20T16:09:45+08:00">
-                2018-04-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>编写时间：2018年4月20日</p>
-<p>编写人：曾锐鸿</p>
-<div class="figure">
-<img src="/images/Screen%20Shot%202018-04-20%20at%204.07.17%20PM.png">
-
-</div>
-<ul>
-<li><h2 id="工作内容">工作内容</h2></li>
-<li><p><code>数据</code></p>
-<ol style="list-style-type: decimal">
-<li>将<code>C2</code>的<code>inteligence_home</code>的数据增加到<code>C1</code></li>
-<li>将<code>remind</code>部分数据标签更改为<code>alarm</code></li>
-<li>将<code>inteligence_home</code>部分数据标签更改为<code>volume</code></li>
-<li>增加了30条结合<code>alarm + command</code>的数据</li>
-<li>利用异步编程加快<code>hlt</code>分词训练数据收集</li>
-</ol></li>
-<li><p><code>模型代码</code></p>
-<ol style="list-style-type: decimal">
-<li>用了<code>Facebook</code>官方的<code>fastText(https://github.com/facebookresearch/fastText)</code>包重新<code>fastText</code>训练模型。</li>
-<li>在<code>K折交叉验证</code>的过程中，保留每次验证的<code>confusion_matrix</code>, <code>classification_report</code>, <code>PR值</code>以及记录<code>log</code>文件</li>
-<li>自动输出原数据标签分布以及输出分类器在测试数据上与原数据标签不同的数据（可指定特定标签）</li>
-</ol>
-<p>​</p></li>
-<li><h2 id="工具使用">工具使用</h2></li>
-</ul>
-<ol style="list-style-type: decimal">
-<li><code>python v_3.6.4</code></li>
-<li><code>pandas v_0.22.0</code></li>
-<li><code>fastText v_facebook_official</code></li>
-<li><code>sklearn v_19.1</code></li>
-</ol>
-<ul>
-<li><h2 id="模型结果">模型结果</h2></li>
-</ul>
-<p>经调参，以下参数使得模型预测效果较好（下面为5折交叉验证结果）：</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">{<span class="st">&#39;lr&#39;</span>: <span class="fl">0.3</span>, <span class="st">&#39;epoch&#39;</span>: <span class="dv">10</span>, <span class="st">&#39;wordNgrams&#39;</span>: <span class="dv">4</span>, <span class="st">&#39;dim&#39;</span>: <span class="dv">300</span>, <span class="st">&#39;minCount&#39;</span>: <span class="dv">10</span>, <span class="st">&#39;minn&#39;</span>: <span class="dv">1</span>, <span class="st">&#39;maxn&#39;</span>: <span class="dv">3</span>, <span class="st">&#39;bucket&#39;</span>: <span class="dv">500000</span>, <span class="st">&#39;loss&#39;</span>: <span class="st">&#39;softmax&#39;</span>, <span class="st">&#39;pretrainedVectors&#39;</span>: <span class="st">&#39;/data/li_fangyuan/peter/text_classification/fastText-0.1.0/baike_suda_emo_300_10_1_3_model.vec&#39;</span>}
-
-<span class="op">--------------------------------------------</span>
-<span class="op">**</span>model_precision<span class="op">**</span> <span class="kw">is</span> : <span class="fl">0.91274410204312</span>
-<span class="op">**</span>model_recall<span class="op">**</span> <span class="kw">is</span> : <span class="fl">0.91274410204312</span>
-<span class="op">**</span>model_precision<span class="op">**</span> <span class="kw">is</span> : <span class="fl">0.9124054633705836</span>
-<span class="op">**</span>model_recall<span class="op">**</span> <span class="kw">is</span> : <span class="fl">0.9124054633705836</span>
-<span class="op">**</span>model_precision<span class="op">**</span> <span class="kw">is</span> : <span class="fl">0.9230161417767242</span>
-<span class="op">**</span>model_recall<span class="op">**</span> <span class="kw">is</span> : <span class="fl">0.9230161417767242</span>
-<span class="op">**</span>model_precision<span class="op">**</span> <span class="kw">is</span> : <span class="fl">0.9175979230161417</span>
-<span class="op">**</span>model_recall<span class="op">**</span> <span class="kw">is</span> : <span class="fl">0.9175979230161417</span>
-<span class="op">**</span>model_precision<span class="op">**</span> <span class="kw">is</span> : <span class="fl">0.9219914201851434</span>
-<span class="op">**</span>model_recall<span class="op">**</span> <span class="kw">is</span> : <span class="fl">0.9219914201851434</span>
-<span class="op">--------------------------------------------</span>
-<span class="op">**</span>avg_precision<span class="op">**</span> <span class="kw">is</span> : <span class="fl">0.9175510100783427</span>
-<span class="op">**</span>avg_recall<span class="op">**</span> <span class="kw">is</span> : <span class="fl">0.9175510100783427</span>
-    
-<span class="op">----</span><span class="fl">32.95573163032532</span> Running Seconds <span class="op">-----</span></code></pre></div>
-<p><strong>模型表现：</strong> <code>PR</code>平均值为<code>0.9175510100783427</code>，偶尔能达到<code>0.919</code>，比原模型表现提高了接近<code>1%</code>。</p>
-<p><strong>时间表现</strong>：训练平均时间为<code>33</code>秒，比原训练时间缩短接近6倍</p>
-<ul>
-<li><h2 id="文件结构">文件结构</h2></li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">fastText_train<span class="op">/</span>
-├── analysis.py <span class="op">---</span>  <span class="dv">1</span>.输出原数据的标签数据分布 <span class="dv">2</span>.输出分类器在测试数据上与原数据标签不同的数据（可指定特定标签）
-├── data <span class="op">---</span> 存储训练数据以及K折数据
-│   ├── hlt_data.csv
-│   ├── hlt_data.txt
-│   ├── jieba_data.txt
-│   └── k_fold_data
-│       ├── data_0.train
-│       ├── data_0.valid
-│       ├── data_1.train
-│       ├── data_1.valid
-│       ├── data_2.train
-│       ├── data_2.valid
-│       ├── data_3.train
-│       ├── data_3.valid
-│       ├── data_4.train
-│       ├── data_4.valid
-│       ├── data_5.train
-│       └── data_5.valid
-├── error_output <span class="op">---</span> 存储分类器在测试数据上与原数据标签不同的数据
-│   ├── command_error.xlsx
-│   └── error_all.xlsx
-├── html <span class="op">---</span> 存储K折模型的classification_report, 内含PRF值<span class="op">&amp;</span>Support值
-│   ├── classification_report_1.html
-│   ├── classification_report_2.html
-│   ├── classification_report_3.html
-│   ├── classification_report_4.html
-│   └── classification_report_5.html
-├── log <span class="op">---</span> 存储每次模型训练的参数记录、表现（PR值）以及过程提示数据输出
-│   ├── training.log
-├── model_collection <span class="op">---</span> 存储K折数据所得的模型，以及最终在全数据下的分类器
-│   ├── final_model.<span class="bu">bin</span>
-│   ├── model_1.<span class="bu">bin</span>
-│   ├── model_2.<span class="bu">bin</span>
-│   ├── model_3.<span class="bu">bin</span>
-│   ├── model_4.<span class="bu">bin</span>
-│   └── model_5.<span class="bu">bin</span>
-├── pic <span class="op">---</span> 存储K折测试数据下的confusion_matrix以及原数据标签分布的图片
-│   ├── confusion_matrix_1.png
-│   ├── confusion_matrix_2.png
-│   ├── confusion_matrix_3.png
-│   ├── confusion_matrix_4.png
-│   ├── confusion_matrix_5.png
-│   └── label_distribution.png
-├── plot_classification_report.py <span class="op">---</span> 输出classification_report
-├── plot_matrix.py <span class="op">---</span> 输出confusion_matrix
-└── train_model.py <span class="op">---</span> <span class="dv">1</span>.将数据X和Y组合成fastText要求的格式 <span class="fl">2.</span>fastText训练 <span class="fl">3.</span>K折交叉验证 <span class="dv">4</span>.输出模型、confusion_matrix, classification_report, log</code></pre></div>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/07/TF-IDF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -5180,6 +4956,499 @@ Outer function:  <span class="dv">10</span></code></pre></div>
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/26/Support-Vector-Machine/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peter Tsung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pandas.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="彼得的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/12/26/Support-Vector-Machine/" itemprop="url">
+                  Support Vector Machine
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-26T22:25:51+08:00">
+                2017-12-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这个算法一直困扰着我，虽然我没有在实际中使用过它，但是我早已听闻它的强大之处。但因为里面充满着各种数学推导，不花一些时间去研究实在是无法消化。但是，解决恐惧的最好方法就是直面它。我一直都在看各种相关书籍，以及Youtube上各种SVM的视频，可谓是受尽各种煎熬，当中可能会因为看不懂里面某个公式而坐立不安，然后又找不到人可以沟通请教。所以基本上这个<code>SVM</code>算法整天都在我的脑袋里面挥之不去，然后又没办法完全理清楚每一个细节，这样导致我没办法用代码复写一遍。整个人非常痛苦。但现在，我终于可以来写这个<code>SVM</code>分享文章了。</p>
+<p><code>Support Vector Machine(SVM)</code>，中文是支持向量机，是一种二分类模型。它的基本模型是定义在特征空间上的间隔最大的线性分类器。为什么要强调<code>间隔最大</code>？ 是因为能够将训练样本正确分开的划分超平面可能有很多，但是如何衡量哪一个是最好？<code>间隔最大</code>这一特性使<code>SVM</code>有别于<code>感知机</code>，因为<code>间隔最大</code>可以使对未见示例的泛化能力最强，而且保证对训练样本局部扰动的“容忍”性最好。<img src="/images/Screen%20Shot%202017-12-27%20at%205.30.54%20PM.png" alt="Screen Shot 2017-12-27 at 5.30.54 PM"></p>
+<p>支持向量机主要分为以下三类<code>线性可分支持向量机与硬间隔最大化</code>、<code>线性支持向量机与软间隔最大化</code>以及<code>非线形支持向量机与核函数</code>。我一开始看这三个类别的时候，我心里简直就是想爆粗。不知道读者你们有没有类似的感受，如果你们没有，那么下文你们就不需要看了。对于跟我一样感受的读者，我们一起来看看到底这三类支持向量机到底在搞些什么毛线。</p>
+<p>我们先来看看我们目前有什么。</p>
+<p>在样本空间中，划分超平面可以通过以下线性方程来描述： <span class="math display">\[
+\mathbf{w}^{T}\mathbf{x} + b = 0
+\]</span> 其中， <code>w=(w1; w2; ...; wd)</code>为法向量，决定了超平面的方向；<code>b</code>为位移项，决定了超平面与原点之间的距离。然后样本空间中任意点<code>x</code>到超平面<code>(w, b)</code>的距离可写为： <span class="math display">\[
+r = \frac {|\mathbf{w}^{T}\mathbf{x} + b|}{||\mathbf{w}||}
+\]</span> 假设超平面能够正确将训练样本分类，则有： <span class="math display">\[
+\left\{ 
+\begin{array}{c}
+\mathbf{w}^{T}\mathbf{x} + b \ge +1, \ \ \ y_i=+1. \\ 
+\mathbf{w}^{T}\mathbf{x} + b \le -1 \ \ \ y_i=-1.\\ 
+\end{array}
+\right.
+\]</span> 等价于 <span class="math display">\[
+y_i\cdot(\mathbf{w}^{T}\mathbf{x} + b) \ge +1
+\]</span> 距离超平面最近的几个训练样本能够使等号成立，它们被称为“支持向量<code>(Support Vector)</code>”，两个异类支持向量距离超平面的距离之和为： <span class="math display">\[
+\gamma= \frac{2}{||\mathbf{w}||}
+\]</span></p>
+<h3 id="一线性可分支持向量机与硬间隔最大化">一、<u>线性可分</u>支持向量机与硬间隔最大化</h3>
+<p>对于线性可分支持向量机，有一个很好的预期就是训练数据的分布没有任何冲突或者混杂，也就是说，这个训练数据集是线性可分。我们需要找出能够将两类数据正确划分并且间隔最大的直线。<img src="/images/Screen%20Shot%202017-12-27%20at%2010.05.16%20PM.png" alt="Screen Shot 2017-12-27 at 10.05.16 PM"></p>
+<p>构造并求解约束最优化问题： <span class="math display">\[
+\begin{aligned}
+&amp; \mathop{min}_{w, b} \ \ \  \frac{1}{2}||w||^2 \\
+\\
+&amp; s.t. \ \ \  y_i\cdot(\mathbf{w}^{T}\mathbf{x} + b) - 1\ge 0
+\end{aligned}
+\]</span> 然后构建拉格朗日函数: <span class="math display">\[
+L(w, b, \alpha) = \frac{1}{2}||w||^2 - \sum_{i=1} ^{N} \alpha_i\cdot((\mathbf{w}^{T}\mathbf{x} + b) - 1)
+\]</span> 因此，问题变成极大极小问题： <span class="math display">\[
+\mathop{max}_\alpha\mathop{min}_{w, b} L(w, b, \alpha)
+\]</span> （1）求<code>min_{w, b}L(w, b, a)</code> <span class="math display">\[
+\begin{aligned}
+\frac {\partial L}{\partial w} &amp; = w - \sum_{i}^{N}\alpha_iy_ix_i = 0 \\
+\\ 
+\frac {\partial L}{\partial b} &amp; = \sum_{i}^{N}\alpha_iy_i = 0
+\end{aligned}
+\]</span> 得 <span class="math display">\[
+\begin{aligned}
+ &amp; w  =  \sum_{i}^{N}\alpha_iy_ix_i  \\
+ \\
+&amp; \sum_{i}^{N}\alpha_iy_i  = 0
+\end{aligned}
+\]</span> 所以将这两个式子代入<code>L(w, b, a)</code>得： <span class="math display">\[
+\mathop{min}_{w, b} L(w, b, \alpha) = \sum_{i=1}^{N}\alpha_i - \frac {1}{2}\sum_{i=1}^{N}\sum_{j=1}^{N}\alpha_i\alpha_jy_iy_j(x_i \cdot x_j)
+\]</span> （2）求<code>min_{w, b} L(w, b, a)对a的极大</code>： <span class="math display">\[
+\mathop{max}_{\alpha}  L(w, b, \alpha) = \sum_{i=1}^{N}\alpha_i - \frac {1}{2}\sum_{i=1}^{N}\sum_{j=1}^{N}\alpha_i\alpha_jy_iy_j(x_i \cdot x_j)
+\]</span> 这个问题的对偶问题是： <span class="math display">\[
+\begin{aligned}
+&amp; \mathop{min}_{\alpha} \ \ \ L(w, b, \alpha) =\frac {1}{2}\sum_{i=1}^{N}\sum_{j=1}^{N}\alpha_i\alpha_jy_iy_j(x_i \cdot x_j) -  \sum_{i=1}^{N}\alpha_i \\
+&amp; s.t \ \ \  \sum_{i=1}^{N}\alpha_iy_i = 0 \\
+\\ 
+&amp; \ \ \ \ \ \ \ \ \ \alpha_i \ge 0 \\
+\\
+&amp; \ \ \ \ \ \ \ \ \ y_i\cdot(\mathbf{w}^{T}\mathbf{x} + b) - 1\ge 0 \\
+\\ 
+&amp; \ \ \ \ \ \ \ \ \ \alpha_i(y_i\cdot(\mathbf{w}^{T}\mathbf{x} + b) - 1) = 0
+\end{aligned}
+\]</span> 求得最优解<code>a*=(a1*, a2*, ..., aN*)^T</code></p>
+<p>（3）计算 <span class="math display">\[
+w^{*} = \sum_{i=1}^{N}\alpha_iy_ix_i
+\]</span> 并选择<code>a*</code>的一个正分量<code>aj*&gt;0</code>，计算得 <span class="math display">\[
+b^{*} = y_j - \sum_{i=1}^{N}\alpha_{j}^{*}y_i(x_i \cdot x_j)
+\]</span> （4）求得分离超平面 <span class="math display">\[
+w^{*} \cdot x + b^{*} = 0
+\]</span> （5）分类决策函数 <span class="math display">\[
+f(x) = sign(w^{*} \cdot x + b^{*})
+\]</span> 解决了。</p>
+<p>在线性可分支持向量机中，<code>w*</code>和<code>b*</code>只依赖于训练数据中对应<code>aj*&gt;0</code>的样本点<code>(xi, yi)</code>，而其他样本点对<code>w*</code>和<code>b*</code>没有影响。因此我们把训练数据中对应<code>aj*&gt;0</code>的实例点称为支持向量。</p>
+<h3 id="二线性支持向量机与软间隔最大化">二、<u>线性支持</u>向量机与软间隔最大化</h3>
+<p>但是训练数据不一定总是线性可分，有时候某些样本点不一定满足间隔大于等于1得约束条件。因此，我们需要修改<code>硬间隔最大化</code>为<code>软间隔最大化</code>。也就是说，我们希望在最大化间隔的同时，不满足约束条件的样本应尽可能少。</p>
+<p>于是优化目标可写为 <span class="math display">\[
+\mathop{min}_{w, b} \frac{1}{2}||w||^2 + C\sum_{i=1}^{m}\ell_{0/1}(y_i(\mathbf{w}^{T}\mathbf{x} + b )-1)
+\]</span> 其中<code>C&gt;0</code>使一个常数，<code>𝓁0/1</code>是“0/1损失函数” <span class="math display">\[
+\ell_{0/1}{(z)}=
+\begin{cases}
+1,  &amp; \text{if $z$ &lt;0;} \\[2ex]
+0, &amp; \text{otherwise.}
+\end{cases}
+\]</span> 若<code>C</code>为无穷大时，这样会迫使所有样本都要满足原始约束。当<code>C</code>取有限值时，则允许一些样本不满足约束。</p>
+<p>但<code>𝓁0/1</code>非凸、非连续，数学性质不太好，使得不易直接求解。于是常用其他替代损失函数来代替<code>𝓁0/1</code>。它们通常是凸的连续函数且是<code>𝓁0/1</code>的上界。 <span class="math display">\[
+\begin{aligned}
+&amp; hinge \ \ loss: \ell_{hinge}(z) = max(0, 1-z) \\
+\\
+&amp; exponential \ \ loss: \ell_{exp}(z) = exp(-z) \\
+\\
+&amp; logistic \ \ loss: \ell_{log}(z) = log(1 + exp(-z))
+\end{aligned}
+\]</span> <img src="/images/Screen%20Shot%202017-12-28%20at%201.24.55%20AM.png" alt="Screen Shot 2017-12-28 at 1.24.55 AM"></p>
+<p>引入松弛变量<code>(slack variables)</code>， 对每个样本点<code>(xi, yi)</code>引进一个松弛变量<code>𝜉i&gt;=0</code>，使函数间隔加上松弛变量大于等于1。这时候，约束条件变为： <span class="math display">\[
+y_i(w \cdot x_i + b )  +  \xi_i \ge 1
+\]</span></p>
+<p>同时，对每个松弛变量<code>𝜉i</code>， 支付一个代价<code>𝜉i</code>。这时候目标函数变成： <span class="math display">\[
+\frac {1}{2} ||w||^2 + C \sum_{i=1}^{N}\xi_{i}
+\]</span> 这里，<code>C&gt;0</code>称为惩罚参数，一般由应用问题决定。<code>C</code>值大时对误分类的惩罚增大，C值小时对误分类的惩罚减少。目标函数有两层含义，第一层是希望间隔尽可能大，同时使误分类点的个数尽量小，<code>C</code>是调和二者的系数。</p>
+<p>构造并求解约束最优化问题： <span class="math display">\[
+\begin{aligned}
+&amp; \mathop{min}_{w, b, 𝜉}\ \ \frac {1}{2} ||w||^2 + C \sum_{i=1}^{N}\xi_{i} \\
+\\
+&amp; s.t.  \ \ y_i(w \cdot x_i + b )  +  \xi_i \ge 1 \\
+\\
+&amp; \xi_i \ge 0, \ \ i=1, 2, ..., m. 
+\end{aligned}
+\]</span> 然后构建拉格朗日函数： <span class="math display">\[
+\begin{aligned}
+L(\mathbf{w}, b, \mathbf{\alpha}, \xi, \mu) = \mathop{min}_{w, b, 𝜉}\ \ &amp; \frac {1}{2} ||w||^2 + C \sum_{i=1}^{N}\xi_{i}   \\
+&amp; +\sum_{i=1}^{m}\alpha_i(1- \xi_i - (\mathbf{w}^{T}\mathbf{x} + b )-1)) - \sum_{i=1}^{m}\mu_i\xi_i
+\end{aligned}
+\]</span> 其中<code>a&gt;=0</code>，<code>ui&gt;=0</code>是拉格朗日乘子。</p>
+<p>（1）令<code>L(w, b, a, 𝜉, u)</code>对<code>w</code>, <code>b</code>, <code>𝜉</code>的偏导为零可得： <span class="math display">\[
+\begin{aligned}
+\mathbf{w} &amp; = \sum_{i=1}^{N}\alpha_iy_ix_i,  \\
+\\
+0 &amp;= \sum_{i=0}^{m} \alpha_iy_i \\
+C &amp; = \alpha_i + \mu_i
+\end{aligned}
+\]</span> （2）求<code>min{w, b,  𝜉} L(w, b, a, 𝜉, u)对a的极大</code>： <span class="math display">\[
+\begin{aligned}
+&amp; \mathop{min}_{\alpha} \ \ \ \frac {1}{2}\sum_{i=1}^{m}\sum_{j=1}^{m}\alpha_i\alpha_jy_iy_j(x_i \cdot x_j) -  \sum_{i=1}^{N}\alpha_i \\
+&amp; s.t \ \ \  \sum_{i=1}^{m}\alpha_iy_i = 0\\
+\\ 
+&amp; \ \ \ \ \ \ \ \ \  0 \le \alpha_i \le C , \ \ \ \mu_i \ge 0, \\
+\\
+&amp; \ \ \ \ \ \ \ \ \ y_i\cdot(\mathbf{w}^{T}\mathbf{x} + b) - 1 + \xi_i \ge 0 \\
+\\ 
+&amp; \ \ \ \ \ \ \ \ \ \alpha_i(y_i\cdot(\mathbf{w}^{T}\mathbf{x} + b) - 1+ \xi_i ) = 0 \\
+\\
+&amp; \ \ \ \ \ \ \ \ \ \xi_i  \ge 0, \ \ \ \mu_i\xi_i = 0
+\end{aligned}
+\]</span> （3）计算 <span class="math display">\[
+w^{*} = \sum_{i=1}^{N}\alpha_iy_ix_i
+\]</span> 并选择<code>a*</code>的一个正分量<code>0&lt;=aj*&lt;=C</code>，计算得 <span class="math display">\[
+b^{*} = y_j - \sum_{i=1}^{N}\alpha_{j}^{*}y_i(x_i \cdot x_j)
+\]</span> （4）求得分离超平面 <span class="math display">\[
+w^{*} \cdot x + b^{*} = 0
+\]</span> （5）分类决策函数 <span class="math display">\[
+f(x) = sign(w^{*} \cdot x + b^{*})
+\]</span> 解决了。</p>
+<h3 id="三非线形支持向量机与核函数">三、<u>非线形支</u>持向量机与核函数</h3>
+<p>对于线性分类问题，<code>线性分类支持向量机</code>是一种非常有效的方法，但是，有时候分类问题是非线性的。<img src="/images/Screen%20Shot%202017-12-28%20at%2011.32.43%20AM.png" alt="Screen Shot 2017-12-28 at 11.32.43 AM"></p>
+<p>这时候，想用一条直线去把这两类数据进行正确分类是不现实的。因此我们可以使用<code>非线性支持向量机</code>。</p>
+<p>非线性支持向量机首先使用一个变换将原空间的数据映射到新空间；然后在新空间里用线性分类学习方法从训练数据中学习分类模型。实现这个过程最主要的方法就是<code>核函数(Kernel Function)</code>。</p>
+<p>在原属性空间中计算的相似度函数<code>K</code>称为<code>核函数(Kernel Function)</code>，在满足<code>Mercer原理</code>，也就是说必须存在一个相应的变换，使得计算一对向量的核函数等价于在变换后的空间中计算这对向量的点积，能够使计算点积的开销更小，而且能够避免维灾难。也就是说，有 <span class="math display">\[
+\mathbf{K}(\mathbf{u, \mathbf{v}}) = \mathbf{\Phi}{(\mathbf{u})} \cdot  \mathbf{\Phi}{(\mathbf{v})} = (\mathbf{u} \cdot \mathbf{v} + 1) ^ 2
+\]</span> 下面是一些常用的核函数</p>
+<ul>
+<li><code>多项式核函数（polynomial kernel function)</code></li>
+</ul>
+<p><span class="math display">\[
+K(x, z) = (x \cdot z + 1)^p
+\]</span></p>
+<p>对应的支持向量机是一个<code>p次多项式分类器</code>。</p>
+<ul>
+<li><code>高斯核函数(Gaussian kernel function)</code> <span class="math display">\[
+  K(x, z) = exp\left(-\frac{||x-z||^2}{2\sigma^2}\right)
+  \]</span> 然后下面我们就可以尝试求解最优解了。</li>
+</ul>
+<p>（1）选取适当的<code>核函数K(x, z)</code>和适当的参数<code>C</code>，构造并求解最优化问题 <span class="math display">\[
+\begin{aligned}
+&amp; \mathop{min}_{\alpha} \ \ \ \frac {1}{2}\sum_{i=1}^{m}\sum_{j=1}^{m}\alpha_i\alpha_jy_iy_j(K(x_i, x_j)) -  \sum_{i=1}^{N}\alpha_i \\
+&amp; s.t \ \ \  \sum_{i=1}^{m}\alpha_iy_i = 0\\
+\\ 
+&amp; \ \ \ \ \ \ \ \ \  0 \le \alpha_i \le C ,  \ \ \ \ i =1, 2, ..., m \\
+\end{aligned}
+\]</span> 求得最优解<code>ɑ*=(ɑ1*, a2*, ..., a*N)^T</code></p>
+<p>（2）选择<code>ɑ*</code>的一个正分量<code>0&lt;ɑj*&lt;C</code>，计算 <span class="math display">\[
+b^* = y_j - \sum_{i=1}^{N}\alpha_{i}^{*}y_iK(x_i \cdot x_j)
+\]</span> （3）求得分离超平面 <span class="math display">\[
+\sum_{i=1}^{N}\alpha_{i}^{*}y_iK(x \cdot x_i) + b^{*} = 0
+\]</span> （4）分类决策函数 <span class="math display">\[
+f(x) = sign \left (\sum_{i=1}^{N}\alpha_{i}^{*}y_iK(x \cdot x_i) + b^{*}\right)
+\]</span> 解决了。</p>
+<p>下面我们就可以用<code>Python</code>来写一个<code>SVM算法</code>啦</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> time
+<span class="im">import</span> random
+<span class="im">import</span> logging
+
+<span class="im">import</span> pandas <span class="im">as</span> pd
+<span class="im">from</span> sklearn.cross_validation <span class="im">import</span> train_test_split
+<span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score
+
+<span class="kw">class</span> SVM(<span class="bu">object</span>):
+
+    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, kernel<span class="op">=</span><span class="st">&#39;linear&#39;</span>,epsilon <span class="op">=</span> <span class="fl">0.001</span>):
+        <span class="va">self</span>.kernel <span class="op">=</span> kernel
+        <span class="va">self</span>.epsilon <span class="op">=</span> epsilon
+
+    <span class="kw">def</span> _init_parameters(<span class="va">self</span>, features, labels):
+
+        <span class="va">self</span>.X <span class="op">=</span> features
+        <span class="va">self</span>.Y <span class="op">=</span> labels
+
+        <span class="va">self</span>.b <span class="op">=</span> <span class="fl">0.0</span>
+        <span class="va">self</span>.n <span class="op">=</span> <span class="bu">len</span>(features[<span class="dv">0</span>])
+        <span class="va">self</span>.N <span class="op">=</span> <span class="bu">len</span>(features)
+        <span class="va">self</span>.alpha <span class="op">=</span> [<span class="fl">0.0</span>] <span class="op">*</span> <span class="va">self</span>.N
+        <span class="va">self</span>.E <span class="op">=</span> [<span class="va">self</span>._E_(i) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.N)]
+
+        <span class="va">self</span>.C <span class="op">=</span> <span class="dv">1000</span>
+        <span class="va">self</span>.Max_Interation <span class="op">=</span> <span class="dv">5000</span>
+
+
+    <span class="kw">def</span> _satisfy_KKT(<span class="va">self</span>, i):
+        ygx <span class="op">=</span> <span class="va">self</span>.Y[i] <span class="op">*</span> <span class="va">self</span>._g_(i)
+        <span class="cf">if</span> <span class="bu">abs</span>(<span class="va">self</span>.alpha[i])<span class="op">&lt;</span><span class="va">self</span>.epsilon:
+            <span class="cf">return</span> ygx <span class="op">&gt;</span> <span class="dv">1</span> <span class="kw">or</span> ygx <span class="op">==</span> <span class="dv">1</span>
+        <span class="cf">elif</span> <span class="bu">abs</span>(<span class="va">self</span>.alpha[i]<span class="op">-</span><span class="va">self</span>.C)<span class="op">&lt;</span><span class="va">self</span>.epsilon:
+            <span class="cf">return</span> ygx <span class="op">&lt;</span> <span class="dv">1</span> <span class="kw">or</span> ygx <span class="op">==</span> <span class="dv">1</span>
+        <span class="cf">else</span>:
+            <span class="cf">return</span> <span class="bu">abs</span>(ygx<span class="op">-</span><span class="dv">1</span>) <span class="op">&lt;</span> <span class="va">self</span>.epsilon
+
+    <span class="kw">def</span> is_stop(<span class="va">self</span>):
+        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.N):
+            satisfy <span class="op">=</span> <span class="va">self</span>._satisfy_KKT(i)
+
+            <span class="cf">if</span> <span class="kw">not</span> satisfy:
+                <span class="cf">return</span> <span class="va">False</span>
+        <span class="cf">return</span> <span class="va">True</span>
+
+    <span class="kw">def</span> _select_two_parameters(<span class="va">self</span>):
+
+        index_list <span class="op">=</span> [i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.N)]
+
+        i1_list_1 <span class="op">=</span> <span class="bu">filter</span>(<span class="kw">lambda</span> i: <span class="va">self</span>.alpha[i] <span class="op">&gt;</span> <span class="dv">0</span> <span class="kw">and</span> <span class="va">self</span>.alpha[i] <span class="op">&lt;</span> <span class="va">self</span>.C, index_list)
+        i1_list_2 <span class="op">=</span> <span class="bu">list</span>(<span class="bu">set</span>(index_list) <span class="op">-</span> <span class="bu">set</span>(i1_list_1))
+
+        i1_list <span class="op">=</span> i1_list_1
+        i1_list.extend(i1_list_2)
+
+        <span class="cf">for</span> i <span class="kw">in</span> i1_list:
+            <span class="cf">if</span> <span class="va">self</span>._satisfy_KKT(i):
+                <span class="cf">continue</span>
+
+            E1 <span class="op">=</span> <span class="va">self</span>.E[i]
+            max_ <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>)
+
+            <span class="cf">for</span> j <span class="kw">in</span> index_list:
+                <span class="cf">if</span> i <span class="op">==</span> j:
+                    <span class="cf">continue</span>
+
+                E2 <span class="op">=</span> <span class="va">self</span>.E[j]
+                <span class="cf">if</span> <span class="bu">abs</span>(E1 <span class="op">-</span> E2) <span class="op">&gt;</span> max_[<span class="dv">0</span>]:
+                    max_ <span class="op">=</span> (<span class="bu">abs</span>(E1 <span class="op">-</span> E2), j)
+
+            <span class="cf">return</span> i, max_[<span class="dv">1</span>]
+
+    <span class="kw">def</span> _K_(<span class="va">self</span>, x1, x2):
+
+        <span class="cf">if</span> <span class="va">self</span>.kernel <span class="op">==</span> <span class="st">&#39;linear&#39;</span>:
+            <span class="cf">return</span> <span class="bu">sum</span>([x1[k] <span class="op">*</span> x2[k] <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.n)])
+        <span class="cf">if</span> <span class="va">self</span>.kernel <span class="op">==</span> <span class="st">&#39;poly&#39;</span>:
+            <span class="cf">return</span> (<span class="bu">sum</span>([x1[k] <span class="op">*</span> x2[k] <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.n)])<span class="op">+</span><span class="dv">1</span>)<span class="op">**</span><span class="dv">3</span>
+
+
+
+        <span class="bu">print</span> <span class="st">&#39;没有定义核函数&#39;</span>
+        <span class="cf">return</span> <span class="dv">0</span>
+
+    <span class="kw">def</span> _g_(<span class="va">self</span>, i):
+
+        result <span class="op">=</span> <span class="va">self</span>.b
+
+        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.N):
+            result <span class="op">+=</span> <span class="va">self</span>.alpha[j] <span class="op">*</span> <span class="va">self</span>.Y[j] <span class="op">*</span> <span class="va">self</span>._K_(<span class="va">self</span>.X[i], <span class="va">self</span>.X[j])
+
+        <span class="cf">return</span> result
+
+    <span class="kw">def</span> _E_(<span class="va">self</span>, i):
+
+        <span class="cf">return</span> <span class="va">self</span>._g_(i) <span class="op">-</span> <span class="va">self</span>.Y[i]
+
+    <span class="kw">def</span> try_E(<span class="va">self</span>,i):
+        result <span class="op">=</span> <span class="va">self</span>.b<span class="op">-</span><span class="va">self</span>.Y[i]
+        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.N):
+            <span class="cf">if</span> <span class="va">self</span>.alpha[j]<span class="op">&lt;</span><span class="dv">0</span> <span class="kw">or</span> <span class="va">self</span>.alpha[j]<span class="op">&gt;</span><span class="va">self</span>.C:
+                <span class="cf">continue</span>
+            result <span class="op">+=</span> <span class="va">self</span>.Y[j]<span class="op">*</span><span class="va">self</span>.alpha[j]<span class="op">*</span><span class="va">self</span>._K_(<span class="va">self</span>.X[i],<span class="va">self</span>.X[j])
+        <span class="cf">return</span> result
+
+
+    <span class="kw">def</span> train(<span class="va">self</span>, features, labels):
+
+        <span class="va">self</span>._init_parameters(features, labels)
+
+        <span class="cf">for</span> times <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.Max_Interation):
+            
+            logging.debug(<span class="st">&#39;iterater </span><span class="sc">%d</span><span class="st">&#39;</span> <span class="op">%</span> times)
+
+            i1, i2 <span class="op">=</span> <span class="va">self</span>._select_two_parameters()
+
+            L <span class="op">=</span> <span class="bu">max</span>(<span class="dv">0</span>, <span class="va">self</span>.alpha[i2] <span class="op">-</span> <span class="va">self</span>.alpha[i1])
+            H <span class="op">=</span> <span class="bu">min</span>(<span class="va">self</span>.C, <span class="va">self</span>.C <span class="op">+</span> <span class="va">self</span>.alpha[i2] <span class="op">-</span> <span class="va">self</span>.alpha[i1])
+
+            <span class="cf">if</span> <span class="va">self</span>.Y[i1] <span class="op">==</span> <span class="va">self</span>.Y[i2]:
+                L <span class="op">=</span> <span class="bu">max</span>(<span class="dv">0</span>, <span class="va">self</span>.alpha[i2] <span class="op">+</span> <span class="va">self</span>.alpha[i1] <span class="op">-</span> <span class="va">self</span>.C)
+                H <span class="op">=</span> <span class="bu">min</span>(<span class="va">self</span>.C, <span class="va">self</span>.alpha[i2] <span class="op">+</span> <span class="va">self</span>.alpha[i1])
+
+            E1 <span class="op">=</span> <span class="va">self</span>.E[i1]
+            E2 <span class="op">=</span> <span class="va">self</span>.E[i2]
+            eta <span class="op">=</span> <span class="va">self</span>._K_(<span class="va">self</span>.X[i1], <span class="va">self</span>.X[i1]) <span class="op">+</span> <span class="va">self</span>._K_(<span class="va">self</span>.X[i2], <span class="va">self</span>.X[i2]) <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> <span class="va">self</span>._K_(<span class="va">self</span>.X[i1], <span class="va">self</span>.X[i2])   
+
+            alpha2_new_unc <span class="op">=</span> <span class="va">self</span>.alpha[i2] <span class="op">+</span> <span class="va">self</span>.Y[i2] <span class="op">*</span> (E1 <span class="op">-</span> E2) <span class="op">/</span> eta     
+
+            alph2_new <span class="op">=</span> <span class="dv">0</span>
+            <span class="cf">if</span> alpha2_new_unc <span class="op">&gt;</span> H:
+                alph2_new <span class="op">=</span> H
+            <span class="cf">elif</span> alpha2_new_unc <span class="op">&lt;</span> L:
+                alph2_new <span class="op">=</span> L
+            <span class="cf">else</span>:
+                alph2_new <span class="op">=</span> alpha2_new_unc
+
+            alph1_new <span class="op">=</span> <span class="va">self</span>.alpha[i1] <span class="op">+</span> <span class="va">self</span>.Y[i1] <span class="op">*</span> <span class="op">\</span>
+                <span class="va">self</span>.Y[i2] <span class="op">*</span> (<span class="va">self</span>.alpha[i2] <span class="op">-</span> alph2_new)
+
+            b_new <span class="op">=</span> <span class="dv">0</span>
+            b1_new <span class="op">=</span> <span class="op">-</span>E1 <span class="op">-</span> <span class="va">self</span>.Y[i1] <span class="op">*</span> <span class="va">self</span>._K_(<span class="va">self</span>.X[i1], <span class="va">self</span>.X[i1]) <span class="op">*</span> (alph1_new <span class="op">-</span> <span class="va">self</span>.alpha[i1]) <span class="op">-</span> <span class="va">self</span>.Y[i2] <span class="op">*</span> <span class="va">self</span>._K_(<span class="va">self</span>.X[i2], <span class="va">self</span>.X[i1]) <span class="op">*</span> (alph2_new <span class="op">-</span> <span class="va">self</span>.alpha[i2]) <span class="op">+</span> <span class="va">self</span>.b
+            b2_new <span class="op">=</span> <span class="op">-</span>E2 <span class="op">-</span> <span class="va">self</span>.Y[i1] <span class="op">*</span> <span class="va">self</span>._K_(<span class="va">self</span>.X[i1], <span class="va">self</span>.X[i2]) <span class="op">*</span> (alph1_new <span class="op">-</span> <span class="va">self</span>.alpha[i1]) <span class="op">-</span> <span class="va">self</span>.Y[i2] <span class="op">*</span> <span class="va">self</span>._K_(<span class="va">self</span>.X[i2], <span class="va">self</span>.X[i2]) <span class="op">*</span> (alph2_new <span class="op">-</span> <span class="va">self</span>.alpha[i2]) <span class="op">+</span> <span class="va">self</span>.b
+
+            <span class="cf">if</span> alph1_new <span class="op">&gt;</span> <span class="dv">0</span> <span class="kw">and</span> alph1_new <span class="op">&lt;</span> <span class="va">self</span>.C:
+                b_new <span class="op">=</span> b1_new
+            <span class="cf">elif</span> alph2_new <span class="op">&gt;</span> <span class="dv">0</span> <span class="kw">and</span> alph2_new <span class="op">&lt;</span> <span class="va">self</span>.C:
+                b_new <span class="op">=</span> b2_new
+            <span class="cf">else</span>:
+                b_new <span class="op">=</span> (b1_new <span class="op">+</span> b2_new) <span class="op">/</span> <span class="dv">2</span>
+
+            <span class="va">self</span>.alpha[i1] <span class="op">=</span> alph1_new
+            <span class="va">self</span>.alpha[i2] <span class="op">=</span> alph2_new
+            <span class="va">self</span>.b <span class="op">=</span> b_new
+
+            <span class="va">self</span>.E[i1] <span class="op">=</span> <span class="va">self</span>._E_(i1)
+            <span class="va">self</span>.E[i2] <span class="op">=</span> <span class="va">self</span>._E_(i2)
+
+
+    <span class="kw">def</span> _predict_(<span class="va">self</span>,feature):
+        result <span class="op">=</span> <span class="va">self</span>.b
+
+        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">xrange</span>(<span class="va">self</span>.N):
+            result <span class="op">+=</span> <span class="va">self</span>.alpha[i]<span class="op">*</span><span class="va">self</span>.Y[i]<span class="op">*</span><span class="va">self</span>._K_(feature,<span class="va">self</span>.X[i])
+
+        <span class="cf">if</span> result <span class="op">&gt;</span> <span class="dv">0</span>:
+            <span class="cf">return</span> <span class="dv">1</span>
+        <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span>
+
+    <span class="kw">def</span> predict(<span class="va">self</span>,features):
+        results <span class="op">=</span> []
+
+        <span class="cf">for</span> feature <span class="kw">in</span> features:
+            results.append(<span class="va">self</span>._predict_(feature))
+
+        <span class="cf">return</span> results</code></pre></div>
+<p>以上。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
@@ -5229,7 +5498,7 @@ Outer function:  <span class="dv">10</span></code></pre></div>
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-count">34</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
