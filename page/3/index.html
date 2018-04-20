@@ -277,6 +277,277 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/11/流畅的Python-读书笔记-五/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peter Tsung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pandas.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="彼得的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/11/流畅的Python-读书笔记-五/" itemprop="url">
+                  流畅的Python-读书笔记(五)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-11T17:44:20+08:00">
+                2017-07-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-Notes/" itemprop="url" rel="index">
+                    <span itemprop="name">Python_Notes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>本周的学习计划有<code>动态属性和特性</code>、<code>属性描述符</code>和<code>类元编程</code>。下面将分享我的阅读笔记。</p>
+<p>在Python中，数据的属性和处理数据的方法统称为属性(<code>attribute</code>)。其实，方法只是可调用的属性。除了这二者之外，还可以创建特性(<code>property</code>)，在不改变类接口的前提下，使用存取方法（即读取方法和设值方法）修改数据属性。这与统一访问原则相符：</p>
+<blockquote>
+<p>不管服务是由存储还是计算实现的，一个模块提供的所有服务都应该通过统一的方式使用。</p>
+</blockquote>
+<p>动态创建属性是一种元编程。在下面实例中，是使用动态属性访问JSON类数据。</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> collections <span class="im">import</span> abc
+
+<span class="kw">class</span> FrozenJSON:
+    
+    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, mapping):
+        <span class="va">self</span>.__data <span class="op">=</span> <span class="bu">dict</span>(mapping)
+        
+    <span class="kw">def</span> <span class="fu">__getattr__</span>(<span class="va">self</span>, name):
+        <span class="cf">if</span> <span class="bu">hasattr</span>(<span class="va">self</span>.__data, name):
+            <span class="cf">return</span> <span class="bu">getattr</span>(<span class="va">self</span>.__data, name)
+        <span class="cf">else</span>:
+            <span class="cf">return</span> FrozenJSON.build(<span class="va">self</span>.__data[name])
+        
+    <span class="at">@classmethod</span>
+    <span class="kw">def</span> build(cls, obj):
+        <span class="cf">if</span> <span class="bu">isinstance</span>(obj, abc.Mapping):
+            <span class="cf">return</span> cls(obj)
+        <span class="cf">elif</span> <span class="bu">isinstance</span>(obj, abc.MutableSequence):
+            <span class="cf">return</span> [cls.build(item) <span class="cf">for</span> item <span class="kw">in</span> obj]
+        <span class="cf">else</span>:
+            <span class="cf">return</span> obj</code></pre></div>
+<p><code>FrozenJSON</code>类的关键是<code>__getattr__</code>方法。而有一点很重要，就是仅当无法使用常规的方式获取属性（即在实例、类或超类中找不到指定的属性），解释器才会调用特殊的<code>__getattr__</code>方法。</p>
+<p>一般而言通常都会把<code>__init__</code>成为构造方法，其实用于构建实例的是特殊方法<code>__new__</code>：这是个类方法（使用特殊方式处理，因此不必使用<code>@classmethod</code>装饰器），必须返回一个实例。返回的实例会作为第一个参数（即<code>self</code>)传给<code>__init__</code>方法。因为调用<code>__init__</code>方法时要传入实例，而且禁止返回任何值，所以<code>__init__</code>方法其实是“初始化方法”。真正的构造方法是<code>__new__</code>。</p>
+<p>下面使用<code>__new__</code>方法实现访问JSON类数据。</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> collections <span class="im">import</span> abc
+
+<span class="kw">class</span> FrozenJSON:
+    
+    <span class="kw">def</span> <span class="fu">__new__</span>(cls, args):
+        <span class="cf">if</span> <span class="bu">isinstance</span>(arg, abc.Mapping):
+            <span class="cf">return</span> <span class="bu">super</span>().<span class="fu">__new__</span>(cls)
+        <span class="cf">elif</span> <span class="bu">isinstance</span>(arg, abc.MutableSequence):
+            <span class="cf">return</span> [cls(item) <span class="cf">for</span> item <span class="kw">in</span> arg]
+        <span class="cf">else</span>:
+            <span class="cf">return</span> arg
+    
+    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, mapping):
+        <span class="va">self</span>.__data <span class="op">=</span> {}
+        <span class="cf">for</span> key, value <span class="kw">in</span> mapping.items():
+            <span class="cf">if</span> iskeyword(key):
+                key <span class="op">+=</span> <span class="st">&#39;_&#39;</span>
+            <span class="va">self</span>.__data[key] <span class="op">=</span> value
+    
+    <span class="kw">def</span> <span class="fu">__getattr__</span>(<span class="va">self</span>, name):
+        <span class="cf">if</span> <span class="bu">hasattr</span>(<span class="va">self</span>.__data, name):
+            <span class="cf">return</span> <span class="bu">getattr</span>(<span class="va">self</span>.__data, name)
+        <span class="cf">else</span>:
+            <span class="cf">return</span> FrozenJSON(<span class="va">self</span>.__data[name])</code></pre></div>
+<p>这一版的<code>LineItem</code>类用到了<code>quantity</code>特性的两个实例：一个用于管理<code>weight</code>属性，另一个用于管理<code>price</code>属性。</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">class</span> LineItem:
+    weight <span class="op">=</span> quantity(<span class="st">&#39;weight&#39;</span>) <span class="co"># 使用工厂函数把第一个自定义的特性weight定义为类属性</span>
+    price <span class="op">=</span> quantity(<span class="st">&#39;price&#39;</span>) <span class="co"># 构建另一个自定义的特性，price</span>
+    
+    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, description, weight, price):
+        <span class="va">self</span>.description <span class="op">=</span> description
+        <span class="va">self</span>.weight <span class="op">=</span> weight <span class="co"># 特性已经激活，确保不能把weight设为负数或零</span>
+        <span class="va">self</span>.price <span class="op">=</span> price <span class="co"># 使用特性获取实例中存储的值</span>
+        
+    <span class="kw">def</span> subtotal(<span class="va">self</span>):
+        <span class="cf">return</span> <span class="va">self</span>.weight <span class="op">*</span> <span class="va">self</span>.price
+    
+<span class="kw">def</span> quantity(storage_name):
+    
+    <span class="kw">def</span> qty_getter(instance):
+        <span class="cf">return</span> instance.__dict__[storage_name]
+    
+    <span class="kw">def</span> qty_setter(instance, value):
+        <span class="cf">if</span> value <span class="op">&gt;</span> <span class="dv">0</span>:
+            instance.__dict__[storage_name] <span class="op">=</span> value
+        <span class="cf">else</span>:
+            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">&#39;value must be &gt; 0&#39;</span>)
+    
+    <span class="cf">return</span> <span class="bu">property</span>(qty_getter, qty_setter)</code></pre></div>
+<p><code>getattr(object, name[, default])</code></p>
+<p>从<code>object</code>对象中获取<code>name</code>字符串对应的属性。获取的属性可能来自对象所属的类或超类。</p>
+<p><code>hasattr(object, name)</code></p>
+<p>如果<code>object</code>对象中存在指定的属性，或者能以某种方式（例如继承）通过<code>object</code>对象获取指定的属性，返回<code>True</code>。</p>
+<p><code>setattr(object, name, value)</code></p>
+<p>把<code>object</code>对象指定属性的值设为<code>value</code>，前提是<code>object</code>对象能接受那个值。这个函数可能会创建一个新属性，或者覆盖现有的属性。</p>
+<p><code>var([object])</code></p>
+<p>返回<code>object</code>对象的<code>__dict__</code>属性；如果实例所属的类定义了<code>__slots__</code>属性，实例没有<code>__dict__</code>属性，那么<code>vars</code>函数不能处理那个实例。</p>
+<p>描述符是对多个属性运用相同存储逻辑的一种方式。</p>
+<p>描述符是实现了特定协议的类，这个协议包括<code>__get__</code>、<code>__set__</code>和<code>__delete__</code>方法。<code>property</code>类实现了完整的描述符协议。</p>
+<p><u>描述符类</u></p>
+<p>实现描述符协议的类。</p>
+<p><u>托管类</u></p>
+<p>把描述符实例声明为类属性的类。</p>
+<p><u>描述符实例</u></p>
+<p>描述符类的各个实例，声明为托管类的类属性。</p>
+<p><u>托管实例</u></p>
+<p>托管类的实例。</p>
+<p><u>存储属性</u></p>
+<p>托管实例中存储自身托管属性的属性。</p>
+<p><u>托管属性</u></p>
+<p>托管类中由描述符实例处理的公开属性，值存储在存储属性中。</p>
+<p>下面使用<code>Quantity</code>描述符管理<code>LineItem</code>的属性。</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="co"># 描述符基于协议实现，无需创建子类</span>
+<span class="kw">class</span> Quantity:
+    
+    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, storage_name):
+        <span class="co"># Quantity实例有个storage_name属性，这是托管实例存储值的属性名称</span>
+        <span class="va">self</span>.storage_name <span class="op">=</span> storage_name
+    <span class="co"># 尝试为托管属性赋值时，会调用__set__方法。</span>
+    <span class="co"># self是描述符实例（即LineItem.weight或LineItem.price)</span>
+    <span class="co"># instance是托管实例（LineItem实例），value是要设定的值    </span>
+    <span class="kw">def</span> <span class="fu">__set__</span>(<span class="va">self</span>, instance, value):
+        <span class="cf">if</span> value <span class="op">&gt;</span> <span class="dv">0</span>:            
+            instance.__dict__[<span class="va">self</span>.storage_name] <span class="op">=</span> value
+        <span class="cf">else</span>:
+            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">&#39;value must be &gt; 0&#39;</span>)
+
+<span class="kw">class</span> LineItem:
+    
+    weight <span class="op">=</span> Quantity(<span class="st">&#39;weight&#39;</span>)
+    price <span class="op">=</span> Quantity(<span class="st">&#39;price&#39;</span>)
+    
+    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, description, weight, price):
+        <span class="va">self</span>.description <span class="op">=</span> description
+        <span class="va">self</span>.weight <span class="op">=</span> weight
+        <span class="va">self</span>.price <span class="op">=</span> price
+    
+    <span class="kw">def</span> subtotal(<span class="va">self</span>):
+        <span class="cf">return</span> <span class="va">self</span>.weight <span class="op">*</span> <span class="va">self</span>.price</code></pre></div>
+<p>存储在描述符中的数据，会变成<code>LineItem</code>类的类属性，从而由全部<code>LineItem</code>实例共享。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/06/流畅的Python-读书笔记-四/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -4106,304 +4377,6 @@ python good</code></pre></div>
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/27/Enumerate、对象自省、推导式、异常、lambda和一行式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Peter Tsung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pandas.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="彼得的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/05/27/Enumerate、对象自省、推导式、异常、lambda和一行式/" itemprop="url">
-                  Enumerate、对象自省、推导式、异常、lambda和一行式
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-27T09:44:50+08:00">
-                2017-05-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python-Notes/" itemprop="url" rel="index">
-                    <span itemprop="name">Python_Notes</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>这周继续深入了解Python知识，下面就<code>Enumerate</code>、<code>对象自省</code>、<code>推导式</code>、<code>异常</code>、<code>lambda表达式</code>和<code>一行式</code>进行笔记总结。</p>
-<h2 id="一enumerate">一、Enumerate</h2>
-<p>Enumerate作为Python内置函数，很特别的地方在于，它允许在遍历数据的时候自动计数。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> counter, value <span class="kw">in</span> <span class="bu">enumerate</span>([<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>]):
-...    <span class="bu">print</span>(counter,value)
-...    
-(<span class="dv">0</span>, <span class="dv">1</span>)
-(<span class="dv">1</span>, <span class="dv">2</span>)
-(<span class="dv">2</span>, <span class="dv">3</span>)
-(<span class="dv">3</span>, <span class="dv">4</span>)
-(<span class="dv">4</span>, <span class="dv">5</span>)</code></pre></div>
-<p>Enumerate可以接受一些可选参数。譬如允许我们定制从哪个数字开始枚举。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> my_list <span class="op">=</span> [<span class="st">&#39;apple&#39;</span>,<span class="st">&#39;banana&#39;</span>,<span class="st">&#39;grapes&#39;</span>,<span class="st">&#39;pear&#39;</span>]
-<span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> c, value <span class="kw">in</span> <span class="bu">enumerate</span>(my_list, <span class="dv">1</span>):
-...    <span class="bu">print</span>(c, value)
-...    
-(<span class="dv">1</span>, <span class="st">&#39;apple&#39;</span>)
-(<span class="dv">2</span>, <span class="st">&#39;banana&#39;</span>)
-(<span class="dv">3</span>, <span class="st">&#39;grapes&#39;</span>)
-(<span class="dv">4</span>, <span class="st">&#39;pear&#39;</span>)</code></pre></div>
-<p>同样，可以用来创建包含索引的元组列表。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> my_list <span class="op">=</span> [<span class="st">&#39;apple&#39;</span>,<span class="st">&#39;banana&#39;</span>,<span class="st">&#39;grapes&#39;</span>,<span class="st">&#39;pear&#39;</span>]
-<span class="op">&gt;&gt;&gt;</span> counter_list <span class="op">=</span> <span class="bu">list</span>(<span class="bu">enumerate</span>(my_list,<span class="dv">1</span>))
-<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(counter_list)
-[(<span class="dv">1</span>, <span class="st">&#39;apple&#39;</span>), (<span class="dv">2</span>, <span class="st">&#39;banana&#39;</span>), (<span class="dv">3</span>, <span class="st">&#39;grapes&#39;</span>), (<span class="dv">4</span>, <span class="st">&#39;pear&#39;</span>)]</code></pre></div>
-<h2 id="二对象自省">二、对象自省</h2>
-<p>自省(Introspection)，在计算机编程领域里，是指在运行时来判断一个对象类型的能力，也就说它是什么、它跟神什么相干以及它能做什么。Python中所有一切都是对象，可以仔细勘察那些对象。Python中包含许多内置函数和模块来帮助我们。</p>
-<h3 id="dir"><u>dir</u></h3>
-<p><code>dir</code>是用于自省的最重要函数之一。它返回一个列表，列出了一个对象所拥有的属性和方法。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> my_list <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
-<span class="op">&gt;&gt;&gt;</span> <span class="bu">dir</span>(my_list)
-[<span class="st">&#39;__add__&#39;</span>, <span class="st">&#39;__class__&#39;</span>, <span class="st">&#39;__contains__&#39;</span>, <span class="st">&#39;__delattr__&#39;</span>, <span class="st">&#39;__delitem__&#39;</span>, <span class="st">&#39;__delslice__&#39;</span>, <span class="st">&#39;__doc__&#39;</span>, <span class="st">&#39;__eq__&#39;</span>, <span class="st">&#39;__format__&#39;</span>, <span class="st">&#39;__ge__&#39;</span>, <span class="st">&#39;__getattribute__&#39;</span>, <span class="st">&#39;__getitem__&#39;</span>, <span class="st">&#39;__getslice__&#39;</span>, <span class="st">&#39;__gt__&#39;</span>, <span class="st">&#39;__hash__&#39;</span>, <span class="st">&#39;__iadd__&#39;</span>, <span class="st">&#39;__imul__&#39;</span>, <span class="st">&#39;__init__&#39;</span>, <span class="st">&#39;__iter__&#39;</span>, <span class="st">&#39;__le__&#39;</span>, <span class="st">&#39;__len__&#39;</span>, <span class="st">&#39;__lt__&#39;</span>, <span class="st">&#39;__mul__&#39;</span>, <span class="st">&#39;__ne__&#39;</span>, <span class="st">&#39;__new__&#39;</span>, <span class="st">&#39;__reduce__&#39;</span>, <span class="st">&#39;__reduce_ex__&#39;</span>, <span class="st">&#39;__repr__&#39;</span>, <span class="st">&#39;__reversed__&#39;</span>, <span class="st">&#39;__rmul__&#39;</span>, <span class="st">&#39;__setattr__&#39;</span>, <span class="st">&#39;__setitem__&#39;</span>, <span class="st">&#39;__setslice__&#39;</span>, <span class="st">&#39;__sizeof__&#39;</span>, <span class="st">&#39;__str__&#39;</span>, <span class="st">&#39;__subclasshook__&#39;</span>, <span class="st">&#39;append&#39;</span>, <span class="st">&#39;count&#39;</span>, <span class="st">&#39;extend&#39;</span>, <span class="st">&#39;index&#39;</span>, <span class="st">&#39;insert&#39;</span>, <span class="st">&#39;pop&#39;</span>, <span class="st">&#39;remove&#39;</span>, <span class="st">&#39;reverse&#39;</span>, <span class="st">&#39;sort&#39;</span>]</code></pre></div>
-<p>如果在运行<code>dir()</code>不传入参数，那么它会返回当前作用域的所有名字。</p>
-<h3 id="type-id"><u>type &amp; id</u></h3>
-<p><code>type()</code>函数返回一个对象的类型。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="bu">type</span>(<span class="st">&#39;&#39;</span>))
-<span class="op">&lt;</span><span class="bu">type</span> <span class="st">&#39;str&#39;</span><span class="op">&gt;</span>
-<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="bu">type</span>([]))
-<span class="op">&lt;</span><span class="bu">type</span> <span class="st">&#39;list&#39;</span><span class="op">&gt;</span>
-<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="bu">type</span>({}))
-<span class="op">&lt;</span><span class="bu">type</span> <span class="st">&#39;dict&#39;</span><span class="op">&gt;</span>
-<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="bu">type</span>(<span class="bu">dict</span>))
-<span class="op">&lt;</span><span class="bu">type</span> <span class="st">&#39;type&#39;</span><span class="op">&gt;</span>
-<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="bu">type</span>(<span class="dv">3</span>))
-<span class="op">&lt;</span><span class="bu">type</span> <span class="st">&#39;int&#39;</span><span class="op">&gt;</span></code></pre></div>
-<p><code>id()</code>函数返回任意不同种类对象的唯一ID。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> name <span class="op">=</span> <span class="st">&#39;Peter&#39;</span>
-<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="bu">id</span>(name))
-<span class="dv">4429242848</span></code></pre></div>
-<h3 id="inspect"><u>inspect</u></h3>
-<p><code>inspect</code>函数用于获取活跃对象的信息。比如说，可以查看一个对象的成员。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="im">import</span> inspect
-<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(inspect.getmembers(<span class="bu">str</span>))
-[(<span class="st">&#39;__add__&#39;</span>, <span class="op">&lt;</span>slot wrapper <span class="st">&#39;__add__&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__class__&#39;</span>, <span class="op">&lt;</span><span class="bu">type</span> <span class="st">&#39;type&#39;</span><span class="op">&gt;</span>), (<span class="st">&#39;__contains__&#39;</span>, <span class="op">&lt;</span>slot wrapper <span class="st">&#39;__contains__&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__delattr__&#39;</span>, <span class="op">&lt;</span>slot wrapper <span class="st">&#39;__delattr__&#39;</span> of <span class="st">&#39;object&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__doc__&#39;</span>, <span class="st">&quot;str(object=&#39;&#39;) -&gt; string</span><span class="ch">\n\n</span><span class="st">Return a nice string representation of the object.</span><span class="ch">\n</span><span class="st">If the argument is a string, the return value is the same object.&quot;</span>), (<span class="st">&#39;__eq__&#39;</span>, <span class="op">&lt;</span>slot wrapper <span class="st">&#39;__eq__&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__format__&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;__format__&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__ge__&#39;</span>, <span class="op">&lt;</span>slot wrapper <span class="st">&#39;__ge__&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__getattribute__&#39;</span>, <span class="op">&lt;</span>slot wrapper <span class="st">&#39;__getattribute__&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__getitem__&#39;</span>, <span class="op">&lt;</span>slot wrapper <span class="st">&#39;__getitem__&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__getnewargs__&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;__getnewargs__&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__getslice__&#39;</span>, <span class="op">&lt;</span>slot wrapper <span class="st">&#39;__getslice__&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__gt__&#39;</span>, <span class="op">&lt;</span>slot wrapper <span class="st">&#39;__gt__&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__hash__&#39;</span>, <span class="op">&lt;</span>slot wrapper <span class="st">&#39;__hash__&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__init__&#39;</span>, <span class="op">&lt;</span>slot wrapper <span class="st">&#39;__init__&#39;</span> of <span class="st">&#39;object&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__le__&#39;</span>, <span class="op">&lt;</span>slot wrapper <span class="st">&#39;__le__&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__len__&#39;</span>, <span class="op">&lt;</span>slot wrapper <span class="st">&#39;__len__&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__lt__&#39;</span>, <span class="op">&lt;</span>slot wrapper <span class="st">&#39;__lt__&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__mod__&#39;</span>, <span class="op">&lt;</span>slot wrapper <span class="st">&#39;__mod__&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__mul__&#39;</span>, <span class="op">&lt;</span>slot wrapper <span class="st">&#39;__mul__&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__ne__&#39;</span>, <span class="op">&lt;</span>slot wrapper <span class="st">&#39;__ne__&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__new__&#39;</span>, <span class="op">&lt;</span>built<span class="op">-</span><span class="kw">in</span> method <span class="fu">__new__</span> of <span class="bu">type</span> <span class="bu">object</span> at <span class="bn">0x107dacef0</span><span class="op">&gt;</span>), (<span class="st">&#39;__reduce__&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;__reduce__&#39;</span> of <span class="st">&#39;object&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__reduce_ex__&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;__reduce_ex__&#39;</span> of <span class="st">&#39;object&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__repr__&#39;</span>, <span class="op">&lt;</span>slot wrapper <span class="st">&#39;__repr__&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__rmod__&#39;</span>, <span class="op">&lt;</span>slot wrapper <span class="st">&#39;__rmod__&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__rmul__&#39;</span>, <span class="op">&lt;</span>slot wrapper <span class="st">&#39;__rmul__&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__setattr__&#39;</span>, <span class="op">&lt;</span>slot wrapper <span class="st">&#39;__setattr__&#39;</span> of <span class="st">&#39;object&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__sizeof__&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;__sizeof__&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__str__&#39;</span>, <span class="op">&lt;</span>slot wrapper <span class="st">&#39;__str__&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;__subclasshook__&#39;</span>, <span class="op">&lt;</span>built<span class="op">-</span><span class="kw">in</span> method __subclasshook__ of <span class="bu">type</span> <span class="bu">object</span> at <span class="bn">0x107dacef0</span><span class="op">&gt;</span>), (<span class="st">&#39;_formatter_field_name_split&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;_formatter_field_name_split&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;_formatter_parser&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;_formatter_parser&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;capitalize&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;capitalize&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;center&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;center&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;count&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;count&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;decode&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;decode&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;encode&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;encode&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;endswith&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;endswith&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;expandtabs&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;expandtabs&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;find&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;find&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;format&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;format&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;index&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;index&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;isalnum&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;isalnum&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;isalpha&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;isalpha&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;isdigit&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;isdigit&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;islower&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;islower&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;isspace&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;isspace&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;istitle&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;istitle&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;isupper&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;isupper&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;join&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;join&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;ljust&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;ljust&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;lower&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;lower&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;lstrip&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;lstrip&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;partition&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;partition&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;replace&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;replace&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;rfind&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;rfind&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;rindex&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;rindex&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;rjust&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;rjust&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;rpartition&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;rpartition&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;rsplit&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;rsplit&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;rstrip&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;rstrip&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;split&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;split&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;splitlines&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;splitlines&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;startswith&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;startswith&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;strip&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;strip&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;swapcase&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;swapcase&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;title&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;title&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;translate&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;translate&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;upper&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;upper&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>), (<span class="st">&#39;zfill&#39;</span>, <span class="op">&lt;</span>method <span class="st">&#39;zfill&#39;</span> of <span class="st">&#39;str&#39;</span> objects<span class="op">&gt;</span>)]</code></pre></div>
-<h3 id="issubclass"><u>issubclass</u></h3>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="bu">issubclass</span>(sub, sup)</code></pre></div>
-<p>如果给出的子类sub确定是父类sup的一个子类，则返回True。</p>
-<h3 id="hasattr"><u>hasattr</u></h3>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="bu">hasattr</span>(<span class="bu">object</span>, name)</code></pre></div>
-<p>检查object是否有一个名为name的值的属性，返回一个布尔值。第二个参数，即属性名字符串的方式提供。该函数一般用于访问某属性前先做一个检查。</p>
-<h3 id="getattr"><u>getattr</u></h3>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="bu">getattr</span>(<span class="bu">object</span>, name[, default])</code></pre></div>
-<p>返回obect中名为name值的属性的值。例如如果属性名为‘bar’，则返回obj.bar，该函数会在试图获取一个不存在的属性时，引发AttributeError异常，除非可选的默认参数default。</p>
-<h3 id="setattr"><u>setattr</u></h3>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="bu">setattr</span>(<span class="bu">object</span>, name, value)</code></pre></div>
-<p>将给object对象中名为name的值的属性赋值为val。例如如果name为'bar'，则相当于obj.bar = val。如果object中有name的属性则重新设置其值，如果没有则添加一个名为name的属性。</p>
-<h2 id="三推导式">三、推导式</h2>
-<p>推导式（又称解析式）是Python的一种独有特性，可以从一个数据序列构建另一个新的数据序列的结构体。共有三种推导。</p>
-<ul>
-<li>列表(list)推导式</li>
-<li>字典(dict)推导式</li>
-<li>集合(set)推导式</li>
-</ul>
-<h3 id="列表推导式list-comprehensions"><u>列表推导式</u>(list comprehensions)</h3>
-<p>列表推导式提供了一种简明扼要的方法来创建列表。</p>
-<p>它的结构是在一个中括号里包含一个表达式，然后是一个for语句，然后是0个或多个for或者if语句。返回结果将是一个新的列表。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> multiples <span class="op">=</span> [i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">30</span>) <span class="cf">if</span> i <span class="op">%</span> <span class="dv">3</span> <span class="kw">is</span> <span class="dv">0</span>]
-<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(multiples)
-[<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">6</span>, <span class="dv">9</span>, <span class="dv">12</span>, <span class="dv">15</span>, <span class="dv">18</span>, <span class="dv">21</span>, <span class="dv">24</span>, <span class="dv">27</span>]</code></pre></div>
-<h3 id="字典推导式dict-comprehensions"><u>字典推导式</u>(dict comprehensions)</h3>
-<p>举一个例子，即利用字典推导式快速对换一个字典的键和值。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> {v: k <span class="cf">for</span> k, v <span class="kw">in</span> mcase.items()}
-{<span class="dv">3</span>: <span class="st">&#39;Z&#39;</span>, <span class="dv">7</span>: <span class="st">&#39;A&#39;</span>, <span class="dv">10</span>: <span class="st">&#39;a&#39;</span>, <span class="dv">34</span>: <span class="st">&#39;b&#39;</span>}</code></pre></div>
-<h3 id="集合推导式set-comprehensions"><u>集合推导式</u>(set comprehensions)</h3>
-<p>它们跟列表推导也是类似的。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> squared <span class="op">=</span> {x <span class="op">**</span><span class="dv">2</span> <span class="cf">for</span> x <span class="kw">in</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]}
-<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(squared)
-<span class="bu">set</span>([<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">9</span>])</code></pre></div>
-<h2 id="四异常">四、异常</h2>
-<p>最熟悉的是try/except从句，我们把可能触发异常发生的代码会放到try语句块里，而处理异常的代码会在except语句块里实现。</p>
-<h3 id="处理多个异常"><u>处理多个异常</u></h3>
-<p>有三种方法来处理多个异常。</p>
-<p>第一种方法需要把所有可能发生的异常放到一个元组里。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="cf">try</span>:
-    <span class="bu">file</span> <span class="op">=</span> <span class="bu">open</span>(<span class="st">&#39;test.txt&#39;</span>, <span class="st">&#39;rb&#39;</span>)
-<span class="cf">except</span> (<span class="pp">IOError</span>, <span class="pp">EOFError</span>) <span class="im">as</span> e:
-    <span class="bu">print</span>(<span class="st">&quot;An errror occurred. </span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(e.args[<span class="op">-</span><span class="dv">1</span>]))</code></pre></div>
-<p>另外一种方式是对每个单独的except语句块中处理。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="cf">try</span>:
-    <span class="bu">file</span> <span class="op">=</span> <span class="bu">open</span>(<span class="st">&#39;test.txt&#39;</span>, <span class="st">&#39;rb&#39;</span>)
-<span class="cf">except</span> <span class="pp">EOFError</span> <span class="im">as</span> e:
-    <span class="bu">print</span>(<span class="st">&quot;An EOF error occurred.&quot;</span>)
-    <span class="cf">raise</span> e
-<span class="cf">except</span> <span class="pp">IOError</span> <span class="im">as</span> e:
-    <span class="bu">print</span>(<span class="st">&quot;An error occurred.&quot;</span>)
-    <span class="cf">raise</span> e</code></pre></div>
-<p>最后一种方法是会捕获所有异常：</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="cf">try</span>:
-    <span class="bu">file</span> <span class="op">=</span> <span class="bu">open</span>(<span class="st">&#39;test.txt&#39;</span>, <span class="st">&#39;rb&#39;</span>)
-<span class="cf">except</span> <span class="pp">Exception</span>:
-    <span class="cf">raise</span></code></pre></div>
-<h3 id="finally"><u>finally</u></h3>
-<p>一般而言是把主程序代码包裹进try从句。然后把一些代码包裹进一个except从句，它会在try从句中的代码触发异常时执行。</p>
-<p>然后还有finally从句，包裹到finally从句中的代码不管异常是否触发都将会被执行。这可以被用来在脚本执行之后做清理工作。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="cf">try</span>:
-    <span class="bu">file</span> <span class="op">=</span> <span class="bu">open</span>(<span class="st">&#39;test.txt&#39;</span>,<span class="st">&#39;rb&#39;</span>)
-<span class="cf">except</span> <span class="pp">IOError</span> <span class="im">as</span> e:
-    <span class="bu">print</span>(<span class="st">&#39;An IOError occurred. </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(e.args[<span class="op">-</span><span class="dv">1</span>]))
-<span class="cf">finally</span>:
-    <span class="bu">print</span>(<span class="st">&quot;This would be printed whether or not an exception occured!&quot;</span>)</code></pre></div>
-<h2 id="五lambda">五、lambda</h2>
-<p>lambda表达式是一行函数。它们在其他语言中被称为匿名函数。</p>
-<p>原型</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">lambda</span> argument: manipulate(argument)</code></pre></div>
-<p>例子</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> add <span class="op">=</span> <span class="kw">lambda</span> x,y: x<span class="op">+</span>y
-<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(add(<span class="dv">3</span>,<span class="dv">5</span>))
-<span class="dv">8</span></code></pre></div>
-<p>列表排序</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">2</span>), (<span class="dv">4</span>,<span class="dv">1</span>), (<span class="dv">9</span>,<span class="dv">10</span>), (<span class="dv">13</span>, <span class="op">-</span><span class="dv">3</span>)]
-<span class="op">&gt;&gt;&gt;</span> a.sort(key<span class="op">=</span><span class="kw">lambda</span> x:x[<span class="dv">1</span>])
-<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(a)
-[(<span class="dv">13</span>, <span class="op">-</span><span class="dv">3</span>), (<span class="dv">4</span>, <span class="dv">1</span>), (<span class="dv">1</span>, <span class="dv">2</span>), (<span class="dv">9</span>, <span class="dv">10</span>)]</code></pre></div>
-<h2 id="六一行式">六、一行式</h2>
-<p>下面是python一些一行式命令。</p>
-<h3 id="打印"><u>打印</u></h3>
-<p>可以用<code>pprint</code>漂亮的打印出列表和字典，这种方法在字典上更为有效。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> pprint <span class="im">import</span> pprint
-<span class="op">&gt;&gt;&gt;</span> my_dict <span class="op">=</span> {<span class="st">&#39;name&#39;</span>: <span class="st">&#39;Yasoob&#39;</span>, <span class="st">&#39;age&#39;</span>: <span class="st">&#39;undefined&#39;</span>, <span class="st">&#39;personality&#39;</span>: <span class="st">&#39;awesome&#39;</span>}
-<span class="op">&gt;&gt;&gt;</span> pprint(my_dict)
-{<span class="st">&#39;age&#39;</span>: <span class="st">&#39;undefined&#39;</span>, <span class="st">&#39;name&#39;</span>: <span class="st">&#39;Yasoob&#39;</span>, <span class="st">&#39;personality&#39;</span>: <span class="st">&#39;awesome&#39;</span>}</code></pre></div>
-<p>下面是想快速漂亮地从文件打印出json数据，可以这样做</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">cat <span class="bu">file</span>.json <span class="op">|</span> python <span class="op">-</span>m json.tool</code></pre></div>
-<h3 id="csv-to-json"><u>CSV to json</u></h3>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">python <span class="op">-</span>c <span class="st">&quot;import csv,json;print json.dumps(list(csv.reader(open(&#39;csv_file.csv&#39;))))&quot;</span></code></pre></div>
-<h3 id="列表辗平"><u>列表辗平</u></h3>
-<p>可以通过使用<code>itertools</code>包中的<code>itertools.chain.from_iterable</code>轻松快速的辗平一个列表。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="im">import</span> itertools
-<span class="op">&gt;&gt;&gt;</span> a_list <span class="op">=</span> [[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="dv">4</span>],[<span class="dv">5</span>,<span class="dv">6</span>]]
-<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="bu">list</span>(itertools.chain.from_iterable(a_list)))
-[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]
-<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(<span class="bu">list</span>(itertools.chain(<span class="op">*</span>a_list)))
-[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]</code></pre></div>
-<h3 id="一行式的构造器"><u>一行式的构造器</u></h3>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">class</span> A(<span class="bu">object</span>):
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, a, b, c, d, e, f):
-        <span class="va">self</span>.__dict__.update({k: v <span class="cf">for</span> k, v <span class="kw">in</span> <span class="bu">locals</span>().items() <span class="cf">if</span> k <span class="op">!=</span> <span class="st">&#39;self&#39;</span>})</code></pre></div>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -4453,7 +4426,7 @@ python good</code></pre></div>
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-count">35</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
