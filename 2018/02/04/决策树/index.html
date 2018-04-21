@@ -98,7 +98,7 @@
 <meta property="og:site_name" content="彼得的博客">
 <meta property="og:description" content="今天终于有时间来总结一下决策树了。 决策树是一种用于分类或者回归的无参数学习的监督方法。决策树的特点是它总是在沿着特征做切分，随着层层递进，这个划分会越来越细。 决策树学习包括三个步骤： 特征选择、决策树的生成和决策树的修剪。 用决策树分类，从根节点开始，对实例的某一特征进行测试，根据测试结果，将实例分配到其子结点。每一个子结点对应着该特征的一个取值。如此递归地对实例进行测试并分配，直至达到叶节点">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-22T08:27:09.317Z">
+<meta property="og:updated_time" content="2018-04-21T04:25:32.077Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Decision Tree">
 <meta name="twitter:description" content="今天终于有时间来总结一下决策树了。 决策树是一种用于分类或者回归的无参数学习的监督方法。决策树的特点是它总是在沿着特征做切分，随着层层递进，这个划分会越来越细。 决策树学习包括三个步骤： 特征选择、决策树的生成和决策树的修剪。 用决策树分类，从根节点开始，对实例的某一特征进行测试，根据测试结果，将实例分配到其子结点。每一个子结点对应着该特征的一个取值。如此递归地对实例进行测试并分配，直至达到叶节点">
@@ -634,6 +634,26 @@ C_{\alpha}(T) &amp; = C(T) + \alpha(T)
 <li><p>最后调用<code>self.reduce_nodes</code>方法、将被剪掉的 Node 从<code>nodes</code>中除去</p></li>
 </ol>
 <p><strong>3.输出</strong>：修剪过后的决策树<code>Tα</code></p>
+<h2 id="决策树优缺点">决策树优缺点</h2>
+<ul>
+<li><h4 id="优点">优点</h4></li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>决策树易于理解和解释</li>
+<li>数据的准备往往是简单或者是不必要的</li>
+<li>能够同时处理数据型和<em>类别型</em>属性。其他的技术往往要求数据属性的单一</li>
+<li>在相对短的时间内能够对大型数据源做出可行且效果良好的结果</li>
+<li>可以对有许多属性的数据集构造决策树</li>
+<li>决策树常用于集成算法，如随机森林，提升树等</li>
+</ol>
+<ul>
+<li><h4 id="缺点">缺点</h4></li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>在决策树当中,信息增益的结果偏向于那些具有更多数值的特征</li>
+<li>决策树处理缺失数据时的困难。</li>
+<li>出现过拟合</li>
+</ol>
 
       
     </div>
@@ -817,7 +837,7 @@ C_{\alpha}(T) &amp; = C(T) + \alpha(T)
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#特征选择"><span class="nav-number">1.</span> <span class="nav-text">特征选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#信息增益"><span class="nav-number">1.1.</span> <span class="nav-text">信息增益</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#决策树的生成"><span class="nav-number">2.</span> <span class="nav-text">决策树的生成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#id3算法"><span class="nav-number">2.1.</span> <span class="nav-text">ID3算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#c4.5算法"><span class="nav-number">2.2.</span> <span class="nav-text">C4.5算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cartclassification-and-regression-tree算法"><span class="nav-number">2.3.</span> <span class="nav-text">CART(Classification and regression tree)算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cart分类树"><span class="nav-number">2.4.</span> <span class="nav-text">CART分类树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cart回归树"><span class="nav-number">2.5.</span> <span class="nav-text">CART回归树</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#决策树的剪枝"><span class="nav-number">3.</span> <span class="nav-text">决策树的剪枝</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#特征选择"><span class="nav-number">1.</span> <span class="nav-text">特征选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#信息增益"><span class="nav-number">1.1.</span> <span class="nav-text">信息增益</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#决策树的生成"><span class="nav-number">2.</span> <span class="nav-text">决策树的生成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#id3算法"><span class="nav-number">2.1.</span> <span class="nav-text">ID3算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#c4.5算法"><span class="nav-number">2.2.</span> <span class="nav-text">C4.5算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cartclassification-and-regression-tree算法"><span class="nav-number">2.3.</span> <span class="nav-text">CART(Classification and regression tree)算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cart分类树"><span class="nav-number">2.4.</span> <span class="nav-text">CART分类树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cart回归树"><span class="nav-number">2.5.</span> <span class="nav-text">CART回归树</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#决策树的剪枝"><span class="nav-number">3.</span> <span class="nav-text">决策树的剪枝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#决策树优缺点"><span class="nav-number">4.</span> <span class="nav-text">决策树优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点"><span class="nav-number">4.0.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点"><span class="nav-number">4.0.2.</span> <span class="nav-text">缺点</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

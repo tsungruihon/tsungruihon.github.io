@@ -553,8 +553,7 @@ Recall &amp; = \frac {TP}{TP + FN}
       
         
           
-            <p>总结完<code>Logistic Regression</code>，我觉得再看回<code>Naive Bayes</code>就很好理解了。从来都没有试过这么清楚过。</p>
-<p><code>Naive Bayes(朴素贝叶斯法)</code>是基于贝叶斯定理与特征条件独立假设的分类方法，对于给定的训练数据集，首先基于特征条件独立假设学习输入/输出的联合概率分布；然后基于此模型，对给定的输入<code>x</code>，利用贝叶斯定理求出后验概率最大的输出<code>y</code>。</p>
+            <p><code>Naive Bayes(朴素贝叶斯法)</code>是基于贝叶斯定理与特征条件独立假设的分类方法，对于给定的训练数据集，首先基于特征条件独立假设学习输入/输出的联合概率分布；然后基于此模型，对给定的输入<code>x</code>，利用贝叶斯定理求出后验概率最大的输出<code>y</code>。</p>
 <p><code>朴素贝叶斯</code>对条件概率分布作了条件独立性的假设，具体地，条件独立性假设是： <span class="math display">\[
 \begin{aligned}
 P(X  =x|Y=c_k)  &amp;= P(X^{(1)}  = x^{(1)}, ･･･, X^{(n)}=x^{(n)}|Y=c_k) \\
@@ -572,8 +571,7 @@ P(Y=c_k|X=x) &amp;  = \frac {P(X=x|Y=c_k)\cdot P(Y=c_k)}{\sum_kP(X=x|Y=c_k)\cdot
 y = f(x) = \mathop{\arg\max}_{c_k} \frac {P(Y=c_k)\prod_jP(X^{(j)}=x^{(j)}|Y=c_k)}{\sum_kP(Y=c_k)\cdot \prod_jP(X^{(j)} |Y=c_k)}
 \]</span> 然后其实对于每个<code>c_k</code>，分母都是一样的，所以可以简化公式： <span class="math display">\[
 y = f(x) = \mathop{\arg\max}_{c_k}P(Y=c_k)\prod_jP(X^{(j)}=x^{(j)}|Y=c_k)
-\]</span> 搞定。</p>
-<p>也就说，朴素贝叶斯法的学习与分类分为以下几个步骤：</p>
+\]</span> 也就说，朴素贝叶斯法的学习与分类分为以下几个步骤：</p>
 <ol style="list-style-type: decimal">
 <li>计算先验概率及条件概率：</li>
 </ol>
@@ -601,7 +599,23 @@ y = f(x) = \mathop{\arg\max}_{c_k}P(Y=c_k)\prod_jP(X^{(j)}=x^{(j)}|Y=c_k)
 <p><span class="math display">\[
 y = f(x) = \mathop{\arg\max}_{c_k}P(Y=c_k)\prod_jP(X^{(j)}=x^{(j)}|Y=c_k)
 \]</span></p>
-<p> 然后下面我们可以用Python来实现这个算法啦。</p>
+<ul>
+<li><strong>朴素贝叶斯算法的主要优点</strong>：</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li> 发源于古典数学理论，有稳定的分类效率</li>
+<li>对小规模的数据表现很好，能处理多分类任务，适合增量式训练，尤其是数据量超出内存时，我们可以一批批的去增量训练</li>
+<li>对缺失数据不太敏感，算法也比较简单，常用于文本分类</li>
+</ol>
+<ul>
+<li><strong>朴素贝叶斯算法的主要缺点</strong>：</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>朴素贝叶斯假定假设属性之间相互独立，在属性个数比较多或者属性之间相关性较大时，分类效果不好。在属性相关性较小时，分类最为良好</li>
+<li>需要知道先验概率，且先验概率很多时候取决于假设。假设的先验模型会影响预测效果</li>
+<li>对输入数据的表达形式很敏感</li>
+</ol>
+<p>然后下面我们可以用Python来实现这个算法啦。</p>
 <div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> numpy <span class="im">as</span> np
 <span class="im">from</span> functools <span class="im">import</span> <span class="bu">reduce</span>
 
