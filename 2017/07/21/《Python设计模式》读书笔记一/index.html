@@ -375,279 +375,279 @@
 <p>工厂通常有两种形式：一种是工厂方法(<code>Factory Method</code>)，对不同的输入参数返回不同的对象；第二种是抽象工厂，它是一组用于创建一系列相关产品的系列。</p>
 <p>在工厂方法模式中，我们执行单个函数，传入一个参数（提供信息表明我们想要什么），但并不要求知道任何关于对象如何实现以及对象来自哪里的细节。</p>
 <p>下面有一个例子，就是有一些输入数据存储在一个XML文件和一个JSON文件中，要对这两个文件进行解析，获取一些信息。同时，希望能够对这些（以及将来涉及的所有）外部服务进行集中式的客户端连接。然后分别使用<code>Python</code>的两个库（<code>xml.etree.ElementTree</code>和<code>json</code>）来处理XML和JSON。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> xml.etree.ElementTree <span class="im">as</span> etree
-<span class="im">import</span> json</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="im">import</span> xml.etree.ElementTree <span class="im">as</span> etree</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="im">import</span> json</a></code></pre></div>
 <p>类<code>JSONConnector</code>解析JSON文件，通过<code>parsed_data()</code>方法以一个字典（<code>dict</code>）的形式返回数据。修饰器<code>property</code>使<code>parsed_data()</code>显得更像一个常规的变量，而不是一个方法。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">class</span> JSONConnector:
-    
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, filepath):
-        <span class="va">self</span>.data <span class="op">=</span> <span class="bu">dict</span>()
-        <span class="cf">with</span> <span class="bu">open</span>(filepath, mode<span class="op">=</span><span class="st">&#39;r&#39;</span>, encoding<span class="op">=</span><span class="st">&#39;utf-8&#39;</span>) <span class="im">as</span> f:
-            <span class="va">self</span>.data <span class="op">=</span> json.load(f)
-    
-    <span class="at">@property</span>
-    <span class="kw">def</span> parsed_data(<span class="va">self</span>):
-        <span class="cf">return</span> <span class="va">self</span>.data</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">class</span> JSONConnector:</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">    </a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, filepath):</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">        <span class="va">self</span>.data <span class="op">=</span> <span class="bu">dict</span>()</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">        <span class="cf">with</span> <span class="bu">open</span>(filepath, mode<span class="op">=</span><span class="st">&#39;r&#39;</span>, encoding<span class="op">=</span><span class="st">&#39;utf-8&#39;</span>) <span class="im">as</span> f:</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">            <span class="va">self</span>.data <span class="op">=</span> json.load(f)</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">    </a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">    <span class="at">@property</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">    <span class="kw">def</span> parsed_data(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">        <span class="cf">return</span> <span class="va">self</span>.data</a></code></pre></div>
 <p>类<code>XMLConnector</code>解析XML文件，通过<code>parsed_data()</code>方法以<code>xml.etree.Element</code>列表的形式返回所有数据。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">class</span> XMLConnector:
-    
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, filepath):
-        <span class="va">self</span>.tree <span class="op">=</span> etree.parse(filepath)
-        
-    <span class="at">@property</span>
-    <span class="kw">def</span> parsed_data(<span class="va">self</span>):
-        <span class="cf">return</span> <span class="va">self</span>.tree</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">class</span> XMLConnector:</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">    </a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, filepath):</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">        <span class="va">self</span>.tree <span class="op">=</span> etree.parse(filepath)</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">        </a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">    <span class="at">@property</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">    <span class="kw">def</span> parsed_data(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">        <span class="cf">return</span> <span class="va">self</span>.tree</a></code></pre></div>
 <p>函数<code>connection_factory</code>是一个工厂方法，基于输入文件路径的扩展名返回一个<code>JSONConnector</code>或<code>XMLConnector</code>的实例。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> connector_factory(filepath):
-    <span class="cf">if</span> filepath.endswith(<span class="st">&#39;json&#39;</span>):
-        connector <span class="op">=</span> JSONConnector
-    <span class="cf">elif</span> filepath.endswith(<span class="st">&#39;xml&#39;</span>):
-        connector <span class="op">=</span> XMLConnector
-    <span class="cf">else</span>:
-        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">&#39;Cannot connect to </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(filepath))</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">def</span> connector_factory(filepath):</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">    <span class="cf">if</span> filepath.endswith(<span class="st">&#39;json&#39;</span>):</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">        connector <span class="op">=</span> JSONConnector</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">    <span class="cf">elif</span> filepath.endswith(<span class="st">&#39;xml&#39;</span>):</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">        connector <span class="op">=</span> XMLConnector</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">    <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">&#39;Cannot connect to </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(filepath))</a></code></pre></div>
 <p>为便于整体理解，下面给出工厂方法实现的完整代码。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> xml.etree.ElementTree <span class="im">as</span> etree
-<span class="im">import</span> json
-
-<span class="kw">class</span> JSONConnector:
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, filepath):
-        <span class="va">self</span>.data <span class="op">=</span> <span class="bu">dict</span>()
-        <span class="cf">with</span> <span class="bu">open</span>(filepath, mode<span class="op">=</span><span class="st">&#39;r&#39;</span>, encoding<span class="op">=</span><span class="st">&#39;utf-8&#39;</span>) <span class="im">as</span> f:
-            <span class="va">self</span>.data <span class="op">=</span> json.load(f)
-    <span class="at">@property</span>
-    <span class="kw">def</span> parsed_data(<span class="va">self</span>):
-        <span class="cf">return</span> <span class="va">self</span>.data
-
-<span class="kw">class</span> XMLConnector:
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, filepath):
-        <span class="va">self</span>.tree <span class="op">=</span> etree.parse(filepath)
-        
-    <span class="at">@property</span>
-    <span class="kw">def</span> parsed_data(<span class="va">self</span>):
-        <span class="cf">return</span> <span class="va">self</span>.tree
-
-<span class="kw">def</span> connection_factory(filepath):
-    <span class="cf">if</span> filepath.endswith(<span class="st">&#39;json&#39;</span>):
-        connector <span class="op">=</span> JSONConnector
-    <span class="cf">elif</span> filepath.endswith(<span class="st">&#39;xml&#39;</span>):
-        connector <span class="op">=</span> XMLConnector
-    <span class="cf">else</span>:
-        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">&#39;Cannot connect to </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(filepath))
-    <span class="cf">return</span> connector(filepath)
-                  
-<span class="kw">def</span> connect_to(filepath):
-    factory <span class="op">=</span> <span class="va">None</span>
-    <span class="cf">try</span>:
-        factory <span class="op">=</span> connection_factory(filepath)
-    <span class="cf">except</span> <span class="pp">ValueError</span> <span class="im">as</span> ve:
-        <span class="bu">print</span>(ve)
-    <span class="cf">return</span> factory
-
-<span class="kw">def</span> main():
-    sqlite_factory <span class="op">=</span> connect_to(<span class="st">&#39;data/person.sq3&#39;</span>)
-    <span class="bu">print</span>()
-    
-    xml_factory <span class="op">=</span> connect_to(<span class="st">&#39;data/person.xml&#39;</span>)
-    xml_data <span class="op">=</span> xml_factory.parsed_data
-    liars <span class="op">=</span> xml_data.findall(<span class="st">&quot;.//</span><span class="sc">{}</span><span class="st">[</span><span class="sc">{}</span><span class="st">=&#39;</span><span class="sc">{}</span><span class="st">&#39;]&quot;</span>.<span class="bu">format</span>(<span class="st">&#39;person&#39;</span>, <span class="st">&#39;lastName&#39;</span>, <span class="st">&#39;Liar&#39;</span>))
-    <span class="bu">print</span>(<span class="st">&#39;found: </span><span class="sc">{}</span><span class="st"> persons&#39;</span>.<span class="bu">format</span>(<span class="bu">len</span>(liars)))
-    <span class="cf">for</span> liar <span class="kw">in</span> liars:
-        <span class="bu">print</span>(<span class="st">&#39;first name: </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(liar.find(<span class="st">&#39;firstName&#39;</span>).text))
-        <span class="bu">print</span>(<span class="st">&#39;last name: </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(liar.find(<span class="st">&#39;lastName&#39;</span>).text))
-        [<span class="bu">print</span>(<span class="st">&#39;phone number (</span><span class="sc">{}</span><span class="st">)&#39;</span>.<span class="bu">format</span>(p.attrib[<span class="st">&#39;type&#39;</span>]), p.text) <span class="cf">for</span> p <span class="kw">in</span> liar.find(<span class="st">&#39;phoneNumbers&#39;</span>)]
-    <span class="bu">print</span>()
-    
-    json_factory <span class="op">=</span> connect_to(<span class="st">&#39;data/donut.json&#39;</span>)
-    json_data <span class="op">=</span> json_factory.parsed_data
-    <span class="bu">print</span>(<span class="st">&#39;found: </span><span class="sc">{}</span><span class="st"> donuts&#39;</span>.<span class="bu">format</span>(<span class="bu">len</span>(json_data)))
-    <span class="cf">for</span> donut <span class="kw">in</span> json_data:
-        <span class="bu">print</span>(<span class="st">&#39;name: </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(donut[<span class="st">&#39;name&#39;</span>]))
-        <span class="bu">print</span>(<span class="st">&#39;price: $</span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(donut[<span class="st">&#39;ppu&#39;</span>]))
-        [<span class="bu">print</span>(<span class="st">&#39;topping: </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(t[<span class="st">&#39;id&#39;</span>], t[<span class="st">&#39;type&#39;</span>])) <span class="cf">for</span> t <span class="kw">in</span> donut[<span class="st">&#39;topping&#39;</span>]]
-
-<span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:
-    main()</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="im">import</span> xml.etree.ElementTree <span class="im">as</span> etree</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="im">import</span> json</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="kw">class</span> JSONConnector:</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, filepath):</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">        <span class="va">self</span>.data <span class="op">=</span> <span class="bu">dict</span>()</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">        <span class="cf">with</span> <span class="bu">open</span>(filepath, mode<span class="op">=</span><span class="st">&#39;r&#39;</span>, encoding<span class="op">=</span><span class="st">&#39;utf-8&#39;</span>) <span class="im">as</span> f:</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">            <span class="va">self</span>.data <span class="op">=</span> json.load(f)</a>
+<a class="sourceLine" id="cb5-9" data-line-number="9">    <span class="at">@property</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">    <span class="kw">def</span> parsed_data(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb5-11" data-line-number="11">        <span class="cf">return</span> <span class="va">self</span>.data</a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="kw">class</span> XMLConnector:</a>
+<a class="sourceLine" id="cb5-14" data-line-number="14">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, filepath):</a>
+<a class="sourceLine" id="cb5-15" data-line-number="15">        <span class="va">self</span>.tree <span class="op">=</span> etree.parse(filepath)</a>
+<a class="sourceLine" id="cb5-16" data-line-number="16">        </a>
+<a class="sourceLine" id="cb5-17" data-line-number="17">    <span class="at">@property</span></a>
+<a class="sourceLine" id="cb5-18" data-line-number="18">    <span class="kw">def</span> parsed_data(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb5-19" data-line-number="19">        <span class="cf">return</span> <span class="va">self</span>.tree</a>
+<a class="sourceLine" id="cb5-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="kw">def</span> connection_factory(filepath):</a>
+<a class="sourceLine" id="cb5-22" data-line-number="22">    <span class="cf">if</span> filepath.endswith(<span class="st">&#39;json&#39;</span>):</a>
+<a class="sourceLine" id="cb5-23" data-line-number="23">        connector <span class="op">=</span> JSONConnector</a>
+<a class="sourceLine" id="cb5-24" data-line-number="24">    <span class="cf">elif</span> filepath.endswith(<span class="st">&#39;xml&#39;</span>):</a>
+<a class="sourceLine" id="cb5-25" data-line-number="25">        connector <span class="op">=</span> XMLConnector</a>
+<a class="sourceLine" id="cb5-26" data-line-number="26">    <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb5-27" data-line-number="27">        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">&#39;Cannot connect to </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(filepath))</a>
+<a class="sourceLine" id="cb5-28" data-line-number="28">    <span class="cf">return</span> connector(filepath)</a>
+<a class="sourceLine" id="cb5-29" data-line-number="29">                  </a>
+<a class="sourceLine" id="cb5-30" data-line-number="30"><span class="kw">def</span> connect_to(filepath):</a>
+<a class="sourceLine" id="cb5-31" data-line-number="31">    factory <span class="op">=</span> <span class="va">None</span></a>
+<a class="sourceLine" id="cb5-32" data-line-number="32">    <span class="cf">try</span>:</a>
+<a class="sourceLine" id="cb5-33" data-line-number="33">        factory <span class="op">=</span> connection_factory(filepath)</a>
+<a class="sourceLine" id="cb5-34" data-line-number="34">    <span class="cf">except</span> <span class="pp">ValueError</span> <span class="im">as</span> ve:</a>
+<a class="sourceLine" id="cb5-35" data-line-number="35">        <span class="bu">print</span>(ve)</a>
+<a class="sourceLine" id="cb5-36" data-line-number="36">    <span class="cf">return</span> factory</a>
+<a class="sourceLine" id="cb5-37" data-line-number="37"></a>
+<a class="sourceLine" id="cb5-38" data-line-number="38"><span class="kw">def</span> main():</a>
+<a class="sourceLine" id="cb5-39" data-line-number="39">    sqlite_factory <span class="op">=</span> connect_to(<span class="st">&#39;data/person.sq3&#39;</span>)</a>
+<a class="sourceLine" id="cb5-40" data-line-number="40">    <span class="bu">print</span>()</a>
+<a class="sourceLine" id="cb5-41" data-line-number="41">    </a>
+<a class="sourceLine" id="cb5-42" data-line-number="42">    xml_factory <span class="op">=</span> connect_to(<span class="st">&#39;data/person.xml&#39;</span>)</a>
+<a class="sourceLine" id="cb5-43" data-line-number="43">    xml_data <span class="op">=</span> xml_factory.parsed_data</a>
+<a class="sourceLine" id="cb5-44" data-line-number="44">    liars <span class="op">=</span> xml_data.findall(<span class="st">&quot;.//</span><span class="sc">{}</span><span class="st">[</span><span class="sc">{}</span><span class="st">=&#39;</span><span class="sc">{}</span><span class="st">&#39;]&quot;</span>.<span class="bu">format</span>(<span class="st">&#39;person&#39;</span>, <span class="st">&#39;lastName&#39;</span>, <span class="st">&#39;Liar&#39;</span>))</a>
+<a class="sourceLine" id="cb5-45" data-line-number="45">    <span class="bu">print</span>(<span class="st">&#39;found: </span><span class="sc">{}</span><span class="st"> persons&#39;</span>.<span class="bu">format</span>(<span class="bu">len</span>(liars)))</a>
+<a class="sourceLine" id="cb5-46" data-line-number="46">    <span class="cf">for</span> liar <span class="kw">in</span> liars:</a>
+<a class="sourceLine" id="cb5-47" data-line-number="47">        <span class="bu">print</span>(<span class="st">&#39;first name: </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(liar.find(<span class="st">&#39;firstName&#39;</span>).text))</a>
+<a class="sourceLine" id="cb5-48" data-line-number="48">        <span class="bu">print</span>(<span class="st">&#39;last name: </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(liar.find(<span class="st">&#39;lastName&#39;</span>).text))</a>
+<a class="sourceLine" id="cb5-49" data-line-number="49">        [<span class="bu">print</span>(<span class="st">&#39;phone number (</span><span class="sc">{}</span><span class="st">)&#39;</span>.<span class="bu">format</span>(p.attrib[<span class="st">&#39;type&#39;</span>]), p.text) <span class="cf">for</span> p <span class="kw">in</span> liar.find(<span class="st">&#39;phoneNumbers&#39;</span>)]</a>
+<a class="sourceLine" id="cb5-50" data-line-number="50">    <span class="bu">print</span>()</a>
+<a class="sourceLine" id="cb5-51" data-line-number="51">    </a>
+<a class="sourceLine" id="cb5-52" data-line-number="52">    json_factory <span class="op">=</span> connect_to(<span class="st">&#39;data/donut.json&#39;</span>)</a>
+<a class="sourceLine" id="cb5-53" data-line-number="53">    json_data <span class="op">=</span> json_factory.parsed_data</a>
+<a class="sourceLine" id="cb5-54" data-line-number="54">    <span class="bu">print</span>(<span class="st">&#39;found: </span><span class="sc">{}</span><span class="st"> donuts&#39;</span>.<span class="bu">format</span>(<span class="bu">len</span>(json_data)))</a>
+<a class="sourceLine" id="cb5-55" data-line-number="55">    <span class="cf">for</span> donut <span class="kw">in</span> json_data:</a>
+<a class="sourceLine" id="cb5-56" data-line-number="56">        <span class="bu">print</span>(<span class="st">&#39;name: </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(donut[<span class="st">&#39;name&#39;</span>]))</a>
+<a class="sourceLine" id="cb5-57" data-line-number="57">        <span class="bu">print</span>(<span class="st">&#39;price: $</span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(donut[<span class="st">&#39;ppu&#39;</span>]))</a>
+<a class="sourceLine" id="cb5-58" data-line-number="58">        [<span class="bu">print</span>(<span class="st">&#39;topping: </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(t[<span class="st">&#39;id&#39;</span>], t[<span class="st">&#39;type&#39;</span>])) <span class="cf">for</span> t <span class="kw">in</span> donut[<span class="st">&#39;topping&#39;</span>]]</a>
+<a class="sourceLine" id="cb5-59" data-line-number="59"></a>
+<a class="sourceLine" id="cb5-60" data-line-number="60"><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</a>
+<a class="sourceLine" id="cb5-61" data-line-number="61">    main()</a></code></pre></div>
 <p>对于抽象工厂，它拥有工厂方法模式的好处：让对象的创建更容易追踪；将对象创建与使用解耦；提供优化内存占用和应用性能的潜力。而抽象工厂有一个优点，就是在使用工厂方法时从用户视角通常是看不到的，那就是抽象工厂能够通过改变激活的工厂方法动态地（运行时）改变应用行为。</p>
 <p>下面尝试创建一个游戏，包含两个游戏，一个面向孩子，一个面向成人。在运行时，基于用户输入，决定该创建哪个游戏并运行。游戏的创建部分由一个抽象工厂维护。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">class</span> Frog:
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name):
-        <span class="va">self</span>.name <span class="op">=</span> name
-        
-    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):
-        <span class="cf">return</span> <span class="va">self</span>.name
-    
-    <span class="kw">def</span> interact_with(<span class="va">self</span>, obstacle):
-        <span class="bu">print</span>(<span class="st">&#39;</span><span class="sc">{}</span><span class="st"> the Frog encounters </span><span class="sc">{}</span><span class="st"> and </span><span class="sc">{}</span><span class="st">!&#39;</span>.<span class="bu">format</span>(<span class="va">self</span>, obstacle, obstacle.action()))
-        
-<span class="kw">class</span> Bug:
-    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):
-        <span class="cf">return</span> <span class="st">&#39;a bug&#39;</span>
-    
-    <span class="kw">def</span> action(<span class="va">self</span>):
-        <span class="cf">return</span> <span class="st">&#39;eats it&#39;</span>
-    
-<span class="kw">class</span> FrogWorld:
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name):
-        <span class="bu">print</span>(<span class="va">self</span>)
-        <span class="va">self</span>.player_name <span class="op">=</span> name
-    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):
-        <span class="cf">return</span> <span class="st">&#39;</span><span class="ch">\n\n\t</span><span class="st">------ Frog World -------&#39;</span>
-    
-    <span class="kw">def</span> make_character(<span class="va">self</span>):
-        <span class="cf">return</span> Frog(<span class="va">self</span>.player_name)
-    
-    <span class="kw">def</span> make_obstacle(<span class="va">self</span>):
-        <span class="cf">return</span> Bug()
-
-<span class="kw">class</span> Wizard:
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name):
-        <span class="va">self</span>.name <span class="op">=</span> name
-        
-    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):
-        <span class="cf">return</span> <span class="va">self</span>.name
-    
-    <span class="kw">def</span> interact_with(<span class="va">self</span>, obstacle):
-        <span class="bu">print</span>(<span class="st">&#39;</span><span class="sc">{}</span><span class="st"> the Wizard battles against </span><span class="sc">{}</span><span class="st"> and </span><span class="sc">{}</span><span class="st">!&#39;</span>.<span class="bu">format</span>(<span class="va">self</span>, obstacle, obstacle.action()))
- 
-<span class="kw">class</span> Ork:
-    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):
-        <span class="cf">return</span> <span class="st">&#39;an evil ork&#39;</span>
-    
-    <span class="kw">def</span> action(<span class="va">self</span>):
-        <span class="cf">return</span> <span class="st">&#39;kills it&#39;</span>
-    
-<span class="kw">class</span> WizardWorld:
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name):
-        <span class="bu">print</span>(<span class="va">self</span>)
-        <span class="va">self</span>.player_name <span class="op">=</span> name
-        
-    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):
-        <span class="cf">return</span> <span class="st">&#39;</span><span class="ch">\n\n\t</span><span class="st"> ----- Wizard World -----&#39;</span>
-    
-    <span class="kw">def</span> make_character(<span class="va">self</span>):
-        <span class="cf">return</span> Wizard(<span class="va">self</span>.player_name)
-    
-    <span class="kw">def</span> make_obstacle(<span class="va">self</span>):
-        <span class="cf">return</span> Ork()</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">class</span> Frog:</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name):</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">        <span class="va">self</span>.name <span class="op">=</span> name</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">        </a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">        <span class="cf">return</span> <span class="va">self</span>.name</a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">    </a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">    <span class="kw">def</span> interact_with(<span class="va">self</span>, obstacle):</a>
+<a class="sourceLine" id="cb6-9" data-line-number="9">        <span class="bu">print</span>(<span class="st">&#39;</span><span class="sc">{}</span><span class="st"> the Frog encounters </span><span class="sc">{}</span><span class="st"> and </span><span class="sc">{}</span><span class="st">!&#39;</span>.<span class="bu">format</span>(<span class="va">self</span>, obstacle, obstacle.action()))</a>
+<a class="sourceLine" id="cb6-10" data-line-number="10">        </a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="kw">class</span> Bug:</a>
+<a class="sourceLine" id="cb6-12" data-line-number="12">    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb6-13" data-line-number="13">        <span class="cf">return</span> <span class="st">&#39;a bug&#39;</span></a>
+<a class="sourceLine" id="cb6-14" data-line-number="14">    </a>
+<a class="sourceLine" id="cb6-15" data-line-number="15">    <span class="kw">def</span> action(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb6-16" data-line-number="16">        <span class="cf">return</span> <span class="st">&#39;eats it&#39;</span></a>
+<a class="sourceLine" id="cb6-17" data-line-number="17">    </a>
+<a class="sourceLine" id="cb6-18" data-line-number="18"><span class="kw">class</span> FrogWorld:</a>
+<a class="sourceLine" id="cb6-19" data-line-number="19">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name):</a>
+<a class="sourceLine" id="cb6-20" data-line-number="20">        <span class="bu">print</span>(<span class="va">self</span>)</a>
+<a class="sourceLine" id="cb6-21" data-line-number="21">        <span class="va">self</span>.player_name <span class="op">=</span> name</a>
+<a class="sourceLine" id="cb6-22" data-line-number="22">    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb6-23" data-line-number="23">        <span class="cf">return</span> <span class="st">&#39;</span><span class="ch">\n\n\t</span><span class="st">------ Frog World -------&#39;</span></a>
+<a class="sourceLine" id="cb6-24" data-line-number="24">    </a>
+<a class="sourceLine" id="cb6-25" data-line-number="25">    <span class="kw">def</span> make_character(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb6-26" data-line-number="26">        <span class="cf">return</span> Frog(<span class="va">self</span>.player_name)</a>
+<a class="sourceLine" id="cb6-27" data-line-number="27">    </a>
+<a class="sourceLine" id="cb6-28" data-line-number="28">    <span class="kw">def</span> make_obstacle(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb6-29" data-line-number="29">        <span class="cf">return</span> Bug()</a>
+<a class="sourceLine" id="cb6-30" data-line-number="30"></a>
+<a class="sourceLine" id="cb6-31" data-line-number="31"><span class="kw">class</span> Wizard:</a>
+<a class="sourceLine" id="cb6-32" data-line-number="32">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name):</a>
+<a class="sourceLine" id="cb6-33" data-line-number="33">        <span class="va">self</span>.name <span class="op">=</span> name</a>
+<a class="sourceLine" id="cb6-34" data-line-number="34">        </a>
+<a class="sourceLine" id="cb6-35" data-line-number="35">    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb6-36" data-line-number="36">        <span class="cf">return</span> <span class="va">self</span>.name</a>
+<a class="sourceLine" id="cb6-37" data-line-number="37">    </a>
+<a class="sourceLine" id="cb6-38" data-line-number="38">    <span class="kw">def</span> interact_with(<span class="va">self</span>, obstacle):</a>
+<a class="sourceLine" id="cb6-39" data-line-number="39">        <span class="bu">print</span>(<span class="st">&#39;</span><span class="sc">{}</span><span class="st"> the Wizard battles against </span><span class="sc">{}</span><span class="st"> and </span><span class="sc">{}</span><span class="st">!&#39;</span>.<span class="bu">format</span>(<span class="va">self</span>, obstacle, obstacle.action()))</a>
+<a class="sourceLine" id="cb6-40" data-line-number="40"> </a>
+<a class="sourceLine" id="cb6-41" data-line-number="41"><span class="kw">class</span> Ork:</a>
+<a class="sourceLine" id="cb6-42" data-line-number="42">    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb6-43" data-line-number="43">        <span class="cf">return</span> <span class="st">&#39;an evil ork&#39;</span></a>
+<a class="sourceLine" id="cb6-44" data-line-number="44">    </a>
+<a class="sourceLine" id="cb6-45" data-line-number="45">    <span class="kw">def</span> action(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb6-46" data-line-number="46">        <span class="cf">return</span> <span class="st">&#39;kills it&#39;</span></a>
+<a class="sourceLine" id="cb6-47" data-line-number="47">    </a>
+<a class="sourceLine" id="cb6-48" data-line-number="48"><span class="kw">class</span> WizardWorld:</a>
+<a class="sourceLine" id="cb6-49" data-line-number="49">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name):</a>
+<a class="sourceLine" id="cb6-50" data-line-number="50">        <span class="bu">print</span>(<span class="va">self</span>)</a>
+<a class="sourceLine" id="cb6-51" data-line-number="51">        <span class="va">self</span>.player_name <span class="op">=</span> name</a>
+<a class="sourceLine" id="cb6-52" data-line-number="52">        </a>
+<a class="sourceLine" id="cb6-53" data-line-number="53">    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb6-54" data-line-number="54">        <span class="cf">return</span> <span class="st">&#39;</span><span class="ch">\n\n\t</span><span class="st"> ----- Wizard World -----&#39;</span></a>
+<a class="sourceLine" id="cb6-55" data-line-number="55">    </a>
+<a class="sourceLine" id="cb6-56" data-line-number="56">    <span class="kw">def</span> make_character(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb6-57" data-line-number="57">        <span class="cf">return</span> Wizard(<span class="va">self</span>.player_name)</a>
+<a class="sourceLine" id="cb6-58" data-line-number="58">    </a>
+<a class="sourceLine" id="cb6-59" data-line-number="59">    <span class="kw">def</span> make_obstacle(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb6-60" data-line-number="60">        <span class="cf">return</span> Ork()</a></code></pre></div>
 <p>建造者模式和工厂模式的差别并不太明确。主要的区别在于工厂模式以单个步骤创建对象，而建造者模式以多个步骤创建对象，并且几乎始终会使用一个指挥者。另外一个区别是，在工厂模式下，会立即返回一个创建好的对象；而在建造者模式下，仅在需要时客户端代码才显式地请求指挥者返回最终的对象和网页。</p>
 <p>下面用建造者设计模式来实现一个比萨订购的应用。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> enum <span class="im">import</span> Enum
-<span class="im">import</span> time
-
-PizzaProgress <span class="op">=</span> Enum(<span class="st">&#39;PizzaProgress&#39;</span>, <span class="st">&#39;queued preparation baking ready&#39;</span>)
-PizzaDough <span class="op">=</span> Enum(<span class="st">&#39;PizzaDough&#39;</span>, <span class="st">&#39;thin thick&#39;</span>)
-PizzaSauce <span class="op">=</span> Enum(<span class="st">&#39;PizzaSauce&#39;</span>, <span class="st">&#39;tomato creme_fraiche&#39;</span>)
-PizzaTopping <span class="op">=</span> Enum(<span class="st">&#39;PizzaTopping&#39;</span>, <span class="st">&#39;mozzarella double_mozzarella bacon ham mushrooms red_onion oregano&#39;</span>)
-STEP_DELAY <span class="op">=</span> <span class="dv">3</span>
-
-<span class="kw">class</span> Pizza:
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name):
-        <span class="va">self</span>.name <span class="op">=</span> name
-        <span class="va">self</span>.dough <span class="op">=</span> <span class="va">None</span>
-        <span class="va">self</span>.sauce <span class="op">=</span> <span class="va">None</span>
-        <span class="va">self</span>.topping <span class="op">=</span> []
-    
-    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):
-        <span class="cf">return</span> <span class="va">self</span>.name
-    
-    <span class="kw">def</span> prepare_dough(<span class="va">self</span>, dough):
-        <span class="va">self</span>.dough <span class="op">=</span> dough
-        <span class="bu">print</span>(<span class="st">&#39;preparing the </span><span class="sc">{}</span><span class="st"> dough of your </span><span class="sc">{}</span><span class="st">...&#39;</span>.<span class="bu">format</span>(<span class="va">self</span>.dough.name, <span class="va">self</span>))
-        time.sleep(STEP_DELAY)
-        <span class="bu">print</span>(<span class="st">&#39;done with the </span><span class="sc">{}</span><span class="st"> dough&#39;</span>.<span class="bu">format</span>(<span class="va">self</span>.dough.name))
-        
-<span class="kw">class</span> MargaritaBuilder:
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):
-        <span class="va">self</span>.pizza <span class="op">=</span> Pizza(<span class="st">&#39;Margarita&#39;</span>)
-        <span class="va">self</span>.progress <span class="op">=</span> PizzaProgress.queued
-        <span class="va">self</span>.baking_time <span class="op">=</span> <span class="dv">5</span>
-        
-    <span class="kw">def</span> prepare_dough(<span class="va">self</span>):
-        <span class="va">self</span>.progress <span class="op">=</span> PizzaProgress.preparation
-        <span class="va">self</span>.pizza.prepare_dough(PizzaDough.thin)
-    
-    <span class="kw">def</span> add_sauce(<span class="va">self</span>):
-        <span class="bu">print</span>(<span class="st">&#39;adding the tomato sauce to your margarita...&#39;</span>)
-        <span class="va">self</span>.pizza.sauce <span class="op">=</span> PizzaSauce.tomato
-        time.sleep(STEP_DELAY)
-        <span class="bu">print</span>(<span class="st">&#39;done with the tomato sauce&#39;</span>)
-        
-    <span class="kw">def</span> add_topping(<span class="va">self</span>):
-        <span class="bu">print</span>(<span class="st">&#39;adding the topping (double mozzarella, oregano) to your margarita&#39;</span>)
-        <span class="va">self</span>.pizza.topping.append([i <span class="cf">for</span> i <span class="kw">in</span> (PizzaTopping.double_mozzarella, PizzaTopping.oregano)])
-        time.sleep(STEP_DELAY)
-        <span class="bu">print</span>(<span class="st">&#39;done with the topping (double mozzarella, oregano)&#39;</span>)
-        
-    <span class="kw">def</span> bake(<span class="va">self</span>):
-        <span class="va">self</span>.progress <span class="op">=</span> PizzaProgress.baking
-        <span class="bu">print</span>(<span class="st">&#39;baking your margarita for </span><span class="sc">{}</span><span class="st"> seconds&#39;</span>.<span class="bu">format</span>(<span class="va">self</span>.baking_time))
-        time.sleep(<span class="va">self</span>.baking_time)
-        <span class="bu">print</span>(<span class="st">&#39;your margarita is ready&#39;</span>)
-        
-<span class="kw">class</span> CreamyBaconBuilder:
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):
-        <span class="va">self</span>.pizza <span class="op">=</span> Pizza(<span class="st">&#39;creamy bacon&#39;</span>)
-    
-    <span class="kw">def</span> prepare_dough(<span class="va">self</span>):
-        <span class="va">self</span>.progress <span class="op">=</span> PizzaProgress.preparation
-        <span class="va">self</span>.pizza.prepare_dough(PizzaDough.thick)
-        
-    <span class="kw">def</span> add_sauce(<span class="va">self</span>):
-        <span class="bu">print</span>(<span class="st">&#39;adding the cream sauce to your creamy bacon&#39;</span>)
-        <span class="va">self</span>.pizza.sauce <span class="op">=</span> PizzaSauce.creme_fraiche
-        time.sleep(STEP_DELAY)
-        <span class="bu">print</span>(<span class="st">&#39;done with the creme sauce&#39;</span>)
-    
-    <span class="kw">def</span> add_topping(<span class="va">self</span>):
-        <span class="bu">print</span>(<span class="st">&#39;adding the topping (mozzarella, bacon, ham, mushrooms, red onion, oregano) to your creamy bacon&#39;</span>)
-        <span class="va">self</span>.pizza.topping.append([t <span class="cf">for</span> t <span class="kw">in</span> (PizzaTopping.mozzarella, PizzaTopping.bacon, PizzaTopping.ham, PizzaTopping.mushrooms
-                                              PizzaTopping.red_onion, PizzaTopping.oregano)])
-        time.sleep(STEP_DELAY)
-        <span class="bu">print</span>(<span class="st">&#39;done with the topping (mozzarella, bacon, ham, mushrooms, red onion, oregano)&#39;</span>)
-        
-    <span class="kw">def</span> bake(<span class="va">self</span>):
-        <span class="va">self</span>.progress <span class="op">=</span> PizzaProgress.baking
-        <span class="bu">print</span>(<span class="st">&#39;baking your creamy bacon for </span><span class="sc">{}</span><span class="st"> seconds&#39;</span>.<span class="bu">format</span>(<span class="va">self</span>.baking_time))
-        time.sleep(<span class="va">self</span>.baking_time)
-        <span class="va">self</span>.progress <span class="op">=</span> PizzaProgress.ready
-        <span class="bu">print</span>(<span class="st">&#39;your creamy bacon is ready&#39;</span>)
-    
-<span class="kw">class</span> Waiter:
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):
-        <span class="va">self</span>.buidler <span class="op">=</span> <span class="va">None</span>
-        
-    <span class="kw">def</span> construct_pizza(<span class="va">self</span>, builder):
-        <span class="va">self</span>.builder <span class="op">=</span> builder
-        [step() <span class="cf">for</span> step <span class="kw">in</span> (builder.prepare_dough, builder.add_sauce, builder.add_topping, builder.bake)]
-        
-    <span class="at">@property</span>
-    <span class="kw">def</span> pizza(<span class="va">self</span>):
-        <span class="cf">return</span> <span class="va">self</span>.builder.pizza
-    
-<span class="kw">def</span> validate_style(builders):
-    <span class="cf">try</span>:
-        pizza_style <span class="op">=</span> <span class="bu">input</span>(<span class="st">&#39;What pizza would you like, [m]argarita or [c]reamy bacon?&#39;</span>)
-        builder <span class="op">=</span> builders[pizza_style]
-        valid_input <span class="op">=</span> <span class="va">True</span>
-    <span class="cf">except</span> <span class="pp">KeyError</span> <span class="im">as</span> err:
-        <span class="bu">print</span>(<span class="st">&#39;Sorry, only margarita (key m) and creamy bacon (key c) are available&#39;</span>)
-        <span class="cf">return</span> (<span class="va">False</span>, <span class="va">None</span>)
-    <span class="cf">return</span> (<span class="va">True</span>, builder)
-
-<span class="kw">def</span> main():
-    builders <span class="op">=</span> <span class="bu">dict</span>(m<span class="op">=</span>MargaritaBuilder, c<span class="op">=</span>CreamyBaconBuilder)
-    valid_input <span class="op">=</span> <span class="va">False</span>
-    <span class="cf">while</span> <span class="kw">not</span> valid_input:
-        valid_input, builder <span class="op">=</span> validate_style(builders)
-    <span class="bu">print</span>()
-    waiter <span class="op">=</span> Waiter()
-    waiter.construct_pizza(builder)
-    pizza <span class="op">=</span> waiter.pizza
-    <span class="bu">print</span>()
-    <span class="bu">print</span>(<span class="st">&#39;Enjoy your </span><span class="sc">{}</span><span class="st">!&#39;</span>.<span class="bu">format</span>(pizza))
-    
-<span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:
-    main()</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="im">from</span> enum <span class="im">import</span> Enum</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="im">import</span> time</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">PizzaProgress <span class="op">=</span> Enum(<span class="st">&#39;PizzaProgress&#39;</span>, <span class="st">&#39;queued preparation baking ready&#39;</span>)</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">PizzaDough <span class="op">=</span> Enum(<span class="st">&#39;PizzaDough&#39;</span>, <span class="st">&#39;thin thick&#39;</span>)</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">PizzaSauce <span class="op">=</span> Enum(<span class="st">&#39;PizzaSauce&#39;</span>, <span class="st">&#39;tomato creme_fraiche&#39;</span>)</a>
+<a class="sourceLine" id="cb7-7" data-line-number="7">PizzaTopping <span class="op">=</span> Enum(<span class="st">&#39;PizzaTopping&#39;</span>, <span class="st">&#39;mozzarella double_mozzarella bacon ham mushrooms red_onion oregano&#39;</span>)</a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">STEP_DELAY <span class="op">=</span> <span class="dv">3</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="kw">class</span> Pizza:</a>
+<a class="sourceLine" id="cb7-11" data-line-number="11">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name):</a>
+<a class="sourceLine" id="cb7-12" data-line-number="12">        <span class="va">self</span>.name <span class="op">=</span> name</a>
+<a class="sourceLine" id="cb7-13" data-line-number="13">        <span class="va">self</span>.dough <span class="op">=</span> <span class="va">None</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14">        <span class="va">self</span>.sauce <span class="op">=</span> <span class="va">None</span></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15">        <span class="va">self</span>.topping <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb7-16" data-line-number="16">    </a>
+<a class="sourceLine" id="cb7-17" data-line-number="17">    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb7-18" data-line-number="18">        <span class="cf">return</span> <span class="va">self</span>.name</a>
+<a class="sourceLine" id="cb7-19" data-line-number="19">    </a>
+<a class="sourceLine" id="cb7-20" data-line-number="20">    <span class="kw">def</span> prepare_dough(<span class="va">self</span>, dough):</a>
+<a class="sourceLine" id="cb7-21" data-line-number="21">        <span class="va">self</span>.dough <span class="op">=</span> dough</a>
+<a class="sourceLine" id="cb7-22" data-line-number="22">        <span class="bu">print</span>(<span class="st">&#39;preparing the </span><span class="sc">{}</span><span class="st"> dough of your </span><span class="sc">{}</span><span class="st">...&#39;</span>.<span class="bu">format</span>(<span class="va">self</span>.dough.name, <span class="va">self</span>))</a>
+<a class="sourceLine" id="cb7-23" data-line-number="23">        time.sleep(STEP_DELAY)</a>
+<a class="sourceLine" id="cb7-24" data-line-number="24">        <span class="bu">print</span>(<span class="st">&#39;done with the </span><span class="sc">{}</span><span class="st"> dough&#39;</span>.<span class="bu">format</span>(<span class="va">self</span>.dough.name))</a>
+<a class="sourceLine" id="cb7-25" data-line-number="25">        </a>
+<a class="sourceLine" id="cb7-26" data-line-number="26"><span class="kw">class</span> MargaritaBuilder:</a>
+<a class="sourceLine" id="cb7-27" data-line-number="27">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb7-28" data-line-number="28">        <span class="va">self</span>.pizza <span class="op">=</span> Pizza(<span class="st">&#39;Margarita&#39;</span>)</a>
+<a class="sourceLine" id="cb7-29" data-line-number="29">        <span class="va">self</span>.progress <span class="op">=</span> PizzaProgress.queued</a>
+<a class="sourceLine" id="cb7-30" data-line-number="30">        <span class="va">self</span>.baking_time <span class="op">=</span> <span class="dv">5</span></a>
+<a class="sourceLine" id="cb7-31" data-line-number="31">        </a>
+<a class="sourceLine" id="cb7-32" data-line-number="32">    <span class="kw">def</span> prepare_dough(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb7-33" data-line-number="33">        <span class="va">self</span>.progress <span class="op">=</span> PizzaProgress.preparation</a>
+<a class="sourceLine" id="cb7-34" data-line-number="34">        <span class="va">self</span>.pizza.prepare_dough(PizzaDough.thin)</a>
+<a class="sourceLine" id="cb7-35" data-line-number="35">    </a>
+<a class="sourceLine" id="cb7-36" data-line-number="36">    <span class="kw">def</span> add_sauce(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb7-37" data-line-number="37">        <span class="bu">print</span>(<span class="st">&#39;adding the tomato sauce to your margarita...&#39;</span>)</a>
+<a class="sourceLine" id="cb7-38" data-line-number="38">        <span class="va">self</span>.pizza.sauce <span class="op">=</span> PizzaSauce.tomato</a>
+<a class="sourceLine" id="cb7-39" data-line-number="39">        time.sleep(STEP_DELAY)</a>
+<a class="sourceLine" id="cb7-40" data-line-number="40">        <span class="bu">print</span>(<span class="st">&#39;done with the tomato sauce&#39;</span>)</a>
+<a class="sourceLine" id="cb7-41" data-line-number="41">        </a>
+<a class="sourceLine" id="cb7-42" data-line-number="42">    <span class="kw">def</span> add_topping(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb7-43" data-line-number="43">        <span class="bu">print</span>(<span class="st">&#39;adding the topping (double mozzarella, oregano) to your margarita&#39;</span>)</a>
+<a class="sourceLine" id="cb7-44" data-line-number="44">        <span class="va">self</span>.pizza.topping.append([i <span class="cf">for</span> i <span class="kw">in</span> (PizzaTopping.double_mozzarella, PizzaTopping.oregano)])</a>
+<a class="sourceLine" id="cb7-45" data-line-number="45">        time.sleep(STEP_DELAY)</a>
+<a class="sourceLine" id="cb7-46" data-line-number="46">        <span class="bu">print</span>(<span class="st">&#39;done with the topping (double mozzarella, oregano)&#39;</span>)</a>
+<a class="sourceLine" id="cb7-47" data-line-number="47">        </a>
+<a class="sourceLine" id="cb7-48" data-line-number="48">    <span class="kw">def</span> bake(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb7-49" data-line-number="49">        <span class="va">self</span>.progress <span class="op">=</span> PizzaProgress.baking</a>
+<a class="sourceLine" id="cb7-50" data-line-number="50">        <span class="bu">print</span>(<span class="st">&#39;baking your margarita for </span><span class="sc">{}</span><span class="st"> seconds&#39;</span>.<span class="bu">format</span>(<span class="va">self</span>.baking_time))</a>
+<a class="sourceLine" id="cb7-51" data-line-number="51">        time.sleep(<span class="va">self</span>.baking_time)</a>
+<a class="sourceLine" id="cb7-52" data-line-number="52">        <span class="bu">print</span>(<span class="st">&#39;your margarita is ready&#39;</span>)</a>
+<a class="sourceLine" id="cb7-53" data-line-number="53">        </a>
+<a class="sourceLine" id="cb7-54" data-line-number="54"><span class="kw">class</span> CreamyBaconBuilder:</a>
+<a class="sourceLine" id="cb7-55" data-line-number="55">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb7-56" data-line-number="56">        <span class="va">self</span>.pizza <span class="op">=</span> Pizza(<span class="st">&#39;creamy bacon&#39;</span>)</a>
+<a class="sourceLine" id="cb7-57" data-line-number="57">    </a>
+<a class="sourceLine" id="cb7-58" data-line-number="58">    <span class="kw">def</span> prepare_dough(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb7-59" data-line-number="59">        <span class="va">self</span>.progress <span class="op">=</span> PizzaProgress.preparation</a>
+<a class="sourceLine" id="cb7-60" data-line-number="60">        <span class="va">self</span>.pizza.prepare_dough(PizzaDough.thick)</a>
+<a class="sourceLine" id="cb7-61" data-line-number="61">        </a>
+<a class="sourceLine" id="cb7-62" data-line-number="62">    <span class="kw">def</span> add_sauce(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb7-63" data-line-number="63">        <span class="bu">print</span>(<span class="st">&#39;adding the cream sauce to your creamy bacon&#39;</span>)</a>
+<a class="sourceLine" id="cb7-64" data-line-number="64">        <span class="va">self</span>.pizza.sauce <span class="op">=</span> PizzaSauce.creme_fraiche</a>
+<a class="sourceLine" id="cb7-65" data-line-number="65">        time.sleep(STEP_DELAY)</a>
+<a class="sourceLine" id="cb7-66" data-line-number="66">        <span class="bu">print</span>(<span class="st">&#39;done with the creme sauce&#39;</span>)</a>
+<a class="sourceLine" id="cb7-67" data-line-number="67">    </a>
+<a class="sourceLine" id="cb7-68" data-line-number="68">    <span class="kw">def</span> add_topping(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb7-69" data-line-number="69">        <span class="bu">print</span>(<span class="st">&#39;adding the topping (mozzarella, bacon, ham, mushrooms, red onion, oregano) to your creamy bacon&#39;</span>)</a>
+<a class="sourceLine" id="cb7-70" data-line-number="70">        <span class="va">self</span>.pizza.topping.append([t <span class="cf">for</span> t <span class="kw">in</span> (PizzaTopping.mozzarella, PizzaTopping.bacon, PizzaTopping.ham, PizzaTopping.mushrooms</a>
+<a class="sourceLine" id="cb7-71" data-line-number="71">                                              PizzaTopping.red_onion, PizzaTopping.oregano)])</a>
+<a class="sourceLine" id="cb7-72" data-line-number="72">        time.sleep(STEP_DELAY)</a>
+<a class="sourceLine" id="cb7-73" data-line-number="73">        <span class="bu">print</span>(<span class="st">&#39;done with the topping (mozzarella, bacon, ham, mushrooms, red onion, oregano)&#39;</span>)</a>
+<a class="sourceLine" id="cb7-74" data-line-number="74">        </a>
+<a class="sourceLine" id="cb7-75" data-line-number="75">    <span class="kw">def</span> bake(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb7-76" data-line-number="76">        <span class="va">self</span>.progress <span class="op">=</span> PizzaProgress.baking</a>
+<a class="sourceLine" id="cb7-77" data-line-number="77">        <span class="bu">print</span>(<span class="st">&#39;baking your creamy bacon for </span><span class="sc">{}</span><span class="st"> seconds&#39;</span>.<span class="bu">format</span>(<span class="va">self</span>.baking_time))</a>
+<a class="sourceLine" id="cb7-78" data-line-number="78">        time.sleep(<span class="va">self</span>.baking_time)</a>
+<a class="sourceLine" id="cb7-79" data-line-number="79">        <span class="va">self</span>.progress <span class="op">=</span> PizzaProgress.ready</a>
+<a class="sourceLine" id="cb7-80" data-line-number="80">        <span class="bu">print</span>(<span class="st">&#39;your creamy bacon is ready&#39;</span>)</a>
+<a class="sourceLine" id="cb7-81" data-line-number="81">    </a>
+<a class="sourceLine" id="cb7-82" data-line-number="82"><span class="kw">class</span> Waiter:</a>
+<a class="sourceLine" id="cb7-83" data-line-number="83">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb7-84" data-line-number="84">        <span class="va">self</span>.buidler <span class="op">=</span> <span class="va">None</span></a>
+<a class="sourceLine" id="cb7-85" data-line-number="85">        </a>
+<a class="sourceLine" id="cb7-86" data-line-number="86">    <span class="kw">def</span> construct_pizza(<span class="va">self</span>, builder):</a>
+<a class="sourceLine" id="cb7-87" data-line-number="87">        <span class="va">self</span>.builder <span class="op">=</span> builder</a>
+<a class="sourceLine" id="cb7-88" data-line-number="88">        [step() <span class="cf">for</span> step <span class="kw">in</span> (builder.prepare_dough, builder.add_sauce, builder.add_topping, builder.bake)]</a>
+<a class="sourceLine" id="cb7-89" data-line-number="89">        </a>
+<a class="sourceLine" id="cb7-90" data-line-number="90">    <span class="at">@property</span></a>
+<a class="sourceLine" id="cb7-91" data-line-number="91">    <span class="kw">def</span> pizza(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb7-92" data-line-number="92">        <span class="cf">return</span> <span class="va">self</span>.builder.pizza</a>
+<a class="sourceLine" id="cb7-93" data-line-number="93">    </a>
+<a class="sourceLine" id="cb7-94" data-line-number="94"><span class="kw">def</span> validate_style(builders):</a>
+<a class="sourceLine" id="cb7-95" data-line-number="95">    <span class="cf">try</span>:</a>
+<a class="sourceLine" id="cb7-96" data-line-number="96">        pizza_style <span class="op">=</span> <span class="bu">input</span>(<span class="st">&#39;What pizza would you like, [m]argarita or [c]reamy bacon?&#39;</span>)</a>
+<a class="sourceLine" id="cb7-97" data-line-number="97">        builder <span class="op">=</span> builders[pizza_style]</a>
+<a class="sourceLine" id="cb7-98" data-line-number="98">        valid_input <span class="op">=</span> <span class="va">True</span></a>
+<a class="sourceLine" id="cb7-99" data-line-number="99">    <span class="cf">except</span> <span class="pp">KeyError</span> <span class="im">as</span> err:</a>
+<a class="sourceLine" id="cb7-100" data-line-number="100">        <span class="bu">print</span>(<span class="st">&#39;Sorry, only margarita (key m) and creamy bacon (key c) are available&#39;</span>)</a>
+<a class="sourceLine" id="cb7-101" data-line-number="101">        <span class="cf">return</span> (<span class="va">False</span>, <span class="va">None</span>)</a>
+<a class="sourceLine" id="cb7-102" data-line-number="102">    <span class="cf">return</span> (<span class="va">True</span>, builder)</a>
+<a class="sourceLine" id="cb7-103" data-line-number="103"></a>
+<a class="sourceLine" id="cb7-104" data-line-number="104"><span class="kw">def</span> main():</a>
+<a class="sourceLine" id="cb7-105" data-line-number="105">    builders <span class="op">=</span> <span class="bu">dict</span>(m<span class="op">=</span>MargaritaBuilder, c<span class="op">=</span>CreamyBaconBuilder)</a>
+<a class="sourceLine" id="cb7-106" data-line-number="106">    valid_input <span class="op">=</span> <span class="va">False</span></a>
+<a class="sourceLine" id="cb7-107" data-line-number="107">    <span class="cf">while</span> <span class="kw">not</span> valid_input:</a>
+<a class="sourceLine" id="cb7-108" data-line-number="108">        valid_input, builder <span class="op">=</span> validate_style(builders)</a>
+<a class="sourceLine" id="cb7-109" data-line-number="109">    <span class="bu">print</span>()</a>
+<a class="sourceLine" id="cb7-110" data-line-number="110">    waiter <span class="op">=</span> Waiter()</a>
+<a class="sourceLine" id="cb7-111" data-line-number="111">    waiter.construct_pizza(builder)</a>
+<a class="sourceLine" id="cb7-112" data-line-number="112">    pizza <span class="op">=</span> waiter.pizza</a>
+<a class="sourceLine" id="cb7-113" data-line-number="113">    <span class="bu">print</span>()</a>
+<a class="sourceLine" id="cb7-114" data-line-number="114">    <span class="bu">print</span>(<span class="st">&#39;Enjoy your </span><span class="sc">{}</span><span class="st">!&#39;</span>.<span class="bu">format</span>(pizza))</a>
+<a class="sourceLine" id="cb7-115" data-line-number="115">    </a>
+<a class="sourceLine" id="cb7-116" data-line-number="116"><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</a>
+<a class="sourceLine" id="cb7-117" data-line-number="117">    main()</a></code></pre></div>
 <p>在以下几种情况下，与工厂模式相比，建造者模式是更好的选择。</p>
 <ul>
 <li>想要创建一个复杂对象（对象由多个部分构成，且对象的创建要经过多个不同的步骤，这些步骤也许还需遵从特定的顺序）</li>
@@ -663,107 +663,107 @@ STEP_DELAY <span class="op">=</span> <span class="dv">3</span>
 <p>在第二种情况中，对一个副本进行更改而不会影响其他对象。</p>
 <p>适配器模式（<code>Adapter pattern</code>）是一种结构型设计模式，帮助我们实现两个不兼容接口之间的兼容。因为使用适配器模式不要求访问他方接口的源代码，而且不违反开放／封闭原则。</p>
 <p>假设有一个<code>Computer</code>类，用来显示一台计算机的基本信息。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">class</span> Computer:
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name):
-        <span class="va">self</span>.name <span class="op">=</span> name
-    
-    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):
-        <span class="cf">return</span> <span class="st">&#39;the </span><span class="sc">{}</span><span class="st"> computer&#39;</span>.<span class="bu">format</span>(<span class="va">self</span>.name)
-    
-    <span class="kw">def</span> execute()</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">class</span> Computer:</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name):</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">        <span class="va">self</span>.name <span class="op">=</span> name</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">    </a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">        <span class="cf">return</span> <span class="st">&#39;the </span><span class="sc">{}</span><span class="st"> computer&#39;</span>.<span class="bu">format</span>(<span class="va">self</span>.name)</a>
+<a class="sourceLine" id="cb8-7" data-line-number="7">    </a>
+<a class="sourceLine" id="cb8-8" data-line-number="8">    <span class="kw">def</span> execute()</a></code></pre></div>
 <p>在<code>Synthesizer</code>和<code>Human</code>两个类中，<code>Synthesizer</code>主要动作由<code>play()</code>方法执行。<code>Human</code>主要动作由<code>speak()</code>方法执行。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">class</span> Synthesizer:
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name):
-        <span class="va">self</span>.name <span class="op">=</span> name
-    
-    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):
-        <span class="cf">return</span> <span class="st">&#39;the </span><span class="sc">{}</span><span class="st"> synthesizer&#39;</span>.<span class="bu">format</span>(<span class="va">self</span>.name)
-    
-    <span class="kw">def</span> play(<span class="va">self</span>):
-        <span class="cf">return</span> <span class="st">&#39;is playing an electronic song&#39;</span>
-    
-<span class="kw">class</span> Human:
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name):
-        <span class="va">self</span>.name <span class="op">=</span> name
-        
-    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):
-        <span class="cf">return</span> <span class="st">&#39;</span><span class="sc">{}</span><span class="st"> the huamn&#39;</span>.<span class="bu">format</span>(<span class="va">self</span>.name)
-    
-    <span class="kw">def</span> speak(<span class="va">self</span>):
-        <span class="cf">return</span> <span class="st">&#39;says hello&#39;</span>
-    
-<span class="kw">class</span> Adapter:
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, obj, adapted_methods):
-        <span class="va">self</span>.obj <span class="op">=</span> obj
-        <span class="va">self</span>.__dict__.update(adapted_methods)
-    
-    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):
-        <span class="cf">return</span> <span class="bu">str</span>(<span class="va">self</span>.obj)
-    
-<span class="kw">def</span> main():
-    objects <span class="op">=</span> [Computer(<span class="st">&#39;Asus&#39;</span>)]
-    
-    synth <span class="op">=</span> Synthesizer(<span class="st">&#39;moog&#39;</span>)
-    objects.append(Adapter(synth, <span class="bu">dict</span>(execute<span class="op">=</span>synth.play)))
-    
-    human <span class="op">=</span> Human(<span class="st">&#39;Bob&#39;</span>)
-    objects.append(Adapter(human, <span class="bu">dict</span>(execute<span class="op">=</span>huamn.speak)))
-    
-    <span class="cf">for</span> i <span class="kw">in</span> objects:
-        <span class="bu">print</span>(<span class="st">&#39;</span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(<span class="bu">str</span>(i), i.execute))
-        
-<span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:
-    main()</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">class</span> Synthesizer:</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name):</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">        <span class="va">self</span>.name <span class="op">=</span> name</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">    </a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">        <span class="cf">return</span> <span class="st">&#39;the </span><span class="sc">{}</span><span class="st"> synthesizer&#39;</span>.<span class="bu">format</span>(<span class="va">self</span>.name)</a>
+<a class="sourceLine" id="cb9-7" data-line-number="7">    </a>
+<a class="sourceLine" id="cb9-8" data-line-number="8">    <span class="kw">def</span> play(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb9-9" data-line-number="9">        <span class="cf">return</span> <span class="st">&#39;is playing an electronic song&#39;</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10">    </a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="kw">class</span> Human:</a>
+<a class="sourceLine" id="cb9-12" data-line-number="12">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name):</a>
+<a class="sourceLine" id="cb9-13" data-line-number="13">        <span class="va">self</span>.name <span class="op">=</span> name</a>
+<a class="sourceLine" id="cb9-14" data-line-number="14">        </a>
+<a class="sourceLine" id="cb9-15" data-line-number="15">    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb9-16" data-line-number="16">        <span class="cf">return</span> <span class="st">&#39;</span><span class="sc">{}</span><span class="st"> the huamn&#39;</span>.<span class="bu">format</span>(<span class="va">self</span>.name)</a>
+<a class="sourceLine" id="cb9-17" data-line-number="17">    </a>
+<a class="sourceLine" id="cb9-18" data-line-number="18">    <span class="kw">def</span> speak(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb9-19" data-line-number="19">        <span class="cf">return</span> <span class="st">&#39;says hello&#39;</span></a>
+<a class="sourceLine" id="cb9-20" data-line-number="20">    </a>
+<a class="sourceLine" id="cb9-21" data-line-number="21"><span class="kw">class</span> Adapter:</a>
+<a class="sourceLine" id="cb9-22" data-line-number="22">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, obj, adapted_methods):</a>
+<a class="sourceLine" id="cb9-23" data-line-number="23">        <span class="va">self</span>.obj <span class="op">=</span> obj</a>
+<a class="sourceLine" id="cb9-24" data-line-number="24">        <span class="va">self</span>.__dict__.update(adapted_methods)</a>
+<a class="sourceLine" id="cb9-25" data-line-number="25">    </a>
+<a class="sourceLine" id="cb9-26" data-line-number="26">    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb9-27" data-line-number="27">        <span class="cf">return</span> <span class="bu">str</span>(<span class="va">self</span>.obj)</a>
+<a class="sourceLine" id="cb9-28" data-line-number="28">    </a>
+<a class="sourceLine" id="cb9-29" data-line-number="29"><span class="kw">def</span> main():</a>
+<a class="sourceLine" id="cb9-30" data-line-number="30">    objects <span class="op">=</span> [Computer(<span class="st">&#39;Asus&#39;</span>)]</a>
+<a class="sourceLine" id="cb9-31" data-line-number="31">    </a>
+<a class="sourceLine" id="cb9-32" data-line-number="32">    synth <span class="op">=</span> Synthesizer(<span class="st">&#39;moog&#39;</span>)</a>
+<a class="sourceLine" id="cb9-33" data-line-number="33">    objects.append(Adapter(synth, <span class="bu">dict</span>(execute<span class="op">=</span>synth.play)))</a>
+<a class="sourceLine" id="cb9-34" data-line-number="34">    </a>
+<a class="sourceLine" id="cb9-35" data-line-number="35">    human <span class="op">=</span> Human(<span class="st">&#39;Bob&#39;</span>)</a>
+<a class="sourceLine" id="cb9-36" data-line-number="36">    objects.append(Adapter(human, <span class="bu">dict</span>(execute<span class="op">=</span>huamn.speak)))</a>
+<a class="sourceLine" id="cb9-37" data-line-number="37">    </a>
+<a class="sourceLine" id="cb9-38" data-line-number="38">    <span class="cf">for</span> i <span class="kw">in</span> objects:</a>
+<a class="sourceLine" id="cb9-39" data-line-number="39">        <span class="bu">print</span>(<span class="st">&#39;</span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(<span class="bu">str</span>(i), i.execute))</a>
+<a class="sourceLine" id="cb9-40" data-line-number="40">        </a>
+<a class="sourceLine" id="cb9-41" data-line-number="41"><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</a>
+<a class="sourceLine" id="cb9-42" data-line-number="42">    main()</a></code></pre></div>
 <p>其实通过这个适配器的这一章节的理解，感觉适配器充当的是一个中间人或者说一个链接url的作用。就像例子中<code>Computer</code>的行为<code>execute</code>一样，适配器的作用就是把<code>Computer</code>的行为<code>execute</code>和<code>Human</code>类的<code>speak</code>行为联系起来。</p>
 <p>修饰器模式能够以透明的方式（不会影响其他对象）动态地将功能添加到一个对象中。但和Python修饰器之间并不是一对一的等价关系。Python修饰器能做的实际上比修饰器模式多得多，其中就是实现修饰器模式。</p>
 <p>下面用斐波那契数列作为例子。</p>
 <p>首先我们可以用递归方式实现斐波那契数列，但是效率和速度都很低。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> fibonacci(n):
-    <span class="cf">assert</span>(n <span class="op">&gt;=</span> <span class="dv">0</span>). <span class="st">&#39;n must be &gt;= 0&#39;</span>
-    <span class="cf">return</span> n <span class="cf">if</span> n <span class="kw">in</span> (<span class="dv">0</span>, <span class="dv">1</span>) <span class="cf">else</span> fibonacci(n<span class="op">-</span><span class="dv">1</span>) <span class="op">+</span> fibonacci(n<span class="op">-</span><span class="dv">2</span>)</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">def</span> fibonacci(n):</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">    <span class="cf">assert</span>(n <span class="op">&gt;=</span> <span class="dv">0</span>). <span class="st">&#39;n must be &gt;= 0&#39;</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">    <span class="cf">return</span> n <span class="cf">if</span> n <span class="kw">in</span> (<span class="dv">0</span>, <span class="dv">1</span>) <span class="cf">else</span> fibonacci(n<span class="dv">-1</span>) <span class="op">+</span> fibonacci(n<span class="dv">-2</span>)</a></code></pre></div>
 <p>然后我们尝试通过使用一个<code>dict</code>来缓存斐波那契数列中已经计算好的数值来提高效率。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">known <span class="op">=</span> {<span class="dv">0</span>:<span class="dv">0</span>, <span class="dv">1</span>:<span class="dv">1</span>}
-
-<span class="kw">def</span> fibonacci(n):
-    <span class="cf">assert</span>(n <span class="op">&gt;=</span> <span class="dv">0</span>), <span class="st">&#39;n must be &gt;= 0&#39;</span>
-    <span class="cf">if</span> n <span class="kw">in</span> known:
-        <span class="cf">return</span> known[n]
-    res <span class="op">=</span> fibonacci(n<span class="op">-</span><span class="dv">1</span>) <span class="op">+</span> fibonacci(n<span class="op">-</span><span class="dv">2</span>)
-    known[n] <span class="op">=</span> res
-    <span class="cf">return</span> res</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb11-1" data-line-number="1">known <span class="op">=</span> {<span class="dv">0</span>:<span class="dv">0</span>, <span class="dv">1</span>:<span class="dv">1</span>}</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="kw">def</span> fibonacci(n):</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">    <span class="cf">assert</span>(n <span class="op">&gt;=</span> <span class="dv">0</span>), <span class="st">&#39;n must be &gt;= 0&#39;</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">    <span class="cf">if</span> n <span class="kw">in</span> known:</a>
+<a class="sourceLine" id="cb11-6" data-line-number="6">        <span class="cf">return</span> known[n]</a>
+<a class="sourceLine" id="cb11-7" data-line-number="7">    res <span class="op">=</span> fibonacci(n<span class="dv">-1</span>) <span class="op">+</span> fibonacci(n<span class="dv">-2</span>)</a>
+<a class="sourceLine" id="cb11-8" data-line-number="8">    known[n] <span class="op">=</span> res</a>
+<a class="sourceLine" id="cb11-9" data-line-number="9">    <span class="cf">return</span> res</a></code></pre></div>
 <p>但如果我们尝试扩展代码，加入更多的数学函数，并将其转变为一个模块，代码将会越来越复杂。假设决定加入的是<code>nsum()</code>，该函数返回前n个数字的和。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">known_sum <span class="op">=</span> {<span class="dv">0</span>:<span class="dv">0</span>}
-
-<span class="kw">def</span> nsum(n):
-    <span class="cf">assert</span>(n <span class="op">&gt;=</span> <span class="dv">0</span>), <span class="st">&#39;n must be &gt;= 0&#39;</span>
-    <span class="cf">if</span> n <span class="kw">in</span> known_sum:
-        <span class="cf">return</span> known_sum[n]
-    res <span class="op">=</span> n <span class="op">+</span> nsum(n<span class="op">-</span><span class="dv">1</span>)
-    known_sum[n] <span class="op">=</span> res
-    <span class="cf">return</span> res</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb12-1" data-line-number="1">known_sum <span class="op">=</span> {<span class="dv">0</span>:<span class="dv">0</span>}</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="kw">def</span> nsum(n):</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4">    <span class="cf">assert</span>(n <span class="op">&gt;=</span> <span class="dv">0</span>), <span class="st">&#39;n must be &gt;= 0&#39;</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5">    <span class="cf">if</span> n <span class="kw">in</span> known_sum:</a>
+<a class="sourceLine" id="cb12-6" data-line-number="6">        <span class="cf">return</span> known_sum[n]</a>
+<a class="sourceLine" id="cb12-7" data-line-number="7">    res <span class="op">=</span> n <span class="op">+</span> nsum(n<span class="dv">-1</span>)</a>
+<a class="sourceLine" id="cb12-8" data-line-number="8">    known_sum[n] <span class="op">=</span> res</a>
+<a class="sourceLine" id="cb12-9" data-line-number="9">    <span class="cf">return</span> res</a></code></pre></div>
 <p>使用修饰器模式，能够将递归代码保持与朴素版本一样简单，但是性能上能够非常高效。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> functools
-
-<span class="kw">def</span> memoize(fn):
-    known <span class="op">=</span> <span class="bu">dict</span>()
-    
-    <span class="at">@functools.wraps</span>(fn)
-    <span class="kw">def</span> memoizer(<span class="op">*</span>args):
-        <span class="cf">if</span> args <span class="kw">not</span> <span class="kw">in</span> known:
-            known[args] <span class="op">=</span> fn(<span class="op">*</span>args)
-        <span class="cf">return</span> known[args]
-    
-    <span class="cf">return</span> memoizer</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="im">import</span> functools</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw">def</span> memoize(fn):</a>
+<a class="sourceLine" id="cb13-4" data-line-number="4">    known <span class="op">=</span> <span class="bu">dict</span>()</a>
+<a class="sourceLine" id="cb13-5" data-line-number="5">    </a>
+<a class="sourceLine" id="cb13-6" data-line-number="6">    <span class="at">@functools.wraps</span>(fn)</a>
+<a class="sourceLine" id="cb13-7" data-line-number="7">    <span class="kw">def</span> memoizer(<span class="op">*</span>args):</a>
+<a class="sourceLine" id="cb13-8" data-line-number="8">        <span class="cf">if</span> args <span class="kw">not</span> <span class="kw">in</span> known:</a>
+<a class="sourceLine" id="cb13-9" data-line-number="9">            known[args] <span class="op">=</span> fn(<span class="op">*</span>args)</a>
+<a class="sourceLine" id="cb13-10" data-line-number="10">        <span class="cf">return</span> known[args]</a>
+<a class="sourceLine" id="cb13-11" data-line-number="11">    </a>
+<a class="sourceLine" id="cb13-12" data-line-number="12">    <span class="cf">return</span> memoizer</a></code></pre></div>
 <p>通过应用<code>memoize()</code>修饰器，能够保持代码的可读性又不影响性能。所以，上述的代码就可以这样写。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="at">@memoize</span>
-<span class="kw">def</span> nsum(n):
-    <span class="cf">assert</span>(n <span class="op">&gt;=</span> <span class="dv">0</span>), <span class="st">&#39;n must be &gt;= 0&#39;</span>
-    <span class="cf">return</span> <span class="dv">0</span> <span class="cf">if</span> n <span class="op">==</span> <span class="dv">0</span> <span class="cf">else</span> n <span class="op">+</span> nsum(n<span class="op">-</span><span class="dv">1</span>)
-
-<span class="at">@memoize</span>
-<span class="kw">def</span> fibonacci(n):
-    <span class="cf">assert</span>(n <span class="op">&gt;=</span> <span class="dv">0</span>), <span class="st">&#39;n must be &gt;= 0&#39;</span>
-    <span class="cf">return</span> n <span class="cf">if</span> n <span class="kw">in</span> (<span class="dv">0</span>, <span class="dv">1</span>) <span class="cf">else</span> fibonacci(n<span class="op">-</span><span class="dv">1</span>) <span class="op">+</span> fibonacci(n<span class="op">-</span><span class="dv">2</span>)</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="at">@memoize</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw">def</span> nsum(n):</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">    <span class="cf">assert</span>(n <span class="op">&gt;=</span> <span class="dv">0</span>), <span class="st">&#39;n must be &gt;= 0&#39;</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4">    <span class="cf">return</span> <span class="dv">0</span> <span class="cf">if</span> n <span class="op">==</span> <span class="dv">0</span> <span class="cf">else</span> n <span class="op">+</span> nsum(n<span class="dv">-1</span>)</a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="at">@memoize</span></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="kw">def</span> fibonacci(n):</a>
+<a class="sourceLine" id="cb14-8" data-line-number="8">    <span class="cf">assert</span>(n <span class="op">&gt;=</span> <span class="dv">0</span>), <span class="st">&#39;n must be &gt;= 0&#39;</span></a>
+<a class="sourceLine" id="cb14-9" data-line-number="9">    <span class="cf">return</span> n <span class="cf">if</span> n <span class="kw">in</span> (<span class="dv">0</span>, <span class="dv">1</span>) <span class="cf">else</span> fibonacci(n<span class="dv">-1</span>) <span class="op">+</span> fibonacci(n<span class="dv">-2</span>)</a></code></pre></div>
 
       
     </div>
@@ -881,7 +881,7 @@ STEP_DELAY <span class="op">=</span> <span class="dv">3</span>
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-count">35</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

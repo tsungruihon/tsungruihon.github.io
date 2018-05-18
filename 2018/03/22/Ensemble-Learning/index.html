@@ -381,10 +381,7 @@
 <li><code>Averaging方法</code>：个体学习器之间不存在强依赖关系，一系列个体学习器可以并行生成，基本上是独立的建多个模型然后对它们的预测结果做平均，从而降低泛化误差。代表算法是<code>bagging(boostrap aggregating)</code>和<code>随机森林(random forest)</code>。</li>
 <li><code>Boosting方法</code>：个体学习器之间存在强依赖关系，一系列个体学习器基本都需要串行生成，是有序列的、有依赖的建立多个基模型，后一个模型用来修正上一个模型的bias。代表算法是<code>boosting</code>系列算法。</li>
 </ul>
-<div class="figure">
-<img src="/images/Screen%20Shot%202018-03-22%20at%208.48.18%20PM.png">
-
-</div>
+<p><img src="/images/Screen%20Shot%202018-03-22%20at%208.48.18%20PM.png"></p>
 <h3 id="一集成学习之结合策略"><u>一、</u>集成学习之结合策略</h3>
 <h3 id="平均法"><u>平均法</u></h3>
 <p>对于数值类的回归预测问题，通常使用的结合策略是平均法，也就是说，对于若干弱学习器的输出进行平均得到最终的预测输出。</p>
@@ -404,48 +401,40 @@ w_i &amp; \ge 0, \ \ \  \sum_{i=1}^{T}w_i = 1
 <h3 id="学习法"><u>学习法</u></h3>
 <p>对弱学习器的结果做平均或者投票相对比较简单，但学习误差较大。所以才有了学习法。学习发的代表是<code>stacking</code>。但使用<code>stacking</code>的结合策略时，我们不是对弱学习器的结果做简单的逻辑处理，而是再加上一层学习器，也就是说我们将训练集弱学习器的学习结果作为输入，将训练集的输出作为输出，重新训练一个学习器来得到最终结果。</p>
 <p>在这种情况下，我们将弱学习器成为初级学习器，将用于结合的学习器称为次级学习器。对于测试集，首先用初级学习器预测一次，结果为次级学习器的输入样本，再用次级学习器预测一遍，得到最终的预测结果。</p>
-<div class="figure">
-<img src="/images/Screen%20Shot%202018-03-10%20at%206.24.38%20PM.png">
-
-</div>
+<p><img src="/images/Screen%20Shot%202018-03-10%20at%206.24.38%20PM.png"></p>
 <h3 id="二集成方法"><u>二、集成方法</u></h3>
 <h3 id="bagging"><u>Bagging</u></h3>
-<div class="figure">
-<img src="/images/Screen%20Shot%202018-03-22%20at%209.23.32%20PM.png">
-
-</div>
+<p><img src="/images/Screen%20Shot%202018-03-22%20at%209.23.32%20PM.png"></p>
 <p><code>随机采样(bootstrap)</code>就是从我们的训练集里面采集固定个数的样本，但是每采集一个样本后，都将样本放回。也就是说，之前采集到的样本在放回后有可能继续被采集到。对于<code>Bagging</code>算法，一般会随机采集和训练样本数m一样个数的样本。这样得到的采样集和训练集样本的个数相同，但是样本内容不同。如果我们对有m个样本训练集做T次的随机采样，则由于随机性，T个采样集各不相同。</p>
 <p>在每次抽样中，每个样本都可能会有<code>36.8%</code>的概率没有被抽中，所以我们可以设置<code>oob_score=True</code>来用训练好的模型去预测这部分没有被抽取的数据，评判模型的好坏，这样就不会浪费数据集。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">sklearn.ensemble.BaggingClassifier(base_estimator<span class="op">=</span><span class="va">None</span>, n_estimators<span class="op">=</span><span class="dv">10</span>, max_samples<span class="op">=</span><span class="fl">1.0</span>, 
-                                   max_features<span class="op">=</span><span class="fl">1.0</span>, bootstrap<span class="op">=</span><span class="va">True</span>, bootstrap_features<span class="op">=</span><span class="va">False</span>, 
-                                   oob_score<span class="op">=</span><span class="va">False</span>, warm_start<span class="op">=</span><span class="va">False</span>, n_jobs<span class="op">=</span><span class="dv">1</span>, random_state<span class="op">=</span><span class="va">None</span>, 
-                                   verbose<span class="op">=</span><span class="dv">0</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1">sklearn.ensemble.BaggingClassifier(base_estimator<span class="op">=</span><span class="va">None</span>, n_estimators<span class="op">=</span><span class="dv">10</span>, max_samples<span class="op">=</span><span class="fl">1.0</span>, </a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">                                   max_features<span class="op">=</span><span class="fl">1.0</span>, bootstrap<span class="op">=</span><span class="va">True</span>, bootstrap_features<span class="op">=</span><span class="va">False</span>, </a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">                                   oob_score<span class="op">=</span><span class="va">False</span>, warm_start<span class="op">=</span><span class="va">False</span>, n_jobs<span class="op">=</span><span class="dv">1</span>, random_state<span class="op">=</span><span class="va">None</span>, </a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">                                   verbose<span class="op">=</span><span class="dv">0</span>)</a></code></pre></div>
 <ul>
-<li>算法</li>
-</ul>
+<li><p>算法</p>
 <p>输入：样本集D，弱学习器算法，弱分类器迭代次数T。</p>
 <p>输出：最终的强分类器<code>f(x)</code></p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>对于t=1, 2, …, T，对训训练集进行第t次随机采样，共采集m次，得到包含m个样本的采样集Dm。然后用采样集Dm训练第m个弱学习器Gm(x)</li>
 <li>如果是分类算法预测，则T个弱学习器投出最多票数的类别或类别之一为最终类别。如果是回归算法，T个弱学习器得到的回归结果进行算术平均得到的值为最终的模型输出。</li>
-</ol>
+</ol></li>
+</ul>
 <h3 id="随机森林"><u>随机森林</u></h3>
 <p><code>随机森林</code>是<code>bagging</code>的一个特化进阶版，也就是说随机森林的弱学习器都是<code>CART决策树</code>，而且随机森林在<code>bagging</code>的样本随机采样基础上，又加上了特征的随机选择。随机森林通过随机选择节点上的一部分样本特征，这个数字小于n，假设为n_sub，然后在这些随机选择的n_sub个样本特征中，选择一个最优特征来做决策树的左右子树划分，这样进一步增强了模型的泛化能力。</p>
 <p>如果n_sub=n，则此时随机森林的CART决策树和普通CART决策树没有区别，n_sub越小，则模型越健壮，但对训练集的拟合程度越差。也就是说，n_sub越小，模型的方差会减小，也就是说预测值和预测值的期望值的差越小，数据扰动造成的影响较小，但是偏差会越大，也就是说期望预测和真实标记的误差越大，也就是说学习算法本身的拟合能力越差。换句话说，就是模型过于简单了。</p>
 <p>这个时候一般会通过<code>cross validation</code>调参获取一个合适的n_sub值。</p>
 <ul>
-<li>算法</li>
-</ul>
+<li><p>算法</p>
 <p>输入：样本集D，弱学习器算法，弱分类器迭代次数T。</p>
 <p>输出：最终的强分类器<code>f(x)</code></p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>对于t=1, 2, …, T，对训训练集进行第t次随机采样，共采集m次，得到包含m个样本的采样集Dm。用采样集Dm训练第m个决策树模型Gm(x)，在训练决策树模型的节点时候，在节点上所有的样本特征中选择一部分样本特征，在这些随机选择的部分样本特征中选择一个最优的特征来做决策树的左右子树划分</li>
 <li>如果是分类算法预测，则T个弱学习器投出最多票数的类别或者类别之一为最终类别。如果是回归算法，T个弱学习器得到的回归结果进行算术平均得到的值为最终的模型输出。</li>
-</ol>
-<ul>
-<li>优点</li>
+</ol></li>
+<li><p>优点</p></li>
 </ul>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>训练可以高度并行化，具有速度优势</li>
 <li>由于可以随机选择决策树节点划分特征，这样在样本特征维度很高时候，仍然能够高效的训练模型。</li>
 <li>在训练后，可以给出各个特征对于输出的重要性。</li>
@@ -456,19 +445,16 @@ w_i &amp; \ge 0, \ \ \  \sum_{i=1}^{T}w_i = 1
 <ul>
 <li>缺点</li>
 </ul>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>在某些噪音比较大的样本集上，随机森林模型容易过拟合</li>
 <li>取值划分比较多的特征容易对随机森林的决策产生更大的影响</li>
 </ol>
 <h3 id="boosting"><u>Boosting</u></h3>
-<div class="figure">
-<img src="/images/Screen%20Shot%202018-03-22%20at%2010.31.01%20PM.png">
-
-</div>
+<p><img src="/images/Screen%20Shot%202018-03-22%20at%2010.31.01%20PM.png"></p>
 <p>从图上可以看出，<code>Boosting</code>算法的工作机制是首先从训练集用初始权重训练出一个弱分析器1，根据弱学习器的学习误差率表现来更新训练样本的权重，使得之前弱学习器1学习误差率高的训练样本点的权重变高，使得这些误差率高的点在后面的弱学习器2中得到更多的重视。然后基于调整权重后的训练集来训练学习器2.如此重复进行，直到弱学习器数达到事先指定的数目T，最终将这T个弱学习器通过集合策略进行整合，得到最终的强学习器。</p>
 <p><code>Boosting</code>系列算法里最著名算法主要有<code>AdaBoost</code>算法提升树(<code>boosting tree</code>)系列算法。提升树系列最广泛的是梯度提升树(<code>Gradient Boosting Tree</code>)。</p>
 <p>Boosting算法中要解决四个问题：</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>如何计算学习误差率e</li>
 <li>如何得到弱学习器权重系数a</li>
 <li>如何更新样本权重D</li>
@@ -479,50 +465,48 @@ w_i &amp; \ge 0, \ \ \  \sum_{i=1}^{T}w_i = 1
 T = {(x_1, y_1), (x_2, y_2), ..., (x_m, y_m)}
 \]</span></p>
 <ul>
-<li>算法</li>
-</ul>
+<li><p>算法</p>
 <p>输入：训练数据集T</p>
-<p>输出：最终分类器G(x)</p>
-<ol style="list-style-type: decimal">
+<p>输出：最终分类器G(x)</p></li>
+</ul>
+<ol type="1">
 <li>初始化训练集在第k个弱学习器的权重分布</li>
 </ol>
 <p><span class="math display">\[
 D(k)=(w_{l1}, w_{l2}, ..., w_{lN}); \ \ \ \ w_{li}=\frac{1}{N};\ \ \ \ \  i= 1, 2, ..., N
 \]</span></p>
-<ol start="2" style="list-style-type: decimal">
-<li>对m=1, 2, …, M</li>
-</ol>
+<ol start="2" type="1">
+<li><p>对m=1, 2, …, M</p>
 <ul>
 <li><p>使用具有权值分布Dm的训练数据集学习，得到基本分类器 <span class="math display">\[
- G_m(x) :\mathcal{X} \to \{-1, +1\}
- \]</span></p></li>
+G_m(x) :\mathcal{X} \to \{-1, +1\}
+\]</span></p></li>
 <li><p>计算Gm(x)在训练数据集上的分类误差率。第m个弱分类器Gm(x)在训练集上的加权误差率为</p></li>
 </ul>
 <p><span class="math display">\[
-   e_k = P(G_m(x_i) \neq y_i) = \sum_{i=1}^{m}w_{mi}I \ \ \ (G_m(_i)\neq y_i)
-   \]</span></p>
+e_k = P(G_m(x_i) \neq y_i) = \sum_{i=1}^{m}w_{mi}I \ \ \ (G_m(_i)\neq y_i)
+\]</span></p>
 <p>​</p>
 <ul>
 <li><p>计算<code>弱分类器Gm(x)的权重系数</code> <span class="math display">\[
- \alpha_k = \frac{1}{2}log\frac{1- e_k}{e_k}
- \]</span> 从上式可以看出，如果分类误差ek越大，则对应的<code>弱分类器权重ak</code>越小。也就是说，误差率小的<code>弱分类器权重系数</code>越大。</p></li>
+\alpha_k = \frac{1}{2}log\frac{1- e_k}{e_k}
+\]</span> 从上式可以看出，如果分类误差ek越大，则对应的<code>弱分类器权重ak</code>越小。也就是说，误差率小的<code>弱分类器权重系数</code>越大。</p></li>
 <li><p>更新样本权重D，假设第k个弱分类器的样本集权重系数为 <span class="math display">\[
- D(k)=(w_{k1}, w_{k2}, ..., w_{km})
- \]</span> 则对应的第k+1个弱分类器的样本集权重系数为 <span class="math display">\[
- \begin{aligned}
- w_{k+1, i} &amp; = \begin{cases}
- \frac{w_{ki}}{Z_k}e^{-\alpha_m}, \ \ \ \ G_m(x_i) = y_i\\[2ex]
- \frac{w_{ki}}{Z_k}e^{\alpha_m}, \ \ \ \ G_m(x_i) \neq y_i
- \end{cases}\\\\
-   &amp; Z 为规范化因子 \\\\
- Z_k &amp;= \sum_{i=1}^{m}w_{ki}exp(-\alpha_ky_iG_k(x_i))
- \end{aligned}
- \]</span> 从<code>w_{k+1, i}</code>计算公式可以看出，如果第i个样本分类错误，则yiGk(xi)&lt;0, 导致样本的权重在第k+1个弱分类器中增大，如果分类正确，则样本权重在第k+1个弱分类器中减少</p></li>
-</ul>
-<ol start="3" style="list-style-type: decimal">
-<li>构建基本分类器的线性组合。<code>AdaBoost</code>采用的是加权平均法，最终的强分类器为 <span class="math display">\[
-   G(x) = sign(f(x)) = sign(\sum_{m=1}^{M}\alpha_mG_m(x))
-   \]</span> ​</li>
+D(k)=(w_{k1}, w_{k2}, ..., w_{km})
+\]</span> 则对应的第k+1个弱分类器的样本集权重系数为 <span class="math display">\[
+\begin{aligned}
+w_{k+1, i} &amp; = \begin{cases}
+\frac{w_{ki}}{Z_k}e^{-\alpha_m}, \ \ \ \ G_m(x_i) = y_i\\[2ex]
+\frac{w_{ki}}{Z_k}e^{\alpha_m}, \ \ \ \ G_m(x_i) \neq y_i
+\end{cases}\\\\
+  &amp; Z 为规范化因子 \\\\
+Z_k &amp;= \sum_{i=1}^{m}w_{ki}exp(-\alpha_ky_iG_k(x_i))
+\end{aligned}
+\]</span> 从<code>w_{k+1, i}</code>计算公式可以看出，如果第i个样本分类错误，则yiGk(xi)&lt;0, 导致样本的权重在第k+1个弱分类器中增大，如果分类正确，则样本权重在第k+1个弱分类器中减少</p></li>
+</ul></li>
+<li><p>构建基本分类器的线性组合。<code>AdaBoost</code>采用的是加权平均法，最终的强分类器为 <span class="math display">\[
+G(x) = sign(f(x)) = sign(\sum_{m=1}^{M}\alpha_mG_m(x))
+\]</span> ​</p></li>
 </ol>
 
       
@@ -650,7 +634,7 @@ D(k)=(w_{l1}, w_{l2}, ..., w_{lN}); \ \ \ \ w_{li}=\frac{1}{N};\ \ \ \ \  i= 1, 
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-count">35</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

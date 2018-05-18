@@ -411,8 +411,8 @@ H(Y|X) &amp; = \sum_{i=1}^{n}p_iH(Y|X=x_i), \\
 \]</span></p>
 <ul>
 <li><code>特征A</code>对训练数据集D的信息增益<code>g(D, A)</code>，定义为<code>集合D</code>的经<code>验熵H(D)</code>与<code>特征A</code>给定条件下D的<code>经验条件熵H(D|A)</code>之差，即 <span class="math display">\[
-  g(D, A) = H(D) - H(D|A)
-  \]</span></li>
+g(D, A) = H(D) - H(D|A)
+\]</span></li>
 </ul>
 <p>信息增益越大，该特征越适合作为分裂点。</p>
 <p>对<code>训练数据集（或子集）D</code>，计算其每个特征的信息增益，并比较它们的大小，选择信息增益最大的特征。</p>
@@ -424,131 +424,125 @@ g_R(D, A) &amp;= \frac{g(D, A)}{H_A(D)} \\
 H_A(D) &amp;= -\sum_{i=1}^{n}\frac{|D_i|}{D}log_2\frac{D_i}{D},   \ \ \ n是特征A取值的个数。
 \end{aligned}
 \]</span> 下面是<code>Python</code>代码。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> createDataSet():
-    dataSet <span class="op">=</span> [[<span class="dv">1</span>, <span class="dv">1</span>, <span class="st">&#39;yes&#39;</span>],
-               [<span class="dv">1</span>, <span class="dv">1</span>, <span class="st">&#39;yes&#39;</span>],
-               [<span class="dv">1</span>, <span class="dv">0</span>, <span class="st">&#39;no&#39;</span>],
-               [<span class="dv">0</span>, <span class="dv">1</span>, <span class="st">&#39;no&#39;</span>],
-               [<span class="dv">0</span>, <span class="dv">1</span>, <span class="st">&#39;no&#39;</span>]]
-    labels <span class="op">=</span> [<span class="st">&#39;no surfacing&#39;</span>,<span class="st">&#39;flippers&#39;</span>]
-    <span class="cf">return</span> dataSet, labels
-
-<span class="kw">def</span> calcShannonEnt(dataSet):
-    numEntries <span class="op">=</span> <span class="bu">len</span>(dataSet)
-    labelCounts <span class="op">=</span> {}
-    <span class="cf">for</span> featVec <span class="kw">in</span> dataSet:
-        currentLabel <span class="op">=</span> featVec[<span class="op">-</span><span class="dv">1</span>]
-        <span class="cf">if</span> currentLabel <span class="kw">not</span> <span class="kw">in</span> labelCounts.keys(): labelCounts[currentLabel] <span class="op">=</span> <span class="dv">0</span>
-        labelCounts[currentLabel] <span class="op">+=</span> <span class="dv">1</span>
-        
-    shannonEnt <span class="op">=</span> <span class="fl">0.0</span>
-    <span class="cf">for</span> key <span class="kw">in</span> labelCounts:
-        prob <span class="op">=</span> <span class="bu">float</span>(labelCounts[key])<span class="op">/</span>numEntries
-        shannonEnt <span class="op">-=</span> prob <span class="op">*</span> log(prob, <span class="dv">2</span>)
-    <span class="cf">return</span> shannonEnt
-
-<span class="kw">def</span> splitDataSet(dataSet, axis, value):
-    retDataSet <span class="op">=</span> []
-    <span class="cf">for</span> featVec <span class="kw">in</span> dataSet:
-        <span class="cf">if</span> featVec[axis] <span class="op">==</span> value:
-            reducedFeatVec <span class="op">=</span> featVec[:axis]
-            reducedFeatVec.extend(featVec[axis<span class="op">+</span><span class="dv">1</span>:])
-            retDataSet.append(reducedFeatVec)
-    <span class="cf">return</span> retDataSet
-
-<span class="kw">def</span> chooseBestFeatureToSplit(dataSet):
-    numFeatures <span class="op">=</span> <span class="bu">len</span>(dataSet[<span class="dv">0</span>]) <span class="op">-</span> <span class="dv">1</span>
-    baseEntropy <span class="op">=</span> calcShannonEnt(dataSet)
-    bestInfoGain <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span> bestFeature <span class="op">=</span> <span class="op">-</span><span class="dv">1</span>
-    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(numFeatures):
-        featList <span class="op">=</span> [example[i] <span class="cf">for</span> example <span class="kw">in</span> dataSet]
-        uniqueVals <span class="op">=</span> <span class="bu">set</span>(featList)
-        newEntropy <span class="op">=</span> <span class="fl">0.0</span>
-        <span class="cf">for</span> value <span class="kw">in</span> uniqueVals:
-            subDataSet <span class="op">=</span> splitDataSet(dataSet, i, value)
-            prob <span class="op">=</span> <span class="bu">len</span>(subDataSet) <span class="op">/</span> <span class="bu">float</span>(<span class="bu">len</span>(dataSet))
-            newEntropy <span class="op">+=</span> prob <span class="op">*</span> calcShannonEnt(subDataSet)
-        infoGain <span class="op">=</span> baseEntropy <span class="op">-</span> newEntropy
-        <span class="cf">if</span> (infoGain <span class="op">&gt;</span> bestInfoGain):
-            bestInfoGain <span class="op">=</span> infoGain
-            bestFeature <span class="op">=</span> i
-    <span class="cf">return</span> bestFeature</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">def</span> createDataSet():</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">    dataSet <span class="op">=</span> [[<span class="dv">1</span>, <span class="dv">1</span>, <span class="st">&#39;yes&#39;</span>],</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">               [<span class="dv">1</span>, <span class="dv">1</span>, <span class="st">&#39;yes&#39;</span>],</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">               [<span class="dv">1</span>, <span class="dv">0</span>, <span class="st">&#39;no&#39;</span>],</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">               [<span class="dv">0</span>, <span class="dv">1</span>, <span class="st">&#39;no&#39;</span>],</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">               [<span class="dv">0</span>, <span class="dv">1</span>, <span class="st">&#39;no&#39;</span>]]</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">    labels <span class="op">=</span> [<span class="st">&#39;no surfacing&#39;</span>,<span class="st">&#39;flippers&#39;</span>]</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">    <span class="cf">return</span> dataSet, labels</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="kw">def</span> calcShannonEnt(dataSet):</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">    numEntries <span class="op">=</span> <span class="bu">len</span>(dataSet)</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">    labelCounts <span class="op">=</span> {}</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">    <span class="cf">for</span> featVec <span class="kw">in</span> dataSet:</a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">        currentLabel <span class="op">=</span> featVec[<span class="op">-</span><span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb1-15" data-line-number="15">        <span class="cf">if</span> currentLabel <span class="kw">not</span> <span class="kw">in</span> labelCounts.keys(): labelCounts[currentLabel] <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16">        labelCounts[currentLabel] <span class="op">+=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17">        </a>
+<a class="sourceLine" id="cb1-18" data-line-number="18">    shannonEnt <span class="op">=</span> <span class="fl">0.0</span></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19">    <span class="cf">for</span> key <span class="kw">in</span> labelCounts:</a>
+<a class="sourceLine" id="cb1-20" data-line-number="20">        prob <span class="op">=</span> <span class="bu">float</span>(labelCounts[key])<span class="op">/</span>numEntries</a>
+<a class="sourceLine" id="cb1-21" data-line-number="21">        shannonEnt <span class="op">-=</span> prob <span class="op">*</span> log(prob, <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb1-22" data-line-number="22">    <span class="cf">return</span> shannonEnt</a>
+<a class="sourceLine" id="cb1-23" data-line-number="23"></a>
+<a class="sourceLine" id="cb1-24" data-line-number="24"><span class="kw">def</span> splitDataSet(dataSet, axis, value):</a>
+<a class="sourceLine" id="cb1-25" data-line-number="25">    retDataSet <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb1-26" data-line-number="26">    <span class="cf">for</span> featVec <span class="kw">in</span> dataSet:</a>
+<a class="sourceLine" id="cb1-27" data-line-number="27">        <span class="cf">if</span> featVec[axis] <span class="op">==</span> value:</a>
+<a class="sourceLine" id="cb1-28" data-line-number="28">            reducedFeatVec <span class="op">=</span> featVec[:axis]</a>
+<a class="sourceLine" id="cb1-29" data-line-number="29">            reducedFeatVec.extend(featVec[axis<span class="op">+</span><span class="dv">1</span>:])</a>
+<a class="sourceLine" id="cb1-30" data-line-number="30">            retDataSet.append(reducedFeatVec)</a>
+<a class="sourceLine" id="cb1-31" data-line-number="31">    <span class="cf">return</span> retDataSet</a>
+<a class="sourceLine" id="cb1-32" data-line-number="32"></a>
+<a class="sourceLine" id="cb1-33" data-line-number="33"><span class="kw">def</span> chooseBestFeatureToSplit(dataSet):</a>
+<a class="sourceLine" id="cb1-34" data-line-number="34">    numFeatures <span class="op">=</span> <span class="bu">len</span>(dataSet[<span class="dv">0</span>]) <span class="op">-</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb1-35" data-line-number="35">    baseEntropy <span class="op">=</span> calcShannonEnt(dataSet)</a>
+<a class="sourceLine" id="cb1-36" data-line-number="36">    bestInfoGain <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span> bestFeature <span class="op">=</span> <span class="dv">-1</span></a>
+<a class="sourceLine" id="cb1-37" data-line-number="37">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(numFeatures):</a>
+<a class="sourceLine" id="cb1-38" data-line-number="38">        featList <span class="op">=</span> [example[i] <span class="cf">for</span> example <span class="kw">in</span> dataSet]</a>
+<a class="sourceLine" id="cb1-39" data-line-number="39">        uniqueVals <span class="op">=</span> <span class="bu">set</span>(featList)</a>
+<a class="sourceLine" id="cb1-40" data-line-number="40">        newEntropy <span class="op">=</span> <span class="fl">0.0</span></a>
+<a class="sourceLine" id="cb1-41" data-line-number="41">        <span class="cf">for</span> value <span class="kw">in</span> uniqueVals:</a>
+<a class="sourceLine" id="cb1-42" data-line-number="42">            subDataSet <span class="op">=</span> splitDataSet(dataSet, i, value)</a>
+<a class="sourceLine" id="cb1-43" data-line-number="43">            prob <span class="op">=</span> <span class="bu">len</span>(subDataSet) <span class="op">/</span> <span class="bu">float</span>(<span class="bu">len</span>(dataSet))</a>
+<a class="sourceLine" id="cb1-44" data-line-number="44">            newEntropy <span class="op">+=</span> prob <span class="op">*</span> calcShannonEnt(subDataSet)</a>
+<a class="sourceLine" id="cb1-45" data-line-number="45">        infoGain <span class="op">=</span> baseEntropy <span class="op">-</span> newEntropy</a>
+<a class="sourceLine" id="cb1-46" data-line-number="46">        <span class="cf">if</span> (infoGain <span class="op">&gt;</span> bestInfoGain):</a>
+<a class="sourceLine" id="cb1-47" data-line-number="47">            bestInfoGain <span class="op">=</span> infoGain</a>
+<a class="sourceLine" id="cb1-48" data-line-number="48">            bestFeature <span class="op">=</span> i</a>
+<a class="sourceLine" id="cb1-49" data-line-number="49">    <span class="cf">return</span> bestFeature</a></code></pre></div>
 <h2 id="决策树的生成"><u>决策树的生成</u></h2>
 <h3 id="id3算法"><u>ID3算法</u></h3>
 <p>输入：训练数据集D，特征集A，阈值e</p>
 <p>输出：决策树T</p>
 <ul>
-<li>算法</li>
-</ul>
-<ol style="list-style-type: decimal">
+<li>算法
+<ol type="1">
 <li>若D中所有的实例属于同一类Ck，则T为单节点树，并将类Ck作为该结点的类标记，返回T</li>
 <li>若A=空集，则T为单节点树，并将D中实例数最大的类Ck作为该结点的类标记，返回T</li>
 <li>否则，按照计算A中各特征对D的信息增益，选择信息增益最大的特征Ag</li>
 <li>如果Ag的信息增益小于阈值e，则置T为单节点树，并将D中实例数最大的类Ck作为该结点的类标记，返回T</li>
 <li>否则，对Ag的每一可能值ai，将D分割为若干非空子集Di，将Di中实例数最大的类作为标记，构建子结点，由结点及其子结点构成树T，返回T</li>
 <li>对第i个子节点，以Di为训练集，以A-{Ag}为特征集，递归地调用1-5，得到子树Ti，返回Ti。</li>
-</ol>
-<ul>
-<li>问题：</li>
-</ul>
-<ol style="list-style-type: decimal">
+</ol></li>
+<li>问题：
+<ol type="1">
 <li>不能处理连续值</li>
 <li>容易偏向取值较多的特征</li>
 <li>过拟合</li>
-</ol>
+</ol></li>
+</ul>
 <p><code>ID3</code>算法生成的树容易产生过拟合，而且它不能直接处理连续型特征，只有事先将连续型特征转换成离散型，才能在<code>ID3</code>算法中使用。但这种转换过程会破坏连续型变量的内在性值。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> majorityCnt(classList):
-    classCount<span class="op">=</span>{}
-    <span class="cf">for</span> vote <span class="kw">in</span> classList:
-        <span class="cf">if</span> vote <span class="kw">not</span> <span class="kw">in</span> classCount.keys(): classCount[vote] <span class="op">=</span> <span class="dv">0</span>
-        classCount[vote] <span class="op">+=</span> <span class="dv">1</span>
-    sortedClassCount <span class="op">=</span> <span class="bu">sorted</span>(classCount.iteritems(), key<span class="op">=</span>operator.itemgetter(<span class="dv">1</span>), reverse<span class="op">=</span><span class="va">True</span>)
-    <span class="cf">return</span> sortedClassCount[<span class="dv">0</span>][<span class="dv">0</span>]
-
-<span class="kw">def</span> createTree(dataSet,labels):
-    classList <span class="op">=</span> [example[<span class="op">-</span><span class="dv">1</span>] <span class="cf">for</span> example <span class="kw">in</span> dataSet]
-    <span class="cf">if</span> classList.count(classList[<span class="dv">0</span>]) <span class="op">==</span> <span class="bu">len</span>(classList): 
-        <span class="cf">return</span> classList[<span class="dv">0</span>]
-    <span class="cf">if</span> <span class="bu">len</span>(dataSet[<span class="dv">0</span>]) <span class="op">==</span> <span class="dv">1</span>: 
-        <span class="cf">return</span> majorityCnt(classList)
-    bestFeat <span class="op">=</span> chooseBestFeatureToSplit(dataSet)
-    bestFeatLabel <span class="op">=</span> labels[bestFeat]
-    myTree <span class="op">=</span> {bestFeatLabel:{}}
-    <span class="kw">del</span>(labels[bestFeat])
-    featValues <span class="op">=</span> [example[bestFeat] <span class="cf">for</span> example <span class="kw">in</span> dataSet]
-    uniqueVals <span class="op">=</span> <span class="bu">set</span>(featValues)
-    <span class="cf">for</span> value <span class="kw">in</span> uniqueVals:
-        subLabels <span class="op">=</span> labels[:]       
-        myTree[bestFeatLabel][value] <span class="op">=</span> createTree(splitDataSet(dataSet, bestFeat, value),subLabels)
-    <span class="cf">return</span> myTree                            </code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">def</span> majorityCnt(classList):</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">    classCount<span class="op">=</span>{}</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">    <span class="cf">for</span> vote <span class="kw">in</span> classList:</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">        <span class="cf">if</span> vote <span class="kw">not</span> <span class="kw">in</span> classCount.keys(): classCount[vote] <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">        classCount[vote] <span class="op">+=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">    sortedClassCount <span class="op">=</span> <span class="bu">sorted</span>(classCount.iteritems(), key<span class="op">=</span>operator.itemgetter(<span class="dv">1</span>), reverse<span class="op">=</span><span class="va">True</span>)</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">    <span class="cf">return</span> sortedClassCount[<span class="dv">0</span>][<span class="dv">0</span>]</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="kw">def</span> createTree(dataSet,labels):</a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">    classList <span class="op">=</span> [example[<span class="op">-</span><span class="dv">1</span>] <span class="cf">for</span> example <span class="kw">in</span> dataSet]</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11">    <span class="cf">if</span> classList.count(classList[<span class="dv">0</span>]) <span class="op">==</span> <span class="bu">len</span>(classList): </a>
+<a class="sourceLine" id="cb2-12" data-line-number="12">        <span class="cf">return</span> classList[<span class="dv">0</span>]</a>
+<a class="sourceLine" id="cb2-13" data-line-number="13">    <span class="cf">if</span> <span class="bu">len</span>(dataSet[<span class="dv">0</span>]) <span class="op">==</span> <span class="dv">1</span>: </a>
+<a class="sourceLine" id="cb2-14" data-line-number="14">        <span class="cf">return</span> majorityCnt(classList)</a>
+<a class="sourceLine" id="cb2-15" data-line-number="15">    bestFeat <span class="op">=</span> chooseBestFeatureToSplit(dataSet)</a>
+<a class="sourceLine" id="cb2-16" data-line-number="16">    bestFeatLabel <span class="op">=</span> labels[bestFeat]</a>
+<a class="sourceLine" id="cb2-17" data-line-number="17">    myTree <span class="op">=</span> {bestFeatLabel:{}}</a>
+<a class="sourceLine" id="cb2-18" data-line-number="18">    <span class="kw">del</span>(labels[bestFeat])</a>
+<a class="sourceLine" id="cb2-19" data-line-number="19">    featValues <span class="op">=</span> [example[bestFeat] <span class="cf">for</span> example <span class="kw">in</span> dataSet]</a>
+<a class="sourceLine" id="cb2-20" data-line-number="20">    uniqueVals <span class="op">=</span> <span class="bu">set</span>(featValues)</a>
+<a class="sourceLine" id="cb2-21" data-line-number="21">    <span class="cf">for</span> value <span class="kw">in</span> uniqueVals:</a>
+<a class="sourceLine" id="cb2-22" data-line-number="22">        subLabels <span class="op">=</span> labels[:]       </a>
+<a class="sourceLine" id="cb2-23" data-line-number="23">        myTree[bestFeatLabel][value] <span class="op">=</span> createTree(splitDataSet(dataSet, bestFeat, value),subLabels)</a>
+<a class="sourceLine" id="cb2-24" data-line-number="24">    <span class="cf">return</span> myTree                            </a></code></pre></div>
 <h3 id="c4.5算法"><u>C4.5算法</u></h3>
 <p>输入：训练数据集D，特征集A，阈值e</p>
 <p>输出：决策树T</p>
 <ul>
-<li>算法</li>
-</ul>
-<ol style="list-style-type: decimal">
+<li>算法
+<ol type="1">
 <li>若D中所有实例属于同一类Ck，则置T为单节点树，并将Ck作为该节点的类，返回T</li>
 <li>如果A为空集，则置T为单节点树，并将D中实例数最大的类Ck作为该结点的类，返回T</li>
 <li>否则，计算A中各特征对D的信息增益比，选择信息增益比最大的特征A</li>
 <li>如果Ag的信息增益比小于阈值e，则置T为单节点树，并将D中实例数最大的类Ck作为该节点的类，返回T</li>
 <li>否则，对Ag的每一可能值ai，依Ag=ai将D分割为子集若干非空Di，将Di中实例数最大的类作为标记，构建子结点，由结点及其子结点构成树T，返回T</li>
 <li>对结点i，以Di为训练集，以A-{Ag}为特征集，递归地调用1-5，得到子树Ti，返回Ti。</li>
-</ol>
-<ul>
-<li>优点</li>
-</ul>
-<ol style="list-style-type: decimal">
+</ol></li>
+<li>优点
+<ol type="1">
 <li><code>C4.5</code>在生成过程中，用信息增益比来选择特征，与<code>ID3</code>算法相似，而且它可以处理连续的和有缺失值的数据。</li>
-</ol>
-<ul>
-<li>缺点</li>
-</ul>
-<ol style="list-style-type: decimal">
+</ol></li>
+<li>缺点
+<ol type="1">
 <li>生成的是多叉树</li>
 <li>只能用于分类</li>
 <li>使用了熵模型，涉及大量的对数运算，很耗时</li>
-</ol>
+</ol></li>
+</ul>
 <h3 id="cartclassification-and-regression-tree算法"><u>CART</u>(Classification and regression tree)算法</h3>
 <p><code>CART</code>是目前最主流的决策树算法，既能生成分类树，也能生成回归树。</p>
 <h3 id="cart分类树"><u>CART分类树</u></h3>
@@ -563,15 +557,15 @@ Gini(D, A) = \frac{D_1}{D}Gini(D_1) + \frac{D_2}{D}Gini(D2)
 <p>输入：训练集D，基尼系数的阈值，样本个数阈值</p>
 <p>输出：决策树T</p>
 <ul>
-<li>算法</li>
-</ul>
-<ol style="list-style-type: decimal">
+<li>算法
+<ol type="1">
 <li>对于当前节点的数据集D，如果样本个数小于阈值或者没有特征，则返回决策子树，当前节点停止递归。</li>
 <li>计算样本集D的基尼系数，如果基尼系数小于阈值，则返回决策树子树，当前节点停止递归。</li>
 <li>计算当前节点现有的各个特征值对数据集D的基尼系数。</li>
 <li>在计算出来的各个特征的各个特征值对数据集D的基尼系数中，选择基尼系数最小的特征A和对应的特征值a。根据这个最优特征和最优特征值，把数据集划分成两部分D1和D2，同时建立当前节点的左右节点，左节点的数据集D，右节点的数据集D为D2。</li>
 <li>对左右的子节点递归的调用1-4步，生成决策树。</li>
-</ol>
+</ol></li>
+</ul>
 <h3 id="cart回归树"><u>CART回归树</u></h3>
 <p><code>CART回归树</code>用平方误差最小化准则进行特征选择，<code>CART回归树</code>的度量目标是对于任意划分特征A，对应的任意划分点s两边划分成数据集D1和D2，求出使D1和D2各自集合的均方差最小，同时D1和D2的均方差之和最小对应的特征和特征值划分点。 <span class="math display">\[
 \min_{j,s}\left[ \min_{c1}\sum_{x_i\subseteq R_{1}(j,s)}(y_i-c_1)^2+\min_{c_{2}}\sum_{x_i\subseteq R_{2}(j,s)}(y_i-c_1)^2\right]
@@ -582,23 +576,23 @@ Gini(D, A) = \frac{D_1}{D}Gini(D_1) + \frac{D_2}{D}Gini(D2)
 f(x) = \sum_{m=1}^{M}c_mI(x\subseteq R_m)
 \]</span> 在训练数据集所在的输入空间中，递归地将每个区域划分为两个子区域并决定每个子区域上的输出值，构建二叉决策树。</p>
 <ul>
-<li>算法</li>
-</ul>
-<ol style="list-style-type: decimal">
+<li><p>算法</p>
+<ol type="1">
 <li><p>选择最优切分变量<code>j</code>与切分点<code>s</code>， 求解 <span class="math display">\[
- \min_{j,s}\left[ \min_{c1}\sum_{x_i\subseteq R_{1}(j,s)}(y_i-c_1)^2+\min_{c_{2}}\sum_{x_i\subseteq R_{2}(j,s)}(y_i-c_1)^2\right]
- \]</span> 遍历变量<code>j</code>，对固定的切分变量<code>j</code>扫描切分点<code>s</code>，选择上式达到最小值的对<code>(j, s)</code></p></li>
+\min_{j,s}\left[ \min_{c1}\sum_{x_i\subseteq R_{1}(j,s)}(y_i-c_1)^2+\min_{c_{2}}\sum_{x_i\subseteq R_{2}(j,s)}(y_i-c_1)^2\right]
+\]</span> 遍历变量<code>j</code>，对固定的切分变量<code>j</code>扫描切分点<code>s</code>，选择上式达到最小值的对<code>(j, s)</code></p></li>
 <li><p>用选定的对<code>(j, s)</code>划分区域并决定相应的输出值。 <span class="math display">\[
- R_1(j, s) = \{x|x^{(j)}\le s\}  \ \ \ 和 \ \ \ R_2(j, s) = \{x|x^{(j)}\gt s\}
- \]</span></p>
+R_1(j, s) = \{x|x^{(j)}\le s\}  \ \ \ 和 \ \ \ R_2(j, s) = \{x|x^{(j)}\gt s\}
+\]</span></p>
 <p><span class="math display">\[
- \hat c_m = \frac{1}{N_m}\sum_{x_i\subseteq R_{m}(j,s)}y_i,   \ \ \ \ \ \ x\subseteq R_m, m = 1, 2
- \]</span></p></li>
+\hat c_m = \frac{1}{N_m}\sum_{x_i\subseteq R_{m}(j,s)}y_i,   \ \ \ \ \ \ x\subseteq R_m, m = 1, 2
+\]</span></p></li>
 <li><p>继续对两个子区域调用步骤(1), (2)，直至满足停止条件</p></li>
 <li><p>将输入空间划分为M个区域R1, R2, …, RM, 生成决策树： <span class="math display">\[
- f(x) = \sum_{m=1}^{M}\hat c_mI(x\subseteq R_m)
- \]</span></p></li>
-</ol>
+f(x) = \sum_{m=1}^{M}\hat c_mI(x\subseteq R_m)
+\]</span></p></li>
+</ol></li>
+</ul>
 <h2 id="决策树的剪枝"><u>决策树的剪枝</u></h2>
 <p>在决策树学习中将已生成的树进行简化的过程称为<code>剪枝(pruning)</code>。具体地，剪枝从已生成的树上裁掉一些子树或叶结点，并将其根结点或父结点作为新的叶结点，从而简化分类树模型。</p>
 <p>决策树的剪枝通过极小化决策树整体的损失函数(<code>loss function</code>)或代价函数(<code>cost function</code>)</p>
@@ -621,16 +615,18 @@ C_{\alpha}(T) &amp; = C(T) + \alpha(T)
 <p>采取类似于伪代码的形式来进行叙述：</p>
 <p><strong>1. 输入</strong>：生成算法产生的原始决策树T，惩罚因子α</p>
 <p><strong>2. 过程</strong>：</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li><p>从下往上地获取T中所有 Node，存入列表<code>_tmp_nodes</code></p></li>
 <li><p>对<code>_tmp_nodes</code>中的所有 Node 计算损失，存入列表<code>_old</code></p></li>
 <li><p>计算<code>_tmp_nodes</code>中所有 Node 进行局部剪枝后的损失，存入列表<code>_new</code></p></li>
-<li><p>进入循环体：</p></li>
+<li><p>进入循环体：</p>
+<ol type="1">
 <li><p>若<code>_new</code>中所有损失都大于<code>_old</code>中对应的损失、则退出循环体</p></li>
 <li><p>否则，设p满足： <span class="math display">\[
-  p=\mathop{\arg\min}_{p}\_new[p]≤\_old[p]
-  \]</span> 则对<code>_tmp_nodes[p]</code>进行局部剪枝</p></li>
+p=\mathop{\arg\min}_{p}\_new[p]≤\_old[p]
+\]</span> 则对<code>_tmp_nodes[p]</code>进行局部剪枝</p></li>
 <li><p>在完成局部剪枝后，更新<code>_old</code>、<code>_new</code>、<code>_tmp_nodes</code>等变量。具体而言，我们无需重新计算它们， 只需更新“被影响到的” Node 所对应的位置的值即可</p></li>
+</ol></li>
 <li><p>最后调用<code>self.reduce_nodes</code>方法、将被剪掉的 Node 从<code>nodes</code>中除去</p></li>
 </ol>
 <p><strong>3.输出</strong>：修剪过后的决策树<code>Tα</code></p>
@@ -638,7 +634,7 @@ C_{\alpha}(T) &amp; = C(T) + \alpha(T)
 <ul>
 <li><h4 id="优点">优点</h4></li>
 </ul>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>决策树易于理解和解释</li>
 <li>数据的准备往往是简单或者是不必要的</li>
 <li>能够同时处理数据型和<em>类别型</em>属性。其他的技术往往要求数据属性的单一</li>
@@ -649,7 +645,7 @@ C_{\alpha}(T) &amp; = C(T) + \alpha(T)
 <ul>
 <li><h4 id="缺点">缺点</h4></li>
 </ul>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>在决策树当中,信息增益的结果偏向于那些具有更多数值的特征</li>
 <li>决策树处理缺失数据时的困难。</li>
 <li>出现过拟合</li>
@@ -780,7 +776,7 @@ C_{\alpha}(T) &amp; = C(T) + \alpha(T)
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-count">35</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

@@ -373,196 +373,196 @@
         <p>这周继续阅读<em>Python tips</em>来了解Python知识，这周主要要深入了解的是<code>Mutation</code>、<code>__slots__</code>、<code>虚拟环境(Virtualenv)</code>和<code>Collections</code>。下面将分享我的阅读笔记。</p>
 <h2 id="一mutation">一、Mutation</h2>
 <p>首先我们来看一个例子。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> foo <span class="op">=</span> [<span class="st">&#39;hi&#39;</span>]
-<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(foo)
-[<span class="st">&#39;hi&#39;</span>]
-<span class="op">&gt;&gt;&gt;</span> bar <span class="op">=</span> foo
-<span class="op">&gt;&gt;&gt;</span> bar <span class="op">+=</span>[<span class="st">&#39;bye&#39;</span>]
-<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(foo)
-[<span class="st">&#39;hi&#39;</span>, <span class="st">&#39;bye&#39;</span>]</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> foo <span class="op">=</span> [<span class="st">&#39;hi&#39;</span>]</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(foo)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">[<span class="st">&#39;hi&#39;</span>]</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> bar <span class="op">=</span> foo</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> bar <span class="op">+=</span>[<span class="st">&#39;bye&#39;</span>]</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(foo)</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">[<span class="st">&#39;hi&#39;</span>, <span class="st">&#39;bye&#39;</span>]</a></code></pre></div>
 <p>从上我们可以看出，每当将一个变量赋值为另一个可变类型的变量时，对这个数据的任意改动会同时反映到这两个变量上去。针对可变数据类型，新变量只不过是老变量的一个别名而已。下面我们来看一个列表的例子。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="kw">def</span> add_to(num, target<span class="op">=</span>[]):
-...    target.append(num)
-...    <span class="cf">return</span> target
-<span class="op">&gt;&gt;&gt;</span> add_to(<span class="dv">1</span>)
-[<span class="dv">1</span>]
-<span class="op">&gt;&gt;&gt;</span> add_to(<span class="dv">2</span>)
-[<span class="dv">1</span>, <span class="dv">2</span>]
-<span class="op">&gt;&gt;&gt;</span> add_to(<span class="dv">3</span>)
-[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="kw">def</span> add_to(num, target<span class="op">=</span>[]):</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">...    target.append(num)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">...    <span class="cf">return</span> target</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> add_to(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="op">&gt;&gt;&gt;</span> add_to(<span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">[<span class="dv">1</span>, <span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="op">&gt;&gt;&gt;</span> add_to(<span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</a></code></pre></div>
 <p>上面这个例子，是因为列表是可变类型的数据结构。在Python中当函数被定义时，默认参数只会运算一次，而不是每次被调用时都会重新运算。我们应该尽量避免将可变类型参数定义为默认参数。如果我们想上面的例子每次重新运算。那我们可以这样做</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="kw">def</span> add_to(element, target<span class="op">=</span><span class="va">None</span>):
-...    <span class="cf">if</span> target <span class="kw">is</span> <span class="va">None</span>:
-...        target <span class="op">=</span> []
-...    target.append(element)
-...    <span class="cf">return</span> target
-...
-<span class="op">&gt;&gt;&gt;</span> add_to(<span class="dv">1</span>)
-[<span class="dv">1</span>]
-<span class="op">&gt;&gt;&gt;</span> add_to(<span class="dv">2</span>)
-[<span class="dv">2</span>]</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="kw">def</span> add_to(element, target<span class="op">=</span><span class="va">None</span>):</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">...    <span class="cf">if</span> target <span class="kw">is</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">...        target <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">...    target.append(element)</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">...    <span class="cf">return</span> target</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">...</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> add_to(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="op">&gt;&gt;&gt;</span> add_to(<span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10">[<span class="dv">2</span>]</a></code></pre></div>
 <p>每次调用函数时，函数都没有传入target参数，因此一个新的列表会被创建。</p>
 <h2 id="二__slots__">二、__slots__</h2>
 <p>在Python中，每个类都有实例属性。默认情况下Python用一个字典来保存一个对象的实例属性。它允许我们在运行时去设置任意的新属性。</p>
 <p>但是对于有着已知属性的小类来说，这个字典浪费了很多内存。Python不能在对象创建时直接分配一个固定量的内存来保存所有的属性。因此如果创建很多对象，则会消耗很多内存。而使用__slots__相当于告诉Python不要使用字典，而且只给一个固定集合的属性分配空间。</p>
 <p>下面我们来看看在有与没有使用__slots__情况下的精确内存占用。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="im">import</span> ipython_memory_usage.ipython_memory_usage <span class="im">as</span> imu
-<span class="op">&gt;&gt;&gt;</span> imu.start_watching_memory()
-used <span class="fl">0.2383</span> MiB RAM <span class="kw">in</span> <span class="fl">6.</span>24s, peaked <span class="fl">0.00</span> MiB above current, total RAM usage <span class="fl">41.67</span> MiB
-<span class="op">&gt;&gt;&gt;</span> cd Desktop<span class="op">/</span>python_exercise<span class="op">/</span>
-<span class="op">/</span>Users<span class="op">/</span>petertseng<span class="op">/</span>Desktop<span class="op">/</span>python_exercise
-used <span class="fl">0.0586</span> MiB RAM <span class="kw">in</span> <span class="fl">0.</span>10s, peaked <span class="fl">0.00</span> MiB above current, total RAM usage <span class="fl">41.73</span> MiB
-<span class="op">&gt;&gt;&gt;</span> <span class="op">%</span>cat slots.py
-<span class="co">#!/usr/bin/env python</span>
-<span class="co"># encoding: utf-8</span>
-
-<span class="kw">class</span> MyClass(<span class="bu">object</span>):
-    __slots__ <span class="op">=</span> [<span class="st">&#39;name&#39;</span>, <span class="st">&#39;identifier&#39;</span>]
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, identifier):
-        <span class="va">self</span>.name <span class="op">=</span> name
-        <span class="va">self</span>.identifier <span class="op">=</span> identifier
-
-num <span class="op">=</span> <span class="dv">1024</span> <span class="op">*</span> <span class="dv">256</span>
-x <span class="op">=</span> [MyClass(<span class="dv">1</span>,<span class="dv">1</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(num)]
-
-used <span class="fl">0.0117</span> MiB RAM <span class="kw">in</span> <span class="fl">0.</span>23s, peaked <span class="fl">0.00</span> MiB above current, total RAM usage <span class="fl">41.74</span> MiB
-<span class="op">&gt;&gt;&gt;</span> <span class="op">%</span>cat noslots.py
-<span class="co">#!/usr/bin/env python</span>
-<span class="co"># encoding: utf-8</span>
-
-<span class="kw">class</span> MyClass(<span class="bu">object</span>):
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, identifier):
-        <span class="va">self</span>.name <span class="op">=</span> name
-        <span class="va">self</span>.identifier <span class="op">=</span> identifier
-
-num <span class="op">=</span> <span class="dv">1024</span> <span class="op">*</span> <span class="dv">256</span>
-x <span class="op">=</span> [MyClass(<span class="dv">1</span>,<span class="dv">1</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(num)]
-
-used <span class="fl">0.0078</span> MiB RAM <span class="kw">in</span> <span class="fl">0.</span>24s, peaked <span class="fl">0.00</span> MiB above current, total RAM usage <span class="fl">41.75</span> MiB
-<span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> slots <span class="im">import</span> <span class="op">*</span>
-used <span class="fl">24.5312</span> MiB RAM <span class="kw">in</span> <span class="fl">0.</span>33s, peaked <span class="fl">0.00</span> MiB above current, total RAM usage <span class="fl">66.28</span> MiB
-<span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> noslots <span class="im">import</span> <span class="op">*</span>
-used <span class="fl">91.6484</span> MiB RAM <span class="kw">in</span> <span class="fl">0.</span>45s, peaked <span class="fl">0.00</span> MiB above current, total RAM usage <span class="fl">157.93</span> MiB</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="im">import</span> ipython_memory_usage.ipython_memory_usage <span class="im">as</span> imu</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> imu.start_watching_memory()</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">used <span class="fl">0.2383</span> MiB RAM <span class="kw">in</span> <span class="fl">6.24</span>s, peaked <span class="fl">0.00</span> MiB above current, total RAM usage <span class="fl">41.67</span> MiB</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> cd Desktop<span class="op">/</span>python_exercise<span class="op">/</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="op">/</span>Users<span class="op">/</span>petertseng<span class="op">/</span>Desktop<span class="op">/</span>python_exercise</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">used <span class="fl">0.0586</span> MiB RAM <span class="kw">in</span> <span class="fl">0.10</span>s, peaked <span class="fl">0.00</span> MiB above current, total RAM usage <span class="fl">41.73</span> MiB</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> <span class="op">%</span>cat slots.py</a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#!/usr/bin/env python</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co"># encoding: utf-8</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="kw">class</span> MyClass(<span class="bu">object</span>):</a>
+<a class="sourceLine" id="cb4-12" data-line-number="12">    __slots__ <span class="op">=</span> [<span class="st">&#39;name&#39;</span>, <span class="st">&#39;identifier&#39;</span>]</a>
+<a class="sourceLine" id="cb4-13" data-line-number="13">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, identifier):</a>
+<a class="sourceLine" id="cb4-14" data-line-number="14">        <span class="va">self</span>.name <span class="op">=</span> name</a>
+<a class="sourceLine" id="cb4-15" data-line-number="15">        <span class="va">self</span>.identifier <span class="op">=</span> identifier</a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17">num <span class="op">=</span> <span class="dv">1024</span> <span class="op">*</span> <span class="dv">256</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18">x <span class="op">=</span> [MyClass(<span class="dv">1</span>,<span class="dv">1</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(num)]</a>
+<a class="sourceLine" id="cb4-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb4-20" data-line-number="20">used <span class="fl">0.0117</span> MiB RAM <span class="kw">in</span> <span class="fl">0.23</span>s, peaked <span class="fl">0.00</span> MiB above current, total RAM usage <span class="fl">41.74</span> MiB</a>
+<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="op">&gt;&gt;&gt;</span> <span class="op">%</span>cat noslots.py</a>
+<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#!/usr/bin/env python</span></a>
+<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co"># encoding: utf-8</span></a>
+<a class="sourceLine" id="cb4-24" data-line-number="24"></a>
+<a class="sourceLine" id="cb4-25" data-line-number="25"><span class="kw">class</span> MyClass(<span class="bu">object</span>):</a>
+<a class="sourceLine" id="cb4-26" data-line-number="26">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, identifier):</a>
+<a class="sourceLine" id="cb4-27" data-line-number="27">        <span class="va">self</span>.name <span class="op">=</span> name</a>
+<a class="sourceLine" id="cb4-28" data-line-number="28">        <span class="va">self</span>.identifier <span class="op">=</span> identifier</a>
+<a class="sourceLine" id="cb4-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb4-30" data-line-number="30">num <span class="op">=</span> <span class="dv">1024</span> <span class="op">*</span> <span class="dv">256</span></a>
+<a class="sourceLine" id="cb4-31" data-line-number="31">x <span class="op">=</span> [MyClass(<span class="dv">1</span>,<span class="dv">1</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(num)]</a>
+<a class="sourceLine" id="cb4-32" data-line-number="32"></a>
+<a class="sourceLine" id="cb4-33" data-line-number="33">used <span class="fl">0.0078</span> MiB RAM <span class="kw">in</span> <span class="fl">0.24</span>s, peaked <span class="fl">0.00</span> MiB above current, total RAM usage <span class="fl">41.75</span> MiB</a>
+<a class="sourceLine" id="cb4-34" data-line-number="34"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> slots <span class="im">import</span> <span class="op">*</span></a>
+<a class="sourceLine" id="cb4-35" data-line-number="35">used <span class="fl">24.5312</span> MiB RAM <span class="kw">in</span> <span class="fl">0.33</span>s, peaked <span class="fl">0.00</span> MiB above current, total RAM usage <span class="fl">66.28</span> MiB</a>
+<a class="sourceLine" id="cb4-36" data-line-number="36"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> noslots <span class="im">import</span> <span class="op">*</span></a>
+<a class="sourceLine" id="cb4-37" data-line-number="37">used <span class="fl">91.6484</span> MiB RAM <span class="kw">in</span> <span class="fl">0.45</span>s, peaked <span class="fl">0.00</span> MiB above current, total RAM usage <span class="fl">157.93</span> MiB</a></code></pre></div>
 <p>由此可见，使用__slots__能够在满足已知小类的属性分配以及对内存的节省。</p>
 <h2 id="三虚拟环境virtualenv">三、虚拟环境(Virtualenv)</h2>
 <p>虚拟环境是针对每个程序创建独立（隔离）的Python环境，而不是在全局安装所依赖的模块。</p>
 <p>因为我用的是<code>anaconda</code>，所以在创建虚拟环境的步骤会不一样。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="co"># 先更新conda</span>
-conda update conda
-
-<span class="co"># 利用conda创建虚拟环境</span>
-conda create <span class="op">-</span>n yourenvname python<span class="op">=</span>x.x anaconda
-
-<span class="co"># 激活虚拟环境</span>
-source activate yourenvname
-
-<span class="co"># 安装额外的Python安装包</span>
-conda install <span class="op">-</span>n yourenvname [package]
-
-<span class="co"># 退出虚拟环境</span>
-source deactivate
-
-<span class="co"># 删除虚拟环境</span>
-conda remove <span class="op">-</span>n yourenvname <span class="op">-</span><span class="bu">all</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># 先更新conda</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">conda update conda</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co"># 利用conda创建虚拟环境</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">conda create <span class="op">-</span>n yourenvname python<span class="op">=</span>x.x anaconda</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co"># 激活虚拟环境</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">source activate yourenvname</a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co"># 安装额外的Python安装包</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11">conda install <span class="op">-</span>n yourenvname [package]</a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co"># 退出虚拟环境</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14">source deactivate</a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co"># 删除虚拟环境</span></a>
+<a class="sourceLine" id="cb5-17" data-line-number="17">conda remove <span class="op">-</span>n yourenvname <span class="op">-</span><span class="bu">all</span></a></code></pre></div>
 <h2 id="四collections">四、Collections</h2>
 <p>之前就有了解过Python的<code>Collections</code>，感觉这就是Python的一大神器。这里挑部分做总结分享。</p>
 <h3 id="defaultdict"><u>defaultdict</u></h3>
 <p>正如之前笔记所记录，使用<code>defaultdict</code>不需要检查key是否存在，因为如果不存在，它会自动帮你加上。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> collections <span class="im">import</span> defaultdict
-<span class="op">&gt;&gt;&gt;</span> colors <span class="op">=</span> (
-... (<span class="st">&#39;Yasoob&#39;</span>, <span class="st">&#39;Yellow&#39;</span>),
-... (<span class="st">&#39;Ali&#39;</span>,<span class="st">&#39;Blue&#39;</span>),
-... (<span class="st">&#39;Arham&#39;</span>,<span class="st">&#39;Green&#39;</span>),
-... (<span class="st">&#39;Ali&#39;</span>,<span class="st">&#39;Black&#39;</span>),
-... (<span class="st">&#39;Yasoob&#39;</span>,<span class="st">&#39;Red&#39;</span>),
-... (<span class="st">&#39;Ahmed&#39;</span>,<span class="st">&#39;Silver&#39;</span>),
-... )
-...
-<span class="op">&gt;&gt;&gt;</span> favourite_colors <span class="op">=</span> defaultdict(<span class="bu">list</span>)
-<span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> name, color <span class="kw">in</span> colors:
-...    favourite_colors[name].append(color)
-...    
-<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(favourite_colors)
-defaultdict(<span class="op">&lt;</span><span class="bu">type</span> <span class="st">&#39;list&#39;</span><span class="op">&gt;</span>, {<span class="st">&#39;Arham&#39;</span>: [<span class="st">&#39;Green&#39;</span>], <span class="st">&#39;Yasoob&#39;</span>: [<span class="st">&#39;Yellow&#39;</span>, <span class="st">&#39;Red&#39;</span>], <span class="st">&#39;Ahmed&#39;</span>: [<span class="st">&#39;Silver&#39;</span>], <span class="st">&#39;Ali&#39;</span>: [<span class="st">&#39;Blue&#39;</span>, <span class="st">&#39;Black&#39;</span>]})</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> collections <span class="im">import</span> defaultdict</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> colors <span class="op">=</span> (</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">... (<span class="st">&#39;Yasoob&#39;</span>, <span class="st">&#39;Yellow&#39;</span>),</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">... (<span class="st">&#39;Ali&#39;</span>,<span class="st">&#39;Blue&#39;</span>),</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">... (<span class="st">&#39;Arham&#39;</span>,<span class="st">&#39;Green&#39;</span>),</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">... (<span class="st">&#39;Ali&#39;</span>,<span class="st">&#39;Black&#39;</span>),</a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">... (<span class="st">&#39;Yasoob&#39;</span>,<span class="st">&#39;Red&#39;</span>),</a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">... (<span class="st">&#39;Ahmed&#39;</span>,<span class="st">&#39;Silver&#39;</span>),</a>
+<a class="sourceLine" id="cb6-9" data-line-number="9">... )</a>
+<a class="sourceLine" id="cb6-10" data-line-number="10">...</a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="op">&gt;&gt;&gt;</span> favourite_colors <span class="op">=</span> defaultdict(<span class="bu">list</span>)</a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> name, color <span class="kw">in</span> colors:</a>
+<a class="sourceLine" id="cb6-13" data-line-number="13">...    favourite_colors[name].append(color)</a>
+<a class="sourceLine" id="cb6-14" data-line-number="14">...    </a>
+<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(favourite_colors)</a>
+<a class="sourceLine" id="cb6-16" data-line-number="16">defaultdict(<span class="op">&lt;</span><span class="bu">type</span> <span class="st">&#39;list&#39;</span><span class="op">&gt;</span>, {<span class="st">&#39;Arham&#39;</span>: [<span class="st">&#39;Green&#39;</span>], <span class="st">&#39;Yasoob&#39;</span>: [<span class="st">&#39;Yellow&#39;</span>, <span class="st">&#39;Red&#39;</span>], <span class="st">&#39;Ahmed&#39;</span>: [<span class="st">&#39;Silver&#39;</span>], <span class="st">&#39;Ali&#39;</span>: [<span class="st">&#39;Blue&#39;</span>, <span class="st">&#39;Black&#39;</span>]})</a></code></pre></div>
 <p>而且，当我们需要在一个字典中对一个键进行嵌套赋值时候，使用<code>defaultdict</code>能绕过键不存在所引发的异常。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="im">import</span> collections
-<span class="op">&gt;&gt;&gt;</span> tree <span class="op">=</span> <span class="kw">lambda</span>: collections.defaultdict(tree)
-<span class="op">&gt;&gt;&gt;</span> some_dict <span class="op">=</span> tree()
-<span class="op">&gt;&gt;&gt;</span> some_dict[<span class="st">&#39;colors&#39;</span>][<span class="st">&#39;favourite&#39;</span>] <span class="op">=</span> <span class="st">&quot;Yellow&quot;</span>
-<span class="op">&gt;&gt;&gt;</span> <span class="im">import</span> json
-<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(json.dumps(some_dict))
-{<span class="st">&quot;colors&quot;</span>: {<span class="st">&quot;favourite&quot;</span>: <span class="st">&quot;Yellow&quot;</span>}}</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="im">import</span> collections</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> tree <span class="op">=</span> <span class="kw">lambda</span>: collections.defaultdict(tree)</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> some_dict <span class="op">=</span> tree()</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> some_dict[<span class="st">&#39;colors&#39;</span>][<span class="st">&#39;favourite&#39;</span>] <span class="op">=</span> <span class="st">&quot;Yellow&quot;</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> <span class="im">import</span> json</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(json.dumps(some_dict))</a>
+<a class="sourceLine" id="cb7-7" data-line-number="7">{<span class="st">&quot;colors&quot;</span>: {<span class="st">&quot;favourite&quot;</span>: <span class="st">&quot;Yellow&quot;</span>}}</a></code></pre></div>
 <h3 id="counter"><u>Counter</u></h3>
 <p><code>Counter</code>是一个计数器，可以帮助我们针对某项数据进行计数。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> collections <span class="im">import</span> Counter
-<span class="op">&gt;&gt;&gt;</span> colors <span class="op">=</span> (
-... (<span class="st">&#39;Yasoob&#39;</span>, <span class="st">&#39;Yellow&#39;</span>),
-... (<span class="st">&#39;Ali&#39;</span>,<span class="st">&#39;Blue&#39;</span>),
-... (<span class="st">&#39;Arham&#39;</span>,<span class="st">&#39;Green&#39;</span>),
-... (<span class="st">&#39;Ali&#39;</span>,<span class="st">&#39;Black&#39;</span>),
-... (<span class="st">&#39;Yasoob&#39;</span>,<span class="st">&#39;Red&#39;</span>),
-... (<span class="st">&#39;Ahmed&#39;</span>,<span class="st">&#39;Silver&#39;</span>),
-... )
-...
-<span class="op">&gt;&gt;&gt;</span> favs <span class="op">=</span> Counter(name <span class="cf">for</span> name, color <span class="kw">in</span> colors)
-<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(favs)
-Counter({<span class="st">&#39;Yasoob&#39;</span>: <span class="dv">2</span>, <span class="st">&#39;Ali&#39;</span>: <span class="dv">2</span>, <span class="st">&#39;Arham&#39;</span>: <span class="dv">1</span>, <span class="st">&#39;Ahmed&#39;</span>: <span class="dv">1</span>})</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> collections <span class="im">import</span> Counter</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> colors <span class="op">=</span> (</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">... (<span class="st">&#39;Yasoob&#39;</span>, <span class="st">&#39;Yellow&#39;</span>),</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">... (<span class="st">&#39;Ali&#39;</span>,<span class="st">&#39;Blue&#39;</span>),</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">... (<span class="st">&#39;Arham&#39;</span>,<span class="st">&#39;Green&#39;</span>),</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">... (<span class="st">&#39;Ali&#39;</span>,<span class="st">&#39;Black&#39;</span>),</a>
+<a class="sourceLine" id="cb8-7" data-line-number="7">... (<span class="st">&#39;Yasoob&#39;</span>,<span class="st">&#39;Red&#39;</span>),</a>
+<a class="sourceLine" id="cb8-8" data-line-number="8">... (<span class="st">&#39;Ahmed&#39;</span>,<span class="st">&#39;Silver&#39;</span>),</a>
+<a class="sourceLine" id="cb8-9" data-line-number="9">... )</a>
+<a class="sourceLine" id="cb8-10" data-line-number="10">...</a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="op">&gt;&gt;&gt;</span> favs <span class="op">=</span> Counter(name <span class="cf">for</span> name, color <span class="kw">in</span> colors)</a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(favs)</a>
+<a class="sourceLine" id="cb8-13" data-line-number="13">Counter({<span class="st">&#39;Yasoob&#39;</span>: <span class="dv">2</span>, <span class="st">&#39;Ali&#39;</span>: <span class="dv">2</span>, <span class="st">&#39;Arham&#39;</span>: <span class="dv">1</span>, <span class="st">&#39;Ahmed&#39;</span>: <span class="dv">1</span>})</a></code></pre></div>
 <h3 id="deque"><u>Deque</u></h3>
 <p><code>deque</code>提供了一个双端队列，你可以从头／尾两端添加或删除元素。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> collections <span class="im">import</span> deque
-<span class="op">&gt;&gt;&gt;</span> d <span class="op">=</span> deque()
-<span class="op">&gt;&gt;&gt;</span> d.append(<span class="st">&#39;1&#39;</span>)
-<span class="op">&gt;&gt;&gt;</span> d.append(<span class="st">&#39;2&#39;</span>)
-<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span> d
-deque([<span class="st">&#39;1&#39;</span>, <span class="st">&#39;2&#39;</span>])
-<span class="op">&gt;&gt;&gt;</span> d.popleft()
-<span class="co">&#39;1&#39;</span>
-<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span> d
-deque([<span class="st">&#39;2&#39;</span>])
-<span class="op">&gt;&gt;&gt;</span> d.append(<span class="st">&#39;1&#39;</span>)
-<span class="op">&gt;&gt;&gt;</span> d.pop()
-<span class="co">&#39;1&#39;</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> collections <span class="im">import</span> deque</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> d <span class="op">=</span> deque()</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> d.append(<span class="st">&#39;1&#39;</span>)</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> d.append(<span class="st">&#39;2&#39;</span>)</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span> d</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">deque([<span class="st">&#39;1&#39;</span>, <span class="st">&#39;2&#39;</span>])</a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> d.popleft()</a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">&#39;1&#39;</span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span> d</a>
+<a class="sourceLine" id="cb9-10" data-line-number="10">deque([<span class="st">&#39;2&#39;</span>])</a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="op">&gt;&gt;&gt;</span> d.append(<span class="st">&#39;1&#39;</span>)</a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="op">&gt;&gt;&gt;</span> d.pop()</a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">&#39;1&#39;</span></a></code></pre></div>
 <h3 id="nametuple"><u>Nametuple</u></h3>
 <p>一个元组是一个不可变的列表，可以存储一个数据的序列。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> collections <span class="im">import</span> namedtuple
-<span class="op">&gt;&gt;&gt;</span> Animal <span class="op">=</span> namedtuple(<span class="st">&#39;Animal&#39;</span>, <span class="st">&#39;name age type&#39;</span>)
-<span class="op">&gt;&gt;&gt;</span> perry <span class="op">=</span> Animal(name<span class="op">=</span><span class="st">&#39;perry&#39;</span>, age<span class="op">=</span><span class="dv">31</span>, <span class="bu">type</span><span class="op">=</span><span class="st">&#39;cat&#39;</span>)
-<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(perry)
-Animal(name<span class="op">=</span><span class="st">&#39;perry&#39;</span>, age<span class="op">=</span><span class="dv">31</span>, <span class="bu">type</span><span class="op">=</span><span class="st">&#39;cat&#39;</span>)
-<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(perry.name)
-perry</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> collections <span class="im">import</span> namedtuple</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> Animal <span class="op">=</span> namedtuple(<span class="st">&#39;Animal&#39;</span>, <span class="st">&#39;name age type&#39;</span>)</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> perry <span class="op">=</span> Animal(name<span class="op">=</span><span class="st">&#39;perry&#39;</span>, age<span class="op">=</span><span class="dv">31</span>, <span class="bu">type</span><span class="op">=</span><span class="st">&#39;cat&#39;</span>)</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(perry)</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5">Animal(name<span class="op">=</span><span class="st">&#39;perry&#39;</span>, age<span class="op">=</span><span class="dv">31</span>, <span class="bu">type</span><span class="op">=</span><span class="st">&#39;cat&#39;</span>)</a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(perry.name)</a>
+<a class="sourceLine" id="cb10-7" data-line-number="7">perry</a></code></pre></div>
 <p>我们可以用名字来访问<code>nametuple</code>中的数据，我们再继续分析它。一个命名元组<code>nametuple</code>有两个必需的参数。它们是元组名称和字段名称。</p>
 <p>在上面的例子中，元组名称是Animal，字段名称是name，age和type。这样会让代码变得更容易维护。而且<code>namedtuple</code>的每个实例没有对象字典，所以它们很轻量，与普通的元组相比，并不需要更多的内存。所以它们比字典更快。</p>
 <p>下面将一个命名元组转换为字典。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> collections <span class="im">import</span> namedtuple
-<span class="op">&gt;&gt;&gt;</span> Animal <span class="op">=</span> namedtuple(<span class="st">&#39;Animal&#39;</span>, <span class="st">&#39;name age type&#39;</span>)
-<span class="op">&gt;&gt;&gt;</span> perry <span class="op">=</span> Animal(name<span class="op">=</span><span class="st">&#39;perry&#39;</span>, age<span class="op">=</span><span class="dv">31</span>, <span class="bu">type</span><span class="op">=</span><span class="st">&#39;cat&#39;</span>)
-<span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(perry._asdict())
-OrderedDict([(<span class="st">&#39;name&#39;</span>, <span class="st">&#39;perry&#39;</span>), (<span class="st">&#39;age&#39;</span>, <span class="dv">31</span>), (<span class="st">&#39;type&#39;</span>, <span class="st">&#39;cat&#39;</span>)])</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> collections <span class="im">import</span> namedtuple</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> Animal <span class="op">=</span> namedtuple(<span class="st">&#39;Animal&#39;</span>, <span class="st">&#39;name age type&#39;</span>)</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> perry <span class="op">=</span> Animal(name<span class="op">=</span><span class="st">&#39;perry&#39;</span>, age<span class="op">=</span><span class="dv">31</span>, <span class="bu">type</span><span class="op">=</span><span class="st">&#39;cat&#39;</span>)</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(perry._asdict())</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">OrderedDict([(<span class="st">&#39;name&#39;</span>, <span class="st">&#39;perry&#39;</span>), (<span class="st">&#39;age&#39;</span>, <span class="dv">31</span>), (<span class="st">&#39;type&#39;</span>, <span class="st">&#39;cat&#39;</span>)])</a></code></pre></div>
 <h3 id="ordereddict"><u>OrderedDict</u></h3>
 <p>Python中默认的dict是无序的，但有些时候需要保持字典的有序性，这个时候可以使用<code>OrderedDict</code>，它是dict的一个subclass（子类），且保持了有序性。</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="co"># 以下是将无序的dict使用OrderedDict方法来让dict变得有序。</span>
-<span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> collections <span class="im">import</span> OrderedDict
-<span class="op">&gt;&gt;&gt;</span> d <span class="op">=</span> {<span class="st">&#39;Guava&#39;</span>: <span class="dv">3</span>, <span class="st">&#39;Persimmon&#39;</span>: <span class="dv">1</span>, <span class="st">&#39;Pitaya&#39;</span>:<span class="dv">4</span>, <span class="st">&#39;Sugarcane&#39;</span>:<span class="dv">2</span>}
-<span class="co"># 将d按照key排序</span>
-<span class="op">&gt;&gt;&gt;</span> OrderedDict(<span class="bu">sorted</span>(d.items(), key<span class="op">=</span><span class="kw">lambda</span> t: t[<span class="dv">0</span>]))
-OrderedDict([(<span class="st">&#39;Guava&#39;</span>, <span class="dv">3</span>), (<span class="st">&#39;Persimmon&#39;</span>, <span class="dv">1</span>), (<span class="st">&#39;Pitaya&#39;</span>, <span class="dv">4</span>), (<span class="st">&#39;Sugarcane&#39;</span>, <span class="dv">2</span>)])
-<span class="co"># 将d按照value排序</span>
-<span class="op">&gt;&gt;&gt;</span> OrderedDict(<span class="bu">sorted</span>(d.items(), key<span class="op">=</span><span class="kw">lambda</span> t: t[<span class="dv">1</span>]))
-OrderedDict([(<span class="st">&#39;Persimmon&#39;</span>, <span class="dv">1</span>), (<span class="st">&#39;Sugarcane&#39;</span>, <span class="dv">2</span>), (<span class="st">&#39;Guava&#39;</span>, <span class="dv">3</span>), (<span class="st">&#39;Pitaya&#39;</span>, <span class="dv">4</span>)])
-<span class="co"># 将d按照key的长度排序</span>
-<span class="op">&gt;&gt;&gt;</span> OrderedDict(<span class="bu">sorted</span>(d.items(), key<span class="op">=</span><span class="kw">lambda</span> t: <span class="bu">len</span>(t[<span class="dv">0</span>])))
-OrderedDict([(<span class="st">&#39;Guava&#39;</span>, <span class="dv">3</span>), (<span class="st">&#39;Pitaya&#39;</span>, <span class="dv">4</span>), (<span class="st">&#39;Sugarcane&#39;</span>, <span class="dv">2</span>), (<span class="st">&#39;Persimmon&#39;</span>, <span class="dv">1</span>)])
-<span class="co"># 使用popitem(last=True)方法可以使我们按照LIFO(Last in first out)的顺序删除dict中最后一个插入的键值对。</span>
-<span class="co"># 使用popitem(last=False)方法就按照FIFO(First in first out)的顺序删除dict中的键值对。</span>
-<span class="op">&gt;&gt;&gt;</span> d <span class="op">=</span> {<span class="st">&#39;Guava&#39;</span>: <span class="dv">3</span>, <span class="st">&#39;Persimmon&#39;</span>: <span class="dv">1</span>, <span class="st">&#39;Pitaya&#39;</span>:<span class="dv">4</span>, <span class="st">&#39;Sugarcane&#39;</span>:<span class="dv">2</span>}
-<span class="op">&gt;&gt;&gt;</span> d <span class="op">=</span> OrderedDict(<span class="bu">sorted</span>(d.items(), key<span class="op">=</span><span class="kw">lambda</span> t: t[<span class="dv">0</span>]))
-<span class="op">&gt;&gt;&gt;</span> d
-OrderedDict([(<span class="st">&#39;Guava&#39;</span>, <span class="dv">3</span>), (<span class="st">&#39;Persimmon&#39;</span>, <span class="dv">1</span>), (<span class="st">&#39;Pitaya&#39;</span>, <span class="dv">4</span>), (<span class="st">&#39;Sugarcane&#39;</span>, <span class="dv">2</span>)])
-<span class="op">&gt;&gt;&gt;</span> d.popitem() <span class="co"># 默认是popitem(last=True)</span>
-(<span class="st">&#39;Sugarcane&#39;</span>, <span class="dv">2</span>)
-<span class="op">&gt;&gt;&gt;</span> d.popitem(last<span class="op">=</span><span class="va">False</span>)
-(<span class="st">&#39;Guava&#39;</span>, <span class="dv">3</span>)</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co"># 以下是将无序的dict使用OrderedDict方法来让dict变得有序。</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> collections <span class="im">import</span> OrderedDict</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> d <span class="op">=</span> {<span class="st">&#39;Guava&#39;</span>: <span class="dv">3</span>, <span class="st">&#39;Persimmon&#39;</span>: <span class="dv">1</span>, <span class="st">&#39;Pitaya&#39;</span>:<span class="dv">4</span>, <span class="st">&#39;Sugarcane&#39;</span>:<span class="dv">2</span>}</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co"># 将d按照key排序</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> OrderedDict(<span class="bu">sorted</span>(d.items(), key<span class="op">=</span><span class="kw">lambda</span> t: t[<span class="dv">0</span>]))</a>
+<a class="sourceLine" id="cb12-6" data-line-number="6">OrderedDict([(<span class="st">&#39;Guava&#39;</span>, <span class="dv">3</span>), (<span class="st">&#39;Persimmon&#39;</span>, <span class="dv">1</span>), (<span class="st">&#39;Pitaya&#39;</span>, <span class="dv">4</span>), (<span class="st">&#39;Sugarcane&#39;</span>, <span class="dv">2</span>)])</a>
+<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co"># 将d按照value排序</span></a>
+<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="op">&gt;&gt;&gt;</span> OrderedDict(<span class="bu">sorted</span>(d.items(), key<span class="op">=</span><span class="kw">lambda</span> t: t[<span class="dv">1</span>]))</a>
+<a class="sourceLine" id="cb12-9" data-line-number="9">OrderedDict([(<span class="st">&#39;Persimmon&#39;</span>, <span class="dv">1</span>), (<span class="st">&#39;Sugarcane&#39;</span>, <span class="dv">2</span>), (<span class="st">&#39;Guava&#39;</span>, <span class="dv">3</span>), (<span class="st">&#39;Pitaya&#39;</span>, <span class="dv">4</span>)])</a>
+<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="co"># 将d按照key的长度排序</span></a>
+<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="op">&gt;&gt;&gt;</span> OrderedDict(<span class="bu">sorted</span>(d.items(), key<span class="op">=</span><span class="kw">lambda</span> t: <span class="bu">len</span>(t[<span class="dv">0</span>])))</a>
+<a class="sourceLine" id="cb12-12" data-line-number="12">OrderedDict([(<span class="st">&#39;Guava&#39;</span>, <span class="dv">3</span>), (<span class="st">&#39;Pitaya&#39;</span>, <span class="dv">4</span>), (<span class="st">&#39;Sugarcane&#39;</span>, <span class="dv">2</span>), (<span class="st">&#39;Persimmon&#39;</span>, <span class="dv">1</span>)])</a>
+<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="co"># 使用popitem(last=True)方法可以使我们按照LIFO(Last in first out)的顺序删除dict中最后一个插入的键值对。</span></a>
+<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="co"># 使用popitem(last=False)方法就按照FIFO(First in first out)的顺序删除dict中的键值对。</span></a>
+<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="op">&gt;&gt;&gt;</span> d <span class="op">=</span> {<span class="st">&#39;Guava&#39;</span>: <span class="dv">3</span>, <span class="st">&#39;Persimmon&#39;</span>: <span class="dv">1</span>, <span class="st">&#39;Pitaya&#39;</span>:<span class="dv">4</span>, <span class="st">&#39;Sugarcane&#39;</span>:<span class="dv">2</span>}</a>
+<a class="sourceLine" id="cb12-16" data-line-number="16"><span class="op">&gt;&gt;&gt;</span> d <span class="op">=</span> OrderedDict(<span class="bu">sorted</span>(d.items(), key<span class="op">=</span><span class="kw">lambda</span> t: t[<span class="dv">0</span>]))</a>
+<a class="sourceLine" id="cb12-17" data-line-number="17"><span class="op">&gt;&gt;&gt;</span> d</a>
+<a class="sourceLine" id="cb12-18" data-line-number="18">OrderedDict([(<span class="st">&#39;Guava&#39;</span>, <span class="dv">3</span>), (<span class="st">&#39;Persimmon&#39;</span>, <span class="dv">1</span>), (<span class="st">&#39;Pitaya&#39;</span>, <span class="dv">4</span>), (<span class="st">&#39;Sugarcane&#39;</span>, <span class="dv">2</span>)])</a>
+<a class="sourceLine" id="cb12-19" data-line-number="19"><span class="op">&gt;&gt;&gt;</span> d.popitem() <span class="co"># 默认是popitem(last=True)</span></a>
+<a class="sourceLine" id="cb12-20" data-line-number="20">(<span class="st">&#39;Sugarcane&#39;</span>, <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb12-21" data-line-number="21"><span class="op">&gt;&gt;&gt;</span> d.popitem(last<span class="op">=</span><span class="va">False</span>)</a>
+<a class="sourceLine" id="cb12-22" data-line-number="22">(<span class="st">&#39;Guava&#39;</span>, <span class="dv">3</span>)</a></code></pre></div>
 
       
     </div>
@@ -689,7 +689,7 @@ OrderedDict([(<span class="st">&#39;Guava&#39;</span>, <span class="dv">3</span>
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-count">35</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
