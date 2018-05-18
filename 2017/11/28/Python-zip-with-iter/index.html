@@ -90,18 +90,18 @@
 
 
 
-<meta name="description" content="今天看到刷leetcode的时候，看到如下一个函数。 class Solution(object):    def matrixReshape(self, nums, r, c):        flat = sum(nums, [])        if len(flat) != c*r:            return nums                tuples = zip(*(">
+<meta name="description" content="今天看到刷leetcode的时候，看到如下一个函数。 class Solution(object):     def matrixReshape(self, nums, r, c):         flat = sum(nums, [])         if len(flat) != c*r:             return nums                  tuples =">
 <meta name="keywords" content="python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python zip( ) with iter( )">
 <meta property="og:url" content="http://yoursite.com/2017/11/28/Python-zip-with-iter/index.html">
 <meta property="og:site_name" content="彼得的博客">
-<meta property="og:description" content="今天看到刷leetcode的时候，看到如下一个函数。 class Solution(object):    def matrixReshape(self, nums, r, c):        flat = sum(nums, [])        if len(flat) != c*r:            return nums                tuples = zip(*(">
+<meta property="og:description" content="今天看到刷leetcode的时候，看到如下一个函数。 class Solution(object):     def matrixReshape(self, nums, r, c):         flat = sum(nums, [])         if len(flat) != c*r:             return nums                  tuples =">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-01-23T14:54:59.110Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python zip( ) with iter( )">
-<meta name="twitter:description" content="今天看到刷leetcode的时候，看到如下一个函数。 class Solution(object):    def matrixReshape(self, nums, r, c):        flat = sum(nums, [])        if len(flat) != c*r:            return nums                tuples = zip(*(">
+<meta name="twitter:description" content="今天看到刷leetcode的时候，看到如下一个函数。 class Solution(object):     def matrixReshape(self, nums, r, c):         flat = sum(nums, [])         if len(flat) != c*r:             return nums                  tuples =">
 
 
 
@@ -371,15 +371,35 @@
 
       
         <p>今天看到刷leetcode的时候，看到如下一个函数。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">matrixReshape</span><span class="params">(self, nums, r, c)</span>:</span></div><div class="line">        flat = sum(nums, [])</div><div class="line">        <span class="keyword">if</span> len(flat) != c*r:</div><div class="line">            <span class="keyword">return</span> nums</div><div class="line">        </div><div class="line">        tuples = zip(*([iter(flat)] * c))</div><div class="line">        <span class="keyword">return</span> map(list, tuples)</div></pre></td></tr></table></figure>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">class</span> Solution(<span class="bu">object</span>):</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">    <span class="kw">def</span> matrixReshape(<span class="va">self</span>, nums, r, c):</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">        flat <span class="op">=</span> <span class="bu">sum</span>(nums, [])</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">        <span class="cf">if</span> <span class="bu">len</span>(flat) <span class="op">!=</span> c<span class="op">*</span>r:</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">            <span class="cf">return</span> nums</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">        </a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">        tuples <span class="op">=</span> <span class="bu">zip</span>(<span class="op">*</span>([<span class="bu">iter</span>(flat)] <span class="op">*</span> c))</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">        <span class="cf">return</span> <span class="bu">map</span>(<span class="bu">list</span>, tuples)</a></code></pre></div>
 <p>然后我就对<code>tuples = zip(*([iter(flat)] * c))</code>很疑惑，不是很清楚里面究竟是怎么运行的。通过在网上查找各种资料，google和stackoverflow之后，我尝试把我的理解写在下面。</p>
 <hr>
 <p>首先， 来看<code>x=[[1, 2], [3, 4]]</code>。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><div class="line">x = [[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>]]</div><div class="line">a = zip(*[x]*<span class="number">3</span>)</div><div class="line"><span class="keyword">print</span> a</div><div class="line"></div><div class="line">[output]</div><div class="line">[([<span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span>, <span class="number">2</span>]), ([<span class="number">3</span>, <span class="number">4</span>], [<span class="number">3</span>, <span class="number">4</span>], [<span class="number">3</span>, <span class="number">4</span>])]</div></pre></td></tr></table></figure>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" data-line-number="1">x <span class="op">=</span> [[<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">3</span>, <span class="dv">4</span>]]</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">a <span class="op">=</span> <span class="bu">zip</span>(<span class="op">*</span>[x]<span class="op">*</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="bu">print</span> a</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">[output]</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">[([<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">1</span>, <span class="dv">2</span>]), ([<span class="dv">3</span>, <span class="dv">4</span>], [<span class="dv">3</span>, <span class="dv">4</span>], [<span class="dv">3</span>, <span class="dv">4</span>])]</a></code></pre></div>
 <p>而上面这一步相当于下面这一步</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><div class="line">b = zip(x, x, x)</div><div class="line"><span class="keyword">print</span> b</div><div class="line"></div><div class="line">[otuput]</div><div class="line">[([<span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span>, <span class="number">2</span>]), ([<span class="number">3</span>, <span class="number">4</span>], [<span class="number">3</span>, <span class="number">4</span>], [<span class="number">3</span>, <span class="number">4</span>])]</div></pre></td></tr></table></figure>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" data-line-number="1">b <span class="op">=</span> <span class="bu">zip</span>(x, x, x)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="bu">print</span> b</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">[otuput]</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">[([<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">1</span>, <span class="dv">2</span>]), ([<span class="dv">3</span>, <span class="dv">4</span>], [<span class="dv">3</span>, <span class="dv">4</span>], [<span class="dv">3</span>, <span class="dv">4</span>])]</a></code></pre></div>
 <p>下面来看我们来看下 <code>[x] * 3</code> 的结果是什么。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><div class="line">x2 = [x]*<span class="number">3</span></div><div class="line">x2</div><div class="line"></div><div class="line">[output]</div><div class="line">[[[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>]], [[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>]], [[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>]]]</div></pre></td></tr></table></figure>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" data-line-number="1">x2 <span class="op">=</span> [x]<span class="op">*</span><span class="dv">3</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">x2</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">[output]</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">[[[<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">3</span>, <span class="dv">4</span>]], [[<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">3</span>, <span class="dv">4</span>]], [[<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">3</span>, <span class="dv">4</span>]]]</a></code></pre></div>
 <p>结果是[x]*3 生成一个列表x2，然后这个列表x2里面包括三个对象，每个对象都是列表x</p>
 <p>所以当执行<code>zip(*[x]*3)</code>的时候，它首先unpack了<code>x2</code>这一个列表，把x2里面的对象全部拆分出来。所以这一行代码的步骤应该是以下：</p>
 <ul>
@@ -389,9 +409,16 @@
 </ul>
 <p>下面来看看，如果结合了迭代器会怎么样。例子： <code>zip(*([iter(x)] * 2))</code></p>
 <p>对于 <code>zip(*([iter(x)] * 2))</code> ， 如果将 <code>buff = iter(x)</code>，那么将等同于 <code>zip(buff, buff)</code> 因此</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><div class="line">zip(*([iter(x)]*<span class="number">2</span>))</div><div class="line"></div><div class="line">[output]</div><div class="line">[([<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>])]</div></pre></td></tr></table></figure>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="bu">zip</span>(<span class="op">*</span>([<span class="bu">iter</span>(x)]<span class="op">*</span><span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">[output]</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">[([<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">3</span>, <span class="dv">4</span>])]</a></code></pre></div>
 <p>因为<code>iter()</code>是迭代器，这里迭代了两次，第一次产出是[1, 2]， 第二次是[3, 4]。然后会将这次迭代结果组合成一个元组。而由于迭代两次之后，<code>x</code>里面已经没有对象可以进行迭代，所以返回这两个对象所组合的元组。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><div class="line">buff = iter(x)</div><div class="line">zip(buff, buff)</div><div class="line"></div><div class="line">[output]</div><div class="line">[([<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>])]</div></pre></td></tr></table></figure>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" data-line-number="1">buff <span class="op">=</span> <span class="bu">iter</span>(x)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="bu">zip</span>(buff, buff)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">[output]</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">[([<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">3</span>, <span class="dv">4</span>])]</a></code></pre></div>
 <hr>
 <p>好了，解释完之后，那么<code>tuples = zip(*([iter(flat)] * c))</code>就很好理解了。</p>
 <p>假设<code>flat = [1, 2, 3, 4]</code>，<code>c = 2</code>。</p>
