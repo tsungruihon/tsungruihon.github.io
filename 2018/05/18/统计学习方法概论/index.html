@@ -100,7 +100,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/download.png">
 <meta property="og:image" content="http://yoursite.com/images/download-1.png">
-<meta property="og:updated_time" content="2018-05-18T16:18:31.292Z">
+<meta property="og:updated_time" content="2018-05-18T16:39:20.213Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="统计学习方法概论及Python应用">
 <meta name="twitter:description" content="今天总结以下几个内容：  有监督学习、无监督学习的比较、分类和回归方法的比较 过拟合和欠拟合的定义及解决方法 交叉验证 模型评估指标（精确率、召回率、F值、ROC、AUC）  一、有监督学习、无监督学习、分类和回归方法 ​ 机器学习中有四个主要的分类：  有监督学习(supervised learning) 无监督学习(unsupervised learning) 半监督学习(semisuperv">
@@ -459,7 +459,22 @@
 <li>采用正则化</li>
 <li>采用<code>Dropout</code>方法，在训练时让神经元以一定的概率不工作</li>
 </ol>
-<h3 id="三交叉验证">三、交叉验证</h3>
+<h3 id="三交叉验证cross-validation">三、交叉验证(cross validation)</h3>
+<p>其实在上面的例子中， 我们已经使用了交叉验证。交叉验证直白地说就是为了验证模型的表现。学习预测函数的参数并且在相同的数据中测试它是一种错误的方法：因为只重复看到的样本标签的模型本身会有一个完美的表现，但它并不能预测任何有用的信息，对于未见过的数据，模型的泛化能力会非常差。这种情况称为过拟合。</p>
+<p>为了避免这种情况，对于有监督学习，通常会将数据集划分为训练集和测试集，然后进行模型表现的评估。这种做法称为交叉验证。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</div><div class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</div><div class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> svm</div><div class="line"></div><div class="line">iris = datasets.load_iris()</div><div class="line">iris_X = iris.data</div><div class="line">iris_y = iris.target</div><div class="line"></div><div class="line">X_train, X_test, y_train, y_test = train_test_split(</div><div class="line">    iris_X, iris_y, test_size=<span class="number">0.4</span>, random_state=<span class="number">0</span></div><div class="line">)</div><div class="line"></div><div class="line">clf = svm.SVC(kernel=<span class="string">'linear'</span>, C=<span class="number">1</span>).fit(X_train, y_train)</div><div class="line">print(clf.score(X_test, y_test))</div><div class="line">[output]</div><div class="line"><span class="number">0.9666666666666667</span></div></pre></td></tr></table></figure>
+<p>常见的交叉验证有：</p>
+<ul>
+<li>Holdout验证：随机从最初样本选取部分，形成交叉验证数据，而剩余的就当作训练数据。一般来说，少于原样本三分之一的数据被选作验证数据。</li>
+<li>K-Fold交叉验证</li>
+</ul>
+<p>K次交叉验证，将训练集分割成K个子样本， 一个单独的子样本被保留作为验证模型的数据，其他K-1个样本用作训练。交叉验证重复K次，每个子样本验证一次。这种方法的优势在于，同时重复运用随机产生的子样本进行训练和验证，每次的结果验证一次，10次交叉验证是最常用的。</p>
+<ul>
+<li>留一验证（LOOCV）</li>
+</ul>
+<p>事实上这跟K-Fold是一样的，只不过这里的K是样本个数。</p>
+<p>常见的误差估计：均方差和方根均方差。</p>
+<h3 id="四模型评估指标精确率召回率f值rocauc">四、模型评估指标（精确率、召回率、F值、ROC、AUC）</h3>
 
       
     </div>
@@ -639,7 +654,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一有监督学习无监督学习分类和回归方法"><span class="nav-number">1.</span> <span class="nav-text">一、有监督学习、无监督学习、分类和回归方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二overfitting与underfitting定义及解决方法"><span class="nav-number">2.</span> <span class="nav-text">二、overfitting与underfitting定义及解决方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#underfittin欠拟合"><span class="nav-number">3.</span> <span class="nav-text">underfittin欠拟合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#overfitting-过拟合"><span class="nav-number">4.</span> <span class="nav-text">overfitting 过拟合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三交叉验证"><span class="nav-number">5.</span> <span class="nav-text">三、交叉验证</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一有监督学习无监督学习分类和回归方法"><span class="nav-number">1.</span> <span class="nav-text">一、有监督学习、无监督学习、分类和回归方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二overfitting与underfitting定义及解决方法"><span class="nav-number">2.</span> <span class="nav-text">二、overfitting与underfitting定义及解决方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#underfittin欠拟合"><span class="nav-number">3.</span> <span class="nav-text">underfittin欠拟合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#overfitting-过拟合"><span class="nav-number">4.</span> <span class="nav-text">overfitting 过拟合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三交叉验证cross-validation"><span class="nav-number">5.</span> <span class="nav-text">三、交叉验证(cross validation)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四模型评估指标精确率召回率f值rocauc"><span class="nav-number">6.</span> <span class="nav-text">四、模型评估指标（精确率、召回率、F值、ROC、AUC）</span></a></li></ol></div>
             
 
           </div>
