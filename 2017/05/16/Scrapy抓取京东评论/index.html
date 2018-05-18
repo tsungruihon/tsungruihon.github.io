@@ -371,7 +371,7 @@
 
       
         <p>最近用Scrapy写了一个抓取京东评论的爬虫。其实京东评论爬虫的难度不大，因为通过抓包分析，发现京东专门有一个url专门存放评论信息，而且json格式。这简直是爬虫的最佳数据格式。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1">http:<span class="op">//</span>club.jd.com<span class="op">/</span>comment<span class="op">/</span>productPageComments.action?callback<span class="op">=&amp;</span>productId<span class="op">=</span><span class="dv">3014239</span><span class="op">&amp;</span>score<span class="op">=</span><span class="dv">0</span><span class="op">&amp;</span>sortType<span class="op">=</span><span class="dv">5</span><span class="op">&amp;</span>page<span class="op">=</span><span class="dv">0</span><span class="op">&amp;</span>pageSize<span class="op">=</span><span class="dv">10</span><span class="op">&amp;</span>isShadowSku<span class="op">=</span><span class="dv">0</span></a></code></pre></div>
+<figure class="highlight"><table><tr><td class="code"><pre><div class="line">http://club.jd.com/comment/productPageComments.action?callback=&amp;productId=3014239&amp;score=0&amp;sortType=5&amp;page=0&amp;pageSize=10&amp;isShadowSku=0</div></pre></td></tr></table></figure>
 <p>但有个很奇怪的地方就是，京东评论每一页只有10条评论，但是没关系，用一个循环就搞定了。代码放在github上，有兴趣可以了解一下。<a>https://github.com/tsungruihon/jd_comment_scrapy</a></p>
 
       
