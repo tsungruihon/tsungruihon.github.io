@@ -477,7 +477,7 @@
 <p>在这里，我们应该可以发现</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">assert</span> condition, message</div></pre></td></tr></table></figure>
 <p>等同于</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> <span class="keyword">not</span> condition:</div><div class="line">4<span class="keyword">raise</span> AssertionError(message)</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> <span class="keyword">not</span> condition:</div><div class="line">	<span class="keyword">raise</span> AssertionError(message)</div></pre></td></tr></table></figure>
 <h2 id="break-continue">break, continue</h2>
 <p><code>break</code>和<code>continue</code>主要用于<code>for</code>和<code>while</code>语句里，用于改变它们正常的行为。</p>
 <p><code>break</code>会结束它所在的最小循环，并且将控制流向循环后面的语句。而<code>continue</code>会使当下的循环结束，但不会影响整个循环。</p>

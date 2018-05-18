@@ -378,7 +378,7 @@
 <h2 id="二open函数">二、open函数</h2>
 <p>我们都知道，open函数可以打开一个文件。open的返回值是一个文件句柄，从操作系统托付给你的Python程序。一旦处理完文件，会想归还这个文件句柄，只有这样程序不会超出一次能打开文件句柄的数量上限。</p>
 <p>显式地调用close关闭文件句柄，前提是只有在read成功情况下。如果有任意异常正好在<code>f = open(...)</code>之后产生，<code>f.close()</code>将不会被调用。为了确保不管异常是否触发，文件都能关闭，通常将其包裹成一个with语句：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">with</span> open(<span class="string">'photo.jpg'</span>, <span class="string">'r+'</span>) <span class="keyword">as</span> f:</div><div class="line">4jpgdata = f.read()</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">with</span> open(<span class="string">'photo.jpg'</span>, <span class="string">'r+'</span>) <span class="keyword">as</span> f:</div><div class="line">	jpgdata = f.read()</div></pre></td></tr></table></figure>
 <p>open的第一个参数是文件名。第二个(mode打开模式)决定了这个文件如何被打开。</p>
 <ul>
 <li>读取文件，传入<code>r</code></li>
@@ -407,7 +407,7 @@
 <p>想象当有两个相关操作，你想让它们结对执行，然后在它们中间放置一段代码。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">with</span> open(<span class="string">'some_file'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> opened_file:</div><div class="line">    opened_file.write(<span class="string">'Hola!'</span>)</div></pre></td></tr></table></figure>
 <p>上面这段代码会打开一个文件，往里面写入一些数据，然后关闭它。如果在往文件写数据时发生异常，它会尝试去关闭文件，这与下一段代码是等价的。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">file = open(<span class="string">'some_file'</span>, <span class="string">'w'</span>)</div><div class="line"><span class="keyword">try</span>:</div><div class="line">4file.write(<span class="string">'Hola!'</span>)</div><div class="line"><span class="keyword">finally</span>:</div><div class="line">4file.close()</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">file = open(<span class="string">'some_file'</span>, <span class="string">'w'</span>)</div><div class="line"><span class="keyword">try</span>:</div><div class="line">	file.write(<span class="string">'Hola!'</span>)</div><div class="line"><span class="keyword">finally</span>:</div><div class="line">	file.close()</div></pre></td></tr></table></figure>
 <p>当与第一个例子相比时，我们可以看到，通过使用with，许多boilerplate code被消掉了。这就是with语句的主要优势，它确保我们的文件会被关闭，而不用关注嵌套代码如何退出。下面将探讨一下上下文管理的实现方式。</p>
 <h3 id="基于类的实现"><u>基于类的实现</u></h3>
 <p>一个上下文管理器的类，最起码要定义<code>__enter__</code>和<code>__exit__</code>方法。</p>
@@ -447,7 +447,7 @@
 <li>这个<code>GeneratorContextManager</code>被赋值给open_file函数，实际上是在调用<code>GeneratorContextManager</code>对象。</li>
 </ol>
 <p>因此我们可以用这个新建的上下文管理器。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">with</span> open_file(<span class="string">'some_file'</span>) <span class="keyword">as</span> f:</div><div class="line">4f.write(<span class="string">'hola!'</span>)</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">with</span> open_file(<span class="string">'some_file'</span>) <span class="keyword">as</span> f:</div><div class="line">	f.write(<span class="string">'hola!'</span>)</div></pre></td></tr></table></figure>
 
       
     </div>
