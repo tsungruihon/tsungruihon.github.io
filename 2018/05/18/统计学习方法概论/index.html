@@ -100,7 +100,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/download.png">
 <meta property="og:image" content="http://yoursite.com/images/download-1.png">
-<meta property="og:updated_time" content="2018-05-18T15:50:28.986Z">
+<meta property="og:updated_time" content="2018-05-18T16:18:31.292Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="统计学习方法概论及Python应用">
 <meta name="twitter:description" content="今天总结以下几个内容：  有监督学习、无监督学习的比较、分类和回归方法的比较 过拟合和欠拟合的定义及解决方法 交叉验证 模型评估指标（精确率、召回率、F值、ROC、AUC）  一、有监督学习、无监督学习、分类和回归方法 ​ 机器学习中有四个主要的分类：  有监督学习(supervised learning) 无监督学习(unsupervised learning) 半监督学习(semisuperv">
@@ -380,7 +380,7 @@
 <li>交叉验证</li>
 <li>模型评估指标（精确率、召回率、F值、ROC、AUC）</li>
 </ol>
-<p>一、有监督学习、无监督学习、分类和回归方法</p>
+<h3 id="一有监督学习无监督学习分类和回归方法">一、有监督学习、无监督学习、分类和回归方法</h3>
 <p>​ 机器学习中有四个主要的分类：</p>
 <ul>
 <li>有监督学习<code>(supervised learning)</code></li>
@@ -389,7 +389,9 @@
 <li>强化学习<code>(reinforcement learning)</code>。</li>
 </ul>
 <p>今天先讲监督学习<code>(supervised learning)</code>和无监督学习 <code>(unsupervised learning)</code>。</p>
-<p><u>监督学习</u><code>(supervised learning)</code></p>
+<ol type="1">
+<li><u>监督学习</u><code>(supervised learning)</code></li>
+</ol>
 <p>它是由训练数据中学到或者建立一个模式（函数或者是学习模型），使模型能够对任意给定的输入，对其相应的输出做出一个预测。</p>
 <p>训练数据通常是一个向量和一个预期输出组成，如果函数的输出是一个连续的数值，则称为回归分析。如果函数的输出是一个分类标签，则称为分类问题<code>(classification)</code>。其中有以下模型：</p>
 <blockquote>
@@ -397,7 +399,9 @@
 </blockquote>
 <p>现在我们来看点例子吧。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> linear_model</div><div class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</div><div class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> cross_val_score</div><div class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> svm</div><div class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> StratifiedKFold</div><div class="line"></div><div class="line">iris = datasets.load_iris()</div><div class="line">iris_X = iris.data</div><div class="line">iris_y = iris.target</div><div class="line"></div><div class="line"><span class="comment"># 打印分数</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">display_scores</span><span class="params">(scores)</span>:</span></div><div class="line">    print(<span class="string">"Scores : "</span>, scores)</div><div class="line">    print(<span class="string">"Mean : %.2f"</span> % scores.mean())</div><div class="line">    print(<span class="string">"Accuracy: %0.2f (+/- %0.2f)"</span> % (scores.mean(), scores.std() * <span class="number">2</span>))</div><div class="line"></div><div class="line"><span class="comment"># 输入model，X，y</span></div><div class="line"><span class="comment"># 输出分数</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">model_scores</span><span class="params">(model, X, y)</span>:</span></div><div class="line">    cv = StratifiedKFold(n_splits=<span class="number">5</span>, random_state=<span class="number">0</span>)</div><div class="line">    scores = cross_val_score(model, X, y, cv=cv)</div><div class="line">    display_scores(scores)</div><div class="line">    </div><div class="line"><span class="comment"># LinearRegression</span></div><div class="line">reg = linear_model.LinearRegression()</div><div class="line">model_scores(reg, iris_X, iris_y)</div><div class="line">[output]</div><div class="line">Scores :  [<span class="number">0.93427277</span> <span class="number">0.9395803</span>  <span class="number">0.89930025</span> <span class="number">0.90288946</span> <span class="number">0.95617435</span>]</div><div class="line">Mean : <span class="number">0.93</span></div><div class="line">Accuracy: <span class="number">0.93</span> (+/- <span class="number">0.04</span>)</div><div class="line"></div><div class="line"><span class="comment"># Logistic Regression</span></div><div class="line">logistic = linear_model.LogisticRegression(C=<span class="number">1e5</span>)</div><div class="line">model_scores(logistic, iris_X, iris_y)</div><div class="line">[output]</div><div class="line">Scores :  [<span class="number">0.96666667</span> <span class="number">0.96666667</span> <span class="number">0.93333333</span> <span class="number">0.93333333</span> <span class="number">1.</span>        ]</div><div class="line">Mean : <span class="number">0.96</span></div><div class="line">Accuracy: <span class="number">0.96</span> (+/- <span class="number">0.05</span>)</div><div class="line"></div><div class="line"><span class="comment"># SVM</span></div><div class="line">clf = svm.SVC(kernel=<span class="string">'linear'</span>, C=<span class="number">1</span>)</div><div class="line">model_scores(clf, iris_X, iris_y)</div><div class="line">[output]</div><div class="line">Scores :  [<span class="number">0.96666667</span> <span class="number">1.</span>         <span class="number">0.96666667</span> <span class="number">0.96666667</span> <span class="number">1.</span>        ]</div><div class="line">Mean : <span class="number">0.98</span></div><div class="line">Accuracy: <span class="number">0.98</span> (+/- <span class="number">0.03</span>)</div></pre></td></tr></table></figure>
-<p><u>无监督学习</u><code>(unsupervised learning)</code></p>
+<ol start="2" type="1">
+<li><u>无监督学习</u><code>(unsupervised learning)</code></li>
+</ol>
 <p>无监督学习没有输入标签，一种常见的无监督学习就是数据聚类，在人工神经网络中，生成对抗网络<code>(GAN)</code>、自组织映射<code>(SOM)</code>和适应性共振理论<code>(ART)</code>则是最常用的无监督学习。在聚类中，主要有以下模型：</p>
 <blockquote>
 <p>BIRCH · Hierarchical clustering · k平均 · 期望最大化（EM）· DBSCAN · OPTICS · 均值飘逸(Mean shifit)</p>
@@ -405,6 +409,57 @@
 <p>现在我们来看些例子吧。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">%matplotlib inline</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns; sns.set()</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans</div><div class="line"></div><div class="line"><span class="keyword">from</span> sklearn.datasets.samples_generator <span class="keyword">import</span> make_blobs</div><div class="line">X, y_true = make_blobs(n_samples=<span class="number">300</span>, centers=<span class="number">4</span>,</div><div class="line">                      cluster_std=<span class="number">0.60</span>, random_state=<span class="number">0</span>)</div><div class="line">plt.scatter(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>], s=<span class="number">50</span>)</div><div class="line"></div><div class="line">kmeans = KMeans(n_clusters=<span class="number">4</span>)</div><div class="line">kmeans.fit(X)</div><div class="line">y_kmeans = kmeans.predict(X)</div><div class="line"></div><div class="line">plt.scatter(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>], c=y_kmeans, s=<span class="number">50</span>, cmap=<span class="string">'viridis'</span>)</div><div class="line"></div><div class="line">centers = kmeans.cluster_centers_</div><div class="line">plt.scatter(centers[:, <span class="number">0</span>], centers[:, <span class="number">1</span>], c=<span class="string">'black'</span>, s=<span class="number">200</span>, alpha=<span class="number">0.5</span>)</div></pre></td></tr></table></figure>
 <p><img src="/images/download.png"><img src="/images/download-1.png"></p>
+<ol start="3" type="1">
+<li>回归和分类的比较</li>
+</ol>
+<p>在上面已经针对回归和分类有了一个比较通俗的解读：如果函数的输出是一个连续的数值，则称为回归分析。如果函数的输出是一个分类标签，则称为分类问题<code>(classification)</code>。</p>
+<p>回归方法一览：</p>
+<blockquote>
+<p>SGD Regressor · Lasso · ElasticNet · RidgeRegression · SVR(kernel=‘linear’ · SVR(kernel=‘rbf’) · EnsembleRegressors</p>
+</blockquote>
+<p>分类方法一览：</p>
+<blockquote>
+<p>SGD Classifier · Linear SVC · KNeighbors Classifier · kernel approximation · SVC · Ensemble Classifiers · Naive Bayes</p>
+</blockquote>
+<h3 id="二overfitting与underfitting定义及解决方法">二、<code>overfitting</code>与<code>underfitting</code>定义及解决方法</h3>
+<p><code>方差</code>：方差度量了同样大小的训练集变动所导致的学习性能变化，即刻画了数据扰动所造成的影响。</p>
+<p><code>偏差</code>: 偏差度量了学习算法的期望预测真是结果的偏离程度，即刻画了学习算法本身的拟合能力。</p>
+<p><code>噪声</code>: 噪声表达了在当前任务上任何学习算法所能达到的期望泛化误差的下界，即刻画了学习问题本身的难度。</p>
+<ul>
+<li><h3 id="underfittin欠拟合"><code>underfittin欠拟合</code></h3></li>
+</ul>
+<p><strong>定义</strong>：欠拟合指的是模型并没有很好地捕捉到数据特征，不能很好地拟合数据。</p>
+<p><strong>特点</strong>：</p>
+<ol type="1">
+<li>模型的方差<code>variance</code>较小，预测输出和期望输出的差值较小</li>
+<li>偏差<code>bias</code>较大，期望预测和真实值的差值较大</li>
+<li>模型复杂度较小</li>
+</ol>
+<p><strong>解决方法</strong>：</p>
+<ol type="1">
+<li>添加其他特征项（可通过组合、泛化和相关性这三种手段）</li>
+<li>添加多项式特征，增加模型复杂度</li>
+<li>减少正则化参数，减少对复杂模型的惩罚</li>
+<li>增加更多的数据</li>
+</ol>
+<ul>
+<li><h3 id="overfitting-过拟合"><code>overfitting 过拟合</code></h3></li>
+</ul>
+<p><strong>定义</strong>：过拟合指的是模型对数据的太过拟合，对新的数据泛化能力较差</p>
+<p><strong>特点</strong>：</p>
+<ol type="1">
+<li>模型的方差<code>variance</code>较大，预测输出和期望输出的差值较大</li>
+<li>偏差<code>bias</code>一般较大，期望预测和真实值的差值一般较大</li>
+<li>模型复杂度较大</li>
+</ol>
+<p><strong>解决方法</strong>：</p>
+<ol type="1">
+<li>重新清洗数据</li>
+<li>增大数据的训练量</li>
+<li>采用正则化</li>
+<li>采用<code>Dropout</code>方法，在训练时让神经元以一定的概率不工作</li>
+</ol>
+<h3 id="三交叉验证">三、交叉验证</h3>
 
       
     </div>
@@ -502,8 +557,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/pandas.jpeg"
@@ -565,6 +629,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一有监督学习无监督学习分类和回归方法"><span class="nav-number">1.</span> <span class="nav-text">一、有监督学习、无监督学习、分类和回归方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二overfitting与underfitting定义及解决方法"><span class="nav-number">2.</span> <span class="nav-text">二、overfitting与underfitting定义及解决方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#underfittin欠拟合"><span class="nav-number">3.</span> <span class="nav-text">underfittin欠拟合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#overfitting-过拟合"><span class="nav-number">4.</span> <span class="nav-text">overfitting 过拟合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三交叉验证"><span class="nav-number">5.</span> <span class="nav-text">三、交叉验证</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
