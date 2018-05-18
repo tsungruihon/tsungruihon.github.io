@@ -90,18 +90,18 @@
 
 
 
-<meta name="description" content="这周要了解的知识点是for-else、open函数、协程、函数缓存、上下文管理。 一、for-else 在for-else中，循环都很熟悉。循环结合break，会非常有用。 例如找出2到10之间数字的因子。 &amp;gt;&amp;gt;&amp;gt; for n in range(2,10): ...    for x in range(2,n): ...        if n % x == 0: ...">
+<meta name="description" content="这周要了解的知识点是for-else、open函数、协程、函数缓存、上下文管理。 一、for-else 在for-else中，循环都很熟悉。循环结合break，会非常有用。 例如找出2到10之间数字的因子。 123456789101112131415161718192021&amp;gt;&amp;gt;&amp;gt; for n in range(2,10):...    for x in range(2,n):..">
 <meta name="keywords" content="python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="for-else、open函数、协程、函数缓存、上下文管理">
 <meta property="og:url" content="http://yoursite.com/2017/06/02/for-else、open函数、协程、函数缓存、上下文管理/index.html">
 <meta property="og:site_name" content="彼得的博客">
-<meta property="og:description" content="这周要了解的知识点是for-else、open函数、协程、函数缓存、上下文管理。 一、for-else 在for-else中，循环都很熟悉。循环结合break，会非常有用。 例如找出2到10之间数字的因子。 &amp;gt;&amp;gt;&amp;gt; for n in range(2,10): ...    for x in range(2,n): ...        if n % x == 0: ...">
+<meta property="og:description" content="这周要了解的知识点是for-else、open函数、协程、函数缓存、上下文管理。 一、for-else 在for-else中，循环都很熟悉。循环结合break，会非常有用。 例如找出2到10之间数字的因子。 123456789101112131415161718192021&amp;gt;&amp;gt;&amp;gt; for n in range(2,10):...    for x in range(2,n):..">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2017-06-02T08:37:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="for-else、open函数、协程、函数缓存、上下文管理">
-<meta name="twitter:description" content="这周要了解的知识点是for-else、open函数、协程、函数缓存、上下文管理。 一、for-else 在for-else中，循环都很熟悉。循环结合break，会非常有用。 例如找出2到10之间数字的因子。 &amp;gt;&amp;gt;&amp;gt; for n in range(2,10): ...    for x in range(2,n): ...        if n % x == 0: ...">
+<meta name="twitter:description" content="这周要了解的知识点是for-else、open函数、协程、函数缓存、上下文管理。 一、for-else 在for-else中，循环都很熟悉。循环结合break，会非常有用。 例如找出2到10之间数字的因子。 123456789101112131415161718192021&amp;gt;&amp;gt;&amp;gt; for n in range(2,10):...    for x in range(2,n):..">
 
 
 
@@ -136,9 +136,9 @@
 
 
   <title>for-else、open函数、协程、函数缓存、上下文管理 | 彼得的博客</title>
-  <link rel="stylesheet" type="text/css" href="/css/prettify.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/prettify.css">
   <link rel="stylesheet" type="text/css" href="/css/github-v2.css">
-  <link rel="stylesheet" type="text/css" href="/css/github-v2.min.css">
+  <link rel="stylesheet" type="text/css" href="/css/github-v2.min.css"> -->
   <script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
        <script type="text/x-mathjax-config">
          MathJax.Hub.Config({
@@ -374,32 +374,11 @@
 <h2 id="一for-else">一、for-else</h2>
 <p>在for-else中，循环都很熟悉。循环结合<code>break</code>，会非常有用。</p>
 <p>例如找出2到10之间数字的因子。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>,<span class="dv">10</span>):</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">...    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>,n):</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">...        <span class="cf">if</span> n <span class="op">%</span> x <span class="op">==</span> <span class="dv">0</span>:</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">...            <span class="bu">print</span>(n, <span class="st">&#39;equals&#39;</span>, x, <span class="st">&#39;*&#39;</span>, n<span class="op">/</span>x)</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">...    <span class="cf">else</span>:</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">...        <span class="bu">print</span>(n, <span class="st">&#39;is a prime number&#39;</span>)</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">...</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">(<span class="dv">2</span>, <span class="st">&#39;is a prime number&#39;</span>)</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">(<span class="dv">3</span>, <span class="st">&#39;is a prime number&#39;</span>)</a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">(<span class="dv">4</span>, <span class="st">&#39;equals&#39;</span>, <span class="dv">2</span>, <span class="st">&#39;*&#39;</span>, <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb1-11" data-line-number="11">(<span class="dv">4</span>, <span class="st">&#39;is a prime number&#39;</span>)</a>
-<a class="sourceLine" id="cb1-12" data-line-number="12">(<span class="dv">5</span>, <span class="st">&#39;is a prime number&#39;</span>)</a>
-<a class="sourceLine" id="cb1-13" data-line-number="13">(<span class="dv">6</span>, <span class="st">&#39;equals&#39;</span>, <span class="dv">2</span>, <span class="st">&#39;*&#39;</span>, <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb1-14" data-line-number="14">(<span class="dv">6</span>, <span class="st">&#39;equals&#39;</span>, <span class="dv">3</span>, <span class="st">&#39;*&#39;</span>, <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb1-15" data-line-number="15">(<span class="dv">6</span>, <span class="st">&#39;is a prime number&#39;</span>)</a>
-<a class="sourceLine" id="cb1-16" data-line-number="16">(<span class="dv">7</span>, <span class="st">&#39;is a prime number&#39;</span>)</a>
-<a class="sourceLine" id="cb1-17" data-line-number="17">(<span class="dv">8</span>, <span class="st">&#39;equals&#39;</span>, <span class="dv">2</span>, <span class="st">&#39;*&#39;</span>, <span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb1-18" data-line-number="18">(<span class="dv">8</span>, <span class="st">&#39;equals&#39;</span>, <span class="dv">4</span>, <span class="st">&#39;*&#39;</span>, <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb1-19" data-line-number="19">(<span class="dv">8</span>, <span class="st">&#39;is a prime number&#39;</span>)</a>
-<a class="sourceLine" id="cb1-20" data-line-number="20">(<span class="dv">9</span>, <span class="st">&#39;equals&#39;</span>, <span class="dv">3</span>, <span class="st">&#39;*&#39;</span>, <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb1-21" data-line-number="21">(<span class="dv">9</span>, <span class="st">&#39;is a prime number&#39;</span>)</a></code></pre></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">2</span>,<span class="number">10</span>):</div><div class="line"><span class="meta">... </span>   <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">2</span>,n):</div><div class="line"><span class="meta">... </span>       <span class="keyword">if</span> n % x == <span class="number">0</span>:</div><div class="line"><span class="meta">... </span>           print(n, <span class="string">'equals'</span>, x, <span class="string">'*'</span>, n/x)</div><div class="line"><span class="meta">... </span>   <span class="keyword">else</span>:</div><div class="line"><span class="meta">... </span>       print(n, <span class="string">'is a prime number'</span>)</div><div class="line">...</div><div class="line">(<span class="number">2</span>, <span class="string">'is a prime number'</span>)</div><div class="line">(<span class="number">3</span>, <span class="string">'is a prime number'</span>)</div><div class="line">(<span class="number">4</span>, <span class="string">'equals'</span>, <span class="number">2</span>, <span class="string">'*'</span>, <span class="number">2</span>)</div><div class="line">(<span class="number">4</span>, <span class="string">'is a prime number'</span>)</div><div class="line">(<span class="number">5</span>, <span class="string">'is a prime number'</span>)</div><div class="line">(<span class="number">6</span>, <span class="string">'equals'</span>, <span class="number">2</span>, <span class="string">'*'</span>, <span class="number">3</span>)</div><div class="line">(<span class="number">6</span>, <span class="string">'equals'</span>, <span class="number">3</span>, <span class="string">'*'</span>, <span class="number">2</span>)</div><div class="line">(<span class="number">6</span>, <span class="string">'is a prime number'</span>)</div><div class="line">(<span class="number">7</span>, <span class="string">'is a prime number'</span>)</div><div class="line">(<span class="number">8</span>, <span class="string">'equals'</span>, <span class="number">2</span>, <span class="string">'*'</span>, <span class="number">4</span>)</div><div class="line">(<span class="number">8</span>, <span class="string">'equals'</span>, <span class="number">4</span>, <span class="string">'*'</span>, <span class="number">2</span>)</div><div class="line">(<span class="number">8</span>, <span class="string">'is a prime number'</span>)</div><div class="line">(<span class="number">9</span>, <span class="string">'equals'</span>, <span class="number">3</span>, <span class="string">'*'</span>, <span class="number">3</span>)</div><div class="line">(<span class="number">9</span>, <span class="string">'is a prime number'</span>)</div></pre></td></tr></table></figure>
 <h2 id="二open函数">二、open函数</h2>
 <p>我们都知道，open函数可以打开一个文件。open的返回值是一个文件句柄，从操作系统托付给你的Python程序。一旦处理完文件，会想归还这个文件句柄，只有这样程序不会超出一次能打开文件句柄的数量上限。</p>
 <p>显式地调用close关闭文件句柄，前提是只有在read成功情况下。如果有任意异常正好在<code>f = open(...)</code>之后产生，<code>f.close()</code>将不会被调用。为了确保不管异常是否触发，文件都能关闭，通常将其包裹成一个with语句：</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;photo.jpg&#39;</span>, <span class="st">&#39;r+&#39;</span>) <span class="im">as</span> f:</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">    jpgdata <span class="op">=</span> f.read()</a></code></pre></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">with</span> open(<span class="string">'photo.jpg'</span>, <span class="string">'r+'</span>) <span class="keyword">as</span> f:</div><div class="line">	jpgdata = f.read()</div></pre></td></tr></table></figure>
 <p>open的第一个参数是文件名。第二个(mode打开模式)决定了这个文件如何被打开。</p>
 <ul>
 <li>读取文件，传入<code>r</code></li>
@@ -415,78 +394,26 @@
 <li>协程是数据的消费者</li>
 </ul>
 <p>首先回顾一下生成器的创建过程。</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="kw">def</span> fib():</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">...    a, b <span class="op">=</span> <span class="dv">0</span>, <span class="dv">1</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">...    <span class="cf">while</span> <span class="va">True</span>:</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">...        <span class="cf">yield</span> a</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">...        a, b <span class="op">=</span> b, a<span class="op">+</span>b</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">...        </a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> i <span class="kw">in</span> fib():</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">...    <span class="bu">print</span> i</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">...</a></code></pre></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">fib</span><span class="params">()</span>:</span></div><div class="line"><span class="meta">... </span>   a, b = <span class="number">0</span>, <span class="number">1</span></div><div class="line"><span class="meta">... </span>   <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line"><span class="meta">... </span>       <span class="keyword">yield</span> a</div><div class="line"><span class="meta">... </span>       a, b = b, a+b</div><div class="line"><span class="meta">... </span>       </div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> fib():</div><div class="line"><span class="meta">... </span>   <span class="keyword">print</span> i</div><div class="line">...</div></pre></td></tr></table></figure>
 <p>这样做不仅快而且不会给内存带来压力，因为所需要的值都是动态生成的而不是将它们都存储在一个列表中。更概括地说如果现在我们在上面的例子中使用yield便可获得一个协程。协程会消费掉发给它的值。我们来看Python的grep例子。</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="kw">def</span> grep(pattern):</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">...    <span class="bu">print</span>(<span class="st">&quot;Searching for&quot;</span>, pattern)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">...    <span class="cf">while</span> <span class="va">True</span>:</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">...        line <span class="op">=</span> (<span class="cf">yield</span>)</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">...        <span class="cf">if</span> pattern <span class="kw">in</span> line:</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">...            <span class="bu">print</span>(line)</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7">...</a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="op">&gt;&gt;&gt;</span> s <span class="op">=</span> grep(<span class="st">&#39;python&#39;</span>)</a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="op">&gt;&gt;&gt;</span> <span class="bu">next</span>(s)</a>
-<a class="sourceLine" id="cb4-10" data-line-number="10">(<span class="st">&#39;Searching for&#39;</span>, <span class="st">&#39;python&#39;</span>)</a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="op">&gt;&gt;&gt;</span> s.send(<span class="st">&#39;python good&#39;</span>)</a>
-<a class="sourceLine" id="cb4-12" data-line-number="12">python good</a></code></pre></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">grep</span><span class="params">(pattern)</span>:</span></div><div class="line"><span class="meta">... </span>   print(<span class="string">"Searching for"</span>, pattern)</div><div class="line"><span class="meta">... </span>   <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line"><span class="meta">... </span>       line = (<span class="keyword">yield</span>)</div><div class="line"><span class="meta">... </span>       <span class="keyword">if</span> pattern <span class="keyword">in</span> line:</div><div class="line"><span class="meta">... </span>           print(line)</div><div class="line">...</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>s = grep(<span class="string">'python'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>next(s)</div><div class="line">(<span class="string">'Searching for'</span>, <span class="string">'python'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>s.send(<span class="string">'python good'</span>)</div><div class="line">python good</div></pre></td></tr></table></figure>
 <p>发送的值会被<code>yield</code>接收。运行<code>next()</code>方法是为了启动一个协程。因为协程中包含的生成器不是立即执行，而是通过<code>next()</code>方法来响应<code>send()</code>方法。因此必须通过<code>next()</code>方法来执行yield表达式。然后可以通过<code>close()</code>方法来关闭一个协程。</p>
 <h2 id="四函数缓存">四、函数缓存</h2>
 <p>函数缓存允许我们将一个函数对于给定参数的返回值缓存起来。</p>
 <p>当一个I／O密集的函数被频繁使用相同的参数调用时，函数缓存可以节约时间。</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> functools <span class="im">import</span> wraps</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> <span class="kw">def</span> memoize(function):</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">...    memo <span class="op">=</span> {}</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">...    <span class="op">@</span>wraps(function)</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">...    <span class="kw">def</span> wrapper(<span class="op">*</span>args):</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">...        <span class="cf">if</span> args <span class="kw">in</span> memo:</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">...            <span class="cf">return</span> memo[args]</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8">...        <span class="cf">else</span>:</a>
-<a class="sourceLine" id="cb5-9" data-line-number="9">...            rv <span class="op">=</span> function(<span class="op">*</span>args)</a>
-<a class="sourceLine" id="cb5-10" data-line-number="10">...            memo[args] <span class="op">=</span> rv</a>
-<a class="sourceLine" id="cb5-11" data-line-number="11">...            <span class="cf">return</span> rv</a>
-<a class="sourceLine" id="cb5-12" data-line-number="12">...    <span class="cf">return</span> wrapper</a>
-<a class="sourceLine" id="cb5-13" data-line-number="13">...</a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="op">&gt;&gt;&gt;</span> <span class="op">@</span>memoize</a>
-<a class="sourceLine" id="cb5-15" data-line-number="15">... <span class="kw">def</span> fibonacci(n):</a>
-<a class="sourceLine" id="cb5-16" data-line-number="16">...    <span class="cf">if</span> n <span class="op">&lt;</span> <span class="dv">2</span>: <span class="cf">return</span> n</a>
-<a class="sourceLine" id="cb5-17" data-line-number="17">...    <span class="cf">return</span> fibonacci(n<span class="dv">-1</span>) <span class="op">+</span> fibonacci(n<span class="dv">-2</span>)</a>
-<a class="sourceLine" id="cb5-18" data-line-number="18">...</a>
-<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="op">&gt;&gt;&gt;</span> fibonacci(<span class="dv">25</span>)</a>
-<a class="sourceLine" id="cb5-20" data-line-number="20"><span class="dv">75025</span></a></code></pre></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">memoize</span><span class="params">(function)</span>:</span></div><div class="line"><span class="meta">... </span>   memo = &#123;&#125;</div><div class="line"><span class="meta">... </span>   @wraps(function)</div><div class="line"><span class="meta">... </span>   <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args)</span>:</span></div><div class="line"><span class="meta">... </span>       <span class="keyword">if</span> args <span class="keyword">in</span> memo:</div><div class="line"><span class="meta">... </span>           <span class="keyword">return</span> memo[args]</div><div class="line"><span class="meta">... </span>       <span class="keyword">else</span>:</div><div class="line"><span class="meta">... </span>           rv = function(*args)</div><div class="line"><span class="meta">... </span>           memo[args] = rv</div><div class="line"><span class="meta">... </span>           <span class="keyword">return</span> rv</div><div class="line"><span class="meta">... </span>   <span class="keyword">return</span> wrapper</div><div class="line">...</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>@memoize</div><div class="line"><span class="meta">... </span><span class="function"><span class="keyword">def</span> <span class="title">fibonacci</span><span class="params">(n)</span>:</span></div><div class="line"><span class="meta">... </span>   <span class="keyword">if</span> n &lt; <span class="number">2</span>: <span class="keyword">return</span> n</div><div class="line"><span class="meta">... </span>   <span class="keyword">return</span> fibonacci(n<span class="number">-1</span>) + fibonacci(n<span class="number">-2</span>)</div><div class="line">...</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>fibonacci(<span class="number">25</span>)</div><div class="line"><span class="number">75025</span></div></pre></td></tr></table></figure>
 <h2 id="五上下文管理">五、上下文管理</h2>
 <p>上下文管理是允许在有需要的时候，精确地分配和释放资源。对它使用最广泛的案例就是with语句了。</p>
 <p>想象当有两个相关操作，你想让它们结对执行，然后在它们中间放置一段代码。</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;some_file&#39;</span>, <span class="st">&#39;w&#39;</span>) <span class="im">as</span> opened_file:</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">    opened_file.write(<span class="st">&#39;Hola!&#39;</span>)</a></code></pre></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">with</span> open(<span class="string">'some_file'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> opened_file:</div><div class="line">    opened_file.write(<span class="string">'Hola!'</span>)</div></pre></td></tr></table></figure>
 <p>上面这段代码会打开一个文件，往里面写入一些数据，然后关闭它。如果在往文件写数据时发生异常，它会尝试去关闭文件，这与下一段代码是等价的。</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="bu">file</span> <span class="op">=</span> <span class="bu">open</span>(<span class="st">&#39;some_file&#39;</span>, <span class="st">&#39;w&#39;</span>)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="cf">try</span>:</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">    <span class="bu">file</span>.write(<span class="st">&#39;Hola!&#39;</span>)</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="cf">finally</span>:</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5">    <span class="bu">file</span>.close()</a></code></pre></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">file = open(<span class="string">'some_file'</span>, <span class="string">'w'</span>)</div><div class="line"><span class="keyword">try</span>:</div><div class="line">	file.write(<span class="string">'Hola!'</span>)</div><div class="line"><span class="keyword">finally</span>:</div><div class="line">	file.close()</div></pre></td></tr></table></figure>
 <p>当与第一个例子相比时，我们可以看到，通过使用with，许多boilerplate code被消掉了。这就是with语句的主要优势，它确保我们的文件会被关闭，而不用关注嵌套代码如何退出。下面将探讨一下上下文管理的实现方式。</p>
 <h3 id="基于类的实现"><u>基于类的实现</u></h3>
 <p>一个上下文管理器的类，最起码要定义<code>__enter__</code>和<code>__exit__</code>方法。</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">class</span> File(<span class="bu">object</span>):</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, file_name, method):</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3">        <span class="va">self</span>.file_obj <span class="op">=</span> <span class="bu">open</span>(file_name, method)</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">    </a>
-<a class="sourceLine" id="cb8-5" data-line-number="5">    <span class="kw">def</span> <span class="fu">__enter__</span>(<span class="va">self</span>):</a>
-<a class="sourceLine" id="cb8-6" data-line-number="6">        <span class="cf">return</span> <span class="va">self</span>.file_obj</a>
-<a class="sourceLine" id="cb8-7" data-line-number="7">    </a>
-<a class="sourceLine" id="cb8-8" data-line-number="8">    <span class="kw">def</span> <span class="fu">__exit__</span>(<span class="va">self</span>, <span class="bu">type</span>, value, traceback):</a>
-<a class="sourceLine" id="cb8-9" data-line-number="9">        <span class="va">self</span>.file_obj.close()</a></code></pre></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">File</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, file_name, method)</span>:</span></div><div class="line">        self.file_obj = open(file_name, method)</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__enter__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.file_obj</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__exit__</span><span class="params">(self, type, value, traceback)</span>:</span></div><div class="line">        self.file_obj.close()</div></pre></td></tr></table></figure>
 <p>通过定义<code>__enter__</code>和<code>__exit__</code>方法，我们可以在with语句里使用它。譬如以下代码</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="cf">with</span> File(<span class="st">&#39;some_file&#39;</span>, <span class="st">&#39;w&#39;</span>) <span class="im">as</span> opened_file:</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">    opened_file.write(<span class="st">&#39;Hola!&#39;</span>)</a></code></pre></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">with</span> File(<span class="string">'some_file'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> opened_file:</div><div class="line">    opened_file.write(<span class="string">'Hola!'</span>)</div></pre></td></tr></table></figure>
 <p><code>__exit__</code>函数接受三个参数，这些参数对于每个上下文管理器类的<code>__exit__</code>方法都是必须的。从底层来看发生的事情是这样的：</p>
 <ol type="1">
 <li>with语句先暂存了File类的<code>__exit__</code>方法</li>
@@ -506,31 +433,13 @@
 <li>如果<code>__exit__</code>返回的是True以外的任何东西，那么这个异常将被with语句抛出。</li>
 </ol>
 <p>在案例中，<code>__exit__</code>方法返回的是None(如果没有return语句那么方法会返回None)。因此，with语句抛出了那个异常。</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" data-line-number="1">Traceback (most recent call last):</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">    File <span class="st">&quot;&lt;stdin&gt;&quot;</span>, line2, <span class="kw">in</span> <span class="op">&lt;</span>module<span class="op">&gt;</span></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="pp">AttributeError</span>: <span class="st">&#39;file&#39;</span> <span class="bu">object</span> has no attribute `undefined_function`</a></code></pre></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Traceback (most recent call last):</div><div class="line">    File <span class="string">"&lt;stdin&gt;"</span>, line2, <span class="keyword">in</span> &lt;module&gt;</div><div class="line">AttributeError: <span class="string">'file'</span> object has no attribute `undefined_function`</div></pre></td></tr></table></figure>
 <p>尝试下在<code>__exit__</code>方法中处理异常：</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">class</span> File(<span class="bu">object</span>):</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, file_name, method):</a>
-<a class="sourceLine" id="cb11-3" data-line-number="3">        <span class="va">self</span>.file_obj <span class="op">=</span> <span class="bu">open</span>(file_name, method)</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4">    </a>
-<a class="sourceLine" id="cb11-5" data-line-number="5">    <span class="kw">def</span> <span class="fu">__enter__</span>(<span class="va">self</span>):</a>
-<a class="sourceLine" id="cb11-6" data-line-number="6">        <span class="cf">return</span> <span class="va">self</span>.file_obj</a>
-<a class="sourceLine" id="cb11-7" data-line-number="7">    </a>
-<a class="sourceLine" id="cb11-8" data-line-number="8">    <span class="kw">def</span> <span class="fu">__exit__</span>(<span class="va">self</span>, <span class="bu">type</span>, value, traceback):</a>
-<a class="sourceLine" id="cb11-9" data-line-number="9">        <span class="bu">print</span>(<span class="st">&quot;Exception has been handled&quot;</span>)</a>
-<a class="sourceLine" id="cb11-10" data-line-number="10">        <span class="va">self</span>.file_obj.close()</a>
-<a class="sourceLine" id="cb11-11" data-line-number="11">        <span class="cf">return</span> <span class="va">True</span></a></code></pre></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">File</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, file_name, method)</span>:</span></div><div class="line">        self.file_obj = open(file_name, method)</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__enter__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.file_obj</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__exit__</span><span class="params">(self, type, value, traceback)</span>:</span></div><div class="line">        print(<span class="string">"Exception has been handled"</span>)</div><div class="line">        self.file_obj.close()</div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div></pre></td></tr></table></figure>
 <h3 id="基于生成器的实现"><u>基于生成器的实现</u></h3>
 <p>还可以基于装饰器和生成器来实现上下文管理器。</p>
 <p>Python有个<code>contextlib</code>模块专门用于这个目的。我们可以使用一个生成器函数来实现一个上下文管理器，而不是使用一个类。</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="im">from</span> contextlib <span class="im">import</span> contextmanager</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="at">@contextmanager</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="kw">def</span> open_file(name):</a>
-<a class="sourceLine" id="cb12-5" data-line-number="5">    f <span class="op">=</span> <span class="bu">open</span>(name, <span class="st">&#39;w&#39;</span>)</a>
-<a class="sourceLine" id="cb12-6" data-line-number="6">    <span class="cf">yield</span> f</a>
-<a class="sourceLine" id="cb12-7" data-line-number="7">    f.close()</a></code></pre></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> contextlib <span class="keyword">import</span> contextmanager</div><div class="line"></div><div class="line"><span class="meta">@contextmanager</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">open_file</span><span class="params">(name)</span>:</span></div><div class="line">    f = open(name, <span class="string">'w'</span>)</div><div class="line">    <span class="keyword">yield</span> f</div><div class="line">    f.close()</div></pre></td></tr></table></figure>
 <ol type="1">
 <li>Python解析器遇到了<code>yield</code>关键字。因为这个关键字所以创建的是一个生成器而不是一个普通的函数。</li>
 <li>因为这个装饰器，<code>contextmanager</code>会被调用并传入函数名(open_file)作为参数。</li>
@@ -538,8 +447,7 @@
 <li>这个<code>GeneratorContextManager</code>被赋值给open_file函数，实际上是在调用<code>GeneratorContextManager</code>对象。</li>
 </ol>
 <p>因此我们可以用这个新建的上下文管理器。</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="cf">with</span> open_file(<span class="st">&#39;some_file&#39;</span>) <span class="im">as</span> f:</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2">    f.write(<span class="st">&#39;hola!&#39;</span>)</a></code></pre></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">with</span> open_file(<span class="string">'some_file'</span>) <span class="keyword">as</span> f:</div><div class="line">	f.write(<span class="string">'hola!'</span>)</div></pre></td></tr></table></figure>
 
       
     </div>

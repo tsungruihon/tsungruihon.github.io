@@ -136,9 +136,9 @@
 
 
   <title>TF-IDF | 彼得的博客</title>
-  <link rel="stylesheet" type="text/css" href="/css/prettify.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/prettify.css">
   <link rel="stylesheet" type="text/css" href="/css/github-v2.css">
-  <link rel="stylesheet" type="text/css" href="/css/github-v2.min.css">
+  <link rel="stylesheet" type="text/css" href="/css/github-v2.min.css"> -->
   <script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
        <script type="text/x-mathjax-config">
          MathJax.Hub.Config({
@@ -398,39 +398,7 @@ idf = log(\frac{D_{all}}{D_w})
 tfidf = tf \cdot idf
 \]</span></p>
 <p>那么下面我们就可以来手写一个<code>TF-IDF</code>了。当然，<code>sklearn</code>里面就有<code>TF-IDF</code>的<code>API</code></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="im">import</span> pandas <span class="im">as</span> pd</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="im">import</span> jieba</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="im">import</span> numpy <span class="im">as</span> np</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="im">from</span> collections <span class="im">import</span> Counter</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="im">from</span> functools <span class="im">import</span> <span class="bu">reduce</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="im">import</span> operator <span class="im">as</span> op</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="kw">def</span> cut(string): <span class="cf">return</span> jieba.cut(string)</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co"># 统计每个分词在某一特定文档的频率</span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="kw">def</span> term_frequency(word, i):</a>
-<a class="sourceLine" id="cb1-12" data-line-number="12">    words <span class="op">=</span> cut(content.iloc[i].content)</a>
-<a class="sourceLine" id="cb1-13" data-line-number="13">    word_counts <span class="op">=</span> Counter(words)</a>
-<a class="sourceLine" id="cb1-14" data-line-number="14">    <span class="cf">return</span> word_counts[word] <span class="op">/</span> <span class="bu">sum</span>(word_counts.values())</a>
-<a class="sourceLine" id="cb1-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co"># 统计前n篇文章中的分词出现次数，然后返回一个列表</span></a>
-<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="kw">def</span> documents_words_counter(docu_num):</a>
-<a class="sourceLine" id="cb1-18" data-line-number="18">    <span class="cf">return</span> [Counter(cut(<span class="bu">str</span>(content.iloc[i].content))) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(docu_num)]</a>
-<a class="sourceLine" id="cb1-19" data-line-number="19"></a>
-<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="kw">def</span> inverse_document_frequency(word):</a>
-<a class="sourceLine" id="cb1-21" data-line-number="21">    <span class="cf">return</span> np.log(<span class="bu">len</span>(documents_words_counter(docu_num) <span class="op">/</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> counter <span class="kw">in</span> documents_words_counter <span class="cf">if</span> word <span class="kw">in</span> counter)))</a>
-<a class="sourceLine" id="cb1-22" data-line-number="22"></a>
-<a class="sourceLine" id="cb1-23" data-line-number="23"><span class="kw">def</span> tfidf(word, i): <span class="cf">return</span> term_frequency(word, i) <span class="op">*</span> inverse_document_frequency(word)</a>
-<a class="sourceLine" id="cb1-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb1-25" data-line-number="25"><span class="co"># 然后我们用tfidf的结果，去表示一个文档，然后去判断两个文档的相似性。</span></a>
-<a class="sourceLine" id="cb1-26" data-line-number="26"><span class="co"># words ==&gt; vector ==&gt; 意思相似程度</span></a>
-<a class="sourceLine" id="cb1-27" data-line-number="27"><span class="kw">def</span> doc_vec(w, i):</a>
-<a class="sourceLine" id="cb1-28" data-line-number="28">    all_words_counter <span class="op">=</span> <span class="bu">reduce</span>(op.add, documents_words_counter(docu_num)):</a>
-<a class="sourceLine" id="cb1-29" data-line-number="29">    <span class="cf">return</span> [tfidf(w, <span class="dv">1</span>) <span class="cf">for</span> w <span class="kw">in</span> all_words_counter]</a>
-<a class="sourceLine" id="cb1-30" data-line-number="30"></a>
-<a class="sourceLine" id="cb1-31" data-line-number="31"><span class="co"># scikit-learn的Example用法</span></a>
-<a class="sourceLine" id="cb1-32" data-line-number="32"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> TfidfVectorizer</a>
-<a class="sourceLine" id="cb1-33" data-line-number="33"><span class="op">&gt;&gt;&gt;</span> X <span class="op">=</span> TfidfVectorizer().fit_transform(sequnece)</a></code></pre></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</div><div class="line"><span class="keyword">import</span> jieba</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</div><div class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</div><div class="line"><span class="keyword">import</span> operator <span class="keyword">as</span> op</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">cut</span><span class="params">(string)</span>:</span> <span class="keyword">return</span> jieba.cut(string)</div><div class="line"></div><div class="line"><span class="comment"># 统计每个分词在某一特定文档的频率</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">term_frequency</span><span class="params">(word, i)</span>:</span></div><div class="line">    words = cut(content.iloc[i].content)</div><div class="line">    word_counts = Counter(words)</div><div class="line">    <span class="keyword">return</span> word_counts[word] / sum(word_counts.values())</div><div class="line"></div><div class="line"><span class="comment"># 统计前n篇文章中的分词出现次数，然后返回一个列表</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">documents_words_counter</span><span class="params">(docu_num)</span>:</span></div><div class="line">    <span class="keyword">return</span> [Counter(cut(str(content.iloc[i].content))) <span class="keyword">for</span> i <span class="keyword">in</span> range(docu_num)]</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">inverse_document_frequency</span><span class="params">(word)</span>:</span></div><div class="line">    <span class="keyword">return</span> np.log(len(documents_words_counter(docu_num) / sum(<span class="number">1</span> <span class="keyword">for</span> counter <span class="keyword">in</span> documents_words_counter <span class="keyword">if</span> word <span class="keyword">in</span> counter)))</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">tfidf</span><span class="params">(word, i)</span>:</span> <span class="keyword">return</span> term_frequency(word, i) * inverse_document_frequency(word)</div><div class="line"></div><div class="line"><span class="comment"># 然后我们用tfidf的结果，去表示一个文档，然后去判断两个文档的相似性。</span></div><div class="line"><span class="comment"># words ==&gt; vector ==&gt; 意思相似程度</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">doc_vec</span><span class="params">(w, i)</span>:</span></div><div class="line">    all_words_counter = reduce(op.add, documents_words_counter(docu_num)):</div><div class="line">    <span class="keyword">return</span> [tfidf(w, <span class="number">1</span>) <span class="keyword">for</span> w <span class="keyword">in</span> all_words_counter]</div><div class="line"></div><div class="line"><span class="comment"># scikit-learn的Example用法</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> sklearn.feature_extraction.text <span class="keyword">import</span> TfidfVectorizer</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>X = TfidfVectorizer().fit_transform(sequnece)</div></pre></td></tr></table></figure>
 
       
     </div>
