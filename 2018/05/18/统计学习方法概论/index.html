@@ -90,22 +90,23 @@
 
 
 
-<meta name="description" content="今天总结以下几个内容：  有监督学习、无监督学习的比较、分类和回归方法的比较 过拟合和欠拟合的定义及解决方法 交叉验证 模型评估指标（精确率、召回率、F值、ROC、AUC）  一、有监督学习、无监督学习、分类和回归方法 ​ 机器学习中有四个主要的分类：  有监督学习(supervised learning) 无监督学习(unsupervised learning) 半监督学习(semisuperv">
+<meta name="description" content="最近开始重新整理机器学习的内容。 今天总结以下几个内容：  有监督学习、无监督学习的比较、分类和回归方法的比较 过拟合和欠拟合的定义及解决方法 交叉验证 模型评估指标（精确率、召回率、F值、ROC、AUC）  一、有监督学习、无监督学习、分类和回归方法 ​ 机器学习中有四个主要的分类：  有监督学习(supervised learning) 无监督学习(unsupervised learning)">
 <meta name="keywords" content="python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="统计学习方法概论及Python应用">
 <meta property="og:url" content="http://yoursite.com/2018/05/18/统计学习方法概论/index.html">
 <meta property="og:site_name" content="彼得的博客">
-<meta property="og:description" content="今天总结以下几个内容：  有监督学习、无监督学习的比较、分类和回归方法的比较 过拟合和欠拟合的定义及解决方法 交叉验证 模型评估指标（精确率、召回率、F值、ROC、AUC）  一、有监督学习、无监督学习、分类和回归方法 ​ 机器学习中有四个主要的分类：  有监督学习(supervised learning) 无监督学习(unsupervised learning) 半监督学习(semisuperv">
+<meta property="og:description" content="最近开始重新整理机器学习的内容。 今天总结以下几个内容：  有监督学习、无监督学习的比较、分类和回归方法的比较 过拟合和欠拟合的定义及解决方法 交叉验证 模型评估指标（精确率、召回率、F值、ROC、AUC）  一、有监督学习、无监督学习、分类和回归方法 ​ 机器学习中有四个主要的分类：  有监督学习(supervised learning) 无监督学习(unsupervised learning)">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/download.png">
 <meta property="og:image" content="http://yoursite.com/images/download-1.png">
 <meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202018-05-19%20at%2012.41.31%20AM.png">
 <meta property="og:image" content="http://yoursite.com/images/download-2.png">
-<meta property="og:updated_time" content="2018-05-18T17:12:45.559Z">
+<meta property="og:image" content="http://yoursite.com/images/download-3.png">
+<meta property="og:updated_time" content="2018-05-19T03:19:58.426Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="统计学习方法概论及Python应用">
-<meta name="twitter:description" content="今天总结以下几个内容：  有监督学习、无监督学习的比较、分类和回归方法的比较 过拟合和欠拟合的定义及解决方法 交叉验证 模型评估指标（精确率、召回率、F值、ROC、AUC）  一、有监督学习、无监督学习、分类和回归方法 ​ 机器学习中有四个主要的分类：  有监督学习(supervised learning) 无监督学习(unsupervised learning) 半监督学习(semisuperv">
+<meta name="twitter:description" content="最近开始重新整理机器学习的内容。 今天总结以下几个内容：  有监督学习、无监督学习的比较、分类和回归方法的比较 过拟合和欠拟合的定义及解决方法 交叉验证 模型评估指标（精确率、召回率、F值、ROC、AUC）  一、有监督学习、无监督学习、分类和回归方法 ​ 机器学习中有四个主要的分类：  有监督学习(supervised learning) 无监督学习(unsupervised learning)">
 <meta name="twitter:image" content="http://yoursite.com/images/download.png">
 
 
@@ -375,7 +376,8 @@
       
 
       
-        <p>今天总结以下几个内容：</p>
+        <p>最近开始重新整理机器学习的内容。</p>
+<p>今天总结以下几个内容：</p>
 <ol type="1">
 <li>有监督学习、无监督学习的比较、分类和回归方法的比较</li>
 <li>过拟合和欠拟合的定义及解决方法</li>
@@ -427,9 +429,7 @@
 <p><code>方差</code>：方差度量了同样大小的训练集变动所导致的学习性能变化，即刻画了数据扰动所造成的影响。</p>
 <p><code>偏差</code>: 偏差度量了学习算法的期望预测真是结果的偏离程度，即刻画了学习算法本身的拟合能力。</p>
 <p><code>噪声</code>: 噪声表达了在当前任务上任何学习算法所能达到的期望泛化误差的下界，即刻画了学习问题本身的难度。</p>
-<ul>
-<li><h3 id="underfittin欠拟合"><code>underfittin欠拟合</code></h3></li>
-</ul>
+<h3 id="underfitting欠拟合"><u>underfitting欠拟合</u></h3>
 <p><strong>定义</strong>：欠拟合指的是模型并没有很好地捕捉到数据特征，不能很好地拟合数据。</p>
 <p><strong>特点</strong>：</p>
 <ol type="1">
@@ -444,9 +444,7 @@
 <li>减少正则化参数，减少对复杂模型的惩罚</li>
 <li>增加更多的数据</li>
 </ol>
-<ul>
-<li><h3 id="overfitting-过拟合"><code>overfitting 过拟合</code></h3></li>
-</ul>
+<h3 id="overfitting-过拟合"><u>overfitting 过拟合</u></h3>
 <p><strong>定义</strong>：过拟合指的是模型对数据的太过拟合，对新的数据泛化能力较差</p>
 <p><strong>特点</strong>：</p>
 <ol type="1">
@@ -524,7 +522,7 @@ Accuracy &amp; = \frac{TP+TN}{TP+TN+FN+FP}
 <li><code>查准率(Precision)</code>: 指在所有预测为正例的情况中，预测正例且实际正例的比例。<code>查准率</code>关注的是预测正例正确占所有预测为正例情况的比例，白话文就是说，<code>查准率</code>关注的是你预测了一大堆正例的例子，然后里面有多少是预测正确的，就是准不准嘛。</li>
 <li><code>查全率(Recall)</code>: 指在实际为正例的情况中，预测为正例的比例。白话文就是说，<code>查全率</code>关注的是你正确预测了一大堆正例，数量为A，真实情况下正例的数量是B，然后看B里面有多少比例的A，然后去判断预测正确的情况全不全。</li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> svm, datasets</div><div class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> average_precision_score</div><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> precision_recall_curve</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"></div><div class="line"></div><div class="line">iris = datasets.load_iris()</div><div class="line">X = iris.data</div><div class="line">y = iris.target</div><div class="line"></div><div class="line">random_state = np.random.RandomState(<span class="number">0</span>)</div><div class="line">n_samples, n_features = X.shape</div><div class="line">X = np.c_[X, random_state.randn(n_samples, <span class="number">200</span> * n_features)]</div><div class="line"></div><div class="line">X_train, X_test, y_train, y_test = train_test_split(X[y &lt; <span class="number">2</span>], y[y &lt; <span class="number">2</span>],</div><div class="line">                                                    test_size=<span class="number">.5</span>,</div><div class="line">                                                   random_state=random_state)</div><div class="line"></div><div class="line">clf = svm.LinearSVC(random_state=random_state)</div><div class="line">clf.fit(X_train, y_train)</div><div class="line">y_score = clf.decision_function(X_test)</div><div class="line"></div><div class="line">average_precision = average_precision_score(y_test, y_score)</div><div class="line">print(<span class="string">'Average precision-recall score: &#123;0:0.2f&#125;'</span>.format(average_precision))</div><div class="line">[output]</div><div class="line">Average precision-recall score: <span class="number">0.88</span></div><div class="line">    </div><div class="line"></div><div class="line">    </div><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report</div><div class="line">print(classification_report(y_test, clf.predict(X_test)))</div><div class="line">[output]</div><div class="line">            precision    recall  f1-score   support</div><div class="line"></div><div class="line">          <span class="number">0</span>       <span class="number">0.77</span>      <span class="number">0.71</span>      <span class="number">0.74</span>        <span class="number">24</span></div><div class="line">          <span class="number">1</span>       <span class="number">0.75</span>      <span class="number">0.81</span>      <span class="number">0.78</span>        <span class="number">26</span></div><div class="line"></div><div class="line">avg / total       <span class="number">0.76</span>      <span class="number">0.76</span>      <span class="number">0.76</span>        <span class="number">50</span></div><div class="line"></div><div class="line"></div><div class="line">precision, recall, _ = precision_recall_curve(y_test, y_score)</div><div class="line">plt.step(recall, precision, color=<span class="string">'b'</span>, alpha=<span class="number">0.2</span>,</div><div class="line">        where=<span class="string">'post'</span>)</div><div class="line">plt.fill_between(recall, precision, step=<span class="string">'post'</span>, alpha=<span class="number">0.2</span>,</div><div class="line">                color=<span class="string">'b'</span>)</div><div class="line"></div><div class="line">plt.xlabel(<span class="string">'Recall'</span>)</div><div class="line">plt.ylabel(<span class="string">'Precision'</span>)</div><div class="line">plt.ylim([<span class="number">0.0</span>, <span class="number">1.05</span>])</div><div class="line">plt.xlim([<span class="number">0.0</span>, <span class="number">1.0</span>])</div><div class="line">plt.title(<span class="string">'2-class Precision-Recall curve: AP=&#123;0:0.2f&#125;'</span>.format(average_precision))</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> svm, datasets</div><div class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> average_precision_score, precision_recall_curve</div><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> precision_score, recall_score</div><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"></div><div class="line"></div><div class="line">iris = datasets.load_iris()</div><div class="line">X = iris.data</div><div class="line">y = iris.target</div><div class="line"></div><div class="line">random_state = np.random.RandomState(<span class="number">0</span>)</div><div class="line">n_samples, n_features = X.shape</div><div class="line">X = np.c_[X, random_state.randn(n_samples, <span class="number">200</span> * n_features)]</div><div class="line"></div><div class="line">X_train, X_test, y_train, y_test = train_test_split(X[y &lt; <span class="number">2</span>], y[y &lt; <span class="number">2</span>],</div><div class="line">                                                    test_size=<span class="number">.5</span>,</div><div class="line">                                                   random_state=random_state)</div><div class="line"></div><div class="line">clf = svm.LinearSVC(random_state=random_state)</div><div class="line">clf.fit(X_train, y_train)</div><div class="line">y_score = clf.decision_function(X_test)</div><div class="line"></div><div class="line">average_precision = average_precision_score(y_test, y_score)</div><div class="line">print(<span class="string">'Average precision-recall score: &#123;0:0.2f&#125;'</span>.format(average_precision))</div><div class="line">[output]</div><div class="line">Average precision-recall score: <span class="number">0.88</span></div><div class="line">    </div><div class="line">print(precision_score(y_test, clf.predict(X_test)))</div><div class="line">print(recall_score(y_test, clf.predict(X_test)))</div><div class="line">print(f1_score(y_test, clf.predict(X_test)))</div><div class="line">print(classification_report(y_test, clf.predict(X_test)))</div><div class="line">[output]</div><div class="line"><span class="number">0.75</span></div><div class="line"><span class="number">0.8076923076923077</span></div><div class="line"><span class="number">0.7777777777777779</span></div><div class="line"></div><div class="line">            precision    recall  f1-score   support</div><div class="line"></div><div class="line">          <span class="number">0</span>       <span class="number">0.77</span>      <span class="number">0.71</span>      <span class="number">0.74</span>        <span class="number">24</span></div><div class="line">          <span class="number">1</span>       <span class="number">0.75</span>      <span class="number">0.81</span>      <span class="number">0.78</span>        <span class="number">26</span></div><div class="line"></div><div class="line">avg / total       <span class="number">0.76</span>      <span class="number">0.76</span>      <span class="number">0.76</span>        <span class="number">50</span></div><div class="line"></div><div class="line"></div><div class="line">precision, recall, _ = precision_recall_curve(y_test, y_score)</div><div class="line">plt.step(recall, precision, color=<span class="string">'b'</span>, alpha=<span class="number">0.2</span>,</div><div class="line">        where=<span class="string">'post'</span>)</div><div class="line">plt.fill_between(recall, precision, step=<span class="string">'post'</span>, alpha=<span class="number">0.2</span>,</div><div class="line">                color=<span class="string">'b'</span>)</div><div class="line"></div><div class="line">plt.xlabel(<span class="string">'Recall'</span>)</div><div class="line">plt.ylabel(<span class="string">'Precision'</span>)</div><div class="line">plt.ylim([<span class="number">0.0</span>, <span class="number">1.05</span>])</div><div class="line">plt.xlim([<span class="number">0.0</span>, <span class="number">1.0</span>])</div><div class="line">plt.title(<span class="string">'2-class Precision-Recall curve: AP=&#123;0:0.2f&#125;'</span>.format(average_precision))</div></pre></td></tr></table></figure>
 <p><img src="/images/download-2.png"></p>
 <ul>
 <li><code>准确率(Accuracuy)</code>: 对于给定的测试集数据，分类器正确分类的样本数与总样本之比。</li>
@@ -533,7 +531,42 @@ Accuracy &amp; = \frac{TP+TN}{TP+TN+FN+FP}
 <ol start="2" type="1">
 <li><code>ROC</code>和<code>AUC</code></li>
 </ol>
-<p>对于<u><strong>回归问题</strong></u>，一般使用<code>explained_variance</code>、<code>neg_mean_squared_error</code>、<code>neg_mean_squared_log_error</code></p>
+<p><strong><u>ROC(Receiver operating characteristic)和AUC(Area Under ROC Curve)</u></strong></p>
+<p>ROC曲线是二值分类器常用的工具，是反映敏感性和特异性连续变量的综合指标，roc曲线上每个点反映着对同一信号刺激的感受性。</p>
+<p>它跟<code>precision/recall</code>曲线非常相似，只不过ROC曲线描绘的是TPR(True Positive Rate，Recall另一种叫法)和FPR(False Positive Rate)的关系。</p>
+<p>在我看来，ROC曲线更多的描述多个模型的性能比较，如果一个模型A的ROC曲线被另一个模型B的ROC包围，那很明显另外一个模型B的表现优于模型A。因此比较ROC曲线下的面积，即AUC(Area Under ROC Curve) <span class="math display">\[
+\begin{aligned}
+Recall\ \ (R) &amp; = TPR =  \frac {TP}{TP + FN} \\
+\\
+FPR  &amp;= \frac{FP}{FP + TN} \\\\
+&amp;= 1 - TNR  \\\\ 
+&amp; = 1 - \frac{TN}{FP+TN} \\\\
+&amp;= 1-specificity
+\end{aligned}
+\]</span> ROC曲线有个很好的特性：当测试集中的正负样本的分布变换的时候，ROC曲线能够保持不变。在实际的数据集中经常会出现样本类不平衡，即正负样本比例差距较大，而且测试数据中的正负样本也可能随着时间变化。</p>
+<p>理想情况下，TPR应该接近1，FPR应该接近0。故ROC曲线越靠拢(0,1)点，越偏离45度对角线越好，Sensitivity、Specificity越大效果越好。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> roc_curve</div><div class="line">fpr, tpr, thresholds = roc_curve(y_test, clf.predict(X_test))</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">plot_roc_curve</span><span class="params">(fpr, tpr, label=None)</span>:</span></div><div class="line">    plt.plot(fpr, tpr, linewidth=<span class="number">2</span>, label=label)</div><div class="line">    plt.plot([<span class="number">0</span>, <span class="number">1</span>], [<span class="number">0</span>, <span class="number">1</span>], <span class="string">'k--'</span>)</div><div class="line">    plt.axis([<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>])</div><div class="line">    plt.xlabel(<span class="string">'False Positive Rate'</span>)</div><div class="line">    plt.ylabel(<span class="string">'True Positive Rate'</span>)</div><div class="line">    </div><div class="line">plot_roc_curve(fpr, tpr)</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<p><img src="/images/download-3.png"></p>
+<p>对于<u>回归问题</u>，一般使用<code>explained_variance_score</code>、<code>Mean squared error</code>、<code>neg_mean_squared_log_error</code></p>
+<ol type="1">
+<li><code>Explained_variance_score</code></li>
+</ol>
+<p>最好的表现是1， 数值越低表现越差 <span class="math display">\[
+explained_variance(y,  \hat y) = 1- \frac{Var\{y - \hat y\}}{Var\{y\} }
+\]</span></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> explained_variance_score</div><div class="line">y_true = [<span class="number">3</span>, <span class="number">-0.5</span>, <span class="number">2</span>, <span class="number">7</span>]</div><div class="line">y_pred = [<span class="number">2.5</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">8</span>]</div><div class="line">print(explained_variance_score(y_true, y_pred))</div><div class="line">[output]</div><div class="line"><span class="number">0.9571734475374732</span></div></pre></td></tr></table></figure>
+<ol start="2" type="1">
+<li><code>Mean squared error(MSE)</code></li>
+</ol>
+<p>MSE越小，模型拟合表现越好。 <span class="math display">\[
+MSE(y, \hat y) = \frac{1}{n_{samples}} \sum^{n_{samples} - 1}_{i=0} \ \ (y_i - \hat y_i) ^ 2
+\]</span></p>
+<ol start="3" type="1">
+<li><code>Mean_squared_log_error(MSLE)</code></li>
+</ol>
+<p>MSLE越小，模型拟合表现越好。当两个数值都是巨大数字时，如果不想惩罚巨大的差异，就可以使用它。当具有指数增长的目标（如人口数量，商品在一定年限内的平均销售额等）时，最好使用此度量标准。请注意，此度量标准对低于预测的估算值的惩罚高于超出预测的估算值。 <span class="math display">\[
+MSLE(y, \hat y) = \frac{1}{n_{samples}} \sum_{i=0}^{n_{samples}-1} (log_e(1+y_i) - log_e(1 + \hat y_i))^ 2
+\]</span></p>
 
       
     </div>
@@ -713,7 +746,7 @@ Accuracy &amp; = \frac{TP+TN}{TP+TN+FN+FP}
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一有监督学习无监督学习分类和回归方法"><span class="nav-number">1.</span> <span class="nav-text">一、有监督学习、无监督学习、分类和回归方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二overfitting与underfitting定义及解决方法"><span class="nav-number">2.</span> <span class="nav-text">二、overfitting与underfitting定义及解决方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#underfittin欠拟合"><span class="nav-number">3.</span> <span class="nav-text">underfittin欠拟合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#overfitting-过拟合"><span class="nav-number">4.</span> <span class="nav-text">overfitting 过拟合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三交叉验证cross-validation"><span class="nav-number">5.</span> <span class="nav-text">三、交叉验证(cross validation)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四模型评估指标精确率召回率f值rocauc"><span class="nav-number">6.</span> <span class="nav-text">四、模型评估指标（精确率、召回率、F值、ROC、AUC）</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一有监督学习无监督学习分类和回归方法"><span class="nav-number">1.</span> <span class="nav-text">一、有监督学习、无监督学习、分类和回归方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二overfitting与underfitting定义及解决方法"><span class="nav-number">2.</span> <span class="nav-text">二、overfitting与underfitting定义及解决方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#underfitting欠拟合"><span class="nav-number">3.</span> <span class="nav-text">underfitting欠拟合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#overfitting-过拟合"><span class="nav-number">4.</span> <span class="nav-text">overfitting 过拟合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三交叉验证cross-validation"><span class="nav-number">5.</span> <span class="nav-text">三、交叉验证(cross validation)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四模型评估指标精确率召回率f值rocauc"><span class="nav-number">6.</span> <span class="nav-text">四、模型评估指标（精确率、召回率、F值、ROC、AUC）</span></a></li></ol></div>
             
 
           </div>
