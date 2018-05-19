@@ -560,12 +560,14 @@ explained_variance(y,  \hat y) = 1- \frac{Var\{y - \hat y\}}{Var\{y\} }
 <p>MSE越小，模型拟合表现越好。 <span class="math display">\[
 MSE(y, \hat y) = \frac{1}{n_{samples}} \sum^{n_{samples} - 1}_{i=0} \ \ (y_i - \hat y_i) ^ 2
 \]</span></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> mean_squared_error</div><div class="line">y_true = [<span class="number">3</span>, <span class="number">-0.5</span>, <span class="number">2</span>, <span class="number">7</span>]</div><div class="line">y_pred = [<span class="number">2.5</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">8</span>]</div><div class="line">print(mean_squared_error(y_true, y_pred))</div><div class="line">[output]</div><div class="line"><span class="number">0.375</span></div></pre></td></tr></table></figure>
 <ol start="3" type="1">
 <li><code>Mean_squared_log_error(MSLE)</code></li>
 </ol>
 <p>MSLE越小，模型拟合表现越好。当两个数值都是巨大数字时，如果不想惩罚巨大的差异，就可以使用它。当具有指数增长的目标（如人口数量，商品在一定年限内的平均销售额等）时，最好使用此度量标准。请注意，此度量标准对低于预测的估算值的惩罚高于超出预测的估算值。 <span class="math display">\[
 MSLE(y, \hat y) = \frac{1}{n_{samples}} \sum_{i=0}^{n_{samples}-1} (log_e(1+y_i) - log_e(1 + \hat y_i))^ 2
 \]</span></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> mean_squared_log_error</div><div class="line">y_true = [<span class="number">3</span>, <span class="number">5</span>, <span class="number">2.5</span>, <span class="number">7</span>]</div><div class="line">y_pred = [<span class="number">2.5</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">8</span>]</div><div class="line">print(mean_squared_log_error(y_true, y_pred))</div><div class="line">[output]</div><div class="line"><span class="number">0.0397</span></div></pre></td></tr></table></figure>
 
           
         
