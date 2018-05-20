@@ -394,7 +394,7 @@ f(x)  = sign(w \cdot x + b) =
 \]</span> 假设有M个误分类点，则这些点到超平面的距离为： <span class="math display">\[
 -\frac{1}{||w||}\sum_{x_i\in M}y_i(w \cdot x_i + b) 
 \]</span> 因为w是可以无限任意自由伸缩的，因此我们可以直接令||w|| = 1，也就是使其成为单位法向量。因此感知机的学习损失函数： <span class="math display">\[
- L(w, b) = \sum_{x_i\in M}y_i(w \cdot x_i + b)
+L(w, b) =- \sum_{x_i\in M}y_i(w \cdot x_i + b)
 \]</span></p>
 
           
