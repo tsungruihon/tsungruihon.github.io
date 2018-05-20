@@ -410,9 +410,12 @@ L(w, b) =- \sum_{x_i\in M}y_i(w \cdot x_i + b)
 <p>我们假设样本点(xi, yi)在更新过程中被使用了<code>n_i</code>次，因此没从原始形式的学习过程可以得到，最后学习到的w和b可以分别表示为： $$ \begin{aligned}</p>
 <p>w &amp;= <em>{i=1}^{N} n_i  y_i x_i = </em>{i=1}^{N}_i y_i x_i,     <em>i = n_i<em>i\\ b &amp; = </em>{i=1}^{N} n_i  y_i = </em>{i=1}^{N} _i y_i,     _i = n_i_i</p>
 <p>\end{aligned} $$ 如果某个实例点更新的次数越多，<code>n_i</code>的值越大，意味着这个样本点经常被误分类，也就是说它距离分离超平面越近，<strong>结合到SVM，这种点很可能就是支持向量</strong>。</p>
-<p>因此我们的感知机模型成: <span class="math display">\[
-f(x) = sign(w \cdot x + b) = sign(\sum_{i=1}^{N}n_i \eta \ y_i x_i  \cdot x + \sum_{i=1}^{N} n_i \eta \ y_i )
-\]</span> 此时，学习的目标不再是w和b，而是<code>n_i</code>, i = 1, 2, … ,N</p>
+<p>因此我们的感知机模型成: $$ \begin{aligned}</p>
+<p>f(x)&amp; = sign(w x + b) = sign(<em>{i=1}^{N}n_i  y_i x_i x + </em>{i=1}^{N} n_i  y_i ) \\</p>
+<p>_i &amp;(n_i + 1) =  n_i + = _i + \\ b &amp;b +  y_i</p>
+<p>\end{aligned} $$ 此时，学习的目标不再是w和b，而是<code>n_i</code>, i = 1, 2, … ,N。</p>
+<p>b和原始一样，不同的只是对w的迭代，转化了对α的迭代。迭代完求出所有的α之后，计算w就只是O(1)的复杂度。这样就实现了从不同的角度去解答相似的问题，也就是对偶思维。</p>
+<p>下面就直接上<code>python</code>代码吧。</p>
 
           
         
