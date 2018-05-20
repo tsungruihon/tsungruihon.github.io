@@ -395,6 +395,15 @@ f(x)  = sign(w \cdot x + b) =
 -\frac{1}{||w||}\sum_{x_i\in M}y_i(w \cdot x_i + b) 
 \]</span> 因为w是可以无限任意自由伸缩的，因此我们可以直接令||w|| = 1，也就是使其成为单位法向量。因此感知机的学习损失函数： <span class="math display">\[
 L(w, b) =- \sum_{x_i\in M}y_i(w \cdot x_i + b)
+\]</span> 在得到损失函数之后，我们的目标函数就变成： <span class="math display">\[
+\min_{w, b} L(w, b) = -\sum_{x_i \in M} y_i (w \cdot x_i + b)
+\]</span> 就可以用随机梯度下降<code>(stochastic gradient descent, SGD)</code>来不断极小化函数： <span class="math display">\[
+\begin{aligned}
+&amp; \nabla_wL(w, b) = -\sum_{x_i \in M} y_ix_i \\\\
+&amp; \nabla_bL(w, b) = -\sum_{x_i \in M}y_i \\\\
+&amp; w \leftarrow w + \eta \ y_ix_i \\\\
+&amp; b \leftarrow b + \eta \ y_i
+\end{aligned} 
 \]</span></p>
 
           
