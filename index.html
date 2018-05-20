@@ -397,14 +397,16 @@ f(x)  = sign(w \cdot x + b) =
 L(w, b) =- \sum_{x_i\in M}y_i(w \cdot x_i + b)
 \]</span> 在得到损失函数之后，我们的目标函数就变成： <span class="math display">\[
 \min_{w, b} L(w, b) = -\sum_{x_i \in M} y_i (w \cdot x_i + b)
-\]</span> 就可以用随机梯度下降<code>(stochastic gradient descent, SGD)</code>来不断极小化函数： <span class="math display">\[
+\]</span> 然后针对误分类点用随机梯度下降<code>(stochastic gradient descent, SGD)</code>极小化函数，直到训练集中没有误分类点： <span class="math display">\[
 \begin{aligned}
 &amp; \nabla_wL(w, b) = -\sum_{x_i \in M} y_ix_i \\\\
 &amp; \nabla_bL(w, b) = -\sum_{x_i \in M}y_i \\\\
 &amp; w \leftarrow w + \eta \ y_ix_i \\\\
 &amp; b \leftarrow b + \eta \ y_i
-\end{aligned} 
-\]</span></p>
+\end{aligned}
+\]</span> 通俗地讲，当一个实例点被误分类时，即位于分离超平面的错误一侧时，则调整w、b的值，使分离超平面向该误分类点的一侧移动，以减少该误分类点与超平面间的距离，直至超平面越过该误分类点使其被正确分类。</p>
+<p>而通过<strong>Novikoff定理</strong>可知，对于线性可分数据集，经过有限次迭代可以得到一个将训练数据集完全正确划分的分离超平面及感知机模型。但感知机学习算法存在许多解，这些解既依赖于初值的选择，也依赖于迭代过程汇中误分类点的选择顺序。当训练集线性不可分，感知机学习算法不收敛，迭代结果会发生震荡。</p>
+<p>如果把整个梯度下降求偏导迭代形式转为用线性代数来求解，这样的<strong>求解速度会提高很多</strong>。这时候就衍生出感知机学习算法的对偶形式。</p>
 
           
         
