@@ -98,7 +98,7 @@
 <meta property="og:site_name" content="彼得的博客">
 <meta property="og:description" content="今天总结一下感知机。 感知机是非常重要的模型，虽然《统计学习方法》把它放在了比较前的部分。说实话一年前看《统计学习方法》，看到感知机的时候，是完全不知道它在说什么。经过了一年，现在看回感知机，才体会到它的优美之处。 感知机是二类分类的线性分类模型，其输入为实例的特征向量，输出为实例的类别，取+1和-1。感知机对应于输入空间（特征空间）中将实例划分为正负两类的分离超平面，属于判别模型。 感知机学习旨">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-20T17:33:03.348Z">
+<meta property="og:updated_time" content="2018-05-20T17:36:30.747Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Perceptron">
 <meta name="twitter:description" content="今天总结一下感知机。 感知机是非常重要的模型，虽然《统计学习方法》把它放在了比较前的部分。说实话一年前看《统计学习方法》，看到感知机的时候，是完全不知道它在说什么。经过了一年，现在看回感知机，才体会到它的优美之处。 感知机是二类分类的线性分类模型，其输入为实例的特征向量，输出为实例的类别，取+1和-1。感知机对应于输入空间（特征空间）中将实例划分为正负两类的分离超平面，属于判别模型。 感知机学习旨">
@@ -403,7 +403,7 @@ L(w, b) =- \sum_{x_i\in M}y_i(w \cdot x_i + b)
 <p>而通过<strong>Novikoff定理</strong>可知，对于线性可分数据集，经过有限次迭代可以得到一个将训练数据集完全正确划分的分离超平面及感知机模型。但感知机学习算法存在许多解，这些解既依赖于初值的选择，也依赖于迭代过程汇中误分类点的选择顺序。当训练集线性不可分，感知机学习算法不收敛，迭代结果会发生震荡。</p>
 <p>如果把整个梯度下降求偏导迭代形式转为用线性代数来求解，这样的<strong>求解速度会提高很多</strong>。这时候就衍生出感知机学习算法的对偶形式。</p>
 <p>我们假设样本点(xi, yi)在更新过程中被使用了<code>n_i</code>次，因此没从原始形式的学习过程可以得到，最后学习到的w和b可以分别表示为： $$ \begin{aligned}</p>
-<p>w &amp;= <em>{i=1}^{N} n_i  y_i x_i = </em>{i=1}^{N}_i y_i x_i,     <em>i = n_i<em>i\\ b &amp; = </em>{i=1}^{N} n_i  y_i = </em>{i=1}^{N} _i y_i,     _i = n_i_i</p>
+<p>w &amp;= <em>{i=1}^{N} n_i  y_i x_i = </em>{i=1}<sup>{N}<em>i y_i x_i \\ b &amp; = </em>{i=1}</sup>{N} n_i  y_i = _{i=1}^{N} _i y_i</p>
 <p>\end{aligned} $$ 如果某个实例点更新的次数越多，<code>n_i</code>的值越大，意味着这个样本点经常被误分类，也就是说它距离分离超平面越近，<strong>结合到SVM，这种点很可能就是支持向量</strong>。</p>
 <p>因此我们的感知机模型成: $$ \begin{aligned}</p>
 <p>f(x)&amp; = sign(w x + b) = sign(<em>{i=1}^{N}n_i  y_i x_i x + </em>{i=1}^{N} n_i  y_i ) \\</p>

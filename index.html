@@ -408,7 +408,7 @@ L(w, b) =- \sum_{x_i\in M}y_i(w \cdot x_i + b)
 <p>而通过<strong>Novikoff定理</strong>可知，对于线性可分数据集，经过有限次迭代可以得到一个将训练数据集完全正确划分的分离超平面及感知机模型。但感知机学习算法存在许多解，这些解既依赖于初值的选择，也依赖于迭代过程汇中误分类点的选择顺序。当训练集线性不可分，感知机学习算法不收敛，迭代结果会发生震荡。</p>
 <p>如果把整个梯度下降求偏导迭代形式转为用线性代数来求解，这样的<strong>求解速度会提高很多</strong>。这时候就衍生出感知机学习算法的对偶形式。</p>
 <p>我们假设样本点(xi, yi)在更新过程中被使用了<code>n_i</code>次，因此没从原始形式的学习过程可以得到，最后学习到的w和b可以分别表示为： $$ \begin{aligned}</p>
-<p>w &amp;= <em>{i=1}^{N} n_i  y_i x_i = </em>{i=1}^{N}_i y_i x_i,     <em>i = n_i<em>i\\ b &amp; = </em>{i=1}^{N} n_i  y_i = </em>{i=1}^{N} _i y_i,     _i = n_i_i</p>
+<p>w &amp;= <em>{i=1}^{N} n_i  y_i x_i = </em>{i=1}<sup>{N}<em>i y_i x_i \\ b &amp; = </em>{i=1}</sup>{N} n_i  y_i = _{i=1}^{N} _i y_i</p>
 <p>\end{aligned} $$ 如果某个实例点更新的次数越多，<code>n_i</code>的值越大，意味着这个样本点经常被误分类，也就是说它距离分离超平面越近，<strong>结合到SVM，这种点很可能就是支持向量</strong>。</p>
 <p>因此我们的感知机模型成: $$ \begin{aligned}</p>
 <p>f(x)&amp; = sign(w x + b) = sign(<em>{i=1}^{N}n_i  y_i x_i x + </em>{i=1}^{N} n_i  y_i ) \\</p>
