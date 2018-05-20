@@ -277,6 +277,320 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/23/Python3关键字总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peter Tsung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pandas.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="彼得的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/01/23/Python3关键字总结/" itemprop="url">
+                  Python3关键字总结
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-23T22:54:11+08:00">
+                2018-01-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-Notes/" itemprop="url" rel="index">
+                    <span itemprop="name">Python_Notes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这一节主要介绍<code>Python3</code>的关键字。</p>
+<p>首先，通过使用<code>import keyword</code>我们可以看到<code>python3</code>的关键字列表。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> keyword</div><div class="line">print(keyword.kwlist)</div><div class="line"></div><div class="line">[output]</div><div class="line">[<span class="string">'False'</span>, <span class="string">'None'</span>, <span class="string">'True'</span>, <span class="string">'and'</span>, <span class="string">'as'</span>, <span class="string">'assert'</span>, <span class="string">'break'</span>, <span class="string">'class'</span>, <span class="string">'continue'</span>, <span class="string">'def'</span>, <span class="string">'del'</span>, <span class="string">'elif'</span>, <span class="string">'else'</span>, <span class="string">'except'</span>, <span class="string">'finally'</span>, <span class="string">'for'</span>, <span class="string">'from'</span>, <span class="string">'global'</span>, <span class="string">'if'</span>, <span class="string">'import'</span>, <span class="string">'in'</span>, <span class="string">'is'</span>, <span class="string">'lambda'</span>, <span class="string">'nonlocal'</span>, <span class="string">'not'</span>, <span class="string">'or'</span>, <span class="string">'pass'</span>, <span class="string">'raise'</span>, <span class="string">'return'</span>, <span class="string">'try'</span>, <span class="string">'while'</span>, <span class="string">'with'</span>, <span class="string">'yield'</span>]</div></pre></td></tr></table></figure>
+<p>下面我们来看看这33个关键字的各种解释。</p>
+<h2 id="true-false"><strong>True</strong>, <strong>False</strong></h2>
+<p><code>True</code>和<code>False</code>主要是比较运算和逻辑运算的结果体现。例如</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">1</span> == <span class="number">1</span></div><div class="line"><span class="keyword">True</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">5</span> &gt; <span class="number">3</span></div><div class="line"><span class="keyword">True</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">True</span> <span class="keyword">or</span> <span class="keyword">False</span></div><div class="line"><span class="keyword">True</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">10</span> &lt;= <span class="number">1</span></div><div class="line"><span class="keyword">False</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">3</span> &gt; <span class="number">7</span></div><div class="line"><span class="keyword">False</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">True</span> <span class="keyword">and</span> <span class="keyword">False</span></div><div class="line"><span class="keyword">False</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">True</span> == <span class="number">1</span></div><div class="line"><span class="keyword">True</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">False</span> == <span class="number">0</span></div><div class="line"><span class="keyword">True</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">True</span> + <span class="keyword">True</span></div><div class="line"><span class="number">2</span></div></pre></td></tr></table></figure>
+<h2 id="none">None</h2>
+<p><code>None</code>在<code>Python</code>中是一个特殊的实例(<code>&lt;class 'NoneType'&gt;</code>)，代表着缺失值或者空值。</p>
+<p>当函数没有<code>return</code>声明的时候，函数将会返回<code>None</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">None</span> == <span class="number">0</span></div><div class="line"><span class="keyword">False</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">None</span> == []</div><div class="line"><span class="keyword">False</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">None</span> == <span class="keyword">False</span></div><div class="line"><span class="keyword">False</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>x = <span class="keyword">None</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>y = <span class="keyword">None</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>x == y</div><div class="line"><span class="keyword">True</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">a_void_function</span><span class="params">()</span>:</span></div><div class="line"><span class="meta">... </span>    a = <span class="number">1</span></div><div class="line"><span class="meta">... </span>    b = <span class="number">2</span></div><div class="line"><span class="meta">... </span>    c = a + b</div><div class="line">...</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>x = a_void_function()</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>print(x)</div><div class="line"><span class="keyword">None</span></div></pre></td></tr></table></figure>
+<h2 id="and-or-not">and, or, not</h2>
+<p>只有操作数都是<code>True</code>，<code>and</code>结果才会输出<code>True</code>。</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">B</th>
+<th style="text-align: center;">A and B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">True</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">False</td>
+<td style="text-align: center;">False</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">False</td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">False</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">False</td>
+<td style="text-align: center;">False</td>
+<td style="text-align: center;">False</td>
+</tr>
+</tbody>
+</table>
+<p><code>Or</code>会返回<code>True</code>只要其中一个操作数是<code>True</code>。</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">B</th>
+<th style="text-align: center;">A or B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">True</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">False</td>
+<td style="text-align: center;">True</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">False</td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">True</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">False</td>
+<td style="text-align: center;">False</td>
+<td style="text-align: center;">False</td>
+</tr>
+</tbody>
+</table>
+<p><code>not</code>操作数用来反转值。</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">not A</th>
+<th style="text-align: center;">A</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">False</td>
+<td style="text-align: center;">True</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">False</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">True</span> <span class="keyword">and</span> <span class="keyword">False</span></div><div class="line"><span class="keyword">False</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">True</span> <span class="keyword">or</span> <span class="keyword">False</span></div><div class="line"><span class="keyword">True</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">not</span> <span class="keyword">False</span></div><div class="line"><span class="keyword">True</span></div></pre></td></tr></table></figure>
+<h2 id="as">as</h2>
+<p><code>as</code>是用于在导入模块的时候给模块的别称。例如</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> math <span class="keyword">as</span> myAlias</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>myAlias.cos(myAlias.pi)</div><div class="line"><span class="number">-1.0</span></div></pre></td></tr></table></figure>
+<h2 id="assert">assert</h2>
+<p><code>assert</code>是用来程序调试的。assert语句用来声明某个条件是真的,当assert语句失败的时候，会引发一AssertionError。例如</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="number">4</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">assert</span> a &lt; <span class="number">5</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">assert</span> a &gt; <span class="number">5</span></div><div class="line">Traceback (most recent call last):</div><div class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</div><div class="line">AssertionError</div></pre></td></tr></table></figure>
+<p>为了更好的理解输出，我们还可以在信息打印中提供更具体的信息。信息会在<code>AssertionError</code>中体现出来。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">assert</span> a &gt; <span class="number">5</span>, <span class="string">"The value of a is too small"</span></div><div class="line">Traceback (most recent call last):</div><div class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</div><div class="line">AssertionError: The value of a <span class="keyword">is</span> too small</div></pre></td></tr></table></figure>
+<p>在这里，我们应该可以发现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">assert</span> condition, message</div></pre></td></tr></table></figure>
+<p>等同于</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> <span class="keyword">not</span> condition:</div><div class="line">	<span class="keyword">raise</span> AssertionError(message)</div></pre></td></tr></table></figure>
+<h2 id="break-continue">break, continue</h2>
+<p><code>break</code>和<code>continue</code>主要用于<code>for</code>和<code>while</code>语句里，用于改变它们正常的行为。</p>
+<p><code>break</code>会结束它所在的最小循环，并且将控制流向循环后面的语句。而<code>continue</code>会使当下的循环结束，但不会影响整个循环。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">11</span>):</div><div class="line"><span class="meta">... </span>    <span class="keyword">if</span> i == <span class="number">5</span>:</div><div class="line"><span class="meta">... </span>        <span class="keyword">break</span></div><div class="line"><span class="meta">... </span>    print(i)</div><div class="line">...</div><div class="line"><span class="number">1</span></div><div class="line"><span class="number">2</span></div><div class="line"><span class="number">3</span></div><div class="line"><span class="number">4</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">11</span>):</div><div class="line"><span class="meta">... </span>    <span class="keyword">if</span> i == <span class="number">5</span>:</div><div class="line"><span class="meta">... </span>        <span class="keyword">continue</span></div><div class="line"><span class="meta">... </span>    print(i)</div><div class="line">...</div><div class="line"><span class="number">1</span></div><div class="line"><span class="number">2</span></div><div class="line"><span class="number">3</span></div><div class="line"><span class="number">4</span></div><div class="line"><span class="number">6</span></div><div class="line"><span class="number">7</span></div><div class="line"><span class="number">8</span></div><div class="line"><span class="number">9</span></div><div class="line"><span class="number">10</span></div></pre></td></tr></table></figure>
+<h2 id="class">class</h2>
+<p><code>class</code>用于定义类。</p>
+<p>类是相关属性和方法的集合，它是用于表示<code>a real world situation</code>。 这种把数据和方法集合在一个类的思想就是面对对象编程的中心思想。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">ExampleClass</span>:</span></div><div class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">function1</span><span class="params">(parameters)</span>:</span></div><div class="line"><span class="meta">... </span>        <span class="keyword">pass</span></div><div class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">function2</span><span class="params">(parameters)</span>:</span></div><div class="line"><span class="meta">... </span>        <span class="keyword">pass</span></div><div class="line">...</div></pre></td></tr></table></figure>
+<h2 id="def">def</h2>
+<p><code>def</code>用来定义函数。它们可以共同完成一些特定的任务，函数能够帮助我们将代码组织成可管理的块，也可以完成一些重复性的任务。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">function1</span><span class="params">(parameters)</span>:</span></div><div class="line"><span class="meta">... </span>    <span class="keyword">pass</span></div></pre></td></tr></table></figure>
+<h2 id="del">del</h2>
+<p><code>del</code>用于删除指向对象的指针。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>a = b = <span class="number">5</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">del</span> a</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a</div><div class="line">Traceback (most recent call last):</div><div class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</div><div class="line">NameError: name <span class="string">'a'</span> <span class="keyword">is</span> <span class="keyword">not</span> defined</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>b</div><div class="line"><span class="number">5</span></div></pre></td></tr></table></figure>
+<p>同样，<code>del</code>也可以用于将列表或者字典里面的元素删除。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="string">'x'</span>, <span class="string">'y'</span>, <span class="string">'z'</span>]</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">del</span> a[<span class="number">1</span>]</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a</div><div class="line">[<span class="string">'x'</span>, <span class="string">'z'</span>]</div></pre></td></tr></table></figure>
+<h2 id="if-else-elif">if, else, elif</h2>
+<p>用于条件语句。</p>
+<h2 id="except-raise-try">except, raise, try</h2>
+<p><code>except</code>、<code>raise</code>和<code>try</code>是用于处理异常。常见的异常有<code>IOError</code>, <code>ValueError</code>, <code>ZeroDivisionError</code>, <code>ImportError</code>, <code>NameError</code>, <code>TypeError</code>等等。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">reciprocal</span><span class="params">(num)</span>:</span></div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        r = <span class="number">1</span>/num</div><div class="line">    <span class="keyword">except</span>:</div><div class="line">        print(<span class="string">'Exception caught'</span>)</div><div class="line">        <span class="keyword">return</span></div><div class="line">    <span class="keyword">return</span> r</div><div class="line"></div><div class="line">print(reciprocal(<span class="number">10</span>))</div><div class="line">print(reciprocal(<span class="number">0</span>))</div><div class="line"></div><div class="line">[output]</div><div class="line"><span class="number">0.1</span></div><div class="line">Exception caught</div><div class="line"><span class="keyword">None</span></div></pre></td></tr></table></figure>
+<p>同时我们还可以显性说明错误。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> num == <span class="number">0</span>:</div><div class="line">    <span class="keyword">raise</span> ZeroDivisionError(<span class="string">'cannot divide'</span>)</div></pre></td></tr></table></figure>
+<h2 id="finally">finally</h2>
+<p><code>finally</code>确保代码块的内容会被执行，即使有一个并没有被事先预备的异常。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span>:</div><div class="line">    Try-block</div><div class="line"><span class="keyword">except</span> exception1:</div><div class="line">    Exception1-block</div><div class="line"><span class="keyword">except</span> exception2:</div><div class="line">    Exception2-block</div><div class="line"><span class="keyword">else</span>:</div><div class="line">    Else-block</div><div class="line"><span class="keyword">finally</span>:</div><div class="line">    Finally-block</div></pre></td></tr></table></figure>
+<h2 id="for">for</h2>
+<p><code>for</code>循环啦，这个就不用多说什么啦。</p>
+<h2 id="from-import">from, import</h2>
+<p>主要用于引入模块，这个就不用多说什么啦。</p>
+<h2 id="global">global</h2>
+<p><code>global</code>是用来声明在函数里面的变量为全局变量。</p>
+<p>如果需要读取全局变量的值，那么其实没有必要声明变量为<code>global</code>。</p>
+<p>如果需要在函数里面修改全局变量的值，那我们必须用<code>global</code>来声明它。否则一个相同命名的局部变量就会被创造出来。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>globvar = <span class="number">10</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">read1</span><span class="params">()</span>:</span></div><div class="line"><span class="meta">... </span>    print(globvar)</div><div class="line">...</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">write1</span><span class="params">()</span>:</span></div><div class="line"><span class="meta">... </span>    <span class="keyword">global</span> globvar</div><div class="line"><span class="meta">... </span>    globvar = <span class="number">5</span></div><div class="line">...</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">write2</span><span class="params">()</span>:</span></div><div class="line"><span class="meta">... </span>    globvar = <span class="number">15</span></div><div class="line">...</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>read1()</div><div class="line"><span class="number">10</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>write1()</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>read1()</div><div class="line"><span class="number">5</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>write2()</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>read1()</div><div class="line"><span class="number">5</span></div></pre></td></tr></table></figure>
+<h2 id="in">in</h2>
+<p><code>in</code>是用来测试一个序列里面是否包含一个对象或者值。如果包含，将会返回<code>True</code>，否则返回<code>False</code>。另外一个作用就是用来结合<code>for</code>遍历序列。</p>
+<h2 id="is">is</h2>
+<p><code>is</code>是用来测试对象的标识。<code>==</code>用来判断两个变量是否相等，<code>is</code>用来判断两个变量是否指向同一个对象。</p>
+<p>我们知道针对<code>True</code>、<code>False</code>和<code>None</code>只有一个实例，所以它们是独有的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">True</span> <span class="keyword">is</span> <span class="keyword">True</span></div><div class="line"><span class="keyword">True</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">False</span> <span class="keyword">is</span> <span class="keyword">False</span></div><div class="line"><span class="keyword">True</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">None</span> <span class="keyword">is</span> <span class="keyword">None</span></div><div class="line"><span class="keyword">True</span></div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
+<p>一个空的列表或者字典跟空的是相等的，但它们并不是独有的对象因为它们在内存中是单独分配的。这是因为列表和字典是可变对象。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>[] == []</div><div class="line"><span class="keyword">True</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>[] <span class="keyword">is</span> []</div><div class="line"><span class="keyword">False</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>&#123;&#125; == &#123;&#125;</div><div class="line"><span class="keyword">True</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>&#123;&#125; <span class="keyword">is</span> &#123;&#125;</div><div class="line"><span class="keyword">False</span></div></pre></td></tr></table></figure>
+<p>不像列表和字典，字符串和元组都是不可变对象（就是一旦定义后值就不会发生变化）。因此，两个相同的字符串或者元组是相同的，它们都指向相同的内存地址。</p>
+<h2 id="lambda">lambda</h2>
+<p><code>lambda</code>用于创造匿名函数（也就是没有名字的函数）。这是一个不包含<code>return</code>语句的内联函数，它由一个被评估和返回的表达式组成。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="keyword">lambda</span> x: x *<span class="number">2</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">6</span>):</div><div class="line"><span class="meta">... </span>    print(a(i))</div><div class="line">...</div><div class="line"><span class="number">2</span></div><div class="line"><span class="number">4</span></div><div class="line"><span class="number">6</span></div><div class="line"><span class="number">8</span></div><div class="line"><span class="number">10</span></div></pre></td></tr></table></figure>
+<h2 id="nonlocal">nonlocal</h2>
+<p><code>nonlocal</code>的用法和<code>global</code>的用法非常相似。<code>nonlocal</code>用于声明在嵌套函数里面的变量并不属于外部函数。如果我们需要修改在嵌套函数里的非局部变量的值，我们必须用<code>nonlocal</code>来声明。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">outer_function</span><span class="params">()</span>:</span></div><div class="line"><span class="meta">... </span>    a = <span class="number">5</span></div><div class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">inner_function</span><span class="params">()</span>:</span></div><div class="line"><span class="meta">... </span>         <span class="keyword">nonlocal</span> a</div><div class="line"><span class="meta">... </span>         a = <span class="number">10</span></div><div class="line"><span class="meta">... </span>         print(<span class="string">'Inner function: '</span>, a)</div><div class="line"><span class="meta">... </span>    inner_function()</div><div class="line"><span class="meta">... </span>    print(<span class="string">'Outer function: '</span>, a)</div><div class="line">...</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>outer_function()</div><div class="line">Inner function:  <span class="number">10</span></div><div class="line">Outer function:  <span class="number">10</span></div></pre></td></tr></table></figure>
+<h2 id="pass">pass</h2>
+<p><code>pass</code>嘛，就是作为一个占位符，当执行它的时候什么都不会发生。</p>
+<h2 id="return">return</h2>
+<p><code>return</code>声明用于结束函数并且返回值。如果我们没有显性返回值，那么函数将会自动返回<code>None</code>值。</p>
+<h2 id="while">while</h2>
+<p><code>while</code>比较基本啦，可以结合<code>else</code>使用。</p>
+<h2 id="with">with</h2>
+<p>基本思想是with所求值的对象必须有一个__enter__( )方法，一个__exit__( )方法。</p>
+<p>with语句的执行逻辑如下：紧跟with后面的语句被求值后，返回对象的__enter__( )方法被调用，这个方法的返回值将被赋值给as后面的变量。当with后面的代码块全部被执行完之后，将调用前面返回对象的__exit__( )方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">with</span> open(<span class="string">'example.txt'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> my_file:</div><div class="line">    my_file.write(<span class="string">'Hello world!'</span>)</div></pre></td></tr></table></figure>
+<h2 id="yield">yield</h2>
+<p><code>yield</code>在函数里面像<code>return</code>，但<code>yield</code>返回的是一个生成器。生成器是一个一次只能生成一个对象或者值的迭代器。一个很大的列表的会占用非常大的内存，而生成器将会很好的应对这类情况，因为它每次只会生成一个值，也就是实时地生成数据，而不是把所有的值都存放在内存中。</p>
+<p>在生成器中，我们可以用<code>next()</code>方法生成值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>g = (<span class="number">2</span> ** x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">100</span>))</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>next(g)</div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>next(g)</div><div class="line"><span class="number">2</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>next(g)</div><div class="line"><span class="number">4</span></div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
+<p>哇，不知不觉就结束了，结束得毫无征兆。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/26/Support-Vector-Machine/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2086,198 +2400,6 @@ J(\theta) &amp; = \frac{1}{2m}\sum_{i=1}^{m}(h_\theta(x^{(i)}) - y^{(i)})^{2} \\
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/21/《Python设计模式》读书笔记一/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Peter Tsung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pandas.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="彼得的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/07/21/《Python设计模式》读书笔记一/" itemprop="url">
-                  《Python设计模式》读书笔记一
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-21T15:40:54+08:00">
-                2017-07-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python-Notes/" itemprop="url" rel="index">
-                    <span itemprop="name">Python_Notes</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>这周开始阅读《精通Python设计模式》，本周的学习计划是阅读<code>工厂模式</code>、<code>建造者模式</code>、<code>原型模式</code>、<code>适配器模式</code>和<code>修饰器模式</code>。</p>
-<p>在工厂模式中，客户端可以请求一个对象，而无需知道这个对象来自哪里；也就是使用哪个类来生成这个对象。工厂背后的思想是简化对象的创建，基于一个中心化函数来实现，更易于追踪创建了哪些对象。通过将创建对象的代码和使用对象的代码解耦，工厂能够降低应用维护的复杂度。</p>
-<p>工厂通常有两种形式：一种是工厂方法(<code>Factory Method</code>)，对不同的输入参数返回不同的对象；第二种是抽象工厂，它是一组用于创建一系列相关产品的系列。</p>
-<p>在工厂方法模式中，我们执行单个函数，传入一个参数（提供信息表明我们想要什么），但并不要求知道任何关于对象如何实现以及对象来自哪里的细节。</p>
-<p>下面有一个例子，就是有一些输入数据存储在一个XML文件和一个JSON文件中，要对这两个文件进行解析，获取一些信息。同时，希望能够对这些（以及将来涉及的所有）外部服务进行集中式的客户端连接。然后分别使用<code>Python</code>的两个库（<code>xml.etree.ElementTree</code>和<code>json</code>）来处理XML和JSON。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> xml.etree.ElementTree <span class="keyword">as</span> etree</div><div class="line"><span class="keyword">import</span> json</div></pre></td></tr></table></figure>
-<p>类<code>JSONConnector</code>解析JSON文件，通过<code>parsed_data()</code>方法以一个字典（<code>dict</code>）的形式返回数据。修饰器<code>property</code>使<code>parsed_data()</code>显得更像一个常规的变量，而不是一个方法。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">JSONConnector</span>:</span></div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, filepath)</span>:</span></div><div class="line">        self.data = dict()</div><div class="line">        <span class="keyword">with</span> open(filepath, mode=<span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</div><div class="line">            self.data = json.load(f)</div><div class="line">    </div><div class="line"><span class="meta">    @property</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parsed_data</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.data</div></pre></td></tr></table></figure>
-<p>类<code>XMLConnector</code>解析XML文件，通过<code>parsed_data()</code>方法以<code>xml.etree.Element</code>列表的形式返回所有数据。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">XMLConnector</span>:</span></div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, filepath)</span>:</span></div><div class="line">        self.tree = etree.parse(filepath)</div><div class="line">        </div><div class="line"><span class="meta">    @property</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parsed_data</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.tree</div></pre></td></tr></table></figure>
-<p>函数<code>connection_factory</code>是一个工厂方法，基于输入文件路径的扩展名返回一个<code>JSONConnector</code>或<code>XMLConnector</code>的实例。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">connector_factory</span><span class="params">(filepath)</span>:</span></div><div class="line">    <span class="keyword">if</span> filepath.endswith(<span class="string">'json'</span>):</div><div class="line">        connector = JSONConnector</div><div class="line">    <span class="keyword">elif</span> filepath.endswith(<span class="string">'xml'</span>):</div><div class="line">        connector = XMLConnector</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        <span class="keyword">raise</span> ValueError(<span class="string">'Cannot connect to &#123;&#125;'</span>.format(filepath))</div></pre></td></tr></table></figure>
-<p>为便于整体理解，下面给出工厂方法实现的完整代码。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> xml.etree.ElementTree <span class="keyword">as</span> etree</div><div class="line"><span class="keyword">import</span> json</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">JSONConnector</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, filepath)</span>:</span></div><div class="line">        self.data = dict()</div><div class="line">        <span class="keyword">with</span> open(filepath, mode=<span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</div><div class="line">            self.data = json.load(f)</div><div class="line"><span class="meta">    @property</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parsed_data</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.data</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">XMLConnector</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, filepath)</span>:</span></div><div class="line">        self.tree = etree.parse(filepath)</div><div class="line">        </div><div class="line"><span class="meta">    @property</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parsed_data</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.tree</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">connection_factory</span><span class="params">(filepath)</span>:</span></div><div class="line">    <span class="keyword">if</span> filepath.endswith(<span class="string">'json'</span>):</div><div class="line">        connector = JSONConnector</div><div class="line">    <span class="keyword">elif</span> filepath.endswith(<span class="string">'xml'</span>):</div><div class="line">        connector = XMLConnector</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        <span class="keyword">raise</span> ValueError(<span class="string">'Cannot connect to &#123;&#125;'</span>.format(filepath))</div><div class="line">    <span class="keyword">return</span> connector(filepath)</div><div class="line">                  </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">connect_to</span><span class="params">(filepath)</span>:</span></div><div class="line">    factory = <span class="keyword">None</span></div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        factory = connection_factory(filepath)</div><div class="line">    <span class="keyword">except</span> ValueError <span class="keyword">as</span> ve:</div><div class="line">        print(ve)</div><div class="line">    <span class="keyword">return</span> factory</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">    sqlite_factory = connect_to(<span class="string">'data/person.sq3'</span>)</div><div class="line">    print()</div><div class="line">    </div><div class="line">    xml_factory = connect_to(<span class="string">'data/person.xml'</span>)</div><div class="line">    xml_data = xml_factory.parsed_data</div><div class="line">    liars = xml_data.findall(<span class="string">".//&#123;&#125;[&#123;&#125;='&#123;&#125;']"</span>.format(<span class="string">'person'</span>, <span class="string">'lastName'</span>, <span class="string">'Liar'</span>))</div><div class="line">    print(<span class="string">'found: &#123;&#125; persons'</span>.format(len(liars)))</div><div class="line">    <span class="keyword">for</span> liar <span class="keyword">in</span> liars:</div><div class="line">        print(<span class="string">'first name: &#123;&#125;'</span>.format(liar.find(<span class="string">'firstName'</span>).text))</div><div class="line">        print(<span class="string">'last name: &#123;&#125;'</span>.format(liar.find(<span class="string">'lastName'</span>).text))</div><div class="line">        [print(<span class="string">'phone number (&#123;&#125;)'</span>.format(p.attrib[<span class="string">'type'</span>]), p.text) <span class="keyword">for</span> p <span class="keyword">in</span> liar.find(<span class="string">'phoneNumbers'</span>)]</div><div class="line">    print()</div><div class="line">    </div><div class="line">    json_factory = connect_to(<span class="string">'data/donut.json'</span>)</div><div class="line">    json_data = json_factory.parsed_data</div><div class="line">    print(<span class="string">'found: &#123;&#125; donuts'</span>.format(len(json_data)))</div><div class="line">    <span class="keyword">for</span> donut <span class="keyword">in</span> json_data:</div><div class="line">        print(<span class="string">'name: &#123;&#125;'</span>.format(donut[<span class="string">'name'</span>]))</div><div class="line">        print(<span class="string">'price: $&#123;&#125;'</span>.format(donut[<span class="string">'ppu'</span>]))</div><div class="line">        [print(<span class="string">'topping: &#123;&#125; &#123;&#125;'</span>.format(t[<span class="string">'id'</span>], t[<span class="string">'type'</span>])) <span class="keyword">for</span> t <span class="keyword">in</span> donut[<span class="string">'topping'</span>]]</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    main()</div></pre></td></tr></table></figure>
-<p>对于抽象工厂，它拥有工厂方法模式的好处：让对象的创建更容易追踪；将对象创建与使用解耦；提供优化内存占用和应用性能的潜力。而抽象工厂有一个优点，就是在使用工厂方法时从用户视角通常是看不到的，那就是抽象工厂能够通过改变激活的工厂方法动态地（运行时）改变应用行为。</p>
-<p>下面尝试创建一个游戏，包含两个游戏，一个面向孩子，一个面向成人。在运行时，基于用户输入，决定该创建哪个游戏并运行。游戏的创建部分由一个抽象工厂维护。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Frog</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></div><div class="line">        self.name = name</div><div class="line">        </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.name</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">interact_with</span><span class="params">(self, obstacle)</span>:</span></div><div class="line">        print(<span class="string">'&#123;&#125; the Frog encounters &#123;&#125; and &#123;&#125;!'</span>.format(self, obstacle, obstacle.action()))</div><div class="line">        </div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bug</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> <span class="string">'a bug'</span></div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">action</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> <span class="string">'eats it'</span></div><div class="line">    </div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FrogWorld</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></div><div class="line">        print(self)</div><div class="line">        self.player_name = name</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> <span class="string">'\n\n\t------ Frog World -------'</span></div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">make_character</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> Frog(self.player_name)</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">make_obstacle</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> Bug()</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Wizard</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></div><div class="line">        self.name = name</div><div class="line">        </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.name</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">interact_with</span><span class="params">(self, obstacle)</span>:</span></div><div class="line">        print(<span class="string">'&#123;&#125; the Wizard battles against &#123;&#125; and &#123;&#125;!'</span>.format(self, obstacle, obstacle.action()))</div><div class="line"> </div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Ork</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> <span class="string">'an evil ork'</span></div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">action</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> <span class="string">'kills it'</span></div><div class="line">    </div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WizardWorld</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></div><div class="line">        print(self)</div><div class="line">        self.player_name = name</div><div class="line">        </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> <span class="string">'\n\n\t ----- Wizard World -----'</span></div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">make_character</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> Wizard(self.player_name)</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">make_obstacle</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> Ork()</div></pre></td></tr></table></figure>
-<p>建造者模式和工厂模式的差别并不太明确。主要的区别在于工厂模式以单个步骤创建对象，而建造者模式以多个步骤创建对象，并且几乎始终会使用一个指挥者。另外一个区别是，在工厂模式下，会立即返回一个创建好的对象；而在建造者模式下，仅在需要时客户端代码才显式地请求指挥者返回最终的对象和网页。</p>
-<p>下面用建造者设计模式来实现一个比萨订购的应用。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> enum <span class="keyword">import</span> Enum</div><div class="line"><span class="keyword">import</span> time</div><div class="line"></div><div class="line">PizzaProgress = Enum(<span class="string">'PizzaProgress'</span>, <span class="string">'queued preparation baking ready'</span>)</div><div class="line">PizzaDough = Enum(<span class="string">'PizzaDough'</span>, <span class="string">'thin thick'</span>)</div><div class="line">PizzaSauce = Enum(<span class="string">'PizzaSauce'</span>, <span class="string">'tomato creme_fraiche'</span>)</div><div class="line">PizzaTopping = Enum(<span class="string">'PizzaTopping'</span>, <span class="string">'mozzarella double_mozzarella bacon ham mushrooms red_onion oregano'</span>)</div><div class="line">STEP_DELAY = <span class="number">3</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pizza</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></div><div class="line">        self.name = name</div><div class="line">        self.dough = <span class="keyword">None</span></div><div class="line">        self.sauce = <span class="keyword">None</span></div><div class="line">        self.topping = []</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.name</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">prepare_dough</span><span class="params">(self, dough)</span>:</span></div><div class="line">        self.dough = dough</div><div class="line">        print(<span class="string">'preparing the &#123;&#125; dough of your &#123;&#125;...'</span>.format(self.dough.name, self))</div><div class="line">        time.sleep(STEP_DELAY)</div><div class="line">        print(<span class="string">'done with the &#123;&#125; dough'</span>.format(self.dough.name))</div><div class="line">        </div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MargaritaBuilder</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        self.pizza = Pizza(<span class="string">'Margarita'</span>)</div><div class="line">        self.progress = PizzaProgress.queued</div><div class="line">        self.baking_time = <span class="number">5</span></div><div class="line">        </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">prepare_dough</span><span class="params">(self)</span>:</span></div><div class="line">        self.progress = PizzaProgress.preparation</div><div class="line">        self.pizza.prepare_dough(PizzaDough.thin)</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_sauce</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">'adding the tomato sauce to your margarita...'</span>)</div><div class="line">        self.pizza.sauce = PizzaSauce.tomato</div><div class="line">        time.sleep(STEP_DELAY)</div><div class="line">        print(<span class="string">'done with the tomato sauce'</span>)</div><div class="line">        </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_topping</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">'adding the topping (double mozzarella, oregano) to your margarita'</span>)</div><div class="line">        self.pizza.topping.append([i <span class="keyword">for</span> i <span class="keyword">in</span> (PizzaTopping.double_mozzarella, PizzaTopping.oregano)])</div><div class="line">        time.sleep(STEP_DELAY)</div><div class="line">        print(<span class="string">'done with the topping (double mozzarella, oregano)'</span>)</div><div class="line">        </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bake</span><span class="params">(self)</span>:</span></div><div class="line">        self.progress = PizzaProgress.baking</div><div class="line">        print(<span class="string">'baking your margarita for &#123;&#125; seconds'</span>.format(self.baking_time))</div><div class="line">        time.sleep(self.baking_time)</div><div class="line">        print(<span class="string">'your margarita is ready'</span>)</div><div class="line">        </div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">CreamyBaconBuilder</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        self.pizza = Pizza(<span class="string">'creamy bacon'</span>)</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">prepare_dough</span><span class="params">(self)</span>:</span></div><div class="line">        self.progress = PizzaProgress.preparation</div><div class="line">        self.pizza.prepare_dough(PizzaDough.thick)</div><div class="line">        </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_sauce</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">'adding the cream sauce to your creamy bacon'</span>)</div><div class="line">        self.pizza.sauce = PizzaSauce.creme_fraiche</div><div class="line">        time.sleep(STEP_DELAY)</div><div class="line">        print(<span class="string">'done with the creme sauce'</span>)</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_topping</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">'adding the topping (mozzarella, bacon, ham, mushrooms, red onion, oregano) to your creamy bacon'</span>)</div><div class="line">        self.pizza.topping.append([t <span class="keyword">for</span> t <span class="keyword">in</span> (PizzaTopping.mozzarella, PizzaTopping.bacon, PizzaTopping.ham, PizzaTopping.mushrooms</div><div class="line">                                              PizzaTopping.red_onion, PizzaTopping.oregano)])</div><div class="line">        time.sleep(STEP_DELAY)</div><div class="line">        print(<span class="string">'done with the topping (mozzarella, bacon, ham, mushrooms, red onion, oregano)'</span>)</div><div class="line">        </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bake</span><span class="params">(self)</span>:</span></div><div class="line">        self.progress = PizzaProgress.baking</div><div class="line">        print(<span class="string">'baking your creamy bacon for &#123;&#125; seconds'</span>.format(self.baking_time))</div><div class="line">        time.sleep(self.baking_time)</div><div class="line">        self.progress = PizzaProgress.ready</div><div class="line">        print(<span class="string">'your creamy bacon is ready'</span>)</div><div class="line">    </div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Waiter</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        self.buidler = <span class="keyword">None</span></div><div class="line">        </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">construct_pizza</span><span class="params">(self, builder)</span>:</span></div><div class="line">        self.builder = builder</div><div class="line">        [step() <span class="keyword">for</span> step <span class="keyword">in</span> (builder.prepare_dough, builder.add_sauce, builder.add_topping, builder.bake)]</div><div class="line">        </div><div class="line"><span class="meta">    @property</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pizza</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.builder.pizza</div><div class="line">    </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">validate_style</span><span class="params">(builders)</span>:</span></div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        pizza_style = input(<span class="string">'What pizza would you like, [m]argarita or [c]reamy bacon?'</span>)</div><div class="line">        builder = builders[pizza_style]</div><div class="line">        valid_input = <span class="keyword">True</span></div><div class="line">    <span class="keyword">except</span> KeyError <span class="keyword">as</span> err:</div><div class="line">        print(<span class="string">'Sorry, only margarita (key m) and creamy bacon (key c) are available'</span>)</div><div class="line">        <span class="keyword">return</span> (<span class="keyword">False</span>, <span class="keyword">None</span>)</div><div class="line">    <span class="keyword">return</span> (<span class="keyword">True</span>, builder)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">    builders = dict(m=MargaritaBuilder, c=CreamyBaconBuilder)</div><div class="line">    valid_input = <span class="keyword">False</span></div><div class="line">    <span class="keyword">while</span> <span class="keyword">not</span> valid_input:</div><div class="line">        valid_input, builder = validate_style(builders)</div><div class="line">    print()</div><div class="line">    waiter = Waiter()</div><div class="line">    waiter.construct_pizza(builder)</div><div class="line">    pizza = waiter.pizza</div><div class="line">    print()</div><div class="line">    print(<span class="string">'Enjoy your &#123;&#125;!'</span>.format(pizza))</div><div class="line">    </div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    main()</div></pre></td></tr></table></figure>
-<p>在以下几种情况下，与工厂模式相比，建造者模式是更好的选择。</p>
-<ul>
-<li>想要创建一个复杂对象（对象由多个部分构成，且对象的创建要经过多个不同的步骤，这些步骤也许还需遵从特定的顺序）</li>
-<li>要求一个对象能有不同的表现，并希望将对象的构造与表现解耦</li>
-<li>想要在某个时间点创建对象，但在稍后的时间点再访问</li>
-</ul>
-<p>原型设计模式帮助我们创建对象的克隆，在<code>Python</code>中，这可以用<code>copy.deepcopy()</code>函数来完成。创建一个对象的副本可以指代以下两件事情。</p>
-<ul>
-<li>当创建一个浅副本时，副本以来引用</li>
-<li>当创建一个深副本时，副本复制所有东西</li>
-</ul>
-<p>在第一种情况中，关注提升应用性能和优化内存使用，在对象之间引入数据共享，但需要小心地修改数据，因为所有变更对所有副本都是可见的。</p>
-<p>在第二种情况中，对一个副本进行更改而不会影响其他对象。</p>
-<p>适配器模式（<code>Adapter pattern</code>）是一种结构型设计模式，帮助我们实现两个不兼容接口之间的兼容。因为使用适配器模式不要求访问他方接口的源代码，而且不违反开放／封闭原则。</p>
-<p>假设有一个<code>Computer</code>类，用来显示一台计算机的基本信息。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Computer</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></div><div class="line">        self.name = name</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> <span class="string">'the &#123;&#125; computer'</span>.format(self.name)</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">execute</span><span class="params">()</span></span></div></pre></td></tr></table></figure>
-<p>在<code>Synthesizer</code>和<code>Human</code>两个类中，<code>Synthesizer</code>主要动作由<code>play()</code>方法执行。<code>Human</code>主要动作由<code>speak()</code>方法执行。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Synthesizer</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></div><div class="line">        self.name = name</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> <span class="string">'the &#123;&#125; synthesizer'</span>.format(self.name)</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">play</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> <span class="string">'is playing an electronic song'</span></div><div class="line">    </div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Human</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></div><div class="line">        self.name = name</div><div class="line">        </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> <span class="string">'&#123;&#125; the huamn'</span>.format(self.name)</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">speak</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> <span class="string">'says hello'</span></div><div class="line">    </div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Adapter</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, obj, adapted_methods)</span>:</span></div><div class="line">        self.obj = obj</div><div class="line">        self.__dict__.update(adapted_methods)</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> str(self.obj)</div><div class="line">    </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">    objects = [Computer(<span class="string">'Asus'</span>)]</div><div class="line">    </div><div class="line">    synth = Synthesizer(<span class="string">'moog'</span>)</div><div class="line">    objects.append(Adapter(synth, dict(execute=synth.play)))</div><div class="line">    </div><div class="line">    human = Human(<span class="string">'Bob'</span>)</div><div class="line">    objects.append(Adapter(human, dict(execute=huamn.speak)))</div><div class="line">    </div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> objects:</div><div class="line">        print(<span class="string">'&#123;&#125; &#123;&#125;'</span>.format(str(i), i.execute))</div><div class="line">        </div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    main()</div></pre></td></tr></table></figure>
-<p>其实通过这个适配器的这一章节的理解，感觉适配器充当的是一个中间人或者说一个链接url的作用。就像例子中<code>Computer</code>的行为<code>execute</code>一样，适配器的作用就是把<code>Computer</code>的行为<code>execute</code>和<code>Human</code>类的<code>speak</code>行为联系起来。</p>
-<p>修饰器模式能够以透明的方式（不会影响其他对象）动态地将功能添加到一个对象中。但和Python修饰器之间并不是一对一的等价关系。Python修饰器能做的实际上比修饰器模式多得多，其中就是实现修饰器模式。</p>
-<p>下面用斐波那契数列作为例子。</p>
-<p>首先我们可以用递归方式实现斐波那契数列，但是效率和速度都很低。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fibonacci</span><span class="params">(n)</span>:</span></div><div class="line">	<span class="keyword">assert</span>(n &gt;= <span class="number">0</span>). <span class="string">'n must be &gt;= 0'</span></div><div class="line">    <span class="keyword">return</span> n <span class="keyword">if</span> n <span class="keyword">in</span> (<span class="number">0</span>, <span class="number">1</span>) <span class="keyword">else</span> fibonacci(n<span class="number">-1</span>) + fibonacci(n<span class="number">-2</span>)</div></pre></td></tr></table></figure>
-<p>然后我们尝试通过使用一个<code>dict</code>来缓存斐波那契数列中已经计算好的数值来提高效率。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">known = &#123;<span class="number">0</span>:<span class="number">0</span>, <span class="number">1</span>:<span class="number">1</span>&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fibonacci</span><span class="params">(n)</span>:</span></div><div class="line">	<span class="keyword">assert</span>(n &gt;= <span class="number">0</span>), <span class="string">'n must be &gt;= 0'</span></div><div class="line">    <span class="keyword">if</span> n <span class="keyword">in</span> known:</div><div class="line">        <span class="keyword">return</span> known[n]</div><div class="line">    res = fibonacci(n<span class="number">-1</span>) + fibonacci(n<span class="number">-2</span>)</div><div class="line">    known[n] = res</div><div class="line">    <span class="keyword">return</span> res</div></pre></td></tr></table></figure>
-<p>但如果我们尝试扩展代码，加入更多的数学函数，并将其转变为一个模块，代码将会越来越复杂。假设决定加入的是<code>nsum()</code>，该函数返回前n个数字的和。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">known_sum = &#123;<span class="number">0</span>:<span class="number">0</span>&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">nsum</span><span class="params">(n)</span>:</span></div><div class="line">    <span class="keyword">assert</span>(n &gt;= <span class="number">0</span>), <span class="string">'n must be &gt;= 0'</span></div><div class="line">    <span class="keyword">if</span> n <span class="keyword">in</span> known_sum:</div><div class="line">        <span class="keyword">return</span> known_sum[n]</div><div class="line">    res = n + nsum(n<span class="number">-1</span>)</div><div class="line">    known_sum[n] = res</div><div class="line">    <span class="keyword">return</span> res</div></pre></td></tr></table></figure>
-<p>使用修饰器模式，能够将递归代码保持与朴素版本一样简单，但是性能上能够非常高效。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> functools</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">memoize</span><span class="params">(fn)</span>:</span></div><div class="line">    known = dict()</div><div class="line">    </div><div class="line"><span class="meta">    @functools.wraps(fn)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">memoizer</span><span class="params">(*args)</span>:</span></div><div class="line">        <span class="keyword">if</span> args <span class="keyword">not</span> <span class="keyword">in</span> known:</div><div class="line">            known[args] = fn(*args)</div><div class="line">        <span class="keyword">return</span> known[args]</div><div class="line">    </div><div class="line">    <span class="keyword">return</span> memoizer</div></pre></td></tr></table></figure>
-<p>通过应用<code>memoize()</code>修饰器，能够保持代码的可读性又不影响性能。所以，上述的代码就可以这样写。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@memoize</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">nsum</span><span class="params">(n)</span>:</span></div><div class="line">	<span class="keyword">assert</span>(n &gt;= <span class="number">0</span>), <span class="string">'n must be &gt;= 0'</span></div><div class="line">    <span class="keyword">return</span> <span class="number">0</span> <span class="keyword">if</span> n == <span class="number">0</span> <span class="keyword">else</span> n + nsum(n<span class="number">-1</span>)</div><div class="line"></div><div class="line"><span class="meta">@memoize</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fibonacci</span><span class="params">(n)</span>:</span></div><div class="line">    <span class="keyword">assert</span>(n &gt;= <span class="number">0</span>), <span class="string">'n must be &gt;= 0'</span></div><div class="line">    <span class="keyword">return</span> n <span class="keyword">if</span> n <span class="keyword">in</span> (<span class="number">0</span>, <span class="number">1</span>) <span class="keyword">else</span> fibonacci(n<span class="number">-1</span>) + fibonacci(n<span class="number">-2</span>)</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2327,7 +2449,7 @@ J(\theta) &amp; = \frac{1}{2m}\sum_{i=1}^{m}(h_\theta(x^{(i)}) - y^{(i)})^{2} \\
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-count">36</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2338,7 +2460,7 @@ J(\theta) &amp; = \frac{1}{2m}\sum_{i=1}^{m}(h_\theta(x^{(i)}) - y^{(i)})^{2} \\
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
