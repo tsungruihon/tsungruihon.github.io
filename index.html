@@ -386,9 +386,16 @@ f(x)  = sign(w \cdot x + b) =
 \end{cases}
 \]</span></p>
 <p>其中，<code>w·x + b</code>为分离超平面。</p>
-<p>我们希望能够求的所有误分类点到超平面的总距离，然后将损失函数极小化。 $$ \begin{aligned}</p>
-<p>&amp; 点到超平面的距离：    |w x_0 + b| \\ &amp; 对于误分类的数据(x_i, y_i)， 有： -y_i(w x_i + b) 0 \\ &amp; 假设有M个误分类点，则这些点到超平面的距离为： -<em>{x_iM}y_i(w x_i + b) \\ &amp; 因为w是可以无限任意自由伸缩的，因此我们可以直接令||w|| = 1，也就是使其成为单位法向量\\ &amp; 因此感知机的学习损失函数：     L(w, b) = </em>{x_iM}y_i(w x_i + b)</p>
-<p>\end{aligned} $$</p>
+<p>我们希望能够求的所有误分类点到超平面的总距离，然后将损失函数极小化。</p>
+<p>点到超平面的距离： <span class="math display">\[
+\frac{1}{||w||}|w \cdot x_0 + b|
+\]</span> 对于误分类的数据(xi, yi)， 有： <span class="math display">\[
+ -y_i(w \cdot x_i + b) \gt 0
+\]</span> 假设有M个误分类点，则这些点到超平面的距离为： <span class="math display">\[
+-\frac{1}{||w||}\sum_{x_i\in M}y_i(w \cdot x_i + b) 
+\]</span> 因为w是可以无限任意自由伸缩的，因此我们可以直接令||w|| = 1，也就是使其成为单位法向量。因此感知机的学习损失函数： <span class="math display">\[
+ L(w, b) = \sum_{x_i\in M}y_i(w \cdot x_i + b)
+\]</span></p>
 
           
         
