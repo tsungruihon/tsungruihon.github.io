@@ -98,7 +98,7 @@
 <meta property="og:site_name" content="彼得的博客">
 <meta property="og:description" content="今天总结一下感知机。 感知机是非常重要的模型，虽然《统计学习方法》把它放在了比较前的部分。说实话一年前看《统计学习方法》，看到感知机的时候，是完全不知道它在说什么。经过了一年，现在看回感知机，才体会到它的优美之处。 感知机是二类分类的线性分类模型，其输入为实例的特征向量，输出为实例的类别，取+1和-1。感知机对应于输入空间（特征空间）中将实例划分为正负两类的分离超平面，属于判别模型。 感知机学习旨">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-21T01:32:52.941Z">
+<meta property="og:updated_time" content="2018-05-21T01:34:29.336Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Perceptron">
 <meta name="twitter:description" content="今天总结一下感知机。 感知机是非常重要的模型，虽然《统计学习方法》把它放在了比较前的部分。说实话一年前看《统计学习方法》，看到感知机的时候，是完全不知道它在说什么。经过了一年，现在看回感知机，才体会到它的优美之处。 感知机是二类分类的线性分类模型，其输入为实例的特征向量，输出为实例的类别，取+1和-1。感知机对应于输入空间（特征空间）中将实例划分为正负两类的分离超平面，属于判别模型。 感知机学习旨">
@@ -410,13 +410,12 @@ b  = \sum_{i=1}^{N} n_i \eta \ y_i = \sum_{i=1}^{N} \alpha_i y_i
 <p>如果某个实例点更新的次数越多，<code>n_i</code>的值越大，意味着这个样本点经常被误分类，也就是说它距离分离超平面越近，<strong>结合到SVM，这种点很可能就是支持向量</strong>。</p>
 <p>因此我们的感知机模型成: <span class="math display">\[
 f(x) = sign(w \cdot x + b) = sign(\sum_{i=1}^{N}n_i \eta \ y_i x_i  \cdot x + \sum_{i=1}^{N} n_i \eta \ y_i ) \\\\
-\]</span> <span class="math display">\[
-\alpha_i \leftarrow \eta(n_i + 1)  = \eta \ n_i + \eta = \alpha_i + \eta \\\\
+\]</span> 此时，学习的目标不再是w和b，而是<code>n_i</code>, i = 1, 2, … ,N。 <span class="math display">\[
+\alpha_i \leftarrow \eta(n_i + 1)  = \eta \ n_i + \eta = \alpha_i + \eta
 \]</span></p>
 <p><span class="math display">\[
- b \leftarrow b + \eta \ y_i
+b \leftarrow b + \eta \ y_i
 \]</span></p>
-<p>此时，学习的目标不再是w和b，而是<code>n_i</code>, i = 1, 2, … ,N。</p>
 <p>b和原始一样，不同的只是对w的迭代，转化了对α的迭代。迭代完求出所有的α之后，计算w就只是O(1)的复杂度。这样就实现了从不同的角度去解答相似的问题，也就是对偶思维。</p>
 <p>下面就直接上<code>python</code>代码吧。</p>
 

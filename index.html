@@ -415,13 +415,12 @@ b  = \sum_{i=1}^{N} n_i \eta \ y_i = \sum_{i=1}^{N} \alpha_i y_i
 <p>如果某个实例点更新的次数越多，<code>n_i</code>的值越大，意味着这个样本点经常被误分类，也就是说它距离分离超平面越近，<strong>结合到SVM，这种点很可能就是支持向量</strong>。</p>
 <p>因此我们的感知机模型成: <span class="math display">\[
 f(x) = sign(w \cdot x + b) = sign(\sum_{i=1}^{N}n_i \eta \ y_i x_i  \cdot x + \sum_{i=1}^{N} n_i \eta \ y_i ) \\\\
-\]</span> <span class="math display">\[
-\alpha_i \leftarrow \eta(n_i + 1)  = \eta \ n_i + \eta = \alpha_i + \eta \\\\
+\]</span> 此时，学习的目标不再是w和b，而是<code>n_i</code>, i = 1, 2, … ,N。 <span class="math display">\[
+\alpha_i \leftarrow \eta(n_i + 1)  = \eta \ n_i + \eta = \alpha_i + \eta
 \]</span></p>
 <p><span class="math display">\[
- b \leftarrow b + \eta \ y_i
+b \leftarrow b + \eta \ y_i
 \]</span></p>
-<p>此时，学习的目标不再是w和b，而是<code>n_i</code>, i = 1, 2, … ,N。</p>
 <p>b和原始一样，不同的只是对w的迭代，转化了对α的迭代。迭代完求出所有的α之后，计算w就只是O(1)的复杂度。这样就实现了从不同的角度去解答相似的问题，也就是对偶思维。</p>
 <p>下面就直接上<code>python</code>代码吧。</p>
 
