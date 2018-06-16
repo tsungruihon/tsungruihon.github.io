@@ -103,7 +103,7 @@
 <meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202018-05-19%20at%2012.41.31%20AM.png">
 <meta property="og:image" content="http://yoursite.com/images/download-2.png">
 <meta property="og:image" content="http://yoursite.com/images/download-3.png">
-<meta property="og:updated_time" content="2018-05-19T03:31:41.798Z">
+<meta property="og:updated_time" content="2018-05-28T13:19:09.820Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="统计学习方法概论及Python应用">
 <meta name="twitter:description" content="最近开始重新整理机器学习的内容。 今天总结以下几个内容：  有监督学习、无监督学习的比较、分类和回归方法的比较 过拟合和欠拟合的定义及解决方法 交叉验证 模型评估指标（精确率、召回率、F值、ROC、AUC、Explained_variance、MSE和MSLE）  一、有监督学习、无监督学习、分类和回归方法 ​ 机器学习中有四个主要的分类：  有监督学习(supervised learning)">
@@ -142,9 +142,9 @@
 
 
   <title>统计学习方法概论及Python应用 | 彼得的博客</title>
-  <!-- <link rel="stylesheet" type="text/css" href="/css/prettify.css"> -->
-  <!-- <link rel="stylesheet" type="text/css" href="/css/hemisu-light.css"> -->
-  <!-- <link rel="stylesheet" type="text/css" href="/css/hemisu-light.min.css"> -->
+  <link rel="stylesheet" type="text/css" href="/css/prettify.css">
+  <link rel="stylesheet" type="text/css" href="/css/hemisu-light.css">
+  <link rel="stylesheet" type="text/css" href="/css/hemisu-light.min.css">
   <script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
        <script type="text/x-mathjax-config">
          MathJax.Hub.Config({
@@ -402,7 +402,52 @@
 <p>​ 决策树 · 表征(Bagging、Boosting、随即森林) · k-NN · 线性回归 · 朴素贝叶斯 · 神经网络 · 逻辑回归 · 感知器 · 支持向量机(SVM) · 相关向量机(RVM)</p>
 </blockquote>
 <p>现在我们来看点例子吧。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> linear_model</div><div class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</div><div class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> cross_val_score</div><div class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> svm</div><div class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> StratifiedKFold</div><div class="line"></div><div class="line">iris = datasets.load_iris()</div><div class="line">iris_X = iris.data</div><div class="line">iris_y = iris.target</div><div class="line"></div><div class="line"><span class="comment"># 打印分数</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">display_scores</span><span class="params">(scores)</span>:</span></div><div class="line">    print(<span class="string">"Scores : "</span>, scores)</div><div class="line">    print(<span class="string">"Mean : %.2f"</span> % scores.mean())</div><div class="line">    print(<span class="string">"Accuracy: %0.2f (+/- %0.2f)"</span> % (scores.mean(), scores.std() * <span class="number">2</span>))</div><div class="line"></div><div class="line"><span class="comment"># 输入model，X，y</span></div><div class="line"><span class="comment"># 输出分数</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">model_scores</span><span class="params">(model, X, y)</span>:</span></div><div class="line">    cv = StratifiedKFold(n_splits=<span class="number">5</span>, random_state=<span class="number">0</span>)</div><div class="line">    scores = cross_val_score(model, X, y, cv=cv)</div><div class="line">    display_scores(scores)</div><div class="line">    </div><div class="line"><span class="comment"># LinearRegression</span></div><div class="line">reg = linear_model.LinearRegression()</div><div class="line">model_scores(reg, iris_X, iris_y)</div><div class="line">[output]</div><div class="line">Scores :  [<span class="number">0.93427277</span> <span class="number">0.9395803</span>  <span class="number">0.89930025</span> <span class="number">0.90288946</span> <span class="number">0.95617435</span>]</div><div class="line">Mean : <span class="number">0.93</span></div><div class="line">Accuracy: <span class="number">0.93</span> (+/- <span class="number">0.04</span>)</div><div class="line"></div><div class="line"><span class="comment"># Logistic Regression</span></div><div class="line">logistic = linear_model.LogisticRegression(C=<span class="number">1e5</span>)</div><div class="line">model_scores(logistic, iris_X, iris_y)</div><div class="line">[output]</div><div class="line">Scores :  [<span class="number">0.96666667</span> <span class="number">0.96666667</span> <span class="number">0.93333333</span> <span class="number">0.93333333</span> <span class="number">1.</span>        ]</div><div class="line">Mean : <span class="number">0.96</span></div><div class="line">Accuracy: <span class="number">0.96</span> (+/- <span class="number">0.05</span>)</div><div class="line"></div><div class="line"><span class="comment"># SVM</span></div><div class="line">clf = svm.SVC(kernel=<span class="string">'linear'</span>, C=<span class="number">1</span>)</div><div class="line">model_scores(clf, iris_X, iris_y)</div><div class="line">[output]</div><div class="line">Scores :  [<span class="number">0.96666667</span> <span class="number">1.</span>         <span class="number">0.96666667</span> <span class="number">0.96666667</span> <span class="number">1.</span>        ]</div><div class="line">Mean : <span class="number">0.98</span></div><div class="line">Accuracy: <span class="number">0.98</span> (+/- <span class="number">0.03</span>)</div></pre></td></tr></table></figure>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="im">from</span> sklearn <span class="im">import</span> linear_model</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="im">from</span> sklearn <span class="im">import</span> datasets</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="im">from</span> sklearn <span class="im">import</span> svm</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="im">from</span> sklearn.model_selection <span class="im">import</span> StratifiedKFold</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">iris <span class="op">=</span> datasets.load_iris()</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">iris_X <span class="op">=</span> iris.data</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">iris_y <span class="op">=</span> iris.target</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co"># 打印分数</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="kw">def</span> display_scores(scores):</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">    <span class="bu">print</span>(<span class="st">&quot;Scores : &quot;</span>, scores)</a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">    <span class="bu">print</span>(<span class="st">&quot;Mean : </span><span class="sc">%.2f</span><span class="st">&quot;</span> <span class="op">%</span> scores.mean())</a>
+<a class="sourceLine" id="cb1-15" data-line-number="15">    <span class="bu">print</span>(<span class="st">&quot;Accuracy: </span><span class="sc">%0.2f</span><span class="st"> (+/- </span><span class="sc">%0.2f</span><span class="st">)&quot;</span> <span class="op">%</span> (scores.mean(), scores.std() <span class="op">*</span> <span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="co"># 输入model，X，y</span></a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co"># 输出分数</span></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="kw">def</span> model_scores(model, X, y):</a>
+<a class="sourceLine" id="cb1-20" data-line-number="20">    cv <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, random_state<span class="op">=</span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb1-21" data-line-number="21">    scores <span class="op">=</span> cross_val_score(model, X, y, cv<span class="op">=</span>cv)</a>
+<a class="sourceLine" id="cb1-22" data-line-number="22">    display_scores(scores)</a>
+<a class="sourceLine" id="cb1-23" data-line-number="23">    </a>
+<a class="sourceLine" id="cb1-24" data-line-number="24"><span class="co"># LinearRegression</span></a>
+<a class="sourceLine" id="cb1-25" data-line-number="25">reg <span class="op">=</span> linear_model.LinearRegression()</a>
+<a class="sourceLine" id="cb1-26" data-line-number="26">model_scores(reg, iris_X, iris_y)</a>
+<a class="sourceLine" id="cb1-27" data-line-number="27">[output]</a>
+<a class="sourceLine" id="cb1-28" data-line-number="28">Scores :  [<span class="fl">0.93427277</span> <span class="fl">0.9395803</span>  <span class="fl">0.89930025</span> <span class="fl">0.90288946</span> <span class="fl">0.95617435</span>]</a>
+<a class="sourceLine" id="cb1-29" data-line-number="29">Mean : <span class="fl">0.93</span></a>
+<a class="sourceLine" id="cb1-30" data-line-number="30">Accuracy: <span class="fl">0.93</span> (<span class="op">+/-</span> <span class="fl">0.04</span>)</a>
+<a class="sourceLine" id="cb1-31" data-line-number="31"></a>
+<a class="sourceLine" id="cb1-32" data-line-number="32"><span class="co"># Logistic Regression</span></a>
+<a class="sourceLine" id="cb1-33" data-line-number="33">logistic <span class="op">=</span> linear_model.LogisticRegression(C<span class="op">=</span><span class="fl">1e5</span>)</a>
+<a class="sourceLine" id="cb1-34" data-line-number="34">model_scores(logistic, iris_X, iris_y)</a>
+<a class="sourceLine" id="cb1-35" data-line-number="35">[output]</a>
+<a class="sourceLine" id="cb1-36" data-line-number="36">Scores :  [<span class="fl">0.96666667</span> <span class="fl">0.96666667</span> <span class="fl">0.93333333</span> <span class="fl">0.93333333</span> <span class="fl">1.</span>        ]</a>
+<a class="sourceLine" id="cb1-37" data-line-number="37">Mean : <span class="fl">0.96</span></a>
+<a class="sourceLine" id="cb1-38" data-line-number="38">Accuracy: <span class="fl">0.96</span> (<span class="op">+/-</span> <span class="fl">0.05</span>)</a>
+<a class="sourceLine" id="cb1-39" data-line-number="39"></a>
+<a class="sourceLine" id="cb1-40" data-line-number="40"><span class="co"># SVM</span></a>
+<a class="sourceLine" id="cb1-41" data-line-number="41">clf <span class="op">=</span> svm.SVC(kernel<span class="op">=</span><span class="st">&#39;linear&#39;</span>, C<span class="op">=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb1-42" data-line-number="42">model_scores(clf, iris_X, iris_y)</a>
+<a class="sourceLine" id="cb1-43" data-line-number="43">[output]</a>
+<a class="sourceLine" id="cb1-44" data-line-number="44">Scores :  [<span class="fl">0.96666667</span> <span class="fl">1.</span>         <span class="fl">0.96666667</span> <span class="fl">0.96666667</span> <span class="fl">1.</span>        ]</a>
+<a class="sourceLine" id="cb1-45" data-line-number="45">Mean : <span class="fl">0.98</span></a>
+<a class="sourceLine" id="cb1-46" data-line-number="46">Accuracy: <span class="fl">0.98</span> (<span class="op">+/-</span> <span class="fl">0.03</span>)</a></code></pre></div>
 <ol start="2" type="1">
 <li><u>无监督学习</u><code>(unsupervised learning)</code></li>
 </ol>
@@ -411,7 +456,25 @@
 <p>BIRCH · Hierarchical clustering · k平均 · 期望最大化（EM）· DBSCAN · OPTICS · 均值飘逸(Mean shifit)</p>
 </blockquote>
 <p>现在我们来看些例子吧。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">%matplotlib inline</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns; sns.set()</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans</div><div class="line"></div><div class="line"><span class="keyword">from</span> sklearn.datasets.samples_generator <span class="keyword">import</span> make_blobs</div><div class="line">X, y_true = make_blobs(n_samples=<span class="number">300</span>, centers=<span class="number">4</span>,</div><div class="line">                      cluster_std=<span class="number">0.60</span>, random_state=<span class="number">0</span>)</div><div class="line">plt.scatter(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>], s=<span class="number">50</span>)</div><div class="line"></div><div class="line">kmeans = KMeans(n_clusters=<span class="number">4</span>)</div><div class="line">kmeans.fit(X)</div><div class="line">y_kmeans = kmeans.predict(X)</div><div class="line"></div><div class="line">plt.scatter(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>], c=y_kmeans, s=<span class="number">50</span>, cmap=<span class="string">'viridis'</span>)</div><div class="line"></div><div class="line">centers = kmeans.cluster_centers_</div><div class="line">plt.scatter(centers[:, <span class="number">0</span>], centers[:, <span class="number">1</span>], c=<span class="string">'black'</span>, s=<span class="number">200</span>, alpha=<span class="number">0.5</span>)</div></pre></td></tr></table></figure>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="op">%</span>matplotlib inline</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="im">import</span> seaborn <span class="im">as</span> sns<span class="op">;</span> sns.<span class="bu">set</span>()</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="im">import</span> numpy <span class="im">as</span> np</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="im">from</span> sklearn.datasets.samples_generator <span class="im">import</span> make_blobs</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">X, y_true <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">300</span>, centers<span class="op">=</span><span class="dv">4</span>,</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">                      cluster_std<span class="op">=</span><span class="fl">0.60</span>, random_state<span class="op">=</span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">plt.scatter(X[:, <span class="dv">0</span>], X[:, <span class="dv">1</span>], s<span class="op">=</span><span class="dv">50</span>)</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12">kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb2-13" data-line-number="13">kmeans.fit(X)</a>
+<a class="sourceLine" id="cb2-14" data-line-number="14">y_kmeans <span class="op">=</span> kmeans.predict(X)</a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16">plt.scatter(X[:, <span class="dv">0</span>], X[:, <span class="dv">1</span>], c<span class="op">=</span>y_kmeans, s<span class="op">=</span><span class="dv">50</span>, cmap<span class="op">=</span><span class="st">&#39;viridis&#39;</span>)</a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18">centers <span class="op">=</span> kmeans.cluster_centers_</a>
+<a class="sourceLine" id="cb2-19" data-line-number="19">plt.scatter(centers[:, <span class="dv">0</span>], centers[:, <span class="dv">1</span>], c<span class="op">=</span><span class="st">&#39;black&#39;</span>, s<span class="op">=</span><span class="dv">200</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</a></code></pre></div>
 <p><img src="/images/download.png"><img src="/images/download-1.png"></p>
 <ol start="3" type="1">
 <li>回归和分类的比较</li>
@@ -462,7 +525,23 @@
 <h3 id="三交叉验证cross-validation">三、交叉验证(cross validation)</h3>
 <p>其实在上面的例子中， 我们已经使用了交叉验证。交叉验证直白地说就是为了验证模型的表现。学习预测函数的参数并且在相同的数据中测试它是一种错误的方法：因为只重复看到的样本标签的模型本身会有一个完美的表现，但它并不能预测任何有用的信息，对于未见过的数据，模型的泛化能力会非常差。这种情况称为过拟合。</p>
 <p>为了避免这种情况，对于有监督学习，通常会将数据集划分为训练集和测试集，然后进行模型表现的评估。这种做法称为交叉验证。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</div><div class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</div><div class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> svm</div><div class="line"></div><div class="line">iris = datasets.load_iris()</div><div class="line">iris_X = iris.data</div><div class="line">iris_y = iris.target</div><div class="line"></div><div class="line">X_train, X_test, y_train, y_test = train_test_split(</div><div class="line">    iris_X, iris_y, test_size=<span class="number">0.4</span>, random_state=<span class="number">0</span></div><div class="line">)</div><div class="line"></div><div class="line">clf = svm.SVC(kernel=<span class="string">'linear'</span>, C=<span class="number">1</span>).fit(X_train, y_train)</div><div class="line">print(clf.score(X_test, y_test))</div><div class="line">[output]</div><div class="line"><span class="number">0.9666666666666667</span></div></pre></td></tr></table></figure>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="im">import</span> numpy <span class="im">as</span> np</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="im">from</span> sklearn <span class="im">import</span> datasets</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="im">from</span> sklearn <span class="im">import</span> svm</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">iris <span class="op">=</span> datasets.load_iris()</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">iris_X <span class="op">=</span> iris.data</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">iris_y <span class="op">=</span> iris.target</a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10">X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</a>
+<a class="sourceLine" id="cb3-11" data-line-number="11">    iris_X, iris_y, test_size<span class="op">=</span><span class="fl">0.4</span>, random_state<span class="op">=</span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12">)</a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14">clf <span class="op">=</span> svm.SVC(kernel<span class="op">=</span><span class="st">&#39;linear&#39;</span>, C<span class="op">=</span><span class="dv">1</span>).fit(X_train, y_train)</a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="bu">print</span>(clf.score(X_test, y_test))</a>
+<a class="sourceLine" id="cb3-16" data-line-number="16">[output]</a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="fl">0.9666666666666667</span></a></code></pre></div>
 <p>常见的交叉验证有：</p>
 <ul>
 <li>Holdout验证：随机从最初样本选取部分，形成交叉验证数据，而剩余的就当作训练数据。一般来说，少于原样本三分之一的数据被选作验证数据。</li>
@@ -522,12 +601,75 @@ Accuracy &amp; = \frac{TP+TN}{TP+TN+FN+FP}
 <li><code>查准率(Precision)</code>: 指在所有预测为正例的情况中，预测正例且实际正例的比例。<code>查准率</code>关注的是预测正例正确占所有预测为正例情况的比例，白话文就是说，<code>查准率</code>关注的是你预测了一大堆正例的例子，然后里面有多少是预测正确的，就是准不准嘛。</li>
 <li><code>查全率(Recall)</code>: 指在实际为正例的情况中，预测为正例的比例。白话文就是说，<code>查全率</code>关注的是你正确预测了一大堆正例，数量为A，真实情况下正例的数量是B，然后看B里面有多少比例的A，然后去判断预测正确的情况全不全。</li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> svm, datasets</div><div class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> average_precision_score, precision_recall_curve</div><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> precision_score, recall_score</div><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"></div><div class="line"></div><div class="line">iris = datasets.load_iris()</div><div class="line">X = iris.data</div><div class="line">y = iris.target</div><div class="line"></div><div class="line">random_state = np.random.RandomState(<span class="number">0</span>)</div><div class="line">n_samples, n_features = X.shape</div><div class="line">X = np.c_[X, random_state.randn(n_samples, <span class="number">200</span> * n_features)]</div><div class="line"></div><div class="line">X_train, X_test, y_train, y_test = train_test_split(X[y &lt; <span class="number">2</span>], y[y &lt; <span class="number">2</span>],</div><div class="line">                                                    test_size=<span class="number">.5</span>,</div><div class="line">                                                   random_state=random_state)</div><div class="line"></div><div class="line">clf = svm.LinearSVC(random_state=random_state)</div><div class="line">clf.fit(X_train, y_train)</div><div class="line">y_score = clf.decision_function(X_test)</div><div class="line"></div><div class="line">average_precision = average_precision_score(y_test, y_score)</div><div class="line">print(<span class="string">'Average precision-recall score: &#123;0:0.2f&#125;'</span>.format(average_precision))</div><div class="line">[output]</div><div class="line">Average precision-recall score: <span class="number">0.88</span></div><div class="line">    </div><div class="line">print(precision_score(y_test, clf.predict(X_test)))</div><div class="line">print(recall_score(y_test, clf.predict(X_test)))</div><div class="line">print(f1_score(y_test, clf.predict(X_test)))</div><div class="line">print(classification_report(y_test, clf.predict(X_test)))</div><div class="line">[output]</div><div class="line"><span class="number">0.75</span></div><div class="line"><span class="number">0.8076923076923077</span></div><div class="line"><span class="number">0.7777777777777779</span></div><div class="line"></div><div class="line">            precision    recall  f1-score   support</div><div class="line"></div><div class="line">          <span class="number">0</span>       <span class="number">0.77</span>      <span class="number">0.71</span>      <span class="number">0.74</span>        <span class="number">24</span></div><div class="line">          <span class="number">1</span>       <span class="number">0.75</span>      <span class="number">0.81</span>      <span class="number">0.78</span>        <span class="number">26</span></div><div class="line"></div><div class="line">avg / total       <span class="number">0.76</span>      <span class="number">0.76</span>      <span class="number">0.76</span>        <span class="number">50</span></div><div class="line"></div><div class="line"></div><div class="line">precision, recall, _ = precision_recall_curve(y_test, y_score)</div><div class="line">plt.step(recall, precision, color=<span class="string">'b'</span>, alpha=<span class="number">0.2</span>,</div><div class="line">        where=<span class="string">'post'</span>)</div><div class="line">plt.fill_between(recall, precision, step=<span class="string">'post'</span>, alpha=<span class="number">0.2</span>,</div><div class="line">                color=<span class="string">'b'</span>)</div><div class="line"></div><div class="line">plt.xlabel(<span class="string">'Recall'</span>)</div><div class="line">plt.ylabel(<span class="string">'Precision'</span>)</div><div class="line">plt.ylim([<span class="number">0.0</span>, <span class="number">1.05</span>])</div><div class="line">plt.xlim([<span class="number">0.0</span>, <span class="number">1.0</span>])</div><div class="line">plt.title(<span class="string">'2-class Precision-Recall curve: AP=&#123;0:0.2f&#125;'</span>.format(average_precision))</div></pre></td></tr></table></figure>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="im">from</span> sklearn <span class="im">import</span> svm, datasets</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="im">import</span> numpy <span class="im">as</span> np</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="im">from</span> sklearn.metrics <span class="im">import</span> average_precision_score, precision_recall_curve</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="im">from</span> sklearn.metrics <span class="im">import</span> precision_score, recall_score</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10">iris <span class="op">=</span> datasets.load_iris()</a>
+<a class="sourceLine" id="cb4-11" data-line-number="11">X <span class="op">=</span> iris.data</a>
+<a class="sourceLine" id="cb4-12" data-line-number="12">y <span class="op">=</span> iris.target</a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14">random_state <span class="op">=</span> np.random.RandomState(<span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb4-15" data-line-number="15">n_samples, n_features <span class="op">=</span> X.shape</a>
+<a class="sourceLine" id="cb4-16" data-line-number="16">X <span class="op">=</span> np.c_[X, random_state.randn(n_samples, <span class="dv">200</span> <span class="op">*</span> n_features)]</a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18">X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X[y <span class="op">&lt;</span> <span class="dv">2</span>], y[y <span class="op">&lt;</span> <span class="dv">2</span>],</a>
+<a class="sourceLine" id="cb4-19" data-line-number="19">                                                    test_size<span class="op">=</span>.<span class="dv">5</span>,</a>
+<a class="sourceLine" id="cb4-20" data-line-number="20">                                                   random_state<span class="op">=</span>random_state)</a>
+<a class="sourceLine" id="cb4-21" data-line-number="21"></a>
+<a class="sourceLine" id="cb4-22" data-line-number="22">clf <span class="op">=</span> svm.LinearSVC(random_state<span class="op">=</span>random_state)</a>
+<a class="sourceLine" id="cb4-23" data-line-number="23">clf.fit(X_train, y_train)</a>
+<a class="sourceLine" id="cb4-24" data-line-number="24">y_score <span class="op">=</span> clf.decision_function(X_test)</a>
+<a class="sourceLine" id="cb4-25" data-line-number="25"></a>
+<a class="sourceLine" id="cb4-26" data-line-number="26">average_precision <span class="op">=</span> average_precision_score(y_test, y_score)</a>
+<a class="sourceLine" id="cb4-27" data-line-number="27"><span class="bu">print</span>(<span class="st">&#39;Average precision-recall score: </span><span class="sc">{0:0.2f}</span><span class="st">&#39;</span>.<span class="bu">format</span>(average_precision))</a>
+<a class="sourceLine" id="cb4-28" data-line-number="28">[output]</a>
+<a class="sourceLine" id="cb4-29" data-line-number="29">Average precision<span class="op">-</span>recall score: <span class="fl">0.88</span></a>
+<a class="sourceLine" id="cb4-30" data-line-number="30">    </a>
+<a class="sourceLine" id="cb4-31" data-line-number="31"><span class="bu">print</span>(precision_score(y_test, clf.predict(X_test)))</a>
+<a class="sourceLine" id="cb4-32" data-line-number="32"><span class="bu">print</span>(recall_score(y_test, clf.predict(X_test)))</a>
+<a class="sourceLine" id="cb4-33" data-line-number="33"><span class="bu">print</span>(f1_score(y_test, clf.predict(X_test)))</a>
+<a class="sourceLine" id="cb4-34" data-line-number="34"><span class="bu">print</span>(classification_report(y_test, clf.predict(X_test)))</a>
+<a class="sourceLine" id="cb4-35" data-line-number="35">[output]</a>
+<a class="sourceLine" id="cb4-36" data-line-number="36"><span class="fl">0.75</span></a>
+<a class="sourceLine" id="cb4-37" data-line-number="37"><span class="fl">0.8076923076923077</span></a>
+<a class="sourceLine" id="cb4-38" data-line-number="38"><span class="fl">0.7777777777777779</span></a>
+<a class="sourceLine" id="cb4-39" data-line-number="39"></a>
+<a class="sourceLine" id="cb4-40" data-line-number="40">            precision    recall  f1<span class="op">-</span>score   support</a>
+<a class="sourceLine" id="cb4-41" data-line-number="41"></a>
+<a class="sourceLine" id="cb4-42" data-line-number="42">          <span class="dv">0</span>       <span class="fl">0.77</span>      <span class="fl">0.71</span>      <span class="fl">0.74</span>        <span class="dv">24</span></a>
+<a class="sourceLine" id="cb4-43" data-line-number="43">          <span class="dv">1</span>       <span class="fl">0.75</span>      <span class="fl">0.81</span>      <span class="fl">0.78</span>        <span class="dv">26</span></a>
+<a class="sourceLine" id="cb4-44" data-line-number="44"></a>
+<a class="sourceLine" id="cb4-45" data-line-number="45">avg <span class="op">/</span> total       <span class="fl">0.76</span>      <span class="fl">0.76</span>      <span class="fl">0.76</span>        <span class="dv">50</span></a>
+<a class="sourceLine" id="cb4-46" data-line-number="46"></a>
+<a class="sourceLine" id="cb4-47" data-line-number="47"></a>
+<a class="sourceLine" id="cb4-48" data-line-number="48">precision, recall, _ <span class="op">=</span> precision_recall_curve(y_test, y_score)</a>
+<a class="sourceLine" id="cb4-49" data-line-number="49">plt.step(recall, precision, color<span class="op">=</span><span class="st">&#39;b&#39;</span>, alpha<span class="op">=</span><span class="fl">0.2</span>,</a>
+<a class="sourceLine" id="cb4-50" data-line-number="50">        where<span class="op">=</span><span class="st">&#39;post&#39;</span>)</a>
+<a class="sourceLine" id="cb4-51" data-line-number="51">plt.fill_between(recall, precision, step<span class="op">=</span><span class="st">&#39;post&#39;</span>, alpha<span class="op">=</span><span class="fl">0.2</span>,</a>
+<a class="sourceLine" id="cb4-52" data-line-number="52">                color<span class="op">=</span><span class="st">&#39;b&#39;</span>)</a>
+<a class="sourceLine" id="cb4-53" data-line-number="53"></a>
+<a class="sourceLine" id="cb4-54" data-line-number="54">plt.xlabel(<span class="st">&#39;Recall&#39;</span>)</a>
+<a class="sourceLine" id="cb4-55" data-line-number="55">plt.ylabel(<span class="st">&#39;Precision&#39;</span>)</a>
+<a class="sourceLine" id="cb4-56" data-line-number="56">plt.ylim([<span class="fl">0.0</span>, <span class="fl">1.05</span>])</a>
+<a class="sourceLine" id="cb4-57" data-line-number="57">plt.xlim([<span class="fl">0.0</span>, <span class="fl">1.0</span>])</a>
+<a class="sourceLine" id="cb4-58" data-line-number="58">plt.title(<span class="st">&#39;2-class Precision-Recall curve: AP=</span><span class="sc">{0:0.2f}</span><span class="st">&#39;</span>.<span class="bu">format</span>(average_precision))    </a></code></pre></div>
 <p><img src="/images/download-2.png"></p>
 <ul>
 <li><code>准确率(Accuracuy)</code>: 对于给定的测试集数据，分类器正确分类的样本数与总样本之比。</li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> accuracy_score</div><div class="line">y_pred = [<span class="number">0</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>]</div><div class="line">y_true = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</div><div class="line">print(accuracy_score(y_true, y_pred))</div><div class="line">[output]</div><div class="line"><span class="number">0.5</span></div></pre></td></tr></table></figure>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="im">import</span> numpy <span class="im">as</span> np</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">y_pred <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">3</span>]</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">y_true <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="bu">print</span>(accuracy_score(y_true, y_pred))</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">[output]</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="fl">0.5</span></a></code></pre></div>
 <ol start="2" type="1">
 <li><code>ROC</code>和<code>AUC</code></li>
 </ol>
@@ -545,8 +687,22 @@ FPR  &amp;= \frac{FP}{FP + TN} \\\\
 \end{aligned}
 \]</span> ROC曲线有个很好的特性：当测试集中的正负样本的分布变换的时候，ROC曲线能够保持不变。在实际的数据集中经常会出现样本类不平衡，即正负样本比例差距较大，而且测试数据中的正负样本也可能随着时间变化。</p>
 <p>理想情况下，TPR应该接近1，FPR应该接近0。故ROC曲线越靠拢(0,1)点，越偏离45度对角线越好，Sensitivity、Specificity越大效果越好。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> roc_curve</div><div class="line">fpr, tpr, thresholds = roc_curve(y_test, clf.predict(X_test))</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">plot_roc_curve</span><span class="params">(fpr, tpr, label=None)</span>:</span></div><div class="line">    plt.plot(fpr, tpr, linewidth=<span class="number">2</span>, label=label)</div><div class="line">    plt.plot([<span class="number">0</span>, <span class="number">1</span>], [<span class="number">0</span>, <span class="number">1</span>], <span class="string">'k--'</span>)</div><div class="line">    plt.axis([<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>])</div><div class="line">    plt.xlabel(<span class="string">'False Positive Rate'</span>)</div><div class="line">    plt.ylabel(<span class="string">'True Positive Rate'</span>)</div><div class="line">    </div><div class="line">plot_roc_curve(fpr, tpr)</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_curve</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">fpr, tpr, thresholds <span class="op">=</span> roc_curve(y_test, clf.predict(X_test))</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw">def</span> plot_roc_curve(fpr, tpr, label<span class="op">=</span><span class="va">None</span>):</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">    plt.plot(fpr, tpr, linewidth<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span>label)</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">    plt.plot([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>], <span class="st">&#39;k--&#39;</span>)</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">    plt.axis([<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">    plt.xlabel(<span class="st">&#39;False Positive Rate&#39;</span>)</a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">    plt.ylabel(<span class="st">&#39;True Positive Rate&#39;</span>)</a>
+<a class="sourceLine" id="cb6-9" data-line-number="9">    </a>
+<a class="sourceLine" id="cb6-10" data-line-number="10">plot_roc_curve(fpr, tpr)</a>
+<a class="sourceLine" id="cb6-11" data-line-number="11">plt.show()</a></code></pre></div>
 <p><img src="/images/download-3.png"></p>
+<ol start="3" type="1">
+<li><code>neg_log_loss</code></li>
+</ol>
+<p>对于<code>log_loss</code>，它计算的是交叉熵。</p>
 <p>对于<u>回归问题</u>，一般使用<code>explained_variance_score</code>、<code>Mean squared error</code>、<code>neg_mean_squared_log_error</code></p>
 <ol type="1">
 <li><code>Explained_variance_score</code></li>
@@ -554,21 +710,36 @@ FPR  &amp;= \frac{FP}{FP + TN} \\\\
 <p>最好的表现是1， 数值越低表现越差 <span class="math display">\[
 explained_variance(y,  \hat y) = 1- \frac{Var\{y - \hat y\}}{Var\{y\} }
 \]</span></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> explained_variance_score</div><div class="line">y_true = [<span class="number">3</span>, <span class="number">-0.5</span>, <span class="number">2</span>, <span class="number">7</span>]</div><div class="line">y_pred = [<span class="number">2.5</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">8</span>]</div><div class="line">print(explained_variance_score(y_true, y_pred))</div><div class="line">[output]</div><div class="line"><span class="number">0.9571734475374732</span></div></pre></td></tr></table></figure>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="im">from</span> sklearn.metrics <span class="im">import</span> explained_variance_score</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">y_true <span class="op">=</span> [<span class="dv">3</span>, <span class="fl">-0.5</span>, <span class="dv">2</span>, <span class="dv">7</span>]</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">y_pred <span class="op">=</span> [<span class="fl">2.5</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">8</span>]</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="bu">print</span>(explained_variance_score(y_true, y_pred))</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">[output]</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="fl">0.9571734475374732</span></a></code></pre></div>
 <ol start="2" type="1">
 <li><code>Mean squared error(MSE)</code></li>
 </ol>
 <p>MSE越小，模型拟合表现越好。 <span class="math display">\[
 MSE(y, \hat y) = \frac{1}{n_{samples}} \sum^{n_{samples} - 1}_{i=0} \ \ (y_i - \hat y_i) ^ 2
 \]</span></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> mean_squared_error</div><div class="line">y_true = [<span class="number">3</span>, <span class="number">-0.5</span>, <span class="number">2</span>, <span class="number">7</span>]</div><div class="line">y_pred = [<span class="number">2.5</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">8</span>]</div><div class="line">print(mean_squared_error(y_true, y_pred))</div><div class="line">[output]</div><div class="line"><span class="number">0.375</span></div></pre></td></tr></table></figure>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">y_true <span class="op">=</span> [<span class="dv">3</span>, <span class="fl">-0.5</span>, <span class="dv">2</span>, <span class="dv">7</span>]</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">y_pred <span class="op">=</span> [<span class="fl">2.5</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">8</span>]</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="bu">print</span>(mean_squared_error(y_true, y_pred))</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">[output]</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="fl">0.375</span></a></code></pre></div>
 <ol start="3" type="1">
 <li><code>Mean_squared_log_error(MSLE)</code></li>
 </ol>
 <p>MSLE越小，模型拟合表现越好。当两个数值都是巨大数字时，如果不想惩罚巨大的差异，就可以使用它。当具有指数增长的目标（如人口数量，商品在一定年限内的平均销售额等）时，最好使用此度量标准。请注意，此度量标准对低于预测的估算值的惩罚高于超出预测的估算值。 <span class="math display">\[
 MSLE(y, \hat y) = \frac{1}{n_{samples}} \sum_{i=0}^{n_{samples}-1} (log_e(1+y_i) - log_e(1 + \hat y_i))^ 2
 \]</span></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> mean_squared_log_error</div><div class="line">y_true = [<span class="number">3</span>, <span class="number">5</span>, <span class="number">2.5</span>, <span class="number">7</span>]</div><div class="line">y_pred = [<span class="number">2.5</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">8</span>]</div><div class="line">print(mean_squared_log_error(y_true, y_pred))</div><div class="line">[output]</div><div class="line"><span class="number">0.0397</span></div></pre></td></tr></table></figure>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_log_error</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">y_true <span class="op">=</span> [<span class="dv">3</span>, <span class="dv">5</span>, <span class="fl">2.5</span>, <span class="dv">7</span>]</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">y_pred <span class="op">=</span> [<span class="fl">2.5</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">8</span>]</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="bu">print</span>(mean_squared_log_error(y_true, y_pred))</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">[output]</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="fl">0.0397</span></a></code></pre></div>
 
       
     </div>
