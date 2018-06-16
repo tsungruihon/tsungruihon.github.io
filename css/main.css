@@ -279,7 +279,6 @@ p {
 a {
   color: #555;
   text-decoration: none;
-  border-bottom: 1px solid #999;
   word-wrap: break-word;
 }
 a:hover {
@@ -1704,7 +1703,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ff873e;
+  background: #3da65c;
 }
 .links-of-blogroll {
   font-size: 13px;
