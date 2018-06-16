@@ -98,7 +98,7 @@
 <meta property="og:site_name" content="彼得的博客">
 <meta property="og:description" content="今天总结一下感知机。 感知机是非常重要的模型，虽然《统计学习方法》把它放在了比较前的部分。说实话一年前看《统计学习方法》，看到感知机的时候，是完全不知道它在说什么。经过了一年，现在看回感知机，才体会到它的优美之处。 感知机是二类分类的线性分类模型，其输入为实例的特征向量，输出为实例的类别，取+1和-1。感知机对应于输入空间（特征空间）中将实例划分为正负两类的分离超平面，属于判别模型。 感知机学习旨">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-21T16:41:31.740Z">
+<meta property="og:updated_time" content="2018-06-16T08:31:40.392Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Perceptron">
 <meta name="twitter:description" content="今天总结一下感知机。 感知机是非常重要的模型，虽然《统计学习方法》把它放在了比较前的部分。说实话一年前看《统计学习方法》，看到感知机的时候，是完全不知道它在说什么。经过了一年，现在看回感知机，才体会到它的优美之处。 感知机是二类分类的线性分类模型，其输入为实例的特征向量，输出为实例的类别，取+1和-1。感知机对应于输入空间（特征空间）中将实例划分为正负两类的分离超平面，属于判别模型。 感知机学习旨">
@@ -417,95 +417,7 @@ b \leftarrow b + \eta \ y_i
 \]</span></p>
 <p>b和原始一样，不同的只是对w的迭代，转化了对α的迭代。迭代完求出所有的α之后，计算w就只是O(1)的复杂度。这样就实现了从不同的角度去解答相似的问题，也就是对偶思维。</p>
 <p>下面就直接上<code>python</code>代码吧。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="im">from</span> random <span class="im">import</span> seed</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="im">from</span> random <span class="im">import</span> randrange</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="im">from</span> csv <span class="im">import</span> reader</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"> </a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw">def</span> load_csv(filename):</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">    dataset <span class="op">=</span> <span class="bu">list</span>()</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">    <span class="cf">with</span> <span class="bu">open</span>(filename, <span class="st">&#39;r&#39;</span>) <span class="im">as</span> <span class="bu">file</span>:</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">        csv_reader <span class="op">=</span> reader(<span class="bu">file</span>)</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">        <span class="cf">for</span> row <span class="kw">in</span> csv_reader:</a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">            <span class="cf">if</span> <span class="kw">not</span> row:</a>
-<a class="sourceLine" id="cb1-11" data-line-number="11">                <span class="cf">continue</span></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12">                dataset.append(row)</a>
-<a class="sourceLine" id="cb1-13" data-line-number="13">                <span class="cf">return</span> dataset</a>
-<a class="sourceLine" id="cb1-14" data-line-number="14"> </a>
-<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="kw">def</span> str_column_to_float(dataset, column):</a>
-<a class="sourceLine" id="cb1-16" data-line-number="16">    <span class="cf">for</span> row <span class="kw">in</span> dataset:</a>
-<a class="sourceLine" id="cb1-17" data-line-number="17">        row[column] <span class="op">=</span> <span class="bu">float</span>(row[column].strip())</a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"> </a>
-<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="kw">def</span> str_column_to_int(dataset, column):</a>
-<a class="sourceLine" id="cb1-20" data-line-number="20">    class_values <span class="op">=</span> [row[column] <span class="cf">for</span> row <span class="kw">in</span> dataset]</a>
-<a class="sourceLine" id="cb1-21" data-line-number="21">    unique <span class="op">=</span> <span class="bu">set</span>(class_values)</a>
-<a class="sourceLine" id="cb1-22" data-line-number="22">    lookup <span class="op">=</span> <span class="bu">dict</span>()</a>
-<a class="sourceLine" id="cb1-23" data-line-number="23">    <span class="cf">for</span> i, value <span class="kw">in</span> <span class="bu">enumerate</span>(unique):</a>
-<a class="sourceLine" id="cb1-24" data-line-number="24">        lookup[value] <span class="op">=</span> i</a>
-<a class="sourceLine" id="cb1-25" data-line-number="25">        <span class="cf">for</span> row <span class="kw">in</span> dataset:</a>
-<a class="sourceLine" id="cb1-26" data-line-number="26">            row[column] <span class="op">=</span> lookup[row[column]]</a>
-<a class="sourceLine" id="cb1-27" data-line-number="27">    <span class="cf">return</span> lookup</a>
-<a class="sourceLine" id="cb1-28" data-line-number="28"> </a>
-<a class="sourceLine" id="cb1-29" data-line-number="29"><span class="kw">def</span> cross_validation_split(dataset, n_folds):</a>
-<a class="sourceLine" id="cb1-30" data-line-number="30">    dataset_split <span class="op">=</span> <span class="bu">list</span>()</a>
-<a class="sourceLine" id="cb1-31" data-line-number="31">    dataset_copy <span class="op">=</span> <span class="bu">list</span>(dataset)</a>
-<a class="sourceLine" id="cb1-32" data-line-number="32">    fold_size <span class="op">=</span> <span class="bu">int</span>(<span class="bu">len</span>(dataset) <span class="op">/</span> n_folds)</a>
-<a class="sourceLine" id="cb1-33" data-line-number="33">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_folds):</a>
-<a class="sourceLine" id="cb1-34" data-line-number="34">        fold <span class="op">=</span> <span class="bu">list</span>()</a>
-<a class="sourceLine" id="cb1-35" data-line-number="35">        <span class="cf">while</span> <span class="bu">len</span>(fold) <span class="op">&lt;</span> fold_size:</a>
-<a class="sourceLine" id="cb1-36" data-line-number="36">            index <span class="op">=</span> randrange(<span class="bu">len</span>(dataset_copy))</a>
-<a class="sourceLine" id="cb1-37" data-line-number="37">            fold.append(dataset_copy.pop(index))</a>
-<a class="sourceLine" id="cb1-38" data-line-number="38">        dataset_split.append(fold)</a>
-<a class="sourceLine" id="cb1-39" data-line-number="39">    <span class="cf">return</span> dataset_split</a>
-<a class="sourceLine" id="cb1-40" data-line-number="40"> </a>
-<a class="sourceLine" id="cb1-41" data-line-number="41"><span class="kw">def</span> accuracy_metric(actual, predicted):</a>
-<a class="sourceLine" id="cb1-42" data-line-number="42">    correct <span class="op">=</span> <span class="dv">0</span></a>
-<a class="sourceLine" id="cb1-43" data-line-number="43">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(actual)):</a>
-<a class="sourceLine" id="cb1-44" data-line-number="44">        <span class="cf">if</span> actual[i] <span class="op">==</span> predicted[i]:</a>
-<a class="sourceLine" id="cb1-45" data-line-number="45">            correct <span class="op">+=</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb1-46" data-line-number="46">    <span class="cf">return</span> correct <span class="op">/</span> <span class="bu">float</span>(<span class="bu">len</span>(actual)) <span class="op">*</span> <span class="fl">100.0</span></a>
-<a class="sourceLine" id="cb1-47" data-line-number="47"> </a>
-<a class="sourceLine" id="cb1-48" data-line-number="48"><span class="kw">def</span> evaluate_algorithm(dataset, algorithm, n_folds, <span class="op">*</span>args):</a>
-<a class="sourceLine" id="cb1-49" data-line-number="49">    folds <span class="op">=</span> cross_validation_split(dataset, n_folds)</a>
-<a class="sourceLine" id="cb1-50" data-line-number="50">    scores <span class="op">=</span> <span class="bu">list</span>()</a>
-<a class="sourceLine" id="cb1-51" data-line-number="51">    <span class="cf">for</span> fold <span class="kw">in</span> folds:</a>
-<a class="sourceLine" id="cb1-52" data-line-number="52">        train_set <span class="op">=</span> <span class="bu">list</span>(folds)</a>
-<a class="sourceLine" id="cb1-53" data-line-number="53">        train_set.remove(fold)</a>
-<a class="sourceLine" id="cb1-54" data-line-number="54">        train_set <span class="op">=</span> <span class="bu">sum</span>(train_set, [])</a>
-<a class="sourceLine" id="cb1-55" data-line-number="55">        test_set <span class="op">=</span> <span class="bu">list</span>()</a>
-<a class="sourceLine" id="cb1-56" data-line-number="56">        <span class="cf">for</span> row <span class="kw">in</span> fold:</a>
-<a class="sourceLine" id="cb1-57" data-line-number="57">            row_copy <span class="op">=</span> <span class="bu">list</span>(row)</a>
-<a class="sourceLine" id="cb1-58" data-line-number="58">            test_set.append(row_copy)</a>
-<a class="sourceLine" id="cb1-59" data-line-number="59">            row_copy[<span class="op">-</span><span class="dv">1</span>] <span class="op">=</span> <span class="va">None</span></a>
-<a class="sourceLine" id="cb1-60" data-line-number="60">            predicted <span class="op">=</span> algorithm(train_set, test_set, <span class="op">*</span>args)</a>
-<a class="sourceLine" id="cb1-61" data-line-number="61">            actual <span class="op">=</span> [row[<span class="op">-</span><span class="dv">1</span>] <span class="cf">for</span> row <span class="kw">in</span> fold]</a>
-<a class="sourceLine" id="cb1-62" data-line-number="62">            accuracy <span class="op">=</span> accuracy_metric(actual, predicted)</a>
-<a class="sourceLine" id="cb1-63" data-line-number="63">            scores.append(accuracy)</a>
-<a class="sourceLine" id="cb1-64" data-line-number="64">            <span class="cf">return</span> scores</a>
-<a class="sourceLine" id="cb1-65" data-line-number="65"></a>
-<a class="sourceLine" id="cb1-66" data-line-number="66"><span class="kw">def</span> predict(row, weights):</a>
-<a class="sourceLine" id="cb1-67" data-line-number="67">    activation <span class="op">=</span> weights[<span class="dv">0</span>]</a>
-<a class="sourceLine" id="cb1-68" data-line-number="68">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(row)<span class="op">-</span><span class="dv">1</span>):</a>
-<a class="sourceLine" id="cb1-69" data-line-number="69">        activation <span class="op">+=</span> weights[i <span class="op">+</span> <span class="dv">1</span>] <span class="op">*</span> row[i]</a>
-<a class="sourceLine" id="cb1-70" data-line-number="70">    <span class="cf">return</span> <span class="fl">1.0</span> <span class="cf">if</span> activation <span class="op">&gt;=</span> <span class="fl">0.0</span> <span class="cf">else</span> <span class="fl">0.0</span></a>
-<a class="sourceLine" id="cb1-71" data-line-number="71"> </a>
-<a class="sourceLine" id="cb1-72" data-line-number="72"><span class="kw">def</span> train_weights(train, l_rate, n_epoch):</a>
-<a class="sourceLine" id="cb1-73" data-line-number="73">    weights <span class="op">=</span> [<span class="fl">0.0</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(train[<span class="dv">0</span>]))]</a>
-<a class="sourceLine" id="cb1-74" data-line-number="74">    <span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(n_epoch):</a>
-<a class="sourceLine" id="cb1-75" data-line-number="75">        <span class="cf">for</span> row <span class="kw">in</span> train:</a>
-<a class="sourceLine" id="cb1-76" data-line-number="76">            prediction <span class="op">=</span> predict(row, weights)</a>
-<a class="sourceLine" id="cb1-77" data-line-number="77">            error <span class="op">=</span> row[<span class="op">-</span><span class="dv">1</span>] <span class="op">-</span> prediction</a>
-<a class="sourceLine" id="cb1-78" data-line-number="78">            weights[<span class="dv">0</span>] <span class="op">=</span> weights[<span class="dv">0</span>] <span class="op">+</span> l_rate <span class="op">*</span> error</a>
-<a class="sourceLine" id="cb1-79" data-line-number="79">            <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(row)<span class="op">-</span><span class="dv">1</span>):</a>
-<a class="sourceLine" id="cb1-80" data-line-number="80">                weights[i <span class="op">+</span> <span class="dv">1</span>] <span class="op">=</span> weights[i <span class="op">+</span> <span class="dv">1</span>] <span class="op">+</span> l_rate <span class="op">*</span> error <span class="op">*</span> row[i]</a>
-<a class="sourceLine" id="cb1-81" data-line-number="81">    <span class="cf">return</span> weights</a>
-<a class="sourceLine" id="cb1-82" data-line-number="82"> </a>
-<a class="sourceLine" id="cb1-83" data-line-number="83"><span class="kw">def</span> perceptron(train, test, l_rate, n_epoch):</a>
-<a class="sourceLine" id="cb1-84" data-line-number="84">    predictions <span class="op">=</span> <span class="bu">list</span>()</a>
-<a class="sourceLine" id="cb1-85" data-line-number="85">    weights <span class="op">=</span> train_weights(train, l_rate, n_epoch)</a>
-<a class="sourceLine" id="cb1-86" data-line-number="86">    <span class="cf">for</span> row <span class="kw">in</span> test:</a>
-<a class="sourceLine" id="cb1-87" data-line-number="87">        prediction <span class="op">=</span> predict(row, weights)</a>
-<a class="sourceLine" id="cb1-88" data-line-number="88">        predictions.append(prediction)</a>
-<a class="sourceLine" id="cb1-89" data-line-number="89">    <span class="cf">return</span>(predictions)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="im">import</span> pandas <span class="im">as</span> pd</a></code></pre></div>
 
       
     </div>
