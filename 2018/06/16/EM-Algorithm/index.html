@@ -98,7 +98,7 @@
 <meta property="og:site_name" content="彼得的博客">
 <meta property="og:description" content="今天总结一下EM算法，这是一个非常有趣的算法。 下文将从知识准备、EM算法介绍、EM推导过程、EM之Python实现以及EM应用开展对EM算法讨论。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率、联合概率、极大似然估计、Jensen不等式 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A\ |\ B) = \frac{P(A) \times P(B\">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-17T12:02:15.348Z">
+<meta property="og:updated_time" content="2018-06-17T12:26:24.894Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="EM Algorithm">
 <meta name="twitter:description" content="今天总结一下EM算法，这是一个非常有趣的算法。 下文将从知识准备、EM算法介绍、EM推导过程、EM之Python实现以及EM应用开展对EM算法讨论。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率、联合概率、极大似然估计、Jensen不等式 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A\ |\ B) = \frac{P(A) \times P(B\">
@@ -409,6 +409,20 @@ E(f(X)) \ge f(E(X))
 <li>E步：计算期望（Expectation）。利用对隐藏变量的现有估计值，计算其极大似然估计。</li>
 <li>M步：最大化（M），最大化在E步上求得的极大似然估计值来计算参数的值。M步上找到的参数估计值被用于下一个E步计算中，这个过程不断交替进行。</li>
 </ol>
+<p><strong>三、EM算法推导</strong></p>
+<p><code>EM</code>算法的目标是<strong>使包含隐变量的数据集的后验概率或似然函数最大化，进而得到最有的参数估计</strong>。</p>
+<p>下面我们来看加入了隐变量后的似然函数。 <span class="math display">\[
+\begin{aligned}
+\ell(\theta)  &amp; = \sum_{i=1}^{m}\  log\  p(x; \theta) \\\\
+&amp; = \sum_{i=1}^{m} \ log \ \sum_z \ p(x, z;\theta)
+\end{aligned}
+\]</span> 因为有隐变量 <span class="math inline">\(z\)</span> 的存在，所以我们无法直接计算第二步，仍然需要继续推导。</p>
+<p>对于每个 <span class="math inline">\(i\)</span> ，我们来令 <span class="math inline">\(Q_i\)</span> 作为隐变量 <span class="math inline">\(z\)</span> 的概率分布（其中<span class="math inline">\(\sum_zQ_i(z) = 1, \ Q_i(z) \ge 0\)</span>） <span class="math display">\[
+\begin{aligned}
+\sum_i log \ p(x^{(i)}; \theta) &amp; = \sum_i log \sum_{z^{(i)}} p (x^{(i)}, z^{(i)}; \theta) \\\\
+&amp; \sum_i log \sum_{z^{i}} Q_i (z^{(i)}) \frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_i(z^{(i)})}
+\end{aligned}
+\]</span></p>
 
       
     </div>
