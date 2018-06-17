@@ -98,7 +98,7 @@
 <meta property="og:site_name" content="彼得的博客">
 <meta property="og:description" content="今天总结一下EM算法，这是一个非常有趣的算法。 下文将从知识准备、EM算法介绍、EM推导过程、EM之Python实现以及EM应用开展对EM算法讨论。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率、联合概率、极大似然估计、Jensen不等式 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A\ |\ B) = \frac{P(A) \times P(B\">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-17T12:26:24.894Z">
+<meta property="og:updated_time" content="2018-06-17T12:27:13.237Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="EM Algorithm">
 <meta name="twitter:description" content="今天总结一下EM算法，这是一个非常有趣的算法。 下文将从知识准备、EM算法介绍、EM推导过程、EM之Python实现以及EM应用开展对EM算法讨论。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率、联合概率、极大似然估计、Jensen不等式 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A\ |\ B) = \frac{P(A) \times P(B\">
@@ -420,7 +420,7 @@ E(f(X)) \ge f(E(X))
 <p>对于每个 <span class="math inline">\(i\)</span> ，我们来令 <span class="math inline">\(Q_i\)</span> 作为隐变量 <span class="math inline">\(z\)</span> 的概率分布（其中<span class="math inline">\(\sum_zQ_i(z) = 1, \ Q_i(z) \ge 0\)</span>） <span class="math display">\[
 \begin{aligned}
 \sum_i log \ p(x^{(i)}; \theta) &amp; = \sum_i log \sum_{z^{(i)}} p (x^{(i)}, z^{(i)}; \theta) \\\\
-&amp; \sum_i log \sum_{z^{i}} Q_i (z^{(i)}) \frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_i(z^{(i)})}
+&amp;= \sum_i log \sum_{z^{i}} Q_i (z^{(i)}) \frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_i(z^{(i)})}
 \end{aligned}
 \]</span></p>
 
