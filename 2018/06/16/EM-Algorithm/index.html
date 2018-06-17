@@ -90,18 +90,18 @@
 
 
 
-<meta name="description" content="今天总结一下EM算法，这是一个非常有趣的算法。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率以及极大似然估计。 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A|B) = \frac{P(A) \times P(B|A)}{P(B)} \] 更一般，有 \[ P(A_i|B) = \frac{P(B|A_i) \  P(A_i)}{\sum_j P(">
+<meta name="description" content="今天总结一下EM算法，这是一个非常有趣的算法。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率、联合概率、极大似然估计、Jensen不等式 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A\ |\ B) = \frac{P(A) \times P(B\ |\ A)}{P(B)} \] 更一般，有 \[ P(A_i\ |\ B) = \frac{P(B\">
 <meta name="keywords" content="python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="EM Algorithm">
 <meta property="og:url" content="http://yoursite.com/2018/06/16/EM-Algorithm/index.html">
 <meta property="og:site_name" content="彼得的博客">
-<meta property="og:description" content="今天总结一下EM算法，这是一个非常有趣的算法。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率以及极大似然估计。 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A|B) = \frac{P(A) \times P(B|A)}{P(B)} \] 更一般，有 \[ P(A_i|B) = \frac{P(B|A_i) \  P(A_i)}{\sum_j P(">
+<meta property="og:description" content="今天总结一下EM算法，这是一个非常有趣的算法。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率、联合概率、极大似然估计、Jensen不等式 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A\ |\ B) = \frac{P(A) \times P(B\ |\ A)}{P(B)} \] 更一般，有 \[ P(A_i\ |\ B) = \frac{P(B\">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-16T10:02:57.587Z">
+<meta property="og:updated_time" content="2018-06-17T08:45:28.690Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="EM Algorithm">
-<meta name="twitter:description" content="今天总结一下EM算法，这是一个非常有趣的算法。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率以及极大似然估计。 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A|B) = \frac{P(A) \times P(B|A)}{P(B)} \] 更一般，有 \[ P(A_i|B) = \frac{P(B|A_i) \  P(A_i)}{\sum_j P(">
+<meta name="twitter:description" content="今天总结一下EM算法，这是一个非常有趣的算法。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率、联合概率、极大似然估计、Jensen不等式 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A\ |\ B) = \frac{P(A) \times P(B\ |\ A)}{P(B)} \] 更一般，有 \[ P(A_i\ |\ B) = \frac{P(B\">
 
 
 
@@ -371,13 +371,27 @@
       
         <p>今天总结一下<code>EM</code>算法，这是一个非常有趣的算法。</p>
 <p><strong>一、知识准备</strong></p>
-<p>在介绍<code>EM</code>算法前，我们需要先回顾以下几个公式：<code>贝叶斯公式</code>、<code>全概率</code>以及<code>极大似然估计</code>。</p>
+<p>在介绍<code>EM</code>算法前，我们需要先回顾以下几个公式：<code>贝叶斯公式</code>、<code>全概率</code>、<code>联合概率</code>、<code>极大似然估计</code>、<code>Jensen不等式</code></p>
 <p><strong>1.贝叶斯</strong></p>
 <p>简单来看，贝叶斯可以用以下公式表示： <span class="math display">\[
-P(A|B) = \frac{P(A) \times P(B|A)}{P(B)}
+P(A\ |\ B) = \frac{P(A) \times P(B\ |\ A)}{P(B)}
 \]</span> 更一般，有 <span class="math display">\[
-P(A_i|B) = \frac{P(B|A_i) \  P(A_i)}{\sum_j P(B|A_j) \ P(A_j)}
+P(A_i\ |\ B) = \frac{P(B\ |\ A_i) \  P(A_i)}{\sum_j P(B\ |\ A_j) \ P(A_j)}
 \]</span> <strong>2.全概率</strong></p>
+<p><span class="math display">\[
+P(A) = \sum_n P(A \ | \ B_n) \ P(B_n)
+\]</span> <strong>3.联合概率（似然函数）</strong> <span class="math display">\[
+L(\theta) = L(x_1, ..., x_n;\theta) = \prod _{i=1}^{n} p (x_i;\theta)
+\]</span> <strong>4.极大似然估计</strong> <span class="math display">\[
+\begin{aligned}
+ \widehat \theta &amp;= argmax L(\theta) \\\\
+H(\theta) = lnL(\theta) &amp;= ln \prod_{i=1}^{n}p(x_i;\theta) = \sum_{i=1}^{n}ln \ p(x_i; \theta)
+\end{aligned}
+\]</span> <strong>5.Jensen不等式</strong></p>
+<p>设<span class="math inline">\(f\)</span></p>
+<p>Jensen不等式给出了积分的凸函数值和凸函数的积分值之间的关系。过一个凸函数上任意两点所作割线一定在这两点间的函数图像的上方。即： <span class="math display">\[
+tf(x_1) + (1-t)f(x_2) \ge f(tx_1 + (1-t)x_2), \ \ 0 \le t \le 1.
+\]</span></p>
 
       
     </div>
