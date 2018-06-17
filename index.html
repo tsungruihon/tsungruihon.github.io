@@ -393,9 +393,11 @@ L(\theta) = L(x_1, ..., x_n;\theta) = \prod _{i=1}^{n} p (x_i;\theta)
 H(\theta) = lnL(\theta) &amp;= ln \prod_{i=1}^{n}p(x_i;\theta) = \sum_{i=1}^{n}ln \ p(x_i; \theta)
 \end{aligned}
 \]</span> <strong>5.Jensen不等式</strong></p>
-<p>设<span class="math inline">\(f\)</span></p>
+<p>设<span class="math inline">\(f\)</span>是定义域为实数的函数，如果对于所有的实数<span class="math inline">\(x\)</span>，<span class="math inline">\(f(x)\)</span>的二次导数大于等于0，则<span class="math inline">\(f\)</span>为凸函数。</p>
 <p>Jensen不等式给出了积分的凸函数值和凸函数的积分值之间的关系。过一个凸函数上任意两点所作割线一定在这两点间的函数图像的上方。即： <span class="math display">\[
 tf(x_1) + (1-t)f(x_2) \ge f(tx_1 + (1-t)x_2), \ \ 0 \le t \le 1.
+\]</span> 概率论版本 <span class="math display">\[
+E(f(X)) \ge f(E(X))
 \]</span></p>
 
           
