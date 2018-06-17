@@ -435,7 +435,16 @@ E[X] = \int xf(x) dx
 \]</span> 这时候就出现了数学期望的形式了。下面我们作一些表示简化。</p>
 <p>令<span class="math inline">\(Q = Q_i(z^{(i)})\)</span>， 设<span class="math inline">\(Y=\frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_i(z^{(i)})}\)</span> ，<span class="math inline">\(P(Y=\frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_i(z^{(i)})}) = Q\)</span>，</p>
 <p>则有，<span class="math inline">\(log\sum_Z Q \cdot \frac{p(x^{(i)}, z^{(i)}; \theta)}{Q} = log\sum_Y P(Y)Y = logE(Y)\)</span></p>
-<p>构造好数学期望的形式之后，下面用<code>Jensen不等式</code>进行缩放。</p>
+<p>构造好数学期望的形式之后，因为<code>log</code>函数是个凹函数，因此下面用<code>Jensen不等式</code>的凹函数版本进行缩放。 $$ \begin{aligned}</p>
+<p>logE(Y) E(logY)&amp; = _Y P(Y) logY \\ &amp; = _Z Q log </p>
+<p>\end{aligned} $$</p>
+<p>有了这一步推导，我们就可以从整体来看了 <span class="math display">\[
+\begin{aligned}
+\sum_i log \ p(x^{(i)}; \theta) &amp; = \sum_i log \sum_{z^{(i)}} p (x^{(i)}, z^{(i)}; \theta) \\\\
+&amp;= \sum_i log \sum_{z^{i}} Q_i (z^{(i)}) \frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_i(z^{(i)})} \\\\
+&amp;\ge \sum_i\sum_{z^{(i)}}Q_i(z^{(i)}) \ log \frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_i(z^{(i)})}
+\end{aligned}
+\]</span></p>
 
           
         
