@@ -375,6 +375,7 @@
         
           
             <p>今天总结一下<code>EM</code>算法，这是一个非常有趣的算法。</p>
+<p>下文将从<code>知识准备</code>、<code>EM算法介绍</code>、<code>EM推导过程</code>、<code>EM之Python实现</code>以及<code>EM应用</code>开展对EM算法讨论。</p>
 <p><strong>一、知识准备</strong></p>
 <p>在介绍<code>EM</code>算法前，我们需要先回顾以下几个公式：<code>贝叶斯公式</code>、<code>全概率</code>、<code>联合概率</code>、<code>极大似然估计</code>、<code>Jensen不等式</code></p>
 <p><strong>1.贝叶斯</strong></p>
@@ -398,7 +399,7 @@ H(\theta) = lnL(\theta) &amp;= ln \prod_{i=1}^{n}p(x_i;\theta) = \sum_{i=1}^{n}l
 tf(x_1) + (1-t)f(x_2) \ge f(tx_1 + (1-t)x_2), \ \ 0 \le t \le 1.
 \]</span> 概率论版本 <span class="math display">\[
 E(f(X)) \ge f(E(X))
-\]</span></p>
+\]</span> <strong>二、EM算法介绍</strong></p>
 
           
         
