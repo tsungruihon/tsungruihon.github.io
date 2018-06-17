@@ -90,18 +90,18 @@
 
 
 
-<meta name="description" content="今天总结一下EM算法，这是一个非常有趣的算法。 下文将从知识准备、EM算法介绍、EM推导过程、EM之Python实现以及EM应用开展对EM算法讨论。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率、联合概率、极大似然估计、Jensen不等式 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A\ |\ B) = \frac{P(A) \times P(B\">
+<meta name="description" content="今天总结一下EM算法，这是一个非常有趣的算法。 下文将从知识准备、EM算法介绍、EM推导过程、EM之Python实现以及EM应用开展对EM算法讨论。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率、联合概率、极大似然估计、Jensen不等式和数学期望。 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A\ |\ B) = \frac{P(A) \time">
 <meta name="keywords" content="python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="EM Algorithm">
 <meta property="og:url" content="http://yoursite.com/2018/06/16/EM-Algorithm/index.html">
 <meta property="og:site_name" content="彼得的博客">
-<meta property="og:description" content="今天总结一下EM算法，这是一个非常有趣的算法。 下文将从知识准备、EM算法介绍、EM推导过程、EM之Python实现以及EM应用开展对EM算法讨论。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率、联合概率、极大似然估计、Jensen不等式 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A\ |\ B) = \frac{P(A) \times P(B\">
+<meta property="og:description" content="今天总结一下EM算法，这是一个非常有趣的算法。 下文将从知识准备、EM算法介绍、EM推导过程、EM之Python实现以及EM应用开展对EM算法讨论。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率、联合概率、极大似然估计、Jensen不等式和数学期望。 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A\ |\ B) = \frac{P(A) \time">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-17T12:27:13.237Z">
+<meta property="og:updated_time" content="2018-06-17T12:33:21.152Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="EM Algorithm">
-<meta name="twitter:description" content="今天总结一下EM算法，这是一个非常有趣的算法。 下文将从知识准备、EM算法介绍、EM推导过程、EM之Python实现以及EM应用开展对EM算法讨论。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率、联合概率、极大似然估计、Jensen不等式 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A\ |\ B) = \frac{P(A) \times P(B\">
+<meta name="twitter:description" content="今天总结一下EM算法，这是一个非常有趣的算法。 下文将从知识准备、EM算法介绍、EM推导过程、EM之Python实现以及EM应用开展对EM算法讨论。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率、联合概率、极大似然估计、Jensen不等式和数学期望。 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A\ |\ B) = \frac{P(A) \time">
 
 
 
@@ -372,7 +372,7 @@
         <p>今天总结一下<code>EM</code>算法，这是一个非常有趣的算法。</p>
 <p>下文将从<code>知识准备</code>、<code>EM算法介绍</code>、<code>EM推导过程</code>、<code>EM之Python实现</code>以及<code>EM应用</code>开展对EM算法讨论。</p>
 <p><strong>一、知识准备</strong></p>
-<p>在介绍<code>EM</code>算法前，我们需要先回顾以下几个公式：<code>贝叶斯公式</code>、<code>全概率</code>、<code>联合概率</code>、<code>极大似然估计</code>、<code>Jensen不等式</code></p>
+<p>在介绍<code>EM</code>算法前，我们需要先回顾以下几个公式：<code>贝叶斯公式</code>、<code>全概率</code>、<code>联合概率</code>、<code>极大似然估计</code>、<code>Jensen不等式</code>和<code>数学期望</code>。</p>
 <p><strong>1.贝叶斯</strong></p>
 <p>简单来看，贝叶斯可以用以下公式表示： <span class="math display">\[
 P(A\ |\ B) = \frac{P(A) \times P(B\ |\ A)}{P(B)}
@@ -394,6 +394,11 @@ H(\theta) = lnL(\theta) &amp;= ln \prod_{i=1}^{n}p(x_i;\theta) = \sum_{i=1}^{n}l
 tf(x_1) + (1-t)f(x_2) \ge f(tx_1 + (1-t)x_2), \ \ 0 \le t \le 1.
 \]</span> 概率论版本 <span class="math display">\[
 E(f(X)) \ge f(E(X))
+\]</span> <strong>6.数学期望</strong></p>
+<p>如果<span class="math inline">\(X\)</span>是离散随机变量，输出值为$x_1, x_2, …, $ 和输出值相应的概率为<span class="math inline">\(p_1, p_2, ...\)</span>，如果<span class="math inline">\(\sum_ip_ix_i\)</span>绝对收敛，那么期望值<span class="math inline">\(E[X]\)</span>是一个无限数列的和。 <span class="math display">\[
+E[X] = \sum_i p_ix_i
+\]</span> 如果<span class="math inline">\(X\)</span>是连续随机变量，存在一个相应的概率密度函数（PDF）<span class="math inline">\(f(x)\)</span>，数学期望为： <span class="math display">\[
+E[X] = \int xf(x) dx
 \]</span> <strong>二、EM算法介绍</strong></p>
 <p>之前看到一个介绍EM算法很生动的对话。首先看看做机器学习理论的学姐如何回答。</p>
 <p>Q：学姐学姐，EM算法是什么呢？</p>
