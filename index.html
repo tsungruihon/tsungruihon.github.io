@@ -375,7 +375,7 @@
         
           
             <p>今天总结一下<code>EM</code>算法，这是一个非常有趣的算法。</p>
-<p>下文将从<code>知识准备</code>、<code>EM算法介绍</code>以及<code>EM推导过程</code>开展对<code>EM</code>算法讨论。</p>
+<p>下文将从<code>知识准备</code>、<code>EM算法介绍</code>、<code>EM推导过程</code>以及<code>EM和K-means的联系</code>开展对<code>EM</code>算法讨论。</p>
 <p><strong>一、知识准备</strong></p>
 <p>在介绍<code>EM</code>算法前，我们需要先回顾以下几个公式：<code>贝叶斯公式</code>、<code>全概率</code>、<code>联合概率</code>、<code>极大似然估计</code>、<code>Jensen不等式</code>和<code>数学期望</code>。</p>
 <p><strong>1.贝叶斯</strong></p>
@@ -496,6 +496,8 @@ Q_i(z^{(i)}) &amp;= \frac{p(x_i, z^{(i)};\theta)}{\sum_zp(x^{(i)}, z; \theta)} \
 <p><code>M-Step</code>：根据Q，求出含有<span class="math inline">\(\theta\)</span>的似然函数的下界并最大化它，得到新的参数<span class="math inline">\(\theta\)</span>。</p>
 <p>至此，我们已经完成了<code>EM</code>算法的基本推导，最终得到我们要顾及的最优参数<span class="math inline">\(\theta\)</span>，也得到了每个样本隐变量的取值。</p>
 <p><code>EM</code>算法在一般情况是收敛的，但是不保证收敛到全局最优，即有可能进入局部的最优。</p>
+<p><strong>四、EM和K-means的联系</strong></p>
+<p><code>K-means</code>中每个样本所属的类就可以看成是一个隐变量，在E步中，固定每个类的中心，通过对每一个样本选择最近的类优化目标函数。在M步，重新更新每个类的中心点，然后不断迭代，直到得到某种停止条件（迭代次数/簇中心收敛/MSE）。</p>
 
           
         
