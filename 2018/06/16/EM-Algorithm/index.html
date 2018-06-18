@@ -90,18 +90,18 @@
 
 
 
-<meta name="description" content="今天总结一下EM算法，这是一个非常有趣的算法。 下文将从知识准备、EM算法介绍、EM推导过程、EM之Python实现以及EM应用开展对EM算法讨论。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率、联合概率、极大似然估计、Jensen不等式和数学期望。 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A\ |\ B) = \frac{P(A) \time">
+<meta name="description" content="今天总结一下EM算法，这是一个非常有趣的算法。 下文将从知识准备、EM算法介绍、EM推导过程以及EM之Python实现开展对EM算法讨论。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率、联合概率、极大似然估计、Jensen不等式和数学期望。 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A\ |\ B) = \frac{P(A) \times P(B">
 <meta name="keywords" content="python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="EM Algorithm">
 <meta property="og:url" content="http://yoursite.com/2018/06/16/EM-Algorithm/index.html">
 <meta property="og:site_name" content="彼得的博客">
-<meta property="og:description" content="今天总结一下EM算法，这是一个非常有趣的算法。 下文将从知识准备、EM算法介绍、EM推导过程、EM之Python实现以及EM应用开展对EM算法讨论。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率、联合概率、极大似然估计、Jensen不等式和数学期望。 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A\ |\ B) = \frac{P(A) \time">
+<meta property="og:description" content="今天总结一下EM算法，这是一个非常有趣的算法。 下文将从知识准备、EM算法介绍、EM推导过程以及EM之Python实现开展对EM算法讨论。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率、联合概率、极大似然估计、Jensen不等式和数学期望。 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A\ |\ B) = \frac{P(A) \times P(B">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-18T06:46:29.268Z">
+<meta property="og:updated_time" content="2018-06-18T06:58:11.899Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="EM Algorithm">
-<meta name="twitter:description" content="今天总结一下EM算法，这是一个非常有趣的算法。 下文将从知识准备、EM算法介绍、EM推导过程、EM之Python实现以及EM应用开展对EM算法讨论。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率、联合概率、极大似然估计、Jensen不等式和数学期望。 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A\ |\ B) = \frac{P(A) \time">
+<meta name="twitter:description" content="今天总结一下EM算法，这是一个非常有趣的算法。 下文将从知识准备、EM算法介绍、EM推导过程以及EM之Python实现开展对EM算法讨论。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率、联合概率、极大似然估计、Jensen不等式和数学期望。 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A\ |\ B) = \frac{P(A) \times P(B">
 
 
 
@@ -370,7 +370,7 @@
 
       
         <p>今天总结一下<code>EM</code>算法，这是一个非常有趣的算法。</p>
-<p>下文将从<code>知识准备</code>、<code>EM算法介绍</code>、<code>EM推导过程</code>、<code>EM之Python实现</code>以及<code>EM应用</code>开展对EM算法讨论。</p>
+<p>下文将从<code>知识准备</code>、<code>EM算法介绍</code>、<code>EM推导过程</code>以及<code>EM之Python实现</code>开展对<code>EM</code>算法讨论。</p>
 <p><strong>一、知识准备</strong></p>
 <p>在介绍<code>EM</code>算法前，我们需要先回顾以下几个公式：<code>贝叶斯公式</code>、<code>全概率</code>、<code>联合概率</code>、<code>极大似然估计</code>、<code>Jensen不等式</code>和<code>数学期望</code>。</p>
 <p><strong>1.贝叶斯</strong></p>
@@ -410,6 +410,14 @@ E[X] = \int xf(x) dx
 <p>Q：学长学长，EM算法是什么呢？</p>
 <p>A：EM算法就那样啊，就是先用有标签的样本训练一个分类器，再给未知标签的样本贴标签，然后再拿全部样本再训练分类器，就这样来回倒腾</p>
 <p><code>EM</code>算法全称是<strong>Expectation maximization</strong>，<code>EM</code>在概率模型中寻找参数极大似然估计或者极大后验估计，其中概率模型依赖于无法观测的隐变量。</p>
+<p>EM提供解决问题的通用框架，例子包括：</p>
+<ul>
+<li><strong>半监督学习</strong>：即利用包含缺失类别标签的数据的混合数据集训练分类器。</li>
+<li><strong>数据预处理</strong>：给缺失某一维特征的值的数据补上缺失值。</li>
+<li><strong>聚类</strong>：对，聚类。</li>
+<li><p><strong>隐马尔科夫模型</strong>：训练隐马尔科夫模型中的参数。</p></li>
+<li><p>…</p></li>
+</ul>
 <p><code>EM</code>算法是一个在已知部分相关变量的情况下，估计未知变量的迭代算法。每次迭代由两步组成：</p>
 <ol type="1">
 <li>E步：计算期望（Expectation）。利用对隐藏变量的现有估计值，计算其极大似然估计。</li>
