@@ -98,7 +98,7 @@
 <meta property="og:site_name" content="彼得的博客">
 <meta property="og:description" content="今天总结一下EM算法，这是一个非常有趣的算法。 下文将从知识准备、EM算法介绍、EM推导过程、EM之Python实现以及EM应用开展对EM算法讨论。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率、联合概率、极大似然估计、Jensen不等式和数学期望。 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A\ |\ B) = \frac{P(A) \time">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-18T06:45:04.301Z">
+<meta property="og:updated_time" content="2018-06-18T06:46:29.268Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="EM Algorithm">
 <meta name="twitter:description" content="今天总结一下EM算法，这是一个非常有趣的算法。 下文将从知识准备、EM算法介绍、EM推导过程、EM之Python实现以及EM应用开展对EM算法讨论。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率、联合概率、极大似然估计、Jensen不等式和数学期望。 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A\ |\ B) = \frac{P(A) \time">
@@ -464,9 +464,14 @@ Q(z) = \frac{p(x_i, z; \theta)}{c}
 \sum_ZQ(Z) = \sum_Z \frac{p(x_i, z; \theta)}{c} = 1
 \]</span> 可得 <span class="math display">\[
 c = \sum_Zp(x_i, z;\theta)
-\]</span> 因此 $$ \begin{aligned}</p>
-<p>Q_i(z^{(i)}) &amp;=  \\ &amp; =  \\ &amp; = p(z<sup>{(i)}|x</sup>{(i)};)</p>
-<p>\end{aligned} $$</p>
+\]</span> 因此</p>
+<p><span class="math display">\[
+\begin{aligned}
+Q_i(z^{(i)}) &amp;= \frac{p(x_i, z^{(i)};\theta)}{\sum_zp(x^{(i)}, z; \theta)} \\\\
+&amp; = \frac{p(x_i, z^{(i)};\theta)}{p(x^{(i)}; \theta)} \\\\
+&amp; = p(z^{(i)}|x^{(i)};\theta)
+\end{aligned}
+\]</span></p>
 <p>最后发现得到了每个样本的隐变量的后验概率，得到使下界拉升的<span class="math inline">\(Q(Z)\)</span>的计算公式就是计算<span class="math inline">\(Z\)</span>的后验概率。</p>
 <p>就是说，我们解决了几个问题</p>
 <p>1.就解决了<span class="math inline">\(Q(Z)\)</span>如何选择的问题</p>
