@@ -98,7 +98,7 @@
 <meta property="og:site_name" content="彼得的博客">
 <meta property="og:description" content="今天总结一下EM算法，这是一个非常有趣的算法。 下文将从知识准备、EM算法介绍、EM推导过程、EM之Python实现以及EM应用开展对EM算法讨论。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率、联合概率、极大似然估计、Jensen不等式和数学期望。 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A\ |\ B) = \frac{P(A) \time">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-18T05:30:29.853Z">
+<meta property="og:updated_time" content="2018-06-18T06:26:42.365Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="EM Algorithm">
 <meta name="twitter:description" content="今天总结一下EM算法，这是一个非常有趣的算法。 下文将从知识准备、EM算法介绍、EM推导过程、EM之Python实现以及EM应用开展对EM算法讨论。 一、知识准备 在介绍EM算法前，我们需要先回顾以下几个公式：贝叶斯公式、全概率、联合概率、极大似然估计、Jensen不等式和数学期望。 1.贝叶斯 简单来看，贝叶斯可以用以下公式表示： \[ P(A\ |\ B) = \frac{P(A) \time">
@@ -394,7 +394,8 @@ H(\theta) = lnL(\theta) &amp;= ln \prod_{i=1}^{n}p(x_i;\theta) = \sum_{i=1}^{n}l
 tf(x_1) + (1-t)f(x_2) \ge f(tx_1 + (1-t)x_2), \ \ 0 \le t \le 1.
 \]</span> 概率论版本 <span class="math display">\[
 E(f(X)) \ge f(E(X))
-\]</span> <strong>6.数学期望</strong></p>
+\]</span> 如果 <span class="math inline">\(f\)</span> 是严格凸函数，那么只有当 <span class="math inline">\(X = E[X]\)</span> 恒成立时，上式取等号（即<span class="math inline">\(X\)</span>是一个常量），或者说当<span class="math inline">\(X = E[X]\)</span>成立的概率是1时，上式取等号。</p>
+<p><strong>6.数学期望</strong></p>
 <p>如果<span class="math inline">\(X\)</span>是离散随机变量，输出值为$x_1, x_2, …, $ 和输出值相应的概率为<span class="math inline">\(p_1, p_2, ...\)</span>，如果<span class="math inline">\(\sum_ip_ix_i\)</span>绝对收敛，那么期望值<span class="math inline">\(E[X]\)</span>是一个无限数列的和。 <span class="math display">\[
 E[X] = \sum_i p_ix_i
 \]</span> 如果<span class="math inline">\(X\)</span>是连续随机变量，存在一个相应的概率密度函数（PDF）<span class="math inline">\(f(x)\)</span>，数学期望为： <span class="math display">\[
@@ -453,7 +454,28 @@ logE(Y) \ge E(logY)&amp; = \sum_Y P(Y)\ logY \\\\
 &amp;= \sum_i log \sum_{z^{i}} Q_i (z^{(i)}) \frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_i(z^{(i)})} \\\\
 &amp;\ge \sum_i\sum_{z^{(i)}}Q_i(z^{(i)}) \ log \frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_i(z^{(i)})}
 \end{aligned}
-\]</span></p>
+\]</span> 这个过程可以看作是对<span class="math inline">\(\ell(\theta)\)</span>求了下界。如果<span class="math inline">\(\theta\)</span>已经给定，那么<span class="math inline">\(\ell(\theta)\)</span>的值就决定于<span class="math inline">\(Q_i(z^{(i)})\)</span>和<span class="math inline">\(p(x^{(i)},z^{(i)})\)</span>了。在下界确定的情况下，我们可以通过调整这两个概率使下界不断上升，以逼近<span class="math inline">\(\ell(\theta)\)</span>的真实值。因此我们需要让等号成立，这样才能做后续的概率调整。</p>
+<p>上面我们已经知道，根据<code>Jensen不等式</code>等号成立的条件，随机变量<span class="math inline">\(X\)</span>必须恒等于常数。也就是说： <span class="math display">\[
+\frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_i(z^{(i)})} \equiv c
+\]</span>  可得 <span class="math display">\[
+Q(z) = \frac{p(x_i, z; \theta)}{c}
+\]</span> 又因为 <span class="math display">\[
+\sum_ZQ(Z) = \sum_Z \frac{p(x_i, z; \theta)}{c} = 1
+\]</span> 可得 <span class="math display">\[
+c = \sum_Zp(x_i, z;\theta)
+\]</span> 因此 $$ \begin{aligned}</p>
+<p>Q_i(z^{(i)}) &amp;=  \\ &amp; =  \\ &amp; = p(z<sup>{(i)}|x</sup>{(i)};)</p>
+<p>\end{aligned} $$ 最后发现得到了每个样本的隐变量的后验概率，得到使下界拉升的<span class="math inline">\(Q(Z)\)</span>的计算公式就是计算<span class="math inline">\(Z\)</span>的后验概率。</p>
+<p>就是说，我们解决了几个问题</p>
+<p>1.就解决了<span class="math inline">\(Q(Z)\)</span>如何选择的问题</p>
+<p>2.得到<code>Jensen不等式</code>的结果</p>
+<p>3.让<span class="math inline">\(\ell(\theta)\)</span>可计算，最终得到似然函数。然后极大化<span class="math inline">\(\ell(\theta)\)</span>的下界。</p>
+<p>于是<code>EM</code>算法出炉：</p>
+<p>首先，初始化参数<span class="math inline">\(\theta\)</span>，</p>
+<p><code>E-Step</code>：根据参数<span class="math inline">\(\theta\)</span>计算每个样本属于<span class="math inline">\(z_i\)</span>的概率Q。</p>
+<p><code>M-Step</code>：根据Q，求出含有<span class="math inline">\(\theta\)</span>的似然函数的下界并最大化它，得到新的参数<span class="math inline">\(\theta\)</span>。</p>
+<p>至此，我们已经完成了<code>EM</code>算法的基本推导，最终得到我们要顾及的最优参数<span class="math inline">\(\theta\)</span>，也得到了每个样本隐变量的取值。</p>
+<p><code>EM</code>算法在一般情况是收敛的，但是不保证收敛到全局最优，即有可能进入局部的最优。</p>
 
       
     </div>
