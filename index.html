@@ -459,7 +459,8 @@ logE(Y) \ge E(logY)&amp; = \sum_Y P(Y)\ logY \\\\
 &amp;= \sum_i log \sum_{z^{i}} Q_i (z^{(i)}) \frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_i(z^{(i)})} \\\\
 &amp;\ge \sum_i\sum_{z^{(i)}}Q_i(z^{(i)}) \ log \frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_i(z^{(i)})}
 \end{aligned}
-\]</span> 这个过程可以看作是对<span class="math inline">\(\ell(\theta)\)</span>求了下界。如果<span class="math inline">\(\theta\)</span>已经给定，那么<span class="math inline">\(\ell(\theta)\)</span>的值就决定于<span class="math inline">\(Q_i(z^{(i)})\)</span>和<span class="math inline">\(p(x^{(i)},z^{(i)})\)</span>了。在下界确定的情况下，我们可以通过调整这两个概率使下界不断上升，以逼近<span class="math inline">\(\ell(\theta)\)</span>的真实值。因此我们需要让等号成立，这样才能做后续的概率调整。</p>
+\]</span></p>
+<p>这个过程可以看作是对<span class="math inline">\(\ell(\theta)\)</span>求了下界。如果<span class="math inline">\(\theta\)</span>已经给定，那么<span class="math inline">\(\ell(\theta)\)</span>的值就决定于<span class="math inline">\(Q_i(z^{(i)})\)</span>和<span class="math inline">\(p(x^{(i)},z^{(i)})\)</span>了。在下界确定的情况下，我们可以通过调整这两个概率使下界不断上升，以逼近<span class="math inline">\(\ell(\theta)\)</span>的真实值。因此我们需要让等号成立，这样才能做后续的概率调整。</p>
 <p>上面我们已经知道，根据<code>Jensen不等式</code>等号成立的条件，随机变量<span class="math inline">\(X\)</span>必须恒等于常数。也就是说： <span class="math display">\[
 \frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_i(z^{(i)})} \equiv c
 \]</span>  可得 <span class="math display">\[
