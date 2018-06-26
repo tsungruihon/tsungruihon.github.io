@@ -408,6 +408,16 @@ b_j(k) = P(o_t  = v_k | i_t = q_j)
 <p><strong>总结一下</strong>，<code>隐马尔可夫模型(HMM)</code>由<strong>初始状态概率向量<span class="math inline">\(\pi\)</span></strong>、<strong>状态转移概率矩阵<span class="math inline">\(A\)</span></strong>和<strong>观测概率矩阵</strong><span class="math inline">\(B\)</span>决定。<span class="math inline">\(\pi\)</span>和<span class="math inline">\(A\)</span>决定状态序列，<span class="math inline">\(B\)</span>决定观测序列。因此，隐马尔科夫模型<span class="math inline">\(\lambda\)</span>可以由三元符号表述，即 <span class="math display">\[
 \lambda = (A, B, \pi)
 \]</span> <span class="math inline">\(A\)</span>、<span class="math inline">\(B\)</span>、<span class="math inline">\(\pi\)</span>成为隐马尔科夫模型的<strong>三要素</strong>。</p>
+<p><strong>2.隐马尔科夫模型的两个基本假设</strong></p>
+<ul>
+<li><p><strong>齐次马尔科夫性假设：</strong>假设隐马尔可夫链在任意时刻<span class="math inline">\(t\)</span>的状态只依赖于其前一时刻的状态，与其他时刻的状态及观测无关，也与时刻<span class="math inline">\(t\)</span>无关，即 <span class="math display">\[
+P(i_t|i_{t-1}, o_{t-1}, ..., i_1, o_1) = P(i_t |i_{t-1}), \ \ \ t = 1, 2, ..., T
+\]</span></p></li>
+<li><p><strong>观测独立性假设：</strong>假设任意时刻的观测只依赖于该时刻的马尔科夫链的状态，与其他观测及状态无关。 <span class="math display">\[
+P(o_t | i_T, o_T, i_{T-1}, o_{T-1}, ..., i_{t+1}, o_{t+1}, i_t, o_{t-1}, ..., i_1, o_1) = p(o_t | i_t)
+\]</span></p></li>
+</ul>
+<p><strong>3.例子</strong></p>
 
           
         
