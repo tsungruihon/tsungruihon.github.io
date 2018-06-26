@@ -507,6 +507,27 @@ P(o_t | i_T, o_T, i_{T-1}, o_{T-1}, ..., i_{t+1}, o_{t+1}, i_t, o_{t-1}, ..., i_
 <p>（3）按照状态<span class="math inline">\(i_t\)</span>的观测概率分布<span class="math inline">\(b_{i_t}(k)\)</span>生成<span class="math inline">\(o_t\)</span></p>
 <p>（4）按照状态<span class="math inline">\(i_t\)</span>的状态转移概率分布<span class="math inline">\({ai_ti_{t+1}}\)</span>产生状态<span class="math inline">\(i_{t+1}\)</span>， <span class="math inline">\(i_{t+1} = 1, 2, ..., N\)</span></p>
 <p>（5）令<span class="math inline">\(t=t+1\)</span>；如果<span class="math inline">\(t&lt;T\)</span>，转步（3）；否则，终止</p>
+<p>下面我们来用代码实现。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">def</span> simulate(T):</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">    </a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">    <span class="kw">def</span> draw_from(probs):</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">        <span class="cf">return</span> np.where(np.random.multinomial(<span class="dv">1</span>, probs) <span class="op">==</span> <span class="dv">1</span>)[<span class="dv">0</span>][<span class="dv">0</span>]</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">    </a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">    observations <span class="op">=</span> np.zeros(T, dtype<span class="op">=</span><span class="bu">int</span>)</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">    states <span class="op">=</span> np.zeros(T, dtype<span class="op">=</span><span class="bu">int</span>)</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">    states[<span class="dv">0</span>] <span class="op">=</span> draw_from(pi)</a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">    observations[<span class="dv">0</span>] <span class="op">=</span> draw_from(B[states[<span class="dv">0</span>], :])</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10">    <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, T):</a>
+<a class="sourceLine" id="cb3-11" data-line-number="11">        states[t] <span class="op">=</span> draw_from(A[states[t<span class="dv">-1</span>],:])</a>
+<a class="sourceLine" id="cb3-12" data-line-number="12">        observations[t] <span class="op">=</span> draw_from(B[states[t], :])</a>
+<a class="sourceLine" id="cb3-13" data-line-number="13">    <span class="cf">return</span> observations, states</a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15">observations_data, states_data <span class="op">=</span> simulate(<span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="bu">print</span>(states_data)</a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="bu">print</span>(observations_data)</a>
+<a class="sourceLine" id="cb3-18" data-line-number="18">[output]</a>
+<a class="sourceLine" id="cb3-19" data-line-number="19">[<span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb3-20" data-line-number="20">[<span class="dv">1</span> <span class="dv">2</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span>]</a></code></pre></div>
 
           
         
