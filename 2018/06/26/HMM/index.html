@@ -99,7 +99,7 @@
 <meta property="og:description" content="拖了有一段时间了，今天终于有机会来总结一下HMM，这是一个非常优美的算法。 下文将从基础介绍、HMM的三个问题以及代码一步步了解HMM世界。 一、基础介绍 在这一节中，主要从形式定义、隐马尔科夫模型的两个基本假设以及举例对HMM有一个初步的认识。 1.形式定义 首先看下面这张图，对模型有一个感性的认识。  描述： 图分成两行，第一行是y序列，第二行是x序列，每个x都只有一个y指向它，而每个y都会有">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/HMM_1.png">
-<meta property="og:updated_time" content="2018-06-26T14:14:38.480Z">
+<meta property="og:updated_time" content="2018-06-26T14:38:38.335Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hidden Markov Model">
 <meta name="twitter:description" content="拖了有一段时间了，今天终于有机会来总结一下HMM，这是一个非常优美的算法。 下文将从基础介绍、HMM的三个问题以及代码一步步了解HMM世界。 一、基础介绍 在这一节中，主要从形式定义、隐马尔科夫模型的两个基本假设以及举例对HMM有一个初步的认识。 1.形式定义 首先看下面这张图，对模型有一个感性的认识。  描述： 图分成两行，第一行是y序列，第二行是x序列，每个x都只有一个y指向它，而每个y都会有">
@@ -385,6 +385,23 @@
 <li><strong>观测序列（O）</strong>：每个状态生成一个观测，而由此产生的观测随机序列，成为<code>观测序列(observation sequence)</code></li>
 <li><strong>隐马尔科夫模型</strong>：隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔科夫链随机生成<strong>不可观测的状态随机序列</strong>，再由各个<strong>状态</strong>生成一个观测而<strong>产生观测随机序列</strong>的过程。</li>
 </ul>
+<p>下面我们用数学语言定义：</p>
+<p>设<span class="math inline">\(Q\)</span>是所有可能状态的集合，<span class="math inline">\(V\)</span>是所有可能观测的集合。 <span class="math display">\[
+Q= \{q_1, q_2, ..., q_N\}, \ \ \ \ V = \{v_1, v_2, ..., v_M\}
+\]</span> 其中，<span class="math inline">\(N\)</span>是可能的状态数，<code>M</code>是可能的观测数。</p>
+<p><span class="math inline">\(I\)</span>是长度为<span class="math inline">\(T\)</span>的状态序列，<span class="math inline">\(O\)</span>是对应的观测序列。 <span class="math display">\[
+I= (i_1, i_2, ..., i_T), \ \ \ \ O = (o_1, o_2, ..., o_T)
+\]</span> <strong>A是状态转移概率矩阵：</strong> <span class="math inline">\(A = [a_{ij}]_{N \times N}\)</span></p>
+<p><span class="math inline">\(i = 1, 2, ..., N; \ \ j = 1, 2, ..., N\)</span></p>
+<p>其中，在时刻<span class="math inline">\(t\)</span>，处于状态<span class="math inline">\(q_i\)</span>的条件下在时刻<span class="math inline">\(t+1\)</span>转移到状态<span class="math inline">\(q_j\)</span>的概率为： <span class="math display">\[
+a_{ij} = P(i_{t+1} = q_j | i_t = q_i)
+\]</span> <strong>B是观测概率概率矩阵：</strong><span class="math inline">\(B = [b_j(k)]_{N \times M}\)</span></p>
+<p><span class="math inline">\(k = 1, 2, ..., M; j = 1, 2, ..., N\)</span></p>
+<p>其中，在时刻<span class="math inline">\(t\)</span>，处于状态<span class="math inline">\(q_j\)</span>的条件下生成观测<span class="math inline">\(v_k\)</span>的概率为： <span class="math display">\[
+b_j(k) = P(o_t  = v_k | i_t = q_j)
+\]</span></p>
+<p><strong><span class="math inline">\(\pi\)</span>是初始状态概率向量</strong>： <span class="math inline">\(\pi = (\pi_i)\)</span></p>
+<p>也就是说，在时刻<span class="math inline">\(t=1\)</span>处于状态<span class="math inline">\(q_i\)</span>的概率为<span class="math inline">\(\pi_i = P(i_i = q_i), \  \ \ i = 1, 2, ..., N\)</span></p>
 
       
     </div>
