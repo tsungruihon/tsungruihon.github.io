@@ -100,7 +100,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/HMM_1.png">
 <meta property="og:image" content="http://yoursite.com/images/HMM_2.png">
-<meta property="og:updated_time" content="2018-06-26T17:19:35.688Z">
+<meta property="og:updated_time" content="2018-06-26T17:27:51.993Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hidden Markov Model">
 <meta name="twitter:description" content="拖了有一段时间了，今天终于有机会来总结一下HMM，这是一个非常优美的算法。 下文将从基础介绍、HMM的三个问题以及代码一步步了解HMM世界。 一、基础介绍 在这一节中，主要从形式定义、隐马尔科夫模型的两个基本假设以及举例对HMM有一个初步的认识。 1.形式定义 首先看下面这张图，对模型有一个感性的认识。  描述： 图分成两行，第一行是y序列，第二行是x序列，每个x都只有一个y指向它，而每个y都会有">
@@ -496,6 +496,15 @@ P(o_t | i_T, o_T, i_{T-1}, o_{T-1}, ..., i_{t+1}, o_{t+1}, i_t, o_{t-1}, ..., i_
 <a class="sourceLine" id="cb2-46" data-line-number="46"></a>
 <a class="sourceLine" id="cb2-47" data-line-number="47">array([[<span class="fl">0.1</span>, <span class="fl">0.4</span>, <span class="fl">0.5</span>],</a>
 <a class="sourceLine" id="cb2-48" data-line-number="48">       [<span class="fl">0.6</span>, <span class="fl">0.3</span>, <span class="fl">0.1</span>]])</a></code></pre></div>
+<p>然后我们来看看如何生成观测序列。</p>
+<p>根据隐马尔科夫模型定义，可以将一个长度为<span class="math inline">\(T\)</span>的观测序列<span class="math inline">\(O=(o_1, o_2, ..., o_T)\)</span>的生成过程描述如下：</p>
+<p><strong>输入</strong>：隐马尔科夫模型<span class="math inline">\(\lambda = (A, B, \pi)\)</span>，观测序列长度<span class="math inline">\(T\)</span>；</p>
+<p><strong>输出</strong>：观测序列<span class="math inline">\(O=(o_1, o_2, ..., o_T)\)</span>.</p>
+<p>（1）按照初始状态分布<span class="math inline">\(\pi\)</span>产生状态<span class="math inline">\(i_1\)</span></p>
+<p>（2）令<span class="math inline">\(t=1\)</span></p>
+<p>（3）按照状态<span class="math inline">\(i_t\)</span>的观测概率分布<span class="math inline">\(b_{i_t}(k)\)</span>生成<span class="math inline">\(o_t\)</span></p>
+<p>（4）按照状态<span class="math inline">\(i_t\)</span>的状态转移概率分布<span class="math inline">\({ai_ti_{t+1}}\)</span>产生状态<span class="math inline">\(i_{t+1}\)</span>， <span class="math inline">\(i_{t+1} = 1, 2, ..., N\)</span></p>
+<p>（5）令<span class="math inline">\(t=t+1\)</span>；如果<span class="math inline">\(t&lt;T\)</span>，转步（3）；否则，终止</p>
 
       
     </div>
