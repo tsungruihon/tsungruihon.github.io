@@ -100,7 +100,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/HMM_1.png">
 <meta property="og:image" content="http://yoursite.com/images/HMM_2.png">
-<meta property="og:updated_time" content="2018-06-26T17:09:40.696Z">
+<meta property="og:updated_time" content="2018-06-26T17:19:35.688Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hidden Markov Model">
 <meta name="twitter:description" content="拖了有一段时间了，今天终于有机会来总结一下HMM，这是一个非常优美的算法。 下文将从基础介绍、HMM的三个问题以及代码一步步了解HMM世界。 一、基础介绍 在这一节中，主要从形式定义、隐马尔科夫模型的两个基本假设以及举例对HMM有一个初步的认识。 1.形式定义 首先看下面这张图，对模型有一个感性的认识。  描述： 图分成两行，第一行是y序列，第二行是x序列，每个x都只有一个y指向它，而每个y都会有">
@@ -464,36 +464,38 @@ P(o_t | i_T, o_T, i_{T-1}, o_{T-1}, ..., i_{t+1}, o_{t+1}, i_t, o_{t-1}, ..., i_
 <a class="sourceLine" id="cb2-14" data-line-number="14"><span class="bu">print</span>(observations_id2label, observations_label2id)</a>
 <a class="sourceLine" id="cb2-15" data-line-number="15">[output]</a>
 <a class="sourceLine" id="cb2-16" data-line-number="16">{<span class="dv">0</span>: <span class="st">&#39;Healthy&#39;</span>, <span class="dv">1</span>: <span class="st">&#39;Fever&#39;</span>} {<span class="st">&#39;Fever&#39;</span>: <span class="dv">1</span>, <span class="st">&#39;Healthy&#39;</span>: <span class="dv">0</span>}</a>
-<a class="sourceLine" id="cb2-17" data-line-number="17">{<span class="dv">0</span>: <span class="st">&#39;dizzy&#39;</span>, <span class="dv">1</span>: <span class="st">&#39;cold&#39;</span>, <span class="dv">2</span>: <span class="st">&#39;normal&#39;</span>} {<span class="st">&#39;cold&#39;</span>: <span class="dv">1</span>, <span class="st">&#39;normal&#39;</span>: <span class="dv">2</span>, <span class="st">&#39;dizzy&#39;</span>: <span class="dv">0</span>}</a></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">def</span> convert_map_to_vector(map_, label2id):</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">    <span class="co">&quot;&quot;&quot;将初始状态概率向量从dict转移成array&quot;&quot;&quot;</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">    v <span class="op">=</span> np.zeros(<span class="bu">len</span>(map_), dtype<span class="op">=</span><span class="bu">float</span>)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">    <span class="cf">for</span> e <span class="kw">in</span> map_:</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">        v[label2id[e]] <span class="op">=</span> map_[e]</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">    <span class="cf">return</span> v</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">pi <span class="op">=</span> convert_map_to_vector(start_probability, states_label2id)</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="bu">print</span>(pi)</a>
-<a class="sourceLine" id="cb3-10" data-line-number="10">[output]</a>
-<a class="sourceLine" id="cb3-11" data-line-number="11">array([<span class="fl">0.6</span>, <span class="fl">0.4</span>])</a></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">def</span> convert_map_to_matrix(map_, label2id1, label2id2):</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">    <span class="co">&quot;&quot;&quot;将观测概率和状态转移概率从dict转换成矩阵&quot;&quot;&quot;</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">    m <span class="op">=</span> np.zeros((<span class="bu">len</span>(label2id1), <span class="bu">len</span>(label2id2)), dtype<span class="op">=</span><span class="bu">float</span>)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">    <span class="cf">for</span> line <span class="kw">in</span> map_:</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">        <span class="cf">for</span> col <span class="kw">in</span> map_[line]:</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">            m[label2id1[line]][label2id2[col]] <span class="op">=</span> map_[line][col]</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7">    <span class="cf">return</span> m</a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9">A <span class="op">=</span> convert_map_to_matrix(transition_probability, states_label2id, states_label2id)</a>
-<a class="sourceLine" id="cb4-10" data-line-number="10">B <span class="op">=</span> convert_map_to_matrix(emission_probability, states_label2id, observations_label2id)</a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="bu">print</span>(A)</a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="bu">print</span>(B)</a>
-<a class="sourceLine" id="cb4-13" data-line-number="13">[output]</a>
-<a class="sourceLine" id="cb4-14" data-line-number="14">array([[<span class="fl">0.7</span>, <span class="fl">0.3</span>],</a>
-<a class="sourceLine" id="cb4-15" data-line-number="15">       [<span class="fl">0.4</span>, <span class="fl">0.6</span>]])</a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17">array([[<span class="fl">0.1</span>, <span class="fl">0.4</span>, <span class="fl">0.5</span>],</a>
-<a class="sourceLine" id="cb4-18" data-line-number="18">       [<span class="fl">0.6</span>, <span class="fl">0.3</span>, <span class="fl">0.1</span>]])</a></code></pre></div>
+<a class="sourceLine" id="cb2-17" data-line-number="17">{<span class="dv">0</span>: <span class="st">&#39;dizzy&#39;</span>, <span class="dv">1</span>: <span class="st">&#39;cold&#39;</span>, <span class="dv">2</span>: <span class="st">&#39;normal&#39;</span>} {<span class="st">&#39;cold&#39;</span>: <span class="dv">1</span>, <span class="st">&#39;normal&#39;</span>: <span class="dv">2</span>, <span class="st">&#39;dizzy&#39;</span>: <span class="dv">0</span>}</a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="kw">def</span> convert_map_to_vector(map_, label2id):</a>
+<a class="sourceLine" id="cb2-20" data-line-number="20">    <span class="co">&quot;&quot;&quot;将初始状态概率向量从dict转移成array&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb2-21" data-line-number="21">    v <span class="op">=</span> np.zeros(<span class="bu">len</span>(map_), dtype<span class="op">=</span><span class="bu">float</span>)</a>
+<a class="sourceLine" id="cb2-22" data-line-number="22">    <span class="cf">for</span> e <span class="kw">in</span> map_:</a>
+<a class="sourceLine" id="cb2-23" data-line-number="23">        v[label2id[e]] <span class="op">=</span> map_[e]</a>
+<a class="sourceLine" id="cb2-24" data-line-number="24">    <span class="cf">return</span> v</a>
+<a class="sourceLine" id="cb2-25" data-line-number="25"></a>
+<a class="sourceLine" id="cb2-26" data-line-number="26">pi <span class="op">=</span> convert_map_to_vector(start_probability, states_label2id)</a>
+<a class="sourceLine" id="cb2-27" data-line-number="27"><span class="bu">print</span>(pi)</a>
+<a class="sourceLine" id="cb2-28" data-line-number="28">[output]</a>
+<a class="sourceLine" id="cb2-29" data-line-number="29">array([<span class="fl">0.6</span>, <span class="fl">0.4</span>])</a>
+<a class="sourceLine" id="cb2-30" data-line-number="30"></a>
+<a class="sourceLine" id="cb2-31" data-line-number="31"><span class="kw">def</span> convert_map_to_matrix(map_, label2id1, label2id2):</a>
+<a class="sourceLine" id="cb2-32" data-line-number="32">    <span class="co">&quot;&quot;&quot;将观测概率和状态转移概率从dict转换成矩阵&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb2-33" data-line-number="33">    m <span class="op">=</span> np.zeros((<span class="bu">len</span>(label2id1), <span class="bu">len</span>(label2id2)), dtype<span class="op">=</span><span class="bu">float</span>)</a>
+<a class="sourceLine" id="cb2-34" data-line-number="34">    <span class="cf">for</span> line <span class="kw">in</span> map_:</a>
+<a class="sourceLine" id="cb2-35" data-line-number="35">        <span class="cf">for</span> col <span class="kw">in</span> map_[line]:</a>
+<a class="sourceLine" id="cb2-36" data-line-number="36">            m[label2id1[line]][label2id2[col]] <span class="op">=</span> map_[line][col]</a>
+<a class="sourceLine" id="cb2-37" data-line-number="37">    <span class="cf">return</span> m</a>
+<a class="sourceLine" id="cb2-38" data-line-number="38"></a>
+<a class="sourceLine" id="cb2-39" data-line-number="39">A <span class="op">=</span> convert_map_to_matrix(transition_probability, states_label2id, states_label2id)</a>
+<a class="sourceLine" id="cb2-40" data-line-number="40">B <span class="op">=</span> convert_map_to_matrix(emission_probability, states_label2id, observations_label2id)</a>
+<a class="sourceLine" id="cb2-41" data-line-number="41"><span class="bu">print</span>(A)</a>
+<a class="sourceLine" id="cb2-42" data-line-number="42"><span class="bu">print</span>(B)</a>
+<a class="sourceLine" id="cb2-43" data-line-number="43">[output]</a>
+<a class="sourceLine" id="cb2-44" data-line-number="44">array([[<span class="fl">0.7</span>, <span class="fl">0.3</span>],</a>
+<a class="sourceLine" id="cb2-45" data-line-number="45">       [<span class="fl">0.4</span>, <span class="fl">0.6</span>]])</a>
+<a class="sourceLine" id="cb2-46" data-line-number="46"></a>
+<a class="sourceLine" id="cb2-47" data-line-number="47">array([[<span class="fl">0.1</span>, <span class="fl">0.4</span>, <span class="fl">0.5</span>],</a>
+<a class="sourceLine" id="cb2-48" data-line-number="48">       [<span class="fl">0.6</span>, <span class="fl">0.3</span>, <span class="fl">0.1</span>]])</a></code></pre></div>
 
       
     </div>
