@@ -398,13 +398,16 @@ I= (i_1, i_2, ..., i_T), \ \ \ \ O = (o_1, o_2, ..., o_T)
 <p><span class="math inline">\(i = 1, 2, ..., N; \ \ j = 1, 2, ..., N\)</span></p>
 <p>其中，在时刻<span class="math inline">\(t\)</span>，处于状态<span class="math inline">\(q_i\)</span>的条件下在时刻<span class="math inline">\(t+1\)</span>转移到状态<span class="math inline">\(q_j\)</span>的概率为： <span class="math display">\[
 a_{ij} = P(i_{t+1} = q_j | i_t = q_i)
-\]</span> <strong>B是观测概率概率矩阵：</strong><span class="math inline">\(B = [b_j(k)]_{N \times M}\)</span></p>
+\]</span> <strong>B是观测概率矩阵：</strong><span class="math inline">\(B = [b_j(k)]_{N \times M}\)</span></p>
 <p><span class="math inline">\(k = 1, 2, ..., M; j = 1, 2, ..., N\)</span></p>
 <p>其中，在时刻<span class="math inline">\(t\)</span>，处于状态<span class="math inline">\(q_j\)</span>的条件下生成观测<span class="math inline">\(v_k\)</span>的概率为： <span class="math display">\[
 b_j(k) = P(o_t  = v_k | i_t = q_j)
 \]</span></p>
 <p><strong><span class="math inline">\(\pi\)</span>是初始状态概率向量</strong>： <span class="math inline">\(\pi = (\pi_i)\)</span></p>
 <p>也就是说，在时刻<span class="math inline">\(t=1\)</span>处于状态<span class="math inline">\(q_i\)</span>的概率为<span class="math inline">\(\pi_i = P(i_i = q_i), \  \ \ i = 1, 2, ..., N\)</span></p>
+<p><strong>总结一下</strong>，<code>隐马尔可夫模型(HMM)</code>由<strong>初始状态概率向量<span class="math inline">\(\pi\)</span></strong>、<strong>状态转移概率矩阵<span class="math inline">\(A\)</span></strong>和<strong>观测概率矩阵</strong><span class="math inline">\(B\)</span>决定。<span class="math inline">\(\pi\)</span>和<span class="math inline">\(A\)</span>决定状态序列，<span class="math inline">\(B\)</span>决定观测序列。因此，隐马尔科夫模型<span class="math inline">\(\lambda\)</span>可以由三元符号表述，即 <span class="math display">\[
+\lambda = (A, B, \pi)
+\]</span> <span class="math inline">\(A\)</span>、<span class="math inline">\(B\)</span>、<span class="math inline">\(\pi\)</span>成为隐马尔科夫模型的<strong>三要素</strong>。</p>
 
           
         
