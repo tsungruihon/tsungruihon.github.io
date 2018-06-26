@@ -99,7 +99,8 @@
 <meta property="og:description" content="拖了有一段时间了，今天终于有机会来总结一下HMM，这是一个非常优美的算法。 下文将从基础介绍、HMM的三个问题以及代码一步步了解HMM世界。 一、基础介绍 在这一节中，主要从形式定义、隐马尔科夫模型的两个基本假设以及举例对HMM有一个初步的认识。 1.形式定义 首先看下面这张图，对模型有一个感性的认识。  描述： 图分成两行，第一行是y序列，第二行是x序列，每个x都只有一个y指向它，而每个y都会有">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/HMM_1.png">
-<meta property="og:updated_time" content="2018-06-26T15:37:01.108Z">
+<meta property="og:image" content="http://yoursite.com/images/HMM_2.png">
+<meta property="og:updated_time" content="2018-06-26T16:12:51.075Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hidden Markov Model">
 <meta name="twitter:description" content="拖了有一段时间了，今天终于有机会来总结一下HMM，这是一个非常优美的算法。 下文将从基础介绍、HMM的三个问题以及代码一步步了解HMM世界。 一、基础介绍 在这一节中，主要从形式定义、隐马尔科夫模型的两个基本假设以及举例对HMM有一个初步的认识。 1.形式定义 首先看下面这张图，对模型有一个感性的认识。  描述： 图分成两行，第一行是y序列，第二行是x序列，每个x都只有一个y指向它，而每个y都会有">
@@ -415,6 +416,20 @@ P(o_t | i_T, o_T, i_{T-1}, o_{T-1}, ..., i_{t+1}, o_{t+1}, i_t, o_{t-1}, ..., i_
 \]</span></p></li>
 </ul>
 <p><strong>3.例子</strong></p>
+<p>在<a href="https://en.wikipedia.org/wiki/Viterbi_algorithm#Example" target="_blank" rel="noopener">wikipidia</a>上有一个关于感冒预测的例子，我觉得非常好，在这里我尝试简单的描述：</p>
+<p>假设Peter是一个医生，眼前有一个病人Sophia，Peter的任务是确定Sophia是否得了感冒。</p>
+<p>接下来我们就去套用<code>HMM</code>的定义：</p>
+<ul>
+<li>病人的状态(<span class="math inline">\(Q\)</span>)有两种： {<code>感冒</code>、<code>没有感冒</code>}</li>
+<li>病人的感觉(观测<span class="math inline">\(V\)</span>)有三种：{<code>正常</code>、<code>冷</code>、<code>头晕</code>}</li>
+<li>目前Peter有Sophia的病例，他可以从病例的第一天确定<span class="math inline">\(\pi\)</span><strong>（初始状态概率向量）</strong>，也就是Sopia在第一天<code>感冒</code>和<code>没有感冒</code>的概率。</li>
+<li>Peter也掌握了Sophia某天是否感冒(<span class="math inline">\(i_t\)</span>)与第二天是否感冒(<span class="math inline">\(i_{t+1}\)</span>)的关系<strong>（状态转移矩阵）</strong>。</li>
+<li>Peter还掌握了Sophia某天的感觉与是否感冒的关系<strong>(观测概率矩阵)</strong>。</li>
+</ul>
+<p>下面我们用一张图来看看Dr.Peter掌握了什么信息。</p>
+<figure>
+<img src="/images/HMM_2.png" alt="HMM_2"><figcaption>HMM_2</figcaption>
+</figure>
 
       
     </div>

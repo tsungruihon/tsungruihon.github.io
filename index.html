@@ -418,6 +418,20 @@ P(o_t | i_T, o_T, i_{T-1}, o_{T-1}, ..., i_{t+1}, o_{t+1}, i_t, o_{t-1}, ..., i_
 \]</span></p></li>
 </ul>
 <p><strong>3.例子</strong></p>
+<p>在<a href="https://en.wikipedia.org/wiki/Viterbi_algorithm#Example" target="_blank" rel="noopener">wikipidia</a>上有一个关于感冒预测的例子，我觉得非常好，在这里我尝试简单的描述：</p>
+<p>假设Peter是一个医生，眼前有一个病人Sophia，Peter的任务是确定Sophia是否得了感冒。</p>
+<p>接下来我们就去套用<code>HMM</code>的定义：</p>
+<ul>
+<li>病人的状态(<span class="math inline">\(Q\)</span>)有两种： {<code>感冒</code>、<code>没有感冒</code>}</li>
+<li>病人的感觉(观测<span class="math inline">\(V\)</span>)有三种：{<code>正常</code>、<code>冷</code>、<code>头晕</code>}</li>
+<li>目前Peter有Sophia的病例，他可以从病例的第一天确定<span class="math inline">\(\pi\)</span><strong>（初始状态概率向量）</strong>，也就是Sopia在第一天<code>感冒</code>和<code>没有感冒</code>的概率。</li>
+<li>Peter也掌握了Sophia某天是否感冒(<span class="math inline">\(i_t\)</span>)与第二天是否感冒(<span class="math inline">\(i_{t+1}\)</span>)的关系<strong>（状态转移矩阵）</strong>。</li>
+<li>Peter还掌握了Sophia某天的感觉与是否感冒的关系<strong>(观测概率矩阵)</strong>。</li>
+</ul>
+<p>下面我们用一张图来看看Dr.Peter掌握了什么信息。</p>
+<figure>
+<img src="/images/HMM_2.png" alt="HMM_2"><figcaption>HMM_2</figcaption>
+</figure>
 
           
         
