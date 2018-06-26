@@ -379,8 +379,15 @@
 <p><strong>一、基础介绍</strong></p>
 <p>在这一节中，主要从<code>形式定义</code>、<code>隐马尔科夫模型的两个基本假设</code>以及<code>举例</code>对<code>HMM</code>有一个初步的认识。</p>
 <p><strong>1.形式定义</strong></p>
-<p>首先看下面这张图</p>
+<p>首先看下面这张图，对模型有一个感性的认识。</p>
 <p><img src="/images/HMM_1.png"></p>
+<p>描述：</p>
+<p>图分成两行，第一行是<code>y</code>序列，第二行是<code>x</code>序列，每个<code>x</code>都只有一个<code>y</code>指向它，而每个<code>y</code>都会有另一个<code>y</code>指向它。在这里，我们就引出了<code>HMM</code>的定义了：</p>
+<ul>
+<li><strong>状态序列（I）</strong>：隐藏的马尔科夫链随机生成的状态序列，成为<code>状态序列(state sequence)</code></li>
+<li><strong>观测序列（O）</strong>：每个状态生成一个观测，而由此产生的观测随机序列，成为<code>观测序列(observation sequence)</code></li>
+<li><strong>隐马尔科夫模型</strong>：隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔科夫链随机生成<strong>不可观测的状态随机序列</strong>，再由各个<strong>状态</strong>生成一个观测而<strong>产生观测随机序列</strong>的过程。</li>
+</ul>
 
           
         
