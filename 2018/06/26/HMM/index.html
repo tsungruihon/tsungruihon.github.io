@@ -100,7 +100,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/HMM_1.png">
 <meta property="og:image" content="http://yoursite.com/images/HMM_2.png">
-<meta property="og:updated_time" content="2018-06-26T17:43:58.056Z">
+<meta property="og:updated_time" content="2018-06-27T01:23:52.394Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hidden Markov Model">
 <meta name="twitter:description" content="拖了有一段时间了，今天终于有机会来总结一下HMM，这是一个非常优美的算法。 下文将从基础介绍、HMM的三个问题以及代码一步步了解HMM世界。 一、基础介绍 在这一节中，主要从形式定义、隐马尔科夫模型的两个基本假设以及举例对HMM有一个初步的认识。 1.形式定义 首先看下面这张图，对模型有一个感性的认识。  描述： 图分成两行，第一行是y序列，第二行是x序列，每个x都只有一个y指向它，而每个y都会有">
@@ -427,9 +427,7 @@ P(o_t | i_T, o_T, i_{T-1}, o_{T-1}, ..., i_{t+1}, o_{t+1}, i_t, o_{t-1}, ..., i_
 <li>Peter还掌握了Sophia某天的感觉与是否感冒的关系<strong>(观测概率矩阵)</strong>。</li>
 </ul>
 <p>下面我们用一张图来看看Dr.Peter掌握了什么信息。</p>
-<figure>
-<img src="/images/HMM_2.png" alt="HMM_2"><figcaption>HMM_2</figcaption>
-</figure>
+<p><img src="/images/HMM_2.png"></p>
 <p>下面我们用代码来体现我们目前的定义。</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># 状态集合Q</span></a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">states <span class="op">=</span> (<span class="st">&#39;Healthy&#39;</span>, <span class="st">&#39;Fever&#39;</span>)</a>
