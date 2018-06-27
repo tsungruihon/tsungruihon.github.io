@@ -100,7 +100,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/HMM_1.png">
 <meta property="og:image" content="http://yoursite.com/images/HMM_2.png">
-<meta property="og:updated_time" content="2018-06-27T17:16:55.025Z">
+<meta property="og:updated_time" content="2018-06-27T17:52:35.738Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hidden Markov Model">
 <meta name="twitter:description" content="拖了有一段时间了，今天终于有机会来总结一下HMM，这是一个非常优美的算法。 下文将从基础介绍、HMM的三个问题以及代码一步步了解HMM世界。 一、基础介绍 在这一节中，主要从形式定义、隐马尔科夫模型的两个基本假设以及举例对HMM有一个初步的认识。 1.形式定义 首先看下面这张图，对模型有一个感性的认识。  描述： 图分成两行，第一行是y序列，第二行是x序列，每个x都只有一个y指向它，而每个y都会有">
@@ -526,13 +526,63 @@ P(o_t | i_T, o_T, i_{T-1}, o_{T-1}, ..., i_{t+1}, o_{t+1}, i_t, o_{t-1}, ..., i_
 <a class="sourceLine" id="cb3-20" data-line-number="20">[<span class="dv">1</span> <span class="dv">2</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span>]</a></code></pre></div>
 <p><strong>二、HMM的三个问题</strong></p>
 <p><code>HMM</code>有三个基本问题：</p>
-<p><strong>1.概率计算问题</strong>：给定模型<span class="math inline">\(\lambda = (A, B, \pi)\)</span>和观测序列<span class="math inline">\(O=(o_1, o_2, ..., o_T)\)</span>，计算在模型<span class="math inline">\(\lambda\)</span>下观测序列<span class="math inline">\(O\)</span>出现的概率<span class="math inline">\(P(O|\lambda)\)</span>.</p>
-<p><strong>2.学习问题：</strong>已知观测序列<span class="math inline">\(O=(o_1, o_2, ..., o_T)\)</span>，估计模型<span class="math inline">\(\lambda = (A, B, \pi)\)</span>，使<span class="math inline">\(P(O|\lambda)\)</span>最大。即用<strong>极大似然估计</strong>的方法估计参数。</p>
-<p><strong>3.预测问题</strong>（也称为解码（decoding）问题）：已知模型<span class="math inline">\(\lambda = (A, B, \pi)\)</span>和观测序列<span class="math inline">\(O=(o_1, o_2, ..., o_T)\)</span>，求对给定观测序列条件概率<span class="math inline">\(P(I|O)\)</span>最大的状态序列<span class="math inline">\(I=(i_1, i_2, ..., i_T)\)</span>。即给定观测序列，求最有可能的对应状态序列。</p>
+<ul>
+<li><p>概率计算问题：给定模型<span class="math inline">\(\lambda = (A, B, \pi)\)</span>和观测序列<span class="math inline">\(O=(o_1, o_2, ..., o_T)\)</span>，计算在模型<span class="math inline">\(\lambda\)</span>下观测序列<span class="math inline">\(O\)</span>出现的概率<span class="math inline">\(P(O|\lambda)\)</span>.</p></li>
+<li><p>学习问题：<strong>已知观测序列<span class="math inline">\(O=(o_1, o_2, ..., o_T)\)</span>，估计模型<span class="math inline">\(\lambda = (A, B, \pi)\)</span>，使<span class="math inline">\(P(O|\lambda)\)</span>最大。即用</strong>极大似然估计的方法估计参数。</p></li>
+<li><p>预测问题（也称为解码（decoding）问题）：已知模型<span class="math inline">\(\lambda = (A, B, \pi)\)</span>和观测序列<span class="math inline">\(O=(o_1, o_2, ..., o_T)\)</span>，求对给定观测序列条件概率<span class="math inline">\(P(I|O)\)</span>最大的状态序列<span class="math inline">\(I=(i_1, i_2, ..., i_T)\)</span>。即给定观测序列，求最有可能的对应状态序列。</p></li>
+</ul>
 <p>回到感冒的例子，这三个问题就是：</p>
-<p><strong>1.概率计算问题</strong>：如果给定模型<span class="math inline">\(\lambda=(A, B, \pi)\)</span>，计算Sophia出现<strong>特定观测序列</strong>的概率。</p>
-<p><strong>2.学习问题：</strong>根据Sophia某一系列观测序列，学习模型参数。</p>
-<p><strong>3.预测问题：</strong>根据学到的模型，通过Sophia的观测序列判断这几天是否有感冒。</p>
+<ul>
+<li><p><strong>概率计算问题</strong>：如果给定模型<span class="math inline">\(\lambda=(A, B, \pi)\)</span>，计算Sophia出现特定观测序列的概率。</p></li>
+<li><p><strong>学习问题</strong>：根据Sophia某一系列观测序列，学习模型参数。</p></li>
+<li><p><strong>预测问题：</strong>根据学到的模型，通过Sophia的观测序列判断这几天是否有感冒。</p></li>
+</ul>
+<p><strong>2.1概率计算问题</strong></p>
+<p>概率计算问题计算的是：在模型<span class="math inline">\(\lambda\)</span>下观测序列<span class="math inline">\(O\)</span>出现的概率<span class="math inline">\(P(O|\lambda)\)</span></p>
+<p>在这里有两种方法：<strong>直接计算法</strong>和<strong>前向（或者后向算法）</strong></p>
+<p><strong>直接计算法：</strong></p>
+<p>对于状态序列<span class="math inline">\(I=(i_1, i_2, ..., iT)\)</span>的概率是： <span class="math display">\[
+P(I|\lambda) = \pi_{i_1}a_{i_1i_2}a_{i_2i_3}...a_{i_T-1i_T}
+\]</span> 对上面这种状态序列，产生观测序列<span class="math inline">\(O=(o_1, o_2, ..., o_T)\)</span>的概率是： <span class="math display">\[
+P(O|I, \lambda) = b_{i_1}(o_1)b_{i_2}(o_2)...b_{i_T}(o_T)
+\]</span> <span class="math inline">\(I\)</span>和<span class="math inline">\(O\)</span>的联合概率为： <span class="math display">\[
+P(O, I|\lambda) =P(O|I, \lambda) \cdot P(I|\lambda)  = \pi_{i_1}b_{i_1}(o_1)a_{i_1i_2}b_{i_2}(o_2)...a_{i_{T-1}i_T}b_{i_T}(o_T)
+\]</span> 对所有可能的<span class="math inline">\(I\)</span>进行求和，得到： <span class="math display">\[
+P(O|\lambda) = \sum_I P(O, I|\lambda) =\sum_{i_1, ..., i_T} \pi_{i_1}b_{i_1}(o_1)a_{i_1i_2}b_{i_2}(o_2)...a_{i_{T-1}i_T}b_{i_T}(o_T)
+\]</span> 如果直接计算，时间负责度太高，是<span class="math inline">\(O(TN^T)\)</span>。</p>
+<p><strong>前向算法（或者后向算法）</strong>：</p>
+<p>首先引入<strong>前向概率</strong>：</p>
+<p>给定模型<span class="math inline">\(\lambda\)</span>，定义到时刻<span class="math inline">\(t\)</span>部分观测序列为<span class="math inline">\(o_1, o_2, ..., o_t\)</span>且状态为<span class="math inline">\(q_i\)</span>的概率为前向概率。记作： <span class="math display">\[
+\alpha_t(i) = P(o_1, o_2, ..., o_t, i_t = q_t | \lambda)
+\]</span></p>
+<p>用感冒例子描述，就是某一天是否感冒以及这天<span class="math inline">\(t\)</span>及这天之前<span class="math inline">\((1—t)\)</span>所有观测数据的联合概率。</p>
+<p><strong>观测序列概率的前向算法</strong></p>
+<p><strong>输入：</strong>隐马尔科夫模型<span class="math inline">\(\lambda\)</span>，观测序列<span class="math inline">\(O\)</span>；</p>
+<p><strong>输出：</strong>观测序列概率<span class="math inline">\(P(O|\lambda)\)</span></p>
+<p>（1）初值 <span class="math display">\[
+\alpha_i(i) = \pi_ib_i(o_i)
+\]</span> （2）递推 对<span class="math inline">\(t=1, 2, .., T-1\)</span> <span class="math display">\[
+\alpha_{t+1}(i) =     \begin{bmatrix}
+ \sum_{j=1}^N \alpha_t(j)a_{ji}
+    \end{bmatrix} b_i(o_{i+1}), \ \ \ \ \ i = 1, 2, ... ,N
+\]</span> （3）终止 <span class="math display">\[
+P(O|\lambda) = \sum_{i=1}^{N} \alpha_T(i)
+\]</span></p>
+<p>下面我们来看代码的实现。</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">def</span> forward(obs_seq):</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">    <span class="co">&quot;&quot;&quot;前向算法&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">    N <span class="op">=</span> A.shape[<span class="dv">0</span>]</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">    T <span class="op">=</span> <span class="bu">len</span>(obs_seq)</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">    </a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">    <span class="co"># F保存前向概率矩阵</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">    F <span class="op">=</span> np.zeros((N,T))</a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">    F[:,<span class="dv">0</span>] <span class="op">=</span> pi <span class="op">*</span> B[:, obs_seq[<span class="dv">0</span>]]</a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10">    <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, T):</a>
+<a class="sourceLine" id="cb4-11" data-line-number="11">        <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(N):</a>
+<a class="sourceLine" id="cb4-12" data-line-number="12">            F[n,t] <span class="op">=</span> np.dot(F[:,t<span class="dv">-1</span>], (A[:,n])) <span class="op">*</span> B[n, obs_seq[t]]</a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14">    <span class="cf">return</span> F</a></code></pre></div>
 
       
     </div>
