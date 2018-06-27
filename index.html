@@ -526,6 +526,15 @@ P(o_t | i_T, o_T, i_{T-1}, o_{T-1}, ..., i_{t+1}, o_{t+1}, i_t, o_{t-1}, ..., i_
 <a class="sourceLine" id="cb3-18" data-line-number="18">[output]</a>
 <a class="sourceLine" id="cb3-19" data-line-number="19">[<span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span>]</a>
 <a class="sourceLine" id="cb3-20" data-line-number="20">[<span class="dv">1</span> <span class="dv">2</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span>]</a></code></pre></div>
+<p><strong>二、HMM的三个问题</strong></p>
+<p><code>HMM</code>有三个基本问题：</p>
+<p><strong>1.概率计算问题</strong>：给定模型<span class="math inline">\(\lambda = (A, B, \pi)\)</span>和观测序列<span class="math inline">\(O=(o_1, o_2, ..., o_T)\)</span>，计算在模型<span class="math inline">\(\lambda\)</span>下观测序列<span class="math inline">\(O\)</span>出现的概率<span class="math inline">\(P(O|\lambda)\)</span>.</p>
+<p><strong>2.学习问题：</strong>已知观测序列<span class="math inline">\(O=(o_1, o_2, ..., o_T)\)</span>，估计模型<span class="math inline">\(\lambda = (A, B, \pi)\)</span>，使<span class="math inline">\(P(O|\lambda)\)</span>最大。即用<strong>极大似然估计</strong>的方法估计参数。</p>
+<p><strong>3.预测问题</strong>（也称为解码（decoding）问题）：已知模型<span class="math inline">\(\lambda = (A, B, \pi)\)</span>和观测序列<span class="math inline">\(O=(o_1, o_2, ..., o_T)\)</span>，求对给定观测序列条件概率<span class="math inline">\(P(I|O)\)</span>最大的状态序列<span class="math inline">\(I=(i_1, i_2, ..., i_T)\)</span>。即给定观测序列，求最有可能的对应状态序列。</p>
+<p>回到感冒的例子，这三个问题就是：</p>
+<p><strong>1.概率计算问题</strong>：如果给定模型<span class="math inline">\(\lambda=(A, B, \pi)\)</span>，计算Sophia出现<strong>特定观测序列</strong>的概率。</p>
+<p><strong>2.学习问题：</strong>根据Sophia某一系列观测序列，学习模型参数。</p>
+<p><strong>3.预测问题：</strong>根据学到的模型，通过Sophia的观测序列判断这几天是否有感冒。</p>
 
           
         
