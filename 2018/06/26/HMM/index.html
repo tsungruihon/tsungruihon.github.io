@@ -100,7 +100,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/HMM_1.png">
 <meta property="og:image" content="http://yoursite.com/images/HMM_2.png">
-<meta property="og:updated_time" content="2018-07-01T11:35:07.374Z">
+<meta property="og:updated_time" content="2018-07-01T15:21:19.259Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hidden Markov Model">
 <meta name="twitter:description" content="拖了有一段时间了，今天终于有机会来总结一下HMM，这是一个非常优美的算法。 下文将从基础介绍、HMM的三个问题以及代码一步步了解HMM世界。 一、基础介绍 在这一节中，主要从形式定义、隐马尔科夫模型的两个基本假设以及举例对HMM有一个初步的认识。 1.形式定义 首先看下面这张图，对模型有一个感性的认识。  描述： 图分成两行，第一行是y序列，第二行是x序列，每个x都只有一个y指向它，而每个y都会有">
@@ -589,6 +589,35 @@ P(O|\lambda) = \sum_{i=1}^{N} \alpha_T(i)
 <a class="sourceLine" id="cb4-13" data-line-number="13"></a>
 <a class="sourceLine" id="cb4-14" data-line-number="14">    <span class="cf">return</span> F</a></code></pre></div>
 <p><strong>后向算法：</strong></p>
+<p>给定隐马尔科夫模型<span class="math inline">\(\lambda\)</span>，定义在时刻<span class="math inline">\(t\)</span>，状态为<span class="math inline">\(q_i\)</span>的条件下，从<span class="math inline">\(t+1\)</span>到到<span class="math inline">\(T\)</span>的部分观测序列为<span class="math inline">\(o_{t+1}, o_{t+2}, ..., o_T\)</span>的概率为后向概率，记作 <span class="math display">\[
+\beta_t(i) = P(o_{t+1}, o_{t+2}, ..., o_T|i_t = q_i, \lambda)
+\]</span></p>
+<p>可以用递推的方法求得后向概率<span class="math inline">\(\beta_t(i)\)</span>及观测序列概率<span class="math inline">\(P(O|\lambda)\)</span>。</p>
+<p><strong>观测序列概率的后向算法</strong></p>
+<p><strong>输入</strong>：隐马尔科夫模型<span class="math inline">\(\lambda\)</span>，观测序列<span class="math inline">\(O\)</span>；</p>
+<p><strong>输出：</strong>观测序列概率<span class="math inline">\(P(O|\lambda)\)</span></p>
+<p>（1）初值 <span class="math display">\[
+\beta_T(i) = 1, \ \ \ i = 1, 2, ..., N
+\]</span> 根据定义，从<span class="math inline">\(T+1\)</span>到<span class="math inline">\(T\)</span>的部分观测序列其实不存在，所以硬性规定这个值是1。</p>
+<p>（2）对<span class="math inline">\(t=T-1, T-2, ..., 1\)</span> <span class="math display">\[
+\beta_t(i) = \sum_{j=1}^{N} a_{ij}b_j(o_{i+1})\beta_{t+1}(j), \ \ \ i = 1, 2, ..., N
+\]</span> <span class="math inline">\(a_{ij}\)</span>表示状态<span class="math inline">\(i\)</span>转移到状态<span class="math inline">\(j\)</span>的概率，<span class="math inline">\(b_j\)</span>表示发射<span class="math inline">\(o_{i+1}\)</span>的观测概率，<span class="math inline">\(\beta_{t+1}(j)\)</span>表示<span class="math inline">\(j\)</span>后面的序列对应的后向概率。</p>
+<p>（3） <span class="math display">\[
+P(O|\lambda) = \sum_{i=1}^{N}\pi_ib_i(o_1)\beta_i(i)
+\]</span> 最后求和是因为，在第一个时间点上有<span class="math inline">\(N\)</span>中后向概率都能输出从2到<span class="math inline">\(T\)</span>的观察序列，所以乘上输出<span class="math inline">\(O_1\)</span>的概率后求和得到最终结果。</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">def</span> backward(obs_seq):</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">    <span class="co">&quot;&quot;&quot;后向算法&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">    N <span class="op">=</span> A.shape[<span class="dv">0</span>]</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">    T <span class="op">=</span> <span class="bu">len</span>(obs_seq)</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">    <span class="co"># X保存后向概率矩阵</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">    X <span class="op">=</span> np.zeros((N, T))</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">    X[:, <span class="dv">-1</span>:] <span class="op">=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">    </a>
+<a class="sourceLine" id="cb5-9" data-line-number="9">    <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">reversed</span>(<span class="bu">range</span>(T<span class="dv">-1</span>)):</a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">        <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(N):</a>
+<a class="sourceLine" id="cb5-11" data-line-number="11">            X[n, t] <span class="op">=</span> np.<span class="bu">sum</span>(X[:, t<span class="op">+</span><span class="dv">1</span>] <span class="op">*</span> A[n, :] <span class="op">*</span> B[:, obs_seq[t<span class="op">+</span><span class="dv">1</span>]])</a>
+<a class="sourceLine" id="cb5-12" data-line-number="12">            </a>
+<a class="sourceLine" id="cb5-13" data-line-number="13">    <span class="cf">return</span> X</a></code></pre></div>
 <p><strong>2.2学习问题</strong></p>
 <p>关于学习问题就是，<strong>已知观测序列<span class="math inline">\(O=(o_1, o_2, ..., o_T)\)</span>，估计模型<span class="math inline">\(\lambda = (A, B, \pi)\)</span>，使<span class="math inline">\(P(O|\lambda)\)</span>最大。即用</strong>极大似然估计的方法估计参数。</p>
 
