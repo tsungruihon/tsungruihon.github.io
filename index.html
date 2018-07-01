@@ -653,13 +653,15 @@ Q(\lambda, \bar \lambda) = \sum_I logP(O, I|\lambda) P(O, I | \bar \lambda)
 \]</span></p>
 <p>其中，<span class="math inline">\(\bar \lambda\)</span>是隐马尔科夫模型参数的当前估计值，<span class="math inline">\(\lambda\)</span>是要极大化的隐马尔科夫模型参数。而 <span class="math display">\[
 P(O,I|\lambda) = \pi_{i_1}b_{i_1}(o_1)a_{i_1i_2}b_{i_2}(o_2)...a_{i_T-1i_T}b_T(o_T)
-\]</span> 于是函数<span class="math inline">\(Q(\lambda, \bar \lambda)\)</span>可以写成： <span class="math display">\[
+\]</span> 于是函数<span class="math inline">\(Q(\lambda, \bar \lambda)\)</span>可以写成：</p>
+<p><span class="math display">\[
 \begin{aligned}
 Q(\lambda, \bar \lambda)  &amp;= \sum_Ilog\pi_{i_1}P(O, I | \bar \lambda) \\\\
 &amp; +\sum_I\Biggl(\sum_{t=1}^{T-1}loga_{i_1i_{i+1}}\Biggr)P(O,I|
 \bar \lambda)  + \sum_I\Biggl(\sum_{t=1}^{T}logb_{i_1}(o_t)\Biggr) P (O,I|\bar \lambda)
 \end{aligned}
-\]</span> <strong>3.EM算法的M步：极大化<span class="math inline">\(Q\)</span>函数<span class="math inline">\(Q(\lambda, \bar \lambda)\)</span>求模型参数<span class="math inline">\(A, B, \pi\)</span>。</strong></p>
+\]</span></p>
+<p><strong>3.EM算法的M步：极大化<span class="math inline">\(Q\)</span>函数<span class="math inline">\(Q(\lambda, \bar \lambda)\)</span>求模型参数<span class="math inline">\(A, B, \pi\)</span>。</strong></p>
 <p>由于要极大化的参数在Q函数表达式中单独出现在3个项中，所以只需对各项分别极大化。</p>
 <p><strong>第1项可以写成：</strong> <span class="math display">\[
 \sum_Ilog\pi_{i_0}P(O, I | \bar \lambda) = \sum_{i=1}^Nlog\pi_iP(O, i_1= i | \lambda)
