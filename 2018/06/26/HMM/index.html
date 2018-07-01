@@ -100,7 +100,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/HMM_1.png">
 <meta property="og:image" content="http://yoursite.com/images/HMM_2.png">
-<meta property="og:updated_time" content="2018-06-27T17:52:35.738Z">
+<meta property="og:updated_time" content="2018-07-01T11:35:07.374Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hidden Markov Model">
 <meta name="twitter:description" content="拖了有一段时间了，今天终于有机会来总结一下HMM，这是一个非常优美的算法。 下文将从基础介绍、HMM的三个问题以及代码一步步了解HMM世界。 一、基础介绍 在这一节中，主要从形式定义、隐马尔科夫模型的两个基本假设以及举例对HMM有一个初步的认识。 1.形式定义 首先看下面这张图，对模型有一个感性的认识。  描述： 图分成两行，第一行是y序列，第二行是x序列，每个x都只有一个y指向它，而每个y都会有">
@@ -550,7 +550,7 @@ P(O, I|\lambda) =P(O|I, \lambda) \cdot P(I|\lambda)  = \pi_{i_1}b_{i_1}(o_1)a_{i
 \]</span> 对所有可能的<span class="math inline">\(I\)</span>进行求和，得到： <span class="math display">\[
 P(O|\lambda) = \sum_I P(O, I|\lambda) =\sum_{i_1, ..., i_T} \pi_{i_1}b_{i_1}(o_1)a_{i_1i_2}b_{i_2}(o_2)...a_{i_{T-1}i_T}b_{i_T}(o_T)
 \]</span> 如果直接计算，时间负责度太高，是<span class="math inline">\(O(TN^T)\)</span>。</p>
-<p><strong>前向算法（或者后向算法）</strong>：</p>
+<p><strong>前向算法</strong>：</p>
 <p>首先引入<strong>前向概率</strong>：</p>
 <p>给定模型<span class="math inline">\(\lambda\)</span>，定义到时刻<span class="math inline">\(t\)</span>部分观测序列为<span class="math inline">\(o_1, o_2, ..., o_t\)</span>且状态为<span class="math inline">\(q_i\)</span>的概率为前向概率。记作： <span class="math display">\[
 \alpha_t(i) = P(o_1, o_2, ..., o_t, i_t = q_t | \lambda)
@@ -561,13 +561,18 @@ P(O|\lambda) = \sum_I P(O, I|\lambda) =\sum_{i_1, ..., i_T} \pi_{i_1}b_{i_1}(o_1
 <p><strong>输出：</strong>观测序列概率<span class="math inline">\(P(O|\lambda)\)</span></p>
 <p>（1）初值 <span class="math display">\[
 \alpha_i(i) = \pi_ib_i(o_i)
-\]</span> （2）递推 对<span class="math inline">\(t=1, 2, .., T-1\)</span> <span class="math display">\[
+\]</span> 前向概率的定义中一共限定了两个条件，一是到当前为止的观测序列，另外一个是当前的状态。所以初值的计算也有两项（观测和状态），一项是初始状态概率，另一项是发射到当前观测的概率。</p>
+<p>（2）递推 对<span class="math inline">\(t=1, 2, .., T-1\)</span> <span class="math display">\[
 \alpha_{t+1}(i) =     \begin{bmatrix}
  \sum_{j=1}^N \alpha_t(j)a_{ji}
     \end{bmatrix} b_i(o_{i+1}), \ \ \ \ \ i = 1, 2, ... ,N
-\]</span> （3）终止 <span class="math display">\[
+\]</span> 每次递推同样由两部分构成，大括号中是当前状态为<span class="math inline">\(i\)</span>且观测序列的前<span class="math inline">\(t\)</span>个符合要求的概率，括号外的是状态<span class="math inline">\(j\)</span>发射到观测<span class="math inline">\(t+1\)</span>的概率。</p>
+<p>（3）终止 <span class="math display">\[
 P(O|\lambda) = \sum_{i=1}^{N} \alpha_T(i)
 \]</span></p>
+<p>由于到了时间<span class="math inline">\(T\)</span>，一共有N中状态发射了最后的那个预测，所以最终的结果要将这些概率加起来。</p>
+<p><strong>前向算法理解：</strong></p>
+<p>前向算法使用前向概率的概念，记录每个时间下的前向概率，使得在递推计算下一个前向概率时，只需要上一个时间点的所有前向概率。减少计算量的原因在于每一次计算直接引用前一个时刻的计算机过，避免重复计算。原理上是用空间换时间。时间复杂度是<span class="math inline">\(O(N^2T)\)</span>。</p>
 <p>下面我们来看代码的实现。</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">def</span> forward(obs_seq):</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">    <span class="co">&quot;&quot;&quot;前向算法&quot;&quot;&quot;</span></a>
@@ -583,6 +588,9 @@ P(O|\lambda) = \sum_{i=1}^{N} \alpha_T(i)
 <a class="sourceLine" id="cb4-12" data-line-number="12">            F[n,t] <span class="op">=</span> np.dot(F[:,t<span class="dv">-1</span>], (A[:,n])) <span class="op">*</span> B[n, obs_seq[t]]</a>
 <a class="sourceLine" id="cb4-13" data-line-number="13"></a>
 <a class="sourceLine" id="cb4-14" data-line-number="14">    <span class="cf">return</span> F</a></code></pre></div>
+<p><strong>后向算法：</strong></p>
+<p><strong>2.2学习问题</strong></p>
+<p>关于学习问题就是，<strong>已知观测序列<span class="math inline">\(O=(o_1, o_2, ..., o_T)\)</span>，估计模型<span class="math inline">\(\lambda = (A, B, \pi)\)</span>，使<span class="math inline">\(P(O|\lambda)\)</span>最大。即用</strong>极大似然估计的方法估计参数。</p>
 
       
     </div>
