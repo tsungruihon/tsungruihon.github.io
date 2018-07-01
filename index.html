@@ -697,13 +697,20 @@ b_j(k) = \frac{\sum_{t=1,o_t=v_k}^T \gamma_t(j)}{\sum_{t=1}^T \gamma_t(j)}
 <p><span class="math display">\[
 \pi_i = \gamma_1(i)
 \]</span></p>
-<p>我们定义一个概率<span class="math inline">\(\gamma\)</span>， 它表示，给定模型参数和所有预测，时刻<span class="math inline">\(t\)</span>处于状态<span class="math inline">\(q_i\)</span>的概率。</p>
-<p>$$ \begin{aligned} _t(i) &amp;= P(i_t = q_i | O, ) \\ &amp; = \\ &amp; = = </p>
-<p>\end{aligned} $$</p>
-<p>我们定义一个概率<span class="math inline">\(\xi\)</span>，它表示，给定模型参数和所有观测，时刻<span class="math inline">\(t\)</span>处于状态<span class="math inline">\(q_i\)</span>且时刻<span class="math inline">\(t+1\)</span>处于状态<span class="math inline">\(q_j\)</span>的概率。</p>
-<p>$$ \begin{aligned}</p>
-<p><em>t(i, j) &amp;= P(i_t = q_i, i</em>{t+1} =q_j | O, ) \\ &amp; = \\ &amp; =  \\ &amp; =  \end{aligned} $$</p>
-<p>然后我们来看看<strong>Baum-Welch</strong>算法的Python实现</p>
+<p>我们定义一个概率<span class="math inline">\(\gamma\)</span>， 它表示，给定模型参数和所有预测，时刻<span class="math inline">\(t\)</span>处于状态<span class="math inline">\(q_i\)</span>的概率。 <span class="math display">\[
+\begin{aligned}
+\gamma_t(i) &amp;= P(i_t = q_i | O, \lambda) \\\\
+&amp; = \frac{P(i_t=q_i, O|\lambda)}{P(O|\lambda)}\\\\
+&amp; =\frac{\alpha_t(i)\beta_t(i)}{P(O|\lambda)} = \frac{\alpha_t(i)\beta_t(i)}{\sum_{j=1}^{N}\alpha_t(j)\beta_t(j)}
+\end{aligned}
+\]</span> 我们定义一个概率<span class="math inline">\(\xi\)</span>，它表示，给定模型参数和所有观测，时刻<span class="math inline">\(t\)</span>处于状态<span class="math inline">\(q_i\)</span>且时刻<span class="math inline">\(t+1\)</span>处于状态<span class="math inline">\(q_j\)</span>的概率。 <span class="math display">\[
+\begin{aligned}
+\xi_t(i, j) &amp;= P(i_t = q_i, i_{t+1} =q_j | O, \lambda) \\\\
+&amp; =\frac{P(i_t = q_i, i_{t+1} = q_j , O \ | \ \lambda) }{P(O|\lambda)} \\\\
+&amp; = \frac{P(i_t = q_i , i_{t+1} = q_j, O | \lambda)}{\sum_{i=1}^{N}\sum_{j=1}^{N}P(i_t = q_i, i_{t+1} = q_j, O \ | \ \lambda)}  \\\\
+&amp; = \frac{\alpha_t(i)a_{ij}b_j(o_{t+1})\beta_{t+1}(j)}{\sum_{i=1}^{N}\sum_{j=1}^{N}P(i_t = q_i, i_{t+1} = q_j, O \ | \ \lambda)}
+\end{aligned}
+\]</span> 然后我们来看看<strong>Baum-Welch</strong>算法的Python实现</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">def</span> baum_welch_train(observations, A, B, pi, criterion<span class="op">=</span><span class="fl">0.05</span>):</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2">    <span class="co">&quot;&quot;&quot;无监督学习算法——Baum-Weich算法&quot;&quot;&quot;</span></a>
 <a class="sourceLine" id="cb6-3" data-line-number="3">    n_states <span class="op">=</span> A.shape[<span class="dv">0</span>]</a>
