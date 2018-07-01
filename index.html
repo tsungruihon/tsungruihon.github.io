@@ -653,7 +653,8 @@ Q(\lambda, \bar \lambda) = \sum_I logP(O, I|\lambda) P(O, I | \bar \lambda)
 \]</span></p>
 <p>其中，<span class="math inline">\(\bar \lambda\)</span>是隐马尔科夫模型参数的当前估计值，<span class="math inline">\(\lambda\)</span>是要极大化的隐马尔科夫模型参数。而 <span class="math display">\[
 P(O,I|\lambda) = \pi_{i_1}b_{i_1}(o_1)a_{i_1i_2}b_{i_2}(o_2)...a_{i_T-1i_T}b_T(o_T)
-\]</span> 于是函数<span class="math inline">\(Q(\lambda, \bar \lambda)\)</span>可以写成： $$ \begin{aligned}</p>
+\]</span> 于是函数<span class="math inline">\(Q(\lambda, \bar \lambda)\)</span>可以写成：</p>
+<p>$$ \begin{aligned}</p>
 <p>Q(, ) &amp;= <em>Ilog</em>{i_1}P(O, I | ) \\ &amp; +<em>I(</em>{t=1}^{T-1}loga_{i_1i_{i+1}})P(O,I| ) + <em>I(</em>{t=1}^{T}logb_{i_1}(o_t)) P (O,I|)</p>
 <p>\end{aligned} $$</p>
 <p><strong>3.EM算法的M步：极大化<span class="math inline">\(Q\)</span>函数<span class="math inline">\(Q(\lambda, \bar \lambda)\)</span>求模型参数<span class="math inline">\(A, B, \pi\)</span>。</strong></p>
