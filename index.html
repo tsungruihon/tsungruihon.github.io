@@ -620,8 +620,150 @@ P(O|\lambda) = \sum_{i=1}^{N}\pi_ib_i(o_1)\beta_i(i)
 <a class="sourceLine" id="cb5-11" data-line-number="11">            X[n, t] <span class="op">=</span> np.<span class="bu">sum</span>(X[:, t<span class="op">+</span><span class="dv">1</span>] <span class="op">*</span> A[n, :] <span class="op">*</span> B[:, obs_seq[t<span class="op">+</span><span class="dv">1</span>]])</a>
 <a class="sourceLine" id="cb5-12" data-line-number="12">            </a>
 <a class="sourceLine" id="cb5-13" data-line-number="13">    <span class="cf">return</span> X</a></code></pre></div>
+<p>利用前向概率和后向概率的定义可以将观测序列概率<span class="math inline">\(P(O|\lambda)\)</span>统一写成： <span class="math display">\[
+P(O|\lambda) = \sum_{i=1}^N\sum_{j=1}^N \alpha_t(i)a_{ij}b_j o_{t+1}\beta_{t+1}(j), \ \ \ t = 1, 2, ..., T -1
+\]</span></p>
 <p><strong>2.2学习问题</strong></p>
 <p>关于学习问题就是，<strong>已知观测序列<span class="math inline">\(O=(o_1, o_2, ..., o_T)\)</span>，估计模型<span class="math inline">\(\lambda = (A, B, \pi)\)</span>，使<span class="math inline">\(P(O|\lambda)\)</span>最大。即用</strong>极大似然估计的方法估计参数。</p>
+<p>隐马尔科夫模型的学习，分为监督学习与无监督学习：</p>
+<ul>
+<li>监督学习：训练数据包括观测序列和对应的状态序列。</li>
+<li>无监督学习：训练数据只有观测序列。</li>
+</ul>
+<p><strong>监督学习方法</strong></p>
+<p>假设已给训练数据包含<span class="math inline">\(S\)</span>个长度相同的观测序列和对应的状态序列<span class="math inline">\({(O_1, I_1), (O_2, I_2), ..., (O_S, I_S)}\)</span>，那么可以利用极大似然估计法来估计隐马尔科夫模型的参数。具体方法如下：</p>
+<p><strong>1.转移概率<span class="math inline">\(a_{ij}\)</span>的估计</strong></p>
+<p>设样本中时刻<span class="math inline">\(t\)</span>处于状态<span class="math inline">\(i\)</span>时刻<span class="math inline">\(t+1\)</span>转移到状态<span class="math inline">\(j\)</span>的频数为<span class="math inline">\(A_{ij}\)</span>，则状态转移概率<span class="math inline">\(a_{ij}\)</span>的估计是 <span class="math display">\[
+\hat a_{ij} = \frac{A_{ij}}{\sum_{i=1}^NA_{ij}} \ \ \ i =1 , 2, ..., N , \ \ \ j = 1, 2, ..., N
+\]</span></p>
+<p><strong>2.观测概率<span class="math inline">\(b_j(k)\)</span>的估计</strong></p>
+<p>设样本中状态为<span class="math inline">\(j\)</span>并观测为<span class="math inline">\(k\)</span>的频数为<span class="math inline">\(B_{jk}\)</span>，那么状态为<span class="math inline">\(j\)</span>观测为<span class="math inline">\(k\)</span>的概率估计是 <span class="math display">\[
+\hat b_j(k) = \frac{B_{jk}}{\sum_{k=1}^MB_{jk}}
+\]</span></p>
+<p><strong>3.初始状态概率<span class="math inline">\(\pi_i\)</span>的估计<span class="math inline">\(\hat \pi_i\)</span>为<span class="math inline">\(S\)</span>个样本中初始状态为<span class="math inline">\(q_i\)</span>的频率</strong></p>
+<p>由于监督学习需要使用训练数据，而人工标注训练数据往往代价很高，有时就会利用非监督学习。</p>
+<p><strong>Baum-Welch算法</strong></p>
+<p>假设给定训练数据只包含<span class="math inline">\(S\)</span>个长度为<span class="math inline">\(T\)</span>的观测序列<span class="math inline">\({O_1, O_2, ..., O_S}\)</span>而没有对应的状态序列，目标是学习隐马尔科夫模型<span class="math inline">\(\lambda = (A, B, \pi)\)</span>的参数。我们将观测序列数据看作观测数据<span class="math inline">\(O\)</span>，状态序列数据看作不可观测的隐数据<span class="math inline">\(I\)</span>，则隐马尔科夫模型就能够抽象成一个含有隐变量的概率模型 <span class="math display">\[
+P(O|\lambda) = \sum_t P(O|I, \lambda) P (I|\lambda)
+\]</span> 它的参数学习可以由<code>EM算法</code>实现。</p>
+<p><strong>1.确定完全数据的对数似然函数</strong></p>
+<p>所有观测数据写成<span class="math inline">\(O = (o_1, o_2, ..., o_T)\)</span>，所有隐数据写成<span class="math inline">\(I=(i_1, i_2, ..., i_T)\)</span>，完全数据是<span class="math inline">\((O, I) = (o_1, o_2, ..., o_T, i_1, i_2, ..., i_T)\)</span>。完全数据的对数似然函数是<span class="math inline">\(logP(O,I|\lambda)\)</span>。</p>
+<p><strong>2.EM算法的E步：求Q函数</strong><span class="math inline">\(Q(\lambda, \bar \lambda)\)</span> <span class="math display">\[
+Q(\lambda, \bar \lambda) = \sum_I logP(O, I|\lambda) P(O, I | \bar \lambda)
+\]</span></p>
+<p>其中，<span class="math inline">\(\bar \lambda\)</span>是隐马尔科夫模型参数的当前估计值，<span class="math inline">\(\lambda\)</span>是要极大化的隐马尔科夫模型参数。而 <span class="math display">\[
+P(O,I|\lambda) = \pi_{i_1}b_{i_1}(o_1)a_{i_1i_2}b_{i_2}(o_2)...a_{i_T-1i_T}b_T(o_T)
+\]</span> 于是函数<span class="math inline">\(Q(\lambda, \bar \lambda)\)</span>可以写成： $$ \begin{aligned}</p>
+<p>Q(, ) &amp;= <em>Ilog</em>{i_1}P(O, I | ) \\ &amp; +<em>I(</em>{t=1}^{T-1}loga_{i_1i_{i+1}})P(O,I| ) + <em>I(</em>{t=1}^{T}logb_{i_1}(o_t)) P (O,I|)</p>
+<p>\end{aligned} $$</p>
+<p><strong>3.EM算法的M步：极大化<span class="math inline">\(Q\)</span>函数<span class="math inline">\(Q(\lambda, \bar \lambda)\)</span>求模型参数<span class="math inline">\(A, B, \pi\)</span>。</strong></p>
+<p>由于要极大化的参数在Q函数表达式中单独出现在3个项中，所以只需对各项分别极大化。</p>
+<p><strong>第1项可以写成：</strong> <span class="math display">\[
+\sum_Ilog\pi_{i_0}P(O, I | \bar \lambda) = \sum_{i=1}^Nlog\pi_iP(O, i_1= i | \lambda)
+\]</span></p>
+<p>注意到<span class="math inline">\(\pi_i\)</span>满足约束条件<span class="math inline">\(\sum_{i=1}^{N}\pi_i=1\)</span>，利用拉格朗日乘子法，写出拉格朗日函数： <span class="math display">\[
+\sum_{i=1}^N log\pi_i P(O, i_1 = i | \bar \lambda) + \gamma\biggl(\sum_{i=1}^N\pi_i - 1\biggr)
+\]</span></p>
+<p>对其求偏导并令结果为0 <span class="math display">\[
+\frac{\partial}{\partial \pi_i}[\sum_{i=1}^N log\pi_i P(O, i_1 = i | \bar \lambda) + \gamma\biggl(\sum_{i=1}^N\pi_i - 1\biggr)] = 0
+\]</span></p>
+<p>得到 <span class="math display">\[
+P(O, i_1 = 1| \bar \lambda)  + \gamma\pi_i = 0
+\]</span> 对<span class="math inline">\(i\)</span>求和得到<span class="math inline">\(\gamma\)</span> <span class="math display">\[
+\gamma = - P(O|\bar \lambda)
+\]</span></p>
+<p>代入<span class="math inline">\(P(O, i_1 = 1| \bar \lambda) + \gamma\pi_i = 0\)</span>中得到 <span class="math display">\[
+\pi_i = \frac{P(O, i_1 = i|\bar \lambda)}{P(O|\bar \lambda)}
+\]</span></p>
+<p><strong>第2项可以写成</strong> <span class="math display">\[
+\sum_I\Biggl(\sum_{t=1}^{T-1}loga_{i_1i_{i+1}}\Biggr)P(O,I|
+\bar \lambda) = \sum_{i=1}^N\sum_{j=1}^N\sum_{t=1}^{T-1}log a_{ij}P(O, i_t = i, i_{t+1} = j \ |\  \bar \lambda)
+\]</span></p>
+<p>应用约束条件<span class="math inline">\(\sum_{j=1}^{N}a_{ij} =1\)</span>，利用拉格朗日乘子法，可以求出 <span class="math display">\[
+a_{ij} = \frac{\sum_{t=1}^{T-1} P (O, i_t = 1, i_{t+1} = j \ | \ \bar \lambda)}{\sum^{T-1}_{t=1}P(O, i_t=i \ | \ \bar \lambda)}
+\]</span></p>
+<p><strong>第3项可以写成</strong> <span class="math display">\[
+\sum_I\Biggl(\sum_{t=1}^{T}logb_{i_1}(o_t)\Biggr) P (O,I|\bar \lambda)  = \sum_{j=1}^{N}\sum_{t=1}^Tlogb_j(o_t) P(O, i_t = j \ | \ \bar \lambda )
+\]</span> 应用约束条件<span class="math inline">\(\sum_{k=1}^{N}b_{j}(k) =1\)</span>，利用拉格朗日乘子法（注意，只有在<span class="math inline">\(o_t = v_k\)</span>时<span class="math inline">\(b_j(o_t)\)</span>对<span class="math inline">\(b_j(k)\)</span>的偏导数才不为0，以<span class="math inline">\(I(o_t = v_k)表示\)</span>），求出 <span class="math display">\[
+b_j(k) = \frac{\sum_{t=1}^{T}P(O, i_t = j \ | \ \bar \lambda) I (o_t = v_k)}{\sum_{t=1}^{T} P (O, i_t = j \ | \ \bar \lambda)}
+\]</span> <strong>Baum-Welch模型参数估计公式</strong></p>
+<p>将这三个式子中的各概率分别简写如下： <span class="math display">\[
+a_{ij} = \frac{\sum_{t=1}^{T-1}\xi_t(i, j)}{\sum_{t=1}^{T-1}\gamma_t(i)}
+\]</span></p>
+<p><span class="math display">\[
+b_j(k) = \frac{\sum_{t=1,o_t=v_k}^T \gamma_t(j)}{\sum_{t=1}^T \gamma_t(j)}
+\]</span></p>
+<p><span class="math display">\[
+\pi_i = \gamma_1(i)
+\]</span></p>
+<p>我们定义一个概率<span class="math inline">\(\gamma\)</span>， 它表示，给定模型参数和所有预测，时刻<span class="math inline">\(t\)</span>处于状态<span class="math inline">\(q_i\)</span>的概率。 $$ \begin{aligned} _t(i) &amp;= P(i_t = q_i | O, ) \\ &amp; = \\ &amp; = = </p>
+<p>\end{aligned} $$</p>
+<p>我们定义一个概率<span class="math inline">\(\xi\)</span>，它表示，给定模型参数和所有观测，时刻<span class="math inline">\(t\)</span>处于状态<span class="math inline">\(q_i\)</span>且时刻<span class="math inline">\(t+1\)</span>处于状态<span class="math inline">\(q_j\)</span>的概率。 $$ \begin{aligned}</p>
+<p><em>t(i, j) &amp;= P(i_t = q_i, i</em>{t+1} =q_j | O, ) \\ &amp; = \\ &amp; =  \\ &amp; =  \end{aligned} $$</p>
+<p>然后我们来看看<strong>Baum-Welch</strong>算法的Python实现</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">def</span> baum_welch_train(observations, A, B, pi, criterion<span class="op">=</span><span class="fl">0.05</span>):</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">    <span class="co">&quot;&quot;&quot;无监督学习算法——Baum-Weich算法&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">    n_states <span class="op">=</span> A.shape[<span class="dv">0</span>]</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">    n_samples <span class="op">=</span> <span class="bu">len</span>(observations)</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">    done <span class="op">=</span> <span class="va">False</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">    <span class="cf">while</span> <span class="kw">not</span> done:</a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">        <span class="co"># alpha_t(i) = P(O_1 O_2 ... O_t, q_t = S_i | hmm)</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9">        <span class="co"># Initialize alpha</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10">        alpha <span class="op">=</span> forward(observations)</a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb6-12" data-line-number="12">        <span class="co"># beta_t(i) = P(O_t+1 O_t+2 ... O_T | q_t = S_i , hmm)</span></a>
+<a class="sourceLine" id="cb6-13" data-line-number="13">        <span class="co"># Initialize beta</span></a>
+<a class="sourceLine" id="cb6-14" data-line-number="14">        beta <span class="op">=</span> backward(observations)</a>
+<a class="sourceLine" id="cb6-15" data-line-number="15">        <span class="co"># ξ_t(i,j)=P(i_t=q_i,i_{i+1}=q_j|O,λ)</span></a>
+<a class="sourceLine" id="cb6-16" data-line-number="16">        xi <span class="op">=</span> np.zeros((n_states,n_states,n_samples<span class="dv">-1</span>))</a>
+<a class="sourceLine" id="cb6-17" data-line-number="17">        <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(n_samples<span class="dv">-1</span>):</a>
+<a class="sourceLine" id="cb6-18" data-line-number="18">            denom <span class="op">=</span> np.dot(np.dot(alpha[:,t].T, A) <span class="op">*</span> B[:,observations[t<span class="op">+</span><span class="dv">1</span>]].T, beta[:,t<span class="op">+</span><span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb6-19" data-line-number="19">            <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_states):</a>
+<a class="sourceLine" id="cb6-20" data-line-number="20">                numer <span class="op">=</span> alpha[i,t] <span class="op">*</span> A[i,:] <span class="op">*</span> B[:,observations[t<span class="op">+</span><span class="dv">1</span>]].T <span class="op">*</span> beta[:,t<span class="op">+</span><span class="dv">1</span>].T</a>
+<a class="sourceLine" id="cb6-21" data-line-number="21">                xi[i,:,t] <span class="op">=</span> numer <span class="op">/</span> denom</a>
+<a class="sourceLine" id="cb6-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb6-23" data-line-number="23">        <span class="co"># γ_t(i)：gamma_t(i) = P(q_t = S_i | O, hmm)</span></a>
+<a class="sourceLine" id="cb6-24" data-line-number="24">        gamma <span class="op">=</span> np.<span class="bu">sum</span>(xi,axis<span class="op">=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb6-25" data-line-number="25">        <span class="co"># Need final gamma element for new B</span></a>
+<a class="sourceLine" id="cb6-26" data-line-number="26">        <span class="co"># xi的第三维长度n_samples-1，少一个，所以gamma要计算最后一个</span></a>
+<a class="sourceLine" id="cb6-27" data-line-number="27">        prod <span class="op">=</span>  (alpha[:,n_samples<span class="dv">-1</span>] <span class="op">*</span> beta[:,n_samples<span class="dv">-1</span>]).reshape((<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb6-28" data-line-number="28">        gamma <span class="op">=</span> np.hstack((gamma,  prod <span class="op">/</span> np.<span class="bu">sum</span>(prod))) <span class="co">#append one more to gamma!!!</span></a>
+<a class="sourceLine" id="cb6-29" data-line-number="29">        </a>
+<a class="sourceLine" id="cb6-30" data-line-number="30">        <span class="co"># 更新模型参数</span></a>
+<a class="sourceLine" id="cb6-31" data-line-number="31">        newpi <span class="op">=</span> gamma[:,<span class="dv">0</span>]</a>
+<a class="sourceLine" id="cb6-32" data-line-number="32">        newA <span class="op">=</span> np.<span class="bu">sum</span>(xi,<span class="dv">2</span>) <span class="op">/</span> np.<span class="bu">sum</span>(gamma[:,:<span class="op">-</span><span class="dv">1</span>],axis<span class="op">=</span><span class="dv">1</span>).reshape((<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb6-33" data-line-number="33">        newB <span class="op">=</span> np.copy(B)</a>
+<a class="sourceLine" id="cb6-34" data-line-number="34">        num_levels <span class="op">=</span> B.shape[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb6-35" data-line-number="35">        sumgamma <span class="op">=</span> np.<span class="bu">sum</span>(gamma,axis<span class="op">=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb6-36" data-line-number="36">        <span class="cf">for</span> lev <span class="kw">in</span> <span class="bu">range</span>(num_levels):</a>
+<a class="sourceLine" id="cb6-37" data-line-number="37">            mask <span class="op">=</span> observations <span class="op">==</span> lev</a>
+<a class="sourceLine" id="cb6-38" data-line-number="38">            newB[:,lev] <span class="op">=</span> np.<span class="bu">sum</span>(gamma[:,mask],axis<span class="op">=</span><span class="dv">1</span>) <span class="op">/</span> sumgamma</a>
+<a class="sourceLine" id="cb6-39" data-line-number="39">        </a>
+<a class="sourceLine" id="cb6-40" data-line-number="40">        <span class="co"># 检查是否满足阈值</span></a>
+<a class="sourceLine" id="cb6-41" data-line-number="41">        <span class="cf">if</span> np.<span class="bu">max</span>(<span class="bu">abs</span>(pi <span class="op">-</span> newpi)) <span class="op">&lt;</span> criterion <span class="kw">and</span> <span class="op">\</span></a>
+<a class="sourceLine" id="cb6-42" data-line-number="42">                        np.<span class="bu">max</span>(<span class="bu">abs</span>(A <span class="op">-</span> newA)) <span class="op">&lt;</span> criterion <span class="kw">and</span> <span class="op">\</span></a>
+<a class="sourceLine" id="cb6-43" data-line-number="43">                        np.<span class="bu">max</span>(<span class="bu">abs</span>(B <span class="op">-</span> newB)) <span class="op">&lt;</span> criterion:</a>
+<a class="sourceLine" id="cb6-44" data-line-number="44">            done <span class="op">=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb6-45" data-line-number="45">        A[:], B[:], pi[:] <span class="op">=</span> newA, newB, newpi</a>
+<a class="sourceLine" id="cb6-46" data-line-number="46">    <span class="cf">return</span> newA, newB, newpi</a></code></pre></div>
+<p>回到预测感冒的问题，下面我们先自己建立一个HMM模型，再模拟出一个观测序列和一个状态序列。</p>
+<p>然后，只用观测序列去学习模型，获得模型参数。</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" data-line-number="1">A <span class="op">=</span> np.array([[<span class="fl">0.5</span>, <span class="fl">0.5</span>],[<span class="fl">0.5</span>, <span class="fl">0.5</span>]])</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">B <span class="op">=</span> np.array([[<span class="fl">0.3</span>, <span class="fl">0.3</span>, <span class="fl">0.3</span>],[<span class="fl">0.3</span>, <span class="fl">0.3</span>, <span class="fl">0.3</span>]])</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">pi <span class="op">=</span> np.array([<span class="fl">0.5</span>, <span class="fl">0.5</span>])</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">observations_data, states_data <span class="op">=</span> simulate(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">newA, newB, newpi <span class="op">=</span> baum_welch_train(observations_data, A, B, pi)</a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="bu">print</span>(<span class="st">&quot;newA: &quot;</span>, newA)</a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="bu">print</span>(<span class="st">&quot;newB: &quot;</span>, newB)</a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="bu">print</span>(<span class="st">&quot;newpi: &quot;</span>, newpi)</a>
+<a class="sourceLine" id="cb7-10" data-line-number="10">[output]</a>
+<a class="sourceLine" id="cb7-11" data-line-number="11">newA:  [[<span class="fl">0.5</span> <span class="fl">0.5</span>]</a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"> [<span class="fl">0.5</span> <span class="fl">0.5</span>]]</a>
+<a class="sourceLine" id="cb7-13" data-line-number="13">newB:  [[<span class="fl">0.26</span> <span class="fl">0.38</span> <span class="fl">0.36</span>]</a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"> [<span class="fl">0.26</span> <span class="fl">0.38</span> <span class="fl">0.36</span>]]</a>
+<a class="sourceLine" id="cb7-15" data-line-number="15">newpi:  [<span class="fl">0.5</span> <span class="fl">0.5</span>]</a></code></pre></div>
 
           
         
