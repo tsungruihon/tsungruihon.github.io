@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="python," />
 
 
 
@@ -90,16 +90,18 @@
 
 
 
-<meta name="description" content="I Never Save Anything For The Swim Back.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="彼得的博客">
-<meta property="og:url" content="http://yoursite.com/archives/page/4/index.html">
+<meta name="description" content="拖了很多的一段时间了，今天就总结一下CRF，这是一个非常优美的判别式算法。">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CRF">
+<meta property="og:url" content="http://yoursite.com/2018/08/25/CRF/index.html">
 <meta property="og:site_name" content="彼得的博客">
-<meta property="og:description" content="I Never Save Anything For The Swim Back.">
+<meta property="og:description" content="拖了很多的一段时间了，今天就总结一下CRF，这是一个非常优美的判别式算法。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-25T13:17:23.862Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="彼得的博客">
-<meta name="twitter:description" content="I Never Save Anything For The Swim Back.">
+<meta name="twitter:title" content="CRF">
+<meta name="twitter:description" content="拖了很多的一段时间了，今天就总结一下CRF，这是一个非常优美的判别式算法。">
 
 
 
@@ -127,7 +129,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/archives/page/4/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/08/25/CRF/"/>
 
 
 
@@ -135,7 +137,7 @@
 <link href="/js/google-code-prettify/prettify.css" type="text/css" rel="stylesheet" />
 <link href="/js/google-code-prettify/github-v2.min.css" type="text/css" rel="stylesheet" />
 
-  <title>归档 | 彼得的博客</title>
+  <title>CRF | 彼得的博客</title>
   <script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
        <script type="text/x-mathjax-config">
          MathJax.Hub.Config({
@@ -170,7 +172,7 @@
     
   
 
-  <div class="container sidebar-position-left  page-archive  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -264,365 +266,177 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-    <span class="archive-page-counter">
-      
-      
-       
-      
-      OK! 目前共计 39 篇日志。 继续努力。
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/25/CRF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peter Tsung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pandas.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="彼得的博客">
     </span>
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                CRF
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-25T21:16:13+08:00">
+                2018-08-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine_Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
-      
 
+      
+        <p>拖了很多的一段时间了，今天就总结一下<code>CRF</code>，这是一个非常优美的判别式算法。</p>
+
+      
+    </div>
+
+    <div>
       
         
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2017">2017</h2>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
         </div>
       
+
+      
+        
       
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/26/HMM/" rel="next" title="Hidden Markov Model">
+                <i class="fa fa-chevron-left"></i> Hidden Markov Model
+              </a>
+            
+          </div>
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          <span class="post-nav-divider"></span>
 
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/06/05/流畅的Python-读书笔记-一/" itemprop="url">
-              
-                <span itemprop="name">流畅的Python_读书笔记(一)</span>
-              
-            </a>
-        
-      </h1>
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-06-05T13:10:23+08:00"
-              content="2017-06-05" >
-          06-05
-        </time>
-      </div>
-
-    </header>
+      
+      
+    </footer>
   </article>
 
 
 
-    
-
+    <div class="post-spread">
       
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/06/02/讀《計算廣告》筆記-一/" itemprop="url">
-              
-                <span itemprop="name">讀《計算廣告》筆記(一)</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-06-02T17:24:58+08:00"
-              content="2017-06-02" >
-          06-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/06/02/爺爺紀念/" itemprop="url">
-              
-                <span itemprop="name">爺爺紀念</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-06-02T14:24:02+08:00"
-              content="2017-06-02" >
-          06-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/06/02/for-else、open函数、协程、函数缓存、上下文管理/" itemprop="url">
-              
-                <span itemprop="name">for-else、open函数、协程、函数缓存、上下文管理</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-06-02T10:36:11+08:00"
-              content="2017-06-02" >
-          06-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/05/27/Enumerate、对象自省、推导式、异常、lambda和一行式/" itemprop="url">
-              
-                <span itemprop="name">Enumerate、对象自省、推导式、异常、lambda和一行式</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-27T09:44:50+08:00"
-              content="2017-05-27" >
-          05-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/05/21/Mutation、Slots、虚拟环境和Collections/" itemprop="url">
-              
-                <span itemprop="name">Mutation、Slots、虚拟环境和Collections</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-21T18:50:26+08:00"
-              content="2017-05-21" >
-          05-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/05/16/Scrapy抓取京东评论/" itemprop="url">
-              
-                <span itemprop="name">Scrapy抓取京东评论</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-16T21:09:57+08:00"
-              content="2017-05-16" >
-          05-16
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/05/16/Map-Filter、三元运算符、装饰器、Global-Return/" itemprop="url">
-              
-                <span itemprop="name">Map&Filter、三元运算符、装饰器、Global&Return</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-16T10:34:31+08:00"
-              content="2017-05-16" >
-          05-16
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/05/07/args、-kwargs、Debugging、Generators、set/" itemprop="url">
-              
-                <span itemprop="name">*args、**kwargs、Debugging、Generators、set</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-07T16:59:08+08:00"
-              content="2017-05-07" >
-          05-07
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-  </section>
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/archives/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/archives/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/3/">3</a><span class="page-number current">4</span>
-  </nav>
-
-
+    </div>
+  </div>
 
 
           </div>
@@ -630,6 +444,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -850,11 +668,9 @@
   
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
 
 
   
