@@ -98,7 +98,7 @@
 <meta property="og:site_name" content="彼得的博客">
 <meta property="og:description" content="拖了很多的一段时间了，今天就总结一下CRF(Condition Random Field Model)，这是一个非常优美的判别式算法。（截止到今天已经是2019年5月2号了，自从上次建立这篇文章已经过去了大半年了。。证明如果有些事情想做，最好就是在当下。） 第一次接触CRF是因为要做音乐名NER，后来在做TTS(Text To Speech)的时候也有尝试用Bi-LSTM+CRF来判断一句没有标点">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-03T15:53:16.681Z">
+<meta property="og:updated_time" content="2019-05-03T16:25:34.715Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Condition Random Field Model">
 <meta name="twitter:description" content="拖了很多的一段时间了，今天就总结一下CRF(Condition Random Field Model)，这是一个非常优美的判别式算法。（截止到今天已经是2019年5月2号了，自从上次建立这篇文章已经过去了大半年了。。证明如果有些事情想做，最好就是在当下。） 第一次接触CRF是因为要做音乐名NER，后来在做TTS(Text To Speech)的时候也有尝试用Bi-LSTM+CRF来判断一句没有标点">
@@ -371,6 +371,7 @@
       
         <p>拖了很多的一段时间了，今天就总结一下<code>CRF(Condition Random Field Model)</code>，这是一个非常优美的判别式算法。（截止到今天已经是2019年5月2号了，自从上次建立这篇文章已经过去了大半年了。。证明如果有些事情想做，最好就是在当下。）</p>
 <p>第一次接触<code>CRF</code>是因为要做音乐名<code>NER</code>，后来在做<code>TTS(Text To Speech)</code>的时候也有尝试用<code>Bi-LSTM+CRF</code>来判断一句没有标点的长句子中应该在哪里进行断句。</p>
+<h4 id="一从随机场到线性链条件随机场"><u>一、从随机场到线性链条件随机场</u></h4>
 <p>我们知道，在<code>HMM</code>中，观测节点<span class="math inline">\(o_i\)</span>依赖隐藏状态节点<span class="math inline">\(i_i\)</span>，也就意味着观测节点只依赖当前时刻的隐藏状态。但在实际场景下，观测序列是需要很多特征来刻画，譬如标注<span class="math inline">\(i_i\)</span>不仅跟当前状态<span class="math inline">\(o_i\)</span>相关，而且还跟前后标注<span class="math inline">\(o_j(j \neq i)\)</span>相关。</p>
 <p>从这个层面来看，<code>CRF</code>跟普通分类器不同的地方在于，它在标记数据的时候，可以考虑相邻数据的标记信息。这一点是普通的分类器难以做到的。<code>随机场</code>是由若干个位置组成的整体，当给每一个位置中按照某种分布随机赋予一个值之后，其全体就叫做<code>随机场</code>。而<code>马尔科夫随机场</code>是随机场的特例，它假设<code>随机场</code>中某一个位置的赋值仅仅与它相邻的位置赋值有关，和跟它不相邻的位置赋值无关。</p>
 <p>而<code>条件随机场</code>是<code>马尔科夫随机场</code>的特例，它假设<code>马尔科夫随机场</code>中只有<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>两种变量，<span class="math inline">\(X\)</span>一般是给定的，而<span class="math inline">\(Y\)</span>一般是在给定<span class="math inline">\(X\)</span>的条件下的输出。</p>
@@ -380,12 +381,40 @@
 X = (X_1, X_2, ..., X_n), Y=(Y_1, Y_2, ..., Y_n)
 \]</span> <strong><code>linear-CRF</code>的数学定义：</strong>设<span class="math inline">\(X = (X_1, X_2, ..., X_n)\)</span>，<span class="math inline">\(Y=(Y_1, Y_2, ..., Y_n)\)</span>均为线性链表示的随机变量序列，在给定随机变量序列<span class="math inline">\(X\)</span>的情况下，随机变量<span class="math inline">\(Y\)</span>的条件概率分布<span class="math inline">\(P(Y|X)\)</span>构成条件随机场，即满足马尔科夫性： <span class="math display">\[
 P(Y_i|X, Y_1, Y_2, ..., Y_n) = P(Y_i|X, Y_{i-1}, Y_{i+1})
-\]</span> 在<code>linear-CRF</code>中，特征函数分为两类，第一类是定义在<span class="math inline">\(Y\)</span>节点上的节点特征函数，这类特征函数只和当前节点有关，记为： <span class="math display">\[
+\]</span> 在<code>linear-CRF</code>中，特征函数分为两类，第一类是定义在<span class="math inline">\(Y\)</span>节点上的<strong>节点特征函数</strong>，这类特征函数只和当前节点有关，记为： <span class="math display">\[
 s_l(y_i, x, i), \ \ l = 1, 2, ..., L
 \]</span> 其中<span class="math inline">\(L\)</span>是定义在该节点的节点特征函数的总个数，<span class="math inline">\(i\)</span>是当前节点在序列的位置。</p>
-<p>第二类是定义在<span class="math inline">\(Y\)</span>上下文的局部特征函数，这类特征函数只和当前节点和上一个节点有关，记为： <span class="math display">\[
+<p>第二类是定义在<span class="math inline">\(Y\)</span>上下文的<strong>局部特征函数</strong>，这类特征函数只和当前节点和上一个节点有关，记为： <span class="math display">\[
 t_k(y_{i-1}, y_i, x, i), \ \ k = 1, 2, ..., K
 \]</span> 其中<span class="math inline">\(K\)</span>是定义在该节点的局部特征函数的总个数，<span class="math inline">\(i\)</span>是当前节点在序列的位置。之所以只有上下文相关的局部特征函数，没有不相邻节点之前的特征函数，是因为<code>linear-CRF</code>符合<code>马尔科夫性</code>。</p>
+<p>无论是节点特征函数还是局部特征函数，它们的取值只能是0或者1。即满足特征条件或者不满足特征条件，同时我们可以为每个特征函数赋予一个权值，用以表达对这个特征函数的信任度。假设<span class="math inline">\(t_k\)</span>的权重系数是<span class="math inline">\(\lambda_k\)</span>，<span class="math inline">\(s_l\)</span>的权重系数是<span class="math inline">\(\mu_l\)</span>，则<code>linear-CRF</code>是由<span class="math inline">\(t_k, \lambda_k, s_l, \mu_l\)</span>共同决定。</p>
+<p>此时就可以得到<code>linear-CRF</code>的参数化形式： <span class="math display">\[
+P(y|x) = \frac{1}{Z(x)}exp\biggl(\sum_{i,k}\lambda_kt_k(y_{i-1}, y_i, x, i) + \sum_{i,l}\mu_ls_l(y_i, x, i)\biggr)
+\]</span> 其中，<span class="math inline">\(Z(x)\)</span>为规范化因子： <span class="math display">\[
+Z(x) = \sum_yexp\biggl(\sum_{i,k}\lambda_kt_k(y_{i-1}, y_i, x, i) + \sum_{i,l}\mu_ls_l(y_i, x, i)\biggr)
+\]</span> 在表示上来看，我们用<span class="math inline">\(s_l\)</span>表示节点特征函数，用<span class="math inline">\(t_k\)</span>表示局部特征函数，同时也用了不同的符号表示权重系数，导致表示起来比较麻烦。在这边我们对特征函数稍加整理统一起来。</p>
+<p>假设我们有<span class="math inline">\(K_1\)</span>个局部特征函数和<span class="math inline">\(K_2\)</span>个节点特征函数，总共有<span class="math inline">\(K=K_1 + K_2\)</span>个特征函数。我们用一个特征函数<span class="math inline">\(f_k(y_{i-1}, y_i, x, i)\)</span>来统一表示： <span class="math display">\[
+f_k(y_{i-1}, y_i, x, i) = \begin{cases} 
+t_k(y_i, y_i, x, i) \ \ k = 1, 2, ..., K_1 \\
+s_l(y_i, x, i) \ \ k = K_1 + l, l = 1, 2, ..., K_2
+\end{cases}
+\]</span> 对<span class="math inline">\(f_k(y_{i-1}, y_i, x, i)\)</span>在各个序列位置求和得到： <span class="math display">\[
+f_k(y, x) = \sum_{i=1}^{n}f_k(y_{i-1}, y_i, x, i)
+\]</span> 同时我们也统一<span class="math inline">\(f_k(y_{i-1}, y_i, x, i)\)</span>对应的权重系数<span class="math inline">\(w_k\)</span>如下： <span class="math display">\[
+w_k = \begin{cases} 
+\lambda_k \ \ k = 1, 2, ..., K_1 \\
+\mu_l \ \ k = K_1 + l, l = 1, 2, ..., K_2
+\end{cases}
+\]</span> 这样，<code>linear-CRF</code>的参数化形式简化为： <span class="math display">\[
+P(y|x) = \frac{1}{Z(x)}exp\sum_{k=1}^Kw_kf_k(y, x)
+\]</span> 其中，<span class="math inline">\(Z(x)\)</span>为规范化因子： <span class="math display">\[
+Z(x) = \sum_yexp\sum_{k=1}^Kw_kf_k(y, x)
+\]</span> 如果将上式中的<span class="math inline">\(w_k\)</span>与<span class="math inline">\(f_k\)</span>用向量表示，即 <span class="math display">\[
+w = (w_1, w_2, ..., w_K)^T \ \ \ \ F(y, x) = (f_1(y, x), f_2(y, x), ..., f_K(y, x))^T 
+\]</span> 则<code>linear-CRF</code>的参数化形式简化为内积形式如下： <span class="math display">\[
+P_w(y|x) = \frac{exp(w \cdot F(y, x))}{Z_w(x)} = \frac{exp(w \cdot F(y, x))}{\sum_yexp(w \cdot F(y, x))}
+\]</span></p>
+<h4 id="二前向后向算法评估标记序列概率"><u>二、前向后向算法评估标记序列概率</u></h4>
 
       
     </div>
@@ -483,8 +512,17 @@ t_k(y_{i-1}, y_i, x, i), \ \ k = 1, 2, ..., K
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/pandas.jpeg"
@@ -546,6 +584,22 @@ t_k(y_{i-1}, y_i, x, i), \ \ k = 1, 2, ..., K
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一从随机场到线性链条件随机场"><span class="nav-number">1.</span> <span class="nav-text">一、从随机场到线性链条件随机场</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二前向后向算法评估标记序列概率"><span class="nav-number">2.</span> <span class="nav-text">二、前向后向算法评估标记序列概率</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
