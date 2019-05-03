@@ -98,7 +98,7 @@
 <meta property="og:site_name" content="彼得的博客">
 <meta property="og:description" content="拖了很多的一段时间了，今天就总结一下CRF(Condition Random Field Model)，这是一个非常优美的判别式算法。（截止到今天已经是2019年5月2号了，自从上次建立这篇文章已经过去了大半年了。。证明如果有些事情想做，最好就是在当下。） 第一次接触CRF是因为要做音乐名NER，后来在做TTS(Text To Speech)的时候也有尝试用Bi-LSTM+CRF来判断一句没有标点">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-03T15:38:34.823Z">
+<meta property="og:updated_time" content="2019-05-03T15:53:16.681Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Condition Random Field Model">
 <meta name="twitter:description" content="拖了很多的一段时间了，今天就总结一下CRF(Condition Random Field Model)，这是一个非常优美的判别式算法。（截止到今天已经是2019年5月2号了，自从上次建立这篇文章已经过去了大半年了。。证明如果有些事情想做，最好就是在当下。） 第一次接触CRF是因为要做音乐名NER，后来在做TTS(Text To Speech)的时候也有尝试用Bi-LSTM+CRF来判断一句没有标点">
@@ -375,8 +375,17 @@
 <p>从这个层面来看，<code>CRF</code>跟普通分类器不同的地方在于，它在标记数据的时候，可以考虑相邻数据的标记信息。这一点是普通的分类器难以做到的。<code>随机场</code>是由若干个位置组成的整体，当给每一个位置中按照某种分布随机赋予一个值之后，其全体就叫做<code>随机场</code>。而<code>马尔科夫随机场</code>是随机场的特例，它假设<code>随机场</code>中某一个位置的赋值仅仅与它相邻的位置赋值有关，和跟它不相邻的位置赋值无关。</p>
 <p>而<code>条件随机场</code>是<code>马尔科夫随机场</code>的特例，它假设<code>马尔科夫随机场</code>中只有<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>两种变量，<span class="math inline">\(X\)</span>一般是给定的，而<span class="math inline">\(Y\)</span>一般是在给定<span class="math inline">\(X\)</span>的条件下的输出。</p>
 <p>作为一个判断别式算法，<code>CRF</code>是给定一组输入随机变量<span class="math inline">\(X\)</span>（具体，对应观测序列<span class="math inline">\(o_1, …, o_i\)</span>）条件下，另一组输出随机变量<span class="math inline">\(Y\)</span>（具体，对应隐藏状态序列<span class="math inline">\(i_1, …, i_i\)</span>的条件概率分布模型，也就是用于预测与输入序列相对应标注序列的模型。</p>
-<p>准确的<code>CRF</code>数学语言描述是：设<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>是随机变量，<span class="math inline">\(P(Y|X)\)</span>是给定<span class="math inline">\(X\)</span>时<span class="math inline">\(Y\)</span>的条件概率分布，若随机变量<span class="math inline">\(Y\)</span>构成的是一个<code>马尔科夫随机场</code>，则成条件概率分布<span class="math inline">\(P(Y|X)\)</span>是条件随机场。</p>
-<p>这里主要介绍定义在线性链上的特殊的条件随机场，称为线性链条件随机场(<code>linear chain conditional random field</code>)</p>
+<p><strong>准确的<code>CRF</code>数学语言描述是</strong>：设<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>是随机变量，<span class="math inline">\(P(Y|X)\)</span>是给定<span class="math inline">\(X\)</span>时<span class="math inline">\(Y\)</span>的条件概率分布，若随机变量<span class="math inline">\(Y\)</span>构成的是一个<code>马尔科夫随机场</code>，则成条件概率分布<span class="math inline">\(P(Y|X)\)</span>是条件随机场。</p>
+<p>这里主要介绍定义在线性链上的特殊的条件随机场，称为线性链条件随机场(<code>linear chain conditional random field</code>)。简单来说就是我们要求<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>都具有相同的结构，即 <span class="math display">\[
+X = (X_1, X_2, ..., X_n), Y=(Y_1, Y_2, ..., Y_n)
+\]</span> <strong><code>linear-CRF</code>的数学定义：</strong>设<span class="math inline">\(X = (X_1, X_2, ..., X_n)\)</span>，<span class="math inline">\(Y=(Y_1, Y_2, ..., Y_n)\)</span>均为线性链表示的随机变量序列，在给定随机变量序列<span class="math inline">\(X\)</span>的情况下，随机变量<span class="math inline">\(Y\)</span>的条件概率分布<span class="math inline">\(P(Y|X)\)</span>构成条件随机场，即满足马尔科夫性： <span class="math display">\[
+P(Y_i|X, Y_1, Y_2, ..., Y_n) = P(Y_i|X, Y_{i-1}, Y_{i+1})
+\]</span> 在<code>linear-CRF</code>中，特征函数分为两类，第一类是定义在<span class="math inline">\(Y\)</span>节点上的节点特征函数，这类特征函数只和当前节点有关，记为： <span class="math display">\[
+s_l(y_i, x, i), \ \ l = 1, 2, ..., L
+\]</span> 其中<span class="math inline">\(L\)</span>是定义在该节点的节点特征函数的总个数，<span class="math inline">\(i\)</span>是当前节点在序列的位置。</p>
+<p>第二类是定义在<span class="math inline">\(Y\)</span>上下文的局部特征函数，这类特征函数只和当前节点和上一个节点有关，记为： <span class="math display">\[
+t_k(y_{i-1}, y_i, x, i), \ \ k = 1, 2, ..., K
+\]</span> 其中<span class="math inline">\(K\)</span>是定义在该节点的局部特征函数的总个数，<span class="math inline">\(i\)</span>是当前节点在序列的位置。之所以只有上下文相关的局部特征函数，没有不相邻节点之前的特征函数，是因为<code>linear-CRF</code>符合<code>马尔科夫性</code>。</p>
 
       
     </div>
