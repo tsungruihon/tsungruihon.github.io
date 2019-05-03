@@ -418,7 +418,26 @@ Z(x) = \sum_yexp\sum_{k=1}^Kw_kf_k(y, x)
 w = (w_1, w_2, ..., w_K)^T \ \ \ \ F(y, x) = (f_1(y, x), f_2(y, x), ..., f_K(y, x))^T 
 \]</span> 则<code>linear-CRF</code>的参数化形式简化为内积形式如下： <span class="math display">\[
 P_w(y|x) = \frac{exp(w \cdot F(y, x))}{Z_w(x)} = \frac{exp(w \cdot F(y, x))}{\sum_yexp(w \cdot F(y, x))}
-\]</span></p>
+\]</span> 而同时我们可以将<code>linear-CRF</code>的参数化形式写成矩阵形式。首先定义一个$m  x  m <span class="math inline">\(的矩阵\)</span>M$， <span class="math inline">\(m\)</span>为<span class="math inline">\(y\)</span>所有可能状态的取值个数，<span class="math inline">\(M\)</span>的定义如下： <span class="math display">\[
+\left[
+\begin{array}{cc|c}
+M_i(y_{i-1}, y_i|x) 
+\end{array}
+\right] = 
+\left[
+\begin{array}{cc|c}
+exp(W_i(y_{i-1}, y_i|x))
+\end{array}
+\right]
+= 
+\left[
+\begin{array}{cc|c}
+exp(\sum_{k=1}^{K}w_kf_k(y_{i-1, y_i, x, i}))
+\end{array}
+\right]
+\]</span> 我们引入起点和终点标记<span class="math inline">\(y_0=start\)</span>, <span class="math inline">\(y_{n+1} = stop\)</span>，这样序列<span class="math inline">\(y\)</span>的非规范化概率可以通过<span class="math inline">\(n+1\)</span>个矩阵元素的乘积得到，即： <span class="math display">\[
+P_w(y|x) = \frac{1}{Z_w(x)} \prod_{i=1}^{n+1}M_i(y_{i-1}, y_i|x)
+\]</span> 其中<span class="math inline">\(Z_w(x)\)</span>为规范化因子。</p>
 <h4 id="二前向后向算法评估标记序列概率"><u>二、前向后向算法评估标记序列概率</u></h4>
 <p><strong>2.1 <code>linear-CRF</code>的三个基本问题</strong></p>
 <p><code>linear-CRF</code>第一个问题：评估。即给定<code>linear-CRF</code>的条件概率分布<span class="math inline">\(P(y|x)\)</span>，在给定输入序列<span class="math inline">\(x\)</span>和输出序列<span class="math inline">\(y\)</span>时，计算条件概率<span class="math inline">\(P(y_i|x)\)</span>和<span class="math inline">\(P(y_{i-1}, y_i|x)\)</span>以及对应的期望。</p>
