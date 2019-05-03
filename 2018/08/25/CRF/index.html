@@ -98,7 +98,7 @@
 <meta property="og:site_name" content="彼得的博客">
 <meta property="og:description" content="拖了很多的一段时间了，今天就总结一下CRF(Condition Random Field Model)，这是一个非常优美的判别式算法。（截止到今天已经是2019年5月2号了，自从上次建立这篇文章已经过去了大半年了。。证明如果有些事情想做，最好就是在当下。） 第一次接触CRF是因为要做音乐名NER，后来在做TTS(Text To Speech)的时候也有尝试用Bi-LSTM+CRF来判断一句没有标点">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-03T16:25:34.715Z">
+<meta property="og:updated_time" content="2019-05-03T16:26:23.843Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Condition Random Field Model">
 <meta name="twitter:description" content="拖了很多的一段时间了，今天就总结一下CRF(Condition Random Field Model)，这是一个非常优美的判别式算法。（截止到今天已经是2019年5月2号了，自从上次建立这篇文章已经过去了大半年了。。证明如果有些事情想做，最好就是在当下。） 第一次接触CRF是因为要做音乐名NER，后来在做TTS(Text To Speech)的时候也有尝试用Bi-LSTM+CRF来判断一句没有标点">
@@ -415,6 +415,7 @@ w = (w_1, w_2, ..., w_K)^T \ \ \ \ F(y, x) = (f_1(y, x), f_2(y, x), ..., f_K(y, 
 P_w(y|x) = \frac{exp(w \cdot F(y, x))}{Z_w(x)} = \frac{exp(w \cdot F(y, x))}{\sum_yexp(w \cdot F(y, x))}
 \]</span></p>
 <h4 id="二前向后向算法评估标记序列概率"><u>二、前向后向算法评估标记序列概率</u></h4>
+<p>2.1 <code>linear-CRF</code>的三个基本问题</p>
 
       
     </div>
