@@ -376,7 +376,7 @@
           
             <p>拖了很多的一段时间了，今天就总结一下<code>CRF(Condition Random Field Model)</code>，这是一个非常优美的判别式算法。（截止到今天已经是2019年5月2号了，自从上次建立这篇文章已经过去了大半年了。。证明如果有些事情想做，最好就是在当下。）</p>
 <p>第一次接触<code>CRF</code>是因为要做音乐名<code>NER</code>，后来在做<code>TTS(Text To Speech)</code>的时候也有尝试用<code>Bi-LSTM+CRF</code>来判断一句没有标点的长句子中应该在哪里进行断句。</p>
-<h4 id="一从随机场到线性链条件随机场"><u>一、从随机场到线性链条件随机场</u></h4>
+<p><strong>一、从随机场到线性链条件随机场</strong></p>
 <p>我们知道，在<code>HMM</code>中，观测节点<span class="math inline">\(o_i\)</span>依赖隐藏状态节点<span class="math inline">\(i_i\)</span>，也就意味着观测节点只依赖当前时刻的隐藏状态。但在实际场景下，观测序列是需要很多特征来刻画，譬如标注<span class="math inline">\(i_i\)</span>不仅跟当前状态<span class="math inline">\(o_i\)</span>相关，而且还跟前后标注<span class="math inline">\(o_j(j \neq i)\)</span>相关。</p>
 <p>从这个层面来看，<code>CRF</code>跟普通分类器不同的地方在于，它在标记数据的时候，可以考虑相邻数据的标记信息。这一点是普通的分类器难以做到的。<code>随机场</code>是由若干个位置组成的整体，当给每一个位置中按照某种分布随机赋予一个值之后，其全体就叫做<code>随机场</code>。而<code>马尔科夫随机场</code>是随机场的特例，它假设<code>随机场</code>中某一个位置的赋值仅仅与它相邻的位置赋值有关，和跟它不相邻的位置赋值无关。</p>
 <p>而<code>条件随机场</code>是<code>马尔科夫随机场</code>的特例，它假设<code>马尔科夫随机场</code>中只有<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>两种变量，<span class="math inline">\(X\)</span>一般是给定的，而<span class="math inline">\(Y\)</span>一般是在给定<span class="math inline">\(X\)</span>的条件下的输出。</p>
@@ -438,11 +438,12 @@ exp(\sum_{k=1}^{K}w_kf_k(y_{i-1, y_i, x, i}))
 \]</span> 我们引入起点和终点标记<span class="math inline">\(y_0=start\)</span>, <span class="math inline">\(y_{n+1} = stop\)</span>，这样序列<span class="math inline">\(y\)</span>的非规范化概率可以通过<span class="math inline">\(n+1\)</span>个矩阵元素的乘积得到，即： <span class="math display">\[
 P_w(y|x) = \frac{1}{Z_w(x)} \prod_{i=1}^{n+1}M_i(y_{i-1}, y_i|x)
 \]</span> 其中<span class="math inline">\(Z_w(x)\)</span>为规范化因子。</p>
-<h4 id="二前向后向算法评估标记序列概率"><u>二、前向后向算法评估标记序列概率</u></h4>
+<p><strong>二、前向后向算法评估标记序列概率</strong></p>
 <p><strong>2.1 <code>linear-CRF</code>的三个基本问题</strong></p>
 <p><code>linear-CRF</code>第一个问题：评估。即给定<code>linear-CRF</code>的条件概率分布<span class="math inline">\(P(y|x)\)</span>，在给定输入序列<span class="math inline">\(x\)</span>和输出序列<span class="math inline">\(y\)</span>时，计算条件概率<span class="math inline">\(P(y_i|x)\)</span>和<span class="math inline">\(P(y_{i-1}, y_i|x)\)</span>以及对应的期望。</p>
 <p><code>linear-CRF</code>第二个问题：学习。即给定训练数据<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>，学习<code>linear-CRF</code>的模型参数<span class="math inline">\(w_k\)</span>和条件概率<span class="math inline">\(P_w(y|x)\)</span>，梯度下降或者拟牛顿法都可以解决。</p>
 <p><code>linear-CRF</code>第三个问题：解码。即给定<code>linear-CRF</code>的条件概率分布<span class="math inline">\(P(y|x)\)</span>，和输入序列<span class="math inline">\(x\)</span>， 计算使条件概率最大的输出序列<span class="math inline">\(y\)</span>，而我们使用<code>维特比算法</code>就可以解决这个问题。</p>
+<p><strong>2.2 <code>linear-CRF</code>的前向后向概率概述</strong></p>
 
           
         
