@@ -98,7 +98,7 @@
 <meta property="og:site_name" content="彼得的博客">
 <meta property="og:description" content="拖了很多的一段时间了，今天就总结一下CRF(Condition Random Field Model)，这是一个非常优美的判别式算法。（截止到今天已经是2019年5月2号了，自从上次建立这篇文章已经过去了大半年了。。证明如果有些事情想做，最好就是在当下。） 第一次接触CRF是因为要做音乐名NER，后来在做TTS(Text To Speech)的时候也有尝试用Bi-LSTM+CRF来判断一句没有标点">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-04T07:32:24.873Z">
+<meta property="og:updated_time" content="2019-05-04T08:31:43.486Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Condition Random Field Model">
 <meta name="twitter:description" content="拖了很多的一段时间了，今天就总结一下CRF(Condition Random Field Model)，这是一个非常优美的判别式算法。（截止到今天已经是2019年5月2号了，自从上次建立这篇文章已经过去了大半年了。。证明如果有些事情想做，最好就是在当下。） 第一次接触CRF是因为要做音乐名NER，后来在做TTS(Text To Speech)的时候也有尝试用Bi-LSTM+CRF来判断一句没有标点">
@@ -483,6 +483,29 @@ P(y_{i-1}, y_i|x) =
 \frac{\alpha_{i-1}^T(y_{i-1}|x)M_i(y_{i-1}, y_i|x)\beta_i(y_i|x)}{Z(x)}
 = \frac{\alpha_{i-1}^T(y_{i-1}|x)M_i(y_{i-1}, y_i|x}{\alpha_n^T(x) \cdot 1}
 \]</span></p>
+<p><strong>三、模型学习与维特比算法解码</strong></p>
+<p><strong>3.1 <code>linear-CRF</code>模型参数学习思路</strong></p>
+<p>在<code>linear-CRF</code>模型参数学习问题中，我们给定训练数据集<span class="math inline">\(X\)</span>和对应的标记序列<span class="math inline">\(Y\)</span>，<span class="math inline">\(K\)</span>个特征函数<span class="math inline">\(f_k(x, y)\)</span>，需要学习<code>linear-CRF</code>的模型参数<span class="math inline">\(w_k\)</span>和条件概率<span class="math inline">\(P_w(y|x)\)</span>，其中条件概率<span class="math inline">\(P_w(y|x)\)</span>和模型参数<span class="math inline">\(w_k\)</span>满足以下关系： <span class="math display">\[
+P_w(y|x) = 
+P(y|x) = 
+\frac{1}{Z_w(x)}exp\sum_{k=1}^Kw_kf_k(x, y) 
+= \frac{exp\sum_{k=1}^Kw_kf_k(x, y)}{\sum_y exp\sum_{k=1}^Kw_kf_k(x, y)}
+\]</span> 我们的目标就是要求出所有的模型参数<span class="math inline">\(w_k\)</span>，我们可以使用梯度下降来进行求解。</p>
+<p><strong>3.2 <code>linear-CRF</code>模型参数学习之梯度下降法求解</strong></p>
+<p>首先需要定义优化函数，一般极大化条件分布<span class="math inline">\(P_w(y|x)\)</span>的对数似然函数如下： <span class="math display">\[
+L(w) = log \prod_{x, y} P_w(y|x)^{\bar P(x, y)} = \sum_{x, y} \bar P(x, y)logP_w(y|x)
+\]</span> 其中<span class="math inline">\(\bar P(x, y)\)</span>为经验分布，可以从先验知识和训练集样本中得到。下面我们极小化<span class="math inline">\(f(w) = -L(P_w)\)</span>： <span class="math display">\[
+\begin{aligned}
+f(w) &amp;= -\sum_{x, y} \bar P(x, y)logP_w(y | x) \\
+&amp;= \sum_{x, y} \bar P(x, y)logZ_w(x) - \sum_{x, y} \bar P(x, y) \sum_{k=1}^Kw_kf_k(x, y) \\
+&amp;= \sum_{x} \bar P(x)logZ_w(x) - \sum_{x, y} \bar P(x, y) \sum_{k=1}^Kw_kf_k(x, y) \\
+&amp;= \sum_x \bar P(x)log\sum_y exp \sum_{k=1}^Kw_kf_k(x, y) - \sum_{x, y} \bar P(x, y) \sum_{k=1}^Kw_kf_k(x, y)
+\end{aligned}
+\]</span> 经过一系列变态的xxll变换后，我们对<span class="math inline">\(w\)</span>求导得： <span class="math display">\[
+\frac{\partial f(w)}{\partial w} = \sum_{x, y} \bar P(x) P_w(y|x)f(x, y) - \sum_{x, y} \bar P (x, y)f(x, y)
+\]</span> 然后就可以用梯度下降法来迭代求解最优的<span class="math inline">\(w\)</span>。在迭代过程中，每次更新<span class="math inline">\(w\)</span>后，都需要同步更新<span class="math inline">\(P_w(x, y)\)</span>，以用于下一次迭代的梯度计算。</p>
+<p><strong>3.3 <code>linear-CRF</code>模型维特比算法解码思路</strong></p>
+<p>在这个问题中，</p>
 
       
     </div>
