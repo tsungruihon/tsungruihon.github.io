@@ -98,7 +98,7 @@
 <meta property="og:site_name" content="彼得的博客">
 <meta property="og:description" content="拖了很多的一段时间了，今天就总结一下CRF(Condition Random Field Model)，这是一个非常优美的判别式算法。（截止到今天已经是2019年5月2号了，自从上次建立这篇文章已经过去了大半年了。。证明如果有些事情想做，最好就是在当下。） 第一次接触CRF是因为要做音乐名NER，后来在做TTS(Text To Speech)的时候也有尝试用Bi-LSTM+CRF来判断一句没有标点">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-04T08:31:43.486Z">
+<meta property="og:updated_time" content="2019-05-04T09:00:32.677Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Condition Random Field Model">
 <meta name="twitter:description" content="拖了很多的一段时间了，今天就总结一下CRF(Condition Random Field Model)，这是一个非常优美的判别式算法。（截止到今天已经是2019年5月2号了，自从上次建立这篇文章已经过去了大半年了。。证明如果有些事情想做，最好就是在当下。） 第一次接触CRF是因为要做音乐名NER，后来在做TTS(Text To Speech)的时候也有尝试用Bi-LSTM+CRF来判断一句没有标点">
@@ -505,7 +505,44 @@ f(w) &amp;= -\sum_{x, y} \bar P(x, y)logP_w(y | x) \\
 \frac{\partial f(w)}{\partial w} = \sum_{x, y} \bar P(x) P_w(y|x)f(x, y) - \sum_{x, y} \bar P (x, y)f(x, y)
 \]</span> 然后就可以用梯度下降法来迭代求解最优的<span class="math inline">\(w\)</span>。在迭代过程中，每次更新<span class="math inline">\(w\)</span>后，都需要同步更新<span class="math inline">\(P_w(x, y)\)</span>，以用于下一次迭代的梯度计算。</p>
 <p><strong>3.3 <code>linear-CRF</code>模型维特比算法解码思路</strong></p>
-<p>在这个问题中，</p>
+<p>在这个问题中，给定条件随机场的条件概率<span class="math inline">\(P(y|x)\)</span>和一个观测序列<span class="math inline">\(x\)</span>，要求出满足<span class="math inline">\(P(y|x)\)</span>最大序列<span class="math inline">\(y\)</span>。</p>
+<p>维特比算法是一个动态规划算法，利用了两个局部状态和对应的递推公式，从局部递推到整体，进而得解。</p>
+<p>对于<code>linear-CRF</code>的维特比算法，第一个局部状态定义为<span class="math inline">\(\delta_i(l)\)</span>，表示在位置<span class="math inline">\(i\)</span>标记<span class="math inline">\(l\)</span>各个可能取值<span class="math inline">\((1, 2, …, m)\)</span>对应的非规范化概率的最大值。根据<span class="math inline">\(\delta_i(l)\)</span>的定义，我们递推在位置<span class="math inline">\(i+1\)</span>标记<span class="math inline">\(l\)</span>的表达式为: <span class="math display">\[
+\delta_{i+1}(l) = \underset{1 \le j \le m}{max} 
+\{ \delta_i{(j)}  + \sum_{k=1}^K w_kf_k(y_i = j, y_{i+1} = l, x, i) \}, \ \ l = 1, 2, ..., m
+\]</span> 同时我们需要另一个局部状态<span class="math inline">\(\psi_{i+1}(l)\)</span>来记录<span class="math inline">\(\delta_{i+1}(l)\)</span>达到最大的位置<span class="math inline">\(i\)</span>的标记取值，这个值用来最终回溯最优解，<span class="math inline">\(\psi_{i+1}(l)\)</span>的递推表达式为： <span class="math display">\[
+\psi_{i+1}(l) =arg \ \  \underset{1 \le j \le m}{max} 
+\{ \delta_i{(j)}  + \sum_{k=1}^K w_kf_k(y_i = j, y_{i+1} = l, x, i) \}, \ \ l = 1, 2, ..., m
+\]</span> <strong>3.4 <code>linear-CRF</code>模型维特比算法流程</strong></p>
+<p>输入：模型的<span class="math inline">\(K\)</span>个特征函数，和对应的<span class="math inline">\(K\)</span>个权重。观测序列<span class="math inline">\(x=(x_1, x_2, …, x_n)\)</span>，可能的标记个数<span class="math inline">\(m\)</span></p>
+<p>输出：最优标记序列<span class="math inline">\(y^* = (y_1^*, y_2^*, …, y_n^*)\)</span></p>
+<p>1）初始化： <span class="math display">\[
+\begin{aligned}
+\delta_1(l) = \sum_{k=1}^K w_kf_k(y_0 &amp;= start, y_1=l, x, i), \ \ l = 1, 2, ..., m \\
+\psi_1(l) &amp;= start, \ \ l = 1, 2, ..., m
+\end{aligned}
+\]</span></p>
+<p>2）对于<span class="math inline">\(i = 1, 2, …, n-1\)</span>， 进行递推： <span class="math display">\[
+\delta_{i+1}(l) = \underset{1 \le j \le m}{max} 
+\{ \delta_i{(j)}  + \sum_{k=1}^K w_kf_k(y_i = j, y_{i+1} = l, x, i) \}, \ \ l = 1, 2, ..., m
+\]</span></p>
+<p><span class="math display">\[
+\psi_{i+1}(l) =arg \ \  \underset{1 \le j \le m}{max} 
+\{ \delta_i{(j)}  + \sum_{k=1}^K w_kf_k(y_i = j, y_{i+1} = l, x, i) \}, \ \ l = 1, 2, ..., m
+\]</span></p>
+<p>3）终止： <span class="math display">\[
+y_n^* = arg \ \ \underset{1 \le j \le m}{max} \delta_n(j)
+\]</span></p>
+<p>4）回溯： <span class="math display">\[
+y_i^* = \psi_{i+1}(y_{i+1}^*), \ \ i = n -1, n-2, ..., 1)
+\]</span> 最终得到最优标记序列<span class="math inline">\(y^* = (y_1^*, y_2^*, …, y_n^*)\)</span></p>
+<p><strong>四、<code>linear-CRF</code> vs <code>HMM</code></strong></p>
+<p><code>linear-CRF</code>和<code>HMM</code>都有很多相似之处，尤其是三个经典问题非常类似，除了模型参数学习的问题求解方法不同以外，概率估计问题和解码问题使用的算法思路基本上也是相同的。同时，两者都可以用于序列模型。在<code>NLP</code>领域下都被广泛使用。</p>
+<p>而在不同点上，主要区别如下：</p>
+<ol type="1">
+<li><code>linear-CRF</code>是判别模型，主要是优化求解条件概率<span class="math inline">\(P(y|x)，\)</span>而<code>HMM</code>是生成模型，主要解的是联合分布<span class="math inline">\(P(x, y)\)</span>。</li>
+<li><code>linear-CRF</code>利用最大熵模型的思路去建立条件概率模型，对于观测序列并没有做马尔科夫假设。而<code>HMM</code>是对观测序列做了马尔科夫假设的前提下建立联合分布模型。</li>
+</ol>
 
       
     </div>
