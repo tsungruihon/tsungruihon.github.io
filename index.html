@@ -374,7 +374,7 @@
       
         
           
-            <p>拖了很多的一段时间了，今天就总结一下<code>CRF(Condition Random Field Model)</code>，这是一个非常优美的判别式算法。（截止到今天已经是2019年5月2号了，自从上次建立这篇文章已经过去了大半年了。。证明如果有些事情想做，最好就是在当下。）</p>
+            <p>拖了很多的一段时间了，今天就总结一下<code>CRF(Condition Random Field Model)</code>，这是一个非常优美的判别式算法。（截止到今天已经是2019年5月2号了，自从上次建立这篇文章已经过去了大半年了，当时也只写了标题。。前两天才慢慢总结回来。证明如果有些事情想做，最好就是在当下）</p>
 <p>第一次接触<code>CRF</code>是因为要做音乐名<code>NER</code>，后来在做<code>TTS(Text To Speech)</code>的时候也有尝试用<code>Bi-LSTM+CRF</code>来判断一句没有标点的长句子中应该在哪里进行断句。</p>
 <p><strong>一、从随机场到线性链条件随机场</strong></p>
 <p>我们知道，在<code>HMM</code>中，观测节点<span class="math inline">\(o_i\)</span>依赖隐藏状态节点<span class="math inline">\(i_i\)</span>，也就意味着观测节点只依赖当前时刻的隐藏状态。但在实际场景下，观测序列是需要很多特征来刻画，譬如标注<span class="math inline">\(i_i\)</span>不仅跟当前状态<span class="math inline">\(o_i\)</span>相关，而且还跟前后标注<span class="math inline">\(o_j(j \neq i)\)</span>相关。</p>
