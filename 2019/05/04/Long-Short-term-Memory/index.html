@@ -102,7 +102,7 @@
 <meta property="og:image" content="http://yoursite.com/images/the-count.jpg">
 <meta property="og:image" content="http://yoursite.com/images/220px-Pierre-Simon_Laplace.jpg">
 <meta property="og:image" content="http://yoursite.com/images/tears.png">
-<meta property="og:updated_time" content="2019-05-06T15:42:39.064Z">
+<meta property="og:updated_time" content="2019-05-06T15:47:29.379Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Long Short-term Memory">
 <meta name="twitter:description" content="大概是去年八月份的时候，我第一次接触到语言模型。那个时候尝试了N-gram，但是发现N-gram在句子语义捕捉和泛化的表现都很有限，因此当时慢慢接触到LSTM，简直有种相见恨晚的感觉。 为了更好地介绍LSTM，我觉得结合语言模型(Language Model)这个实际案例去分析会更好。 一、语言模型  语言模型（LM）是自然语言处理（NLP）中最基础且重要的组成部分，它的核心任务就是在给定先前单">
@@ -382,7 +382,7 @@
 <p><b>语言模型（LM）</b>是自然语言处理（NLP）中最基础且重要的组成部分，它的核心任务就是在给定先前单词的情况下预测下一个单词出现的概率。正因为语言模型能够在单词或者句子的句法和语义关系中有一个很好的捕捉，因此在语音识别、机器翻译、分词、文本生成和句法分析中都有广泛的应用。</p>
 <p>在具体应用中，例如拼音输入法，就有提供快速文本输入的预测能力。下面我们利用语言模型判断给定的句子是否通顺。而无论是基于<code>n-gram</code>还是基于<code>LSTM</code>，语言模型核心的公式都是以下这个： <span class="math display">\[
 \begin{aligned}
-P(w_1 \ldots w_n) &amp;= P(w_1) P(w_2 \mid w_1) P(w_3 \mid w_1 w_2) \ldots P(w_n \mid w_1 \ldots w_{n-1}) \\\\
+P(w_1 \ldots w_n) &amp;= P(w_1) P(w_2|w_1) P(w_3|w_1 w_2) \ldots P(w_n|w_1 \ldots w_{n-1}) \\\\
 &amp;= \prod_{i} P(w_i|w_1w_2 \ldots w_{i-1})
 \end{aligned}
 \]</span> <strong>1.1 Statistic Language Model</strong></p>
@@ -390,7 +390,7 @@ P(w_1 \ldots w_n) &amp;= P(w_1) P(w_2 \mid w_1) P(w_3 \mid w_1 w_2) \ldots P(w_n
 P(w_1 \dots w_m) = \prod_{i}^{m} P(w_i|w_1w_2 \dots w_{i-1}) \approx \prod_{i}^{m} P(w_i | w_{i-(n-1)} \dots w_{i-1})
 \]</span></p>
 <p><span class="math display">\[
-P(w_i | w_{i-(n-1)} \dots w_{i-1}) = P(w_{i-(n-1)}, w_{i-1}, w_i)\ / \ P(w_{i-(n-1)}, \dots, w_{i-1})
+P(w_i|w_{i-(n-1)} \dots w_{i-1}) = P(w_{i-(n-1)}, w_{i-1}, w_i)\ / \ P(w_{i-(n-1)}, \dots, w_{i-1})
 \]</span></p>
 <p>如果<span class="math inline">\(n=2\)</span>， 这种情况叫做<span class="math inline">\(bigram\)</span>，则<span class="math inline">\(P(w_n | w_{n-1}) = P(w_{n-1}w_n)\ / \ P(w_{n-1})\)</span></p>
 <p>例如，</p>
