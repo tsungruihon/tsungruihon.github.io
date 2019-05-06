@@ -90,19 +90,22 @@
 
 
 
-<meta name="description" content="大概是去年八月份的时候，我第一次接触到语言模型。那个时候尝试了N-gram（后面会针对N-gram写一篇总结文章），但是发现N-gram(Long Short-term Memory)在句子语义捕捉和泛化的表现都很有限，因此当时慢慢接触到LSTM，简直有种相见恨晚的感觉。 一、总述 LSTM的前身是RNN(Recurrent Neural Network)，RNN的主要用途是处理和预测序列数据，">
+<meta name="description" content="大概是去年八月份的时候，我第一次接触到语言模型。那个时候尝试了N-gram，但是发现N-gram(Long Short-term Memory)在句子语义捕捉和泛化的表现都很有限，因此当时慢慢接触到LSTM，简直有种相见恨晚的感觉。 为了更好地介绍LSTM，我觉得结合语言模型(Language Model)这个实际案例去分析会更好。 一、语言模型  语言模型（LM）是自然语言处理（NLP）中最基">
 <meta name="keywords" content="Deep Learning">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Long Short-term Memory">
 <meta property="og:url" content="http://yoursite.com/2019/05/04/Long-Short-term-Memory/index.html">
 <meta property="og:site_name" content="彼得的博客">
-<meta property="og:description" content="大概是去年八月份的时候，我第一次接触到语言模型。那个时候尝试了N-gram（后面会针对N-gram写一篇总结文章），但是发现N-gram(Long Short-term Memory)在句子语义捕捉和泛化的表现都很有限，因此当时慢慢接触到LSTM，简直有种相见恨晚的感觉。 一、总述 LSTM的前身是RNN(Recurrent Neural Network)，RNN的主要用途是处理和预测序列数据，">
+<meta property="og:description" content="大概是去年八月份的时候，我第一次接触到语言模型。那个时候尝试了N-gram，但是发现N-gram(Long Short-term Memory)在句子语义捕捉和泛化的表现都很有限，因此当时慢慢接触到LSTM，简直有种相见恨晚的感觉。 为了更好地介绍LSTM，我觉得结合语言模型(Language Model)这个实际案例去分析会更好。 一、语言模型  语言模型（LM）是自然语言处理（NLP）中最基">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/LSTM.png">
-<meta property="og:updated_time" content="2019-05-06T14:45:39.738Z">
+<meta property="og:image" content="http://yoursite.com/images/the-count.jpg">
+<meta property="og:image" content="http://yoursite.com/images/220px-Pierre-Simon_Laplace.jpg">
+<meta property="og:image" content="http://yoursite.com/images/tears.png">
+<meta property="og:updated_time" content="2019-05-06T15:34:49.092Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Long Short-term Memory">
-<meta name="twitter:description" content="大概是去年八月份的时候，我第一次接触到语言模型。那个时候尝试了N-gram（后面会针对N-gram写一篇总结文章），但是发现N-gram(Long Short-term Memory)在句子语义捕捉和泛化的表现都很有限，因此当时慢慢接触到LSTM，简直有种相见恨晚的感觉。 一、总述 LSTM的前身是RNN(Recurrent Neural Network)，RNN的主要用途是处理和预测序列数据，">
+<meta name="twitter:description" content="大概是去年八月份的时候，我第一次接触到语言模型。那个时候尝试了N-gram，但是发现N-gram(Long Short-term Memory)在句子语义捕捉和泛化的表现都很有限，因此当时慢慢接触到LSTM，简直有种相见恨晚的感觉。 为了更好地介绍LSTM，我觉得结合语言模型(Language Model)这个实际案例去分析会更好。 一、语言模型  语言模型（LM）是自然语言处理（NLP）中最基">
 <meta name="twitter:image" content="http://yoursite.com/images/LSTM.png">
 
 
@@ -372,8 +375,204 @@
 
       
         <p><img src="/images/LSTM.png"></p>
-<p>大概是去年八月份的时候，我第一次接触到语言模型。那个时候尝试了<code>N-gram</code>（后面会针对<code>N-gram</code>写一篇总结文章），但是发现<code>N-gram(Long Short-term Memory)</code>在句子语义捕捉和泛化的表现都很有限，因此当时慢慢接触到<code>LSTM</code>，简直有种相见恨晚的感觉。</p>
-<p><strong>一、总述</strong></p>
+<p>大概是去年八月份的时候，我第一次接触到语言模型。那个时候尝试了<code>N-gram</code>，但是发现<code>N-gram(Long Short-term Memory)</code>在句子语义捕捉和泛化的表现都很有限，因此当时慢慢接触到<code>LSTM</code>，简直有种相见恨晚的感觉。</p>
+<p>为了更好地介绍<code>LSTM</code>，我觉得结合<code>语言模型(Language Model)</code>这个实际案例去分析会更好。</p>
+<p><strong>一、语言模型</strong></p>
+<p><img src="/images/the-count.jpg"></p>
+<p><b>语言模型（LM）</b>是自然语言处理（NLP）中最基础且重要的组成部分，它的核心任务就是在给定先前单词的情况下预测下一个单词出现的概率。正因为语言模型能够在单词或者句子的句法和语义关系中有一个很好的捕捉，因此在语音识别、机器翻译、分词、文本生成和句法分析中都有广泛的应用。</p>
+<p>在具体应用中，例如拼音输入法，就有提供快速文本输入的预测能力。下面我们利用语言模型判断给定的句子是否通顺。而无论是基于<code>n-gram</code>还是基于<code>LSTM</code>，核心的公式都是以下这个： <span class="math display">\[
+\begin{aligned}
+P(w_1 \ldots w_n) &amp;= P(w_1) P(w_2 \mid w_1) P(w_3 \mid w_1 w_2) \ldots P(w_n \mid w_1 \ldots w_{n-1}) \\\\
+&amp;= \prod_{i} P(w_i|w_1w_2 \ldots w_{i-1})
+\end{aligned}
+\]</span> <strong>1.1 Statistic Language Model</strong></p>
+<p>首先我们来看一下<code>n-gram</code>的数学公式： <span class="math display">\[
+P(w_1 \dots w_m) = \prod_{i}^{m} P(w_i|w_1w_2 \dots w_{i-1}) \approx \prod_{i}^{m} P(w_i | w_{i-(n-1)} \dots w_{i-1})
+\]</span></p>
+<p><span class="math display">\[
+P(w_i | w_{i-(n-1)} \dots w_{i-1}) = P(w_{i-(n-1)}, w_{i-1}, w_i)\ / \ P(w_{i-(n-1)}, \dots, w_{i-1})
+\]</span></p>
+<p>如果<span class="math inline">\(n=2\)</span>， 这种情况叫做<span class="math inline">\(bigram\)</span>，则<span class="math inline">\(P(w_n | w_{n-1}) = P(w_{n-1}w_n)\ / \ P(w_{n-1})\)</span></p>
+<p>例如，</p>
+<p>$ P(我,想,吃,番茄,鸡蛋,面) P(我|BOS)P(想|我)P(吃|想)P(番茄|吃)P(鸡蛋|番茄)P(面|鸡蛋)P(EOS|面) $</p>
+<p>那么其实我们可以有很多中方法来实现<code>n-gram</code>模型。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># 首先要做一些无聊的初步行动。。</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="im">import</span> re</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="im">from</span> collections <span class="im">import</span> Counter</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> CountVectorizer </a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">TEXT <span class="op">=</span> <span class="bu">open</span>(<span class="st">&#39;data/big.txt&#39;</span>).read()</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co"># 一、统计n个单词连续出现的次数</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co"># 可以用pythonic的方法</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="kw">def</span> ngrams_pythonic(input_list, n):</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">    <span class="co">&quot;统计文本中n个单词连续出现的次数&quot;</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">    <span class="cf">return</span> <span class="bu">zip</span>(<span class="op">*</span>[input_list[i:] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n)])</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">text_split <span class="op">=</span> TEXT.split(<span class="st">&#39; &#39;</span>)</a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">result <span class="op">=</span> <span class="bu">list</span>(ngrams_pythonic(text_split, <span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb1-15" data-line-number="15">count_bigram_pythonic <span class="op">=</span> Counter(result)</a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="bu">print</span>(result[:<span class="dv">10</span>])</a>
+<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="bu">print</span>(count_bigram_pythonic.most_common(<span class="dv">10</span>))</a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="op">**</span>[output]<span class="op">**</span></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19">[(<span class="st">&#39;The&#39;</span>, <span class="st">&#39;Project&#39;</span>), (<span class="st">&#39;Project&#39;</span>, <span class="st">&#39;Gutenberg&#39;</span>), (<span class="st">&#39;Gutenberg&#39;</span>, <span class="st">&#39;EBook&#39;</span>), (<span class="st">&#39;EBook&#39;</span>, <span class="st">&#39;of&#39;</span>), (<span class="st">&#39;of&#39;</span>, <span class="st">&#39;The&#39;</span>), (<span class="st">&#39;The&#39;</span>, <span class="st">&#39;Adventures&#39;</span>), (<span class="st">&#39;Adventures&#39;</span>, <span class="st">&#39;of&#39;</span>), (<span class="st">&#39;of&#39;</span>, <span class="st">&#39;Sherlock&#39;</span>), (<span class="st">&#39;Sherlock&#39;</span>, <span class="st">&#39;Holmes</span><span class="ch">\n</span><span class="st">by&#39;</span>), (<span class="st">&#39;Holmes</span><span class="ch">\n</span><span class="st">by&#39;</span>, <span class="st">&#39;Sir&#39;</span>)]</a>
+<a class="sourceLine" id="cb1-20" data-line-number="20">[((<span class="st">&#39;&#39;</span>, <span class="st">&#39;&#39;</span>), <span class="dv">19750</span>), ((<span class="st">&#39;of&#39;</span>, <span class="st">&#39;the&#39;</span>), <span class="dv">10086</span>), ((<span class="st">&#39;in&#39;</span>, <span class="st">&#39;the&#39;</span>), <span class="dv">4720</span>), ((<span class="st">&#39;to&#39;</span>, <span class="st">&#39;the&#39;</span>), <span class="dv">3486</span>), ((<span class="st">&#39;and&#39;</span>, <span class="st">&#39;the&#39;</span>), <span class="dv">2368</span>), ((<span class="st">&#39;on&#39;</span>, <span class="st">&#39;the&#39;</span>), <span class="dv">1809</span>), ((<span class="st">&#39;at&#39;</span>, <span class="st">&#39;the&#39;</span>), <span class="dv">1593</span>), ((<span class="st">&#39;by&#39;</span>, <span class="st">&#39;the&#39;</span>), <span class="dv">1523</span>), ((<span class="st">&#39;of&#39;</span>, <span class="st">&#39;a&#39;</span>), <span class="dv">1443</span>), ((<span class="st">&#39;from&#39;</span>, <span class="st">&#39;the&#39;</span>), <span class="dv">1383</span>)]</a>
+<a class="sourceLine" id="cb1-21" data-line-number="21"></a>
+<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="co"># 或者用sklearn的CountVectorizer方法</span></a>
+<a class="sourceLine" id="cb1-23" data-line-number="23">vectorizer <span class="op">=</span> CountVectorizer(ngram_range<span class="op">=</span>(<span class="dv">2</span>,<span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb1-24" data-line-number="24">analyzer <span class="op">=</span> vectorizer.build_analyzer()</a>
+<a class="sourceLine" id="cb1-25" data-line-number="25">result <span class="op">=</span> analyzer(TEXT)</a>
+<a class="sourceLine" id="cb1-26" data-line-number="26">count_bigram_sklearn <span class="op">=</span> Counter(result)</a>
+<a class="sourceLine" id="cb1-27" data-line-number="27"><span class="bu">print</span>(result[:<span class="dv">10</span>])</a>
+<a class="sourceLine" id="cb1-28" data-line-number="28"><span class="bu">print</span>(count_bigram_sklearn.most_common(<span class="dv">10</span>))</a>
+<a class="sourceLine" id="cb1-29" data-line-number="29"><span class="op">**</span>[output]<span class="op">**</span></a>
+<a class="sourceLine" id="cb1-30" data-line-number="30">[<span class="st">&#39;the project&#39;</span>, <span class="st">&#39;project gutenberg&#39;</span>, <span class="st">&#39;gutenberg ebook&#39;</span>, <span class="st">&#39;ebook of&#39;</span>, <span class="st">&#39;of the&#39;</span>, <span class="st">&#39;the adventures&#39;</span>, <span class="st">&#39;adventures of&#39;</span>, <span class="st">&#39;of sherlock&#39;</span>, <span class="st">&#39;sherlock holmes&#39;</span>, <span class="st">&#39;holmes by&#39;</span>]</a>
+<a class="sourceLine" id="cb1-31" data-line-number="31">[(<span class="st">&#39;of the&#39;</span>, <span class="dv">12530</span>), (<span class="st">&#39;in the&#39;</span>, <span class="dv">6447</span>), (<span class="st">&#39;to the&#39;</span>, <span class="dv">4464</span>), (<span class="st">&#39;and the&#39;</span>, <span class="dv">3213</span>), (<span class="st">&#39;on the&#39;</span>, <span class="dv">2527</span>), (<span class="st">&#39;at the&#39;</span>, <span class="dv">2103</span>), (<span class="st">&#39;by the&#39;</span>, <span class="dv">1938</span>), (<span class="st">&#39;from the&#39;</span>, <span class="dv">1865</span>), (<span class="st">&#39;with the&#39;</span>, <span class="dv">1735</span>), (<span class="st">&#39;it is&#39;</span>, <span class="dv">1673</span>)]</a>
+<a class="sourceLine" id="cb1-32" data-line-number="32"></a>
+<a class="sourceLine" id="cb1-33" data-line-number="33"><span class="co"># 或者用正常的index记录方法</span></a>
+<a class="sourceLine" id="cb1-34" data-line-number="34"><span class="kw">def</span> ngrams_normal(input_data, n):</a>
+<a class="sourceLine" id="cb1-35" data-line-number="35">    <span class="co">&quot;统计文本中n个单词连续出现的次数&quot;</span></a>
+<a class="sourceLine" id="cb1-36" data-line-number="36">    input_data <span class="op">=</span> input_data.split(<span class="st">&#39; &#39;</span>)</a>
+<a class="sourceLine" id="cb1-37" data-line-number="37">    output <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb1-38" data-line-number="38">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(input_data)<span class="op">-</span>n<span class="op">+</span><span class="dv">1</span>):</a>
+<a class="sourceLine" id="cb1-39" data-line-number="39">        output.append(<span class="st">&#39; &#39;</span>.join(input_data[i:i<span class="op">+</span>n]))</a>
+<a class="sourceLine" id="cb1-40" data-line-number="40">    <span class="cf">return</span> output</a>
+<a class="sourceLine" id="cb1-41" data-line-number="41"></a>
+<a class="sourceLine" id="cb1-42" data-line-number="42">result <span class="op">=</span> ngrams_normal(TEXT, <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb1-43" data-line-number="43">count_bigram <span class="op">=</span> Counter(result)</a>
+<a class="sourceLine" id="cb1-44" data-line-number="44"><span class="bu">print</span>(result[:<span class="dv">10</span>])</a>
+<a class="sourceLine" id="cb1-45" data-line-number="45"><span class="bu">print</span>(count_bigram.most_common(<span class="dv">10</span>))</a>
+<a class="sourceLine" id="cb1-46" data-line-number="46"><span class="op">**</span>[output]<span class="op">**</span></a>
+<a class="sourceLine" id="cb1-47" data-line-number="47">[<span class="st">&#39;The Project&#39;</span>, <span class="st">&#39;Project Gutenberg&#39;</span>, <span class="st">&#39;Gutenberg EBook&#39;</span>, <span class="st">&#39;EBook of&#39;</span>, <span class="st">&#39;of The&#39;</span>, <span class="st">&#39;The Adventures&#39;</span>, <span class="st">&#39;Adventures of&#39;</span>, <span class="st">&#39;of Sherlock&#39;</span>, <span class="st">&#39;Sherlock Holmes</span><span class="ch">\n</span><span class="st">by&#39;</span>, <span class="st">&#39;Holmes</span><span class="ch">\n</span><span class="st">by Sir&#39;</span>]</a>
+<a class="sourceLine" id="cb1-48" data-line-number="48">[(<span class="st">&#39; &#39;</span>, <span class="dv">19750</span>), (<span class="st">&#39;of the&#39;</span>, <span class="dv">10086</span>), (<span class="st">&#39;in the&#39;</span>, <span class="dv">4720</span>), (<span class="st">&#39;to the&#39;</span>, <span class="dv">3486</span>), (<span class="st">&#39;and the&#39;</span>, <span class="dv">2368</span>), (<span class="st">&#39;on the&#39;</span>, <span class="dv">1809</span>), (<span class="st">&#39;at the&#39;</span>, <span class="dv">1593</span>), (<span class="st">&#39;by the&#39;</span>, <span class="dv">1523</span>), (<span class="st">&#39;of a&#39;</span>, <span class="dv">1443</span>), (<span class="st">&#39;from the&#39;</span>, <span class="dv">1383</span>)]</a>
+<a class="sourceLine" id="cb1-49" data-line-number="49"></a>
+<a class="sourceLine" id="cb1-50" data-line-number="50"><span class="co"># 二、规范化单词并且生成每个单词的概率分布</span></a>
+<a class="sourceLine" id="cb1-51" data-line-number="51"><span class="kw">def</span> tokens(text):</a>
+<a class="sourceLine" id="cb1-52" data-line-number="52">    <span class="co">&quot;列出文本中所有的单词，并且标准化为小写&quot;</span></a>
+<a class="sourceLine" id="cb1-53" data-line-number="53">    <span class="cf">return</span> re.findall(<span class="st">&#39;[a-z]+&#39;</span>, text.lower()) </a>
+<a class="sourceLine" id="cb1-54" data-line-number="54"></a>
+<a class="sourceLine" id="cb1-55" data-line-number="55"><span class="kw">def</span> pdist(counter):</a>
+<a class="sourceLine" id="cb1-56" data-line-number="56">    <span class="co">&quot;生成每个单词的概率分布&quot;</span></a>
+<a class="sourceLine" id="cb1-57" data-line-number="57">    N <span class="op">=</span> <span class="bu">sum</span>(counter.values())</a>
+<a class="sourceLine" id="cb1-58" data-line-number="58">    <span class="cf">return</span> <span class="kw">lambda</span> x: counter[x]<span class="op">/</span>N</a>
+<a class="sourceLine" id="cb1-59" data-line-number="59"></a>
+<a class="sourceLine" id="cb1-60" data-line-number="60">count_single_words <span class="op">=</span> Counter(tokens(TEXT))</a>
+<a class="sourceLine" id="cb1-61" data-line-number="61">Pword <span class="op">=</span> pdist(count_single_words)</a>
+<a class="sourceLine" id="cb1-62" data-line-number="62">P2word <span class="op">=</span> pdist(count_bigram_sklearn)</a>
+<a class="sourceLine" id="cb1-63" data-line-number="63"></a>
+<a class="sourceLine" id="cb1-64" data-line-number="64"><span class="co"># 三、定义连乘函数、独立的句子概率函数以及条件概率函数</span></a>
+<a class="sourceLine" id="cb1-65" data-line-number="65"><span class="kw">def</span> product(nums):</a>
+<a class="sourceLine" id="cb1-66" data-line-number="66">    <span class="co">&quot;连乘&quot;</span></a>
+<a class="sourceLine" id="cb1-67" data-line-number="67">    result <span class="op">=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb1-68" data-line-number="68">    <span class="cf">for</span> x <span class="kw">in</span> nums:</a>
+<a class="sourceLine" id="cb1-69" data-line-number="69">        result <span class="op">*=</span> x</a>
+<a class="sourceLine" id="cb1-70" data-line-number="70">    <span class="cf">return</span> result</a>
+<a class="sourceLine" id="cb1-71" data-line-number="71"></a>
+<a class="sourceLine" id="cb1-72" data-line-number="72"><span class="kw">def</span> Pwords(words):</a>
+<a class="sourceLine" id="cb1-73" data-line-number="73">    <span class="co">&quot;在每个单词都是独立的假设下计算句子概率&quot;</span></a>
+<a class="sourceLine" id="cb1-74" data-line-number="74">    <span class="cf">return</span> product(Pword(w) <span class="cf">for</span> w <span class="kw">in</span> words)</a>
+<a class="sourceLine" id="cb1-75" data-line-number="75"></a>
+<a class="sourceLine" id="cb1-76" data-line-number="76"><span class="kw">def</span> cPword(word, prev):</a>
+<a class="sourceLine" id="cb1-77" data-line-number="77">    <span class="co">&quot;在给定先前一个单词A的情况下计算单词B的条件概率&quot;</span></a>
+<a class="sourceLine" id="cb1-78" data-line-number="78">    bigram <span class="op">=</span> prev <span class="op">+</span> <span class="st">&#39; &#39;</span> <span class="op">+</span> word</a>
+<a class="sourceLine" id="cb1-79" data-line-number="79">    <span class="cf">if</span> P2word(bigram) <span class="op">&gt;</span> <span class="dv">0</span> <span class="kw">and</span> Pword(prev) <span class="op">&gt;</span> <span class="dv">0</span>:</a>
+<a class="sourceLine" id="cb1-80" data-line-number="80">        <span class="cf">return</span> P2word(bigram) <span class="op">/</span> Pword(prev)</a>
+<a class="sourceLine" id="cb1-81" data-line-number="81">    <span class="cf">else</span>: <span class="co"># 如果prev没有出现在文本中，则假设prev的概率和word的概率一样</span></a>
+<a class="sourceLine" id="cb1-82" data-line-number="82">        <span class="cf">return</span> Pword(word) <span class="op">/</span> <span class="dv">2</span></a>
+<a class="sourceLine" id="cb1-83" data-line-number="83">    </a>
+<a class="sourceLine" id="cb1-84" data-line-number="84"><span class="kw">def</span> Pwords2(words, prev<span class="op">=</span><span class="st">&#39;&lt;S&gt;&#39;</span>):</a>
+<a class="sourceLine" id="cb1-85" data-line-number="85">    <span class="co">&quot;在bigram的假设下计算句子概率&quot;</span></a>
+<a class="sourceLine" id="cb1-86" data-line-number="86">    <span class="cf">return</span> product(cPword(w, (prev <span class="cf">if</span> (i <span class="op">==</span> <span class="dv">0</span>) <span class="cf">else</span> words[i<span class="dv">-1</span>]))</a>
+<a class="sourceLine" id="cb1-87" data-line-number="87">                   <span class="cf">for</span> (i, w) <span class="kw">in</span> <span class="bu">enumerate</span>(words))</a>
+<a class="sourceLine" id="cb1-88" data-line-number="88">  </a>
+<a class="sourceLine" id="cb1-89" data-line-number="89"> tests <span class="op">=</span> [<span class="st">&#39;this is a test&#39;</span>, </a>
+<a class="sourceLine" id="cb1-90" data-line-number="90">         <span class="st">&#39;this is a unusual test&#39;</span>]</a>
+<a class="sourceLine" id="cb1-91" data-line-number="91">    </a>
+<a class="sourceLine" id="cb1-92" data-line-number="92"><span class="bu">print</span>(Pwords(tokens(<span class="st">&#39;this is a a test&#39;</span>)))</a>
+<a class="sourceLine" id="cb1-93" data-line-number="93"><span class="bu">print</span>(Pwords2(tokens(<span class="st">&#39;this is a a test&#39;</span>)))</a>
+<a class="sourceLine" id="cb1-94" data-line-number="94"><span class="op">**</span>[output]<span class="op">**</span></a>
+<a class="sourceLine" id="cb1-95" data-line-number="95"><span class="fl">5.710178770217587e-13</span></a>
+<a class="sourceLine" id="cb1-96" data-line-number="96"><span class="fl">3.1528382685054453e-13</span></a>
+<a class="sourceLine" id="cb1-97" data-line-number="97"></a>
+<a class="sourceLine" id="cb1-98" data-line-number="98"><span class="bu">print</span>(Pwords2(tokens(<span class="st">&#39;this is a neverbeforeseen test&#39;</span>)))</a>
+<a class="sourceLine" id="cb1-99" data-line-number="99"><span class="bu">print</span>(Pwords2(tokens(<span class="st">&#39;neverbeforeseen&#39;</span>)))</a>
+<a class="sourceLine" id="cb1-100" data-line-number="100"><span class="op">**</span>[output]<span class="op">**</span></a>
+<a class="sourceLine" id="cb1-101" data-line-number="101"><span class="fl">0.0</span></a>
+<a class="sourceLine" id="cb1-102" data-line-number="102"><span class="fl">0.0</span></a></code></pre></div>
+<p>在这里我们看到一旦句子中出现文本没有出现过的单词，那么整个句子的概率就会被判断为0。但实际上，我们并不希望单个未出现的单词影响了整个句子概率的判断，因此我们可以使用平滑方法来解决这个问题。 而目前的平滑方法一般有</p>
+<ul>
+<li>Laplace Smoothing</li>
+<li>Lidstone’s law</li>
+<li>Backoff</li>
+<li>Interpolation</li>
+<li>Absolute Discounting</li>
+<li>Kneser-Ney Smoothing</li>
+<li><a href="https://blog.csdn.net/baimafujinji/article/details/51297802" target="_blank" rel="noopener">自然语言处理中N-Gram模型的Smoothing算法小结</a></li>
+</ul>
+<p>在这里我们使用最简单的方法——<code>Laplace</code>提出的平滑方法。</p>
+<p><span class="math inline">\(P(w_n | w_{n-1}) = (count(w_n, w_{n-1}) + c) \ / \ (count(w_{n-1}) + V)\)</span></p>
+<p><img src="/images/220px-Pierre-Simon_Laplace.jpg"></p>
+<p> <i>What we know is little, and what we are ignorant of is immense.(我们现在所知的真是很少,不知的却无限)<i>— Pierre Simon Laplace, 1749-1827</i></i></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">def</span> cPword_smoothing(word, prev):</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">    <span class="co">&quot;在给定先前一个单词A的情况下计算单词B的条件概率&quot;</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">    bigram <span class="op">=</span> prev <span class="op">+</span> <span class="st">&#39; &#39;</span> <span class="op">+</span> word</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">    <span class="cf">if</span> P2word(bigram) <span class="op">&gt;</span> <span class="dv">0</span> <span class="kw">and</span> Pword(prev) <span class="op">&gt;</span> <span class="dv">0</span>:</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">        <span class="cf">return</span> P2word(bigram) <span class="op">/</span> Pword(prev)</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">    <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">        <span class="co"># add-1 laplace smoothing</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">        <span class="cf">return</span> (count_bigram_sklearn[bigram] <span class="op">+</span> <span class="dv">1</span>) <span class="op">/</span> (count_single_words[prev] <span class="op">+</span> <span class="bu">len</span>(count_single_words))</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">    </a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="kw">def</span> Pwords2_smoothing(words, prev<span class="op">=</span><span class="st">&#39;&lt;S&gt;&#39;</span>):</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11">    <span class="co">&quot;在bigram的假设下计算句子概率&quot;</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12">    <span class="cf">return</span> product(cPword_smoothing(w, (prev <span class="cf">if</span> (i <span class="op">==</span> <span class="dv">0</span>) <span class="cf">else</span> words[i<span class="dv">-1</span>]))</a>
+<a class="sourceLine" id="cb2-13" data-line-number="13">                   <span class="cf">for</span> (i, w) <span class="kw">in</span> <span class="bu">enumerate</span>(words))</a>
+<a class="sourceLine" id="cb2-14" data-line-number="14">  </a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="bu">print</span>(Pwords2_smoothing(tokens(<span class="st">&#39;this is a neverbeforeseen test&#39;</span>)))</a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="bu">print</span>(Pwords2_smoothing(tokens(<span class="st">&#39;neverbeforeseen&#39;</span>)))</a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="op">**</span>[output]<span class="op">**</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="fl">4.6915593493550787e-20</span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="fl">3.4297081318379805e-05</span></a></code></pre></div>
+<p>但实际上，为了考虑性能，也就是考虑计算速度以及内存方面，我们一般会采用网上成型的方法。那么kenLM在性能和应用中都很符合我们的需求。</p>
+<ul>
+<li><a href="https://github.com/kpu/kenlm" target="_blank" rel="noopener">kenLM: Faster and Smaller Language Model Queries</a></li>
+<li>SRILM</li>
+<li>IRSTLM</li>
+<li>MITLM</li>
+<li>RandLM</li>
+<li>BerkeleyLM</li>
+<li>Sheffield</li>
+<li>TPT</li>
+</ul>
+<p><span class="math inline">\(Perplexity(C) = \sqrt[N]{\frac {1}{P(w_1, w_2, ..., w_n)}} = \sqrt[N]{\frac {1}{\prod p(w_i)}}\)</span>，<span class="math inline">\(Perplexity\)</span>值越小，则说明句子越接近真实情况。</p>
+<p>我自己训练了一个<code>kenLM</code>，就放一个示例给大家看看。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="im">import</span> kenlm</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="im">import</span> jieba</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">klm_model_path <span class="op">=</span> <span class="st">&#39;3_grams_model.klm&#39;</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">klm_model <span class="op">=</span> kenlm.Model(klm_model_path)</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw">def</span> perplexity(string):</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">    <span class="cf">return</span> klm_model.perplexity(<span class="st">&#39; &#39;</span>.join(<span class="bu">list</span>(jieba.cut(string))))</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="bu">print</span>(perplexity(<span class="st">&#39;我想吃番茄鸡蛋面&#39;</span>))</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="op">**</span>[output]<span class="op">**</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="fl">62.6007247134787</span> </a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="bu">print</span>(perplexity(<span class="st">&#39;番茄鸡蛋面想吃我&#39;</span>))</a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="op">**</span>[output]<span class="op">**</span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="fl">2730.8233144363626</span> </a></code></pre></div>
+<p><u><strong>Statistical Language Model总结</strong></u></p>
+<p><strong>优点：</strong></p>
+<ol type="1">
+<li>计算和应用的速度非常快</li>
+<li>应用大规模语聊的话可以很好的解决某些词汇概率为0的情况（当然利用<code>smoothing</code>也可以）</li>
+</ol>
+<p><strong>缺点：</strong></p>
+<ol type="1">
+<li>离散而非连续地看待语义信息，譬如在<code>SLM</code>中，会认为猫和狗是不一样的，假设“狗”没有出现在词汇表汇总，则“我喜欢猫”和“我喜欢狗”的<span class="math inline">\(perplexity\)</span>值将会有很大的差别。但实际上我们希望它们的概率是接近的。</li>
+<li>因为受限于n的大小，<code>SLM</code>缺乏对较远信息的捕捉（而且一般n都是取3）。也就是说，<code>SLM</code>能往前看的视野范围很有限，因此会漏掉前面可能出现的重要信息。</li>
+</ol>
+<p><img src="/images/tears.png"></p>
+<p>后来，<code>Neural Networks Language Model</code>就盛行了。</p>
+<p><strong>1.2 Neural Networks Language Model</strong></p>
 <p><code>LSTM</code>的前身是<code>RNN(Recurrent Neural Network)</code>，<code>RNN</code>的主要用途是处理和预测序列数据，挖掘数据中的时序信息和语义信息。<code>RNN</code>擅长解决序列化相关问题，包括不限于序列化标注问题、<code>NER(Named-entity recognition)</code>、<code>POS(Part-Of-Speech)</code>、语音识别等。</p>
 <p>【未完待续】</p>
 
