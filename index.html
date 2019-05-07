@@ -574,8 +574,15 @@ P(w_i|w_{i-(n-1)} \dots w_{i-1}) = P(w_{i-(n-1)}, w_{i-1}, w_i)\ / \ P(w_{i-(n-1
 <p>后来，<code>Neural Networks Language Model</code>就盛行了。</p>
 <p><strong>1.2 Neural Networks Language Model</strong></p>
 <p>终于来到<code>LSTM</code>的部分啦，关于<code>Neural Networks Language Model</code>，现在已经有很多<code>state-of-the-art</code>的模型了，这部分后面再慢慢跟大家分享，今天主要是分享基于<code>LSTM</code>的<code>language model</code>，而且希望借此机会，深入认识<code>LSTM</code>的各个细节。</p>
-<p><strong><code>LSTM</code></strong></p>
+<ul>
+<li><strong><code>Recurrent Neural Network(RNN)</code></strong></li>
+</ul>
 <p><code>LSTM</code>的前身是<code>RNN(Recurrent Neural Network)</code>，<code>RNN</code>的主要用途是处理和预测序列数据，挖掘数据中的时序信息和语义信息。<code>RNN</code>擅长解决序列化相关问题，包括不限于序列化标注问题、<code>NER(Named-entity recognition)</code>、<code>POS(Part-Of-Speech)</code>、语音识别等。</p>
+<p>针对语言模型来看，相比于传统的神经网络只有一个有限的窗口来考虑前<span class="math inline">\(n\)</span>个元素，也就是说依然都是<code>n-gram</code>那一套，<code>RNN</code>可以捕捉到所有出现过的单词，也就是说在判断单词出现概率的时候，<span class="math inline">\(n\)</span>可以在<code>RNN</code>中实现无限大。</p>
+<p>在<code>RNN</code>中，只有一个自连接的隐藏层，我们可以简单看成输入<span class="math inline">\(x_t\)</span>， 经过一个网络，输出一个值<span class="math inline">\(h_t\)</span>。而且这个网络的特点就是，隐藏层的输出作为下一时刻它的输入。</p>
+<p><img src="/images/RNN_fold.png"></p>
+<p>如果将<code>RNN</code>展开，或许就会知道<code>RNN</code>其实并没有看上去那么神秘。我们可以把<code>RNN</code>看成是由多个隐藏层水平连接，这些隐藏层共用一套参数。每个隐藏层都会将对应的信息传递给后者。下面我们来展开看看：</p>
+<p><img src="/images/RNN_unfold.png"></p>
 <p>【未完待续】</p>
 
           
