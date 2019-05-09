@@ -679,7 +679,7 @@ h_t = o_t \circ tanh(c_t)
 &amp;+i_ttanh^{&#39;}(\cdot)W_C \circ o_{t-1}tanh^{&#39;}(c_{t-1}) \\\\
 &amp;+ f_t
 \end{aligned}
-\]</span> 现在我们就可以看到，当<code>LSTM</code>在进行反向传播<span class="math inline">\(k\)</span>次的时候，我们是连乘了<span class="math inline">\(k\)</span>次上面这个公式。而这与<code>RNN</code>不同的是，<span class="math inline">\(\frac{\partial h}{\partial h_{t-1}}\)</span>最终总是大于1，或者一直在<span class="math inline">\([0, 1]\)</span>，这最终导致了<code>梯度消失</code>或者<code>梯度爆炸</code>。而<span class="math inline">\(\frac{\partial c_t}{\partial c_{t-1}}\)</span>是可以动态调整，如果开始的部分趋向于<span class="math inline">\(0\)</span>，那么我们可以通过调整<span class="math inline">\(f_t\)</span>的值或者其他部分(<span class="math inline">\(f_t, o_t, i_t, g_t\)</span>)来使<span class="math display">\[\frac{\partial c_t}{\partial c_{t-1}}\]</span>爬升接近<span class="math inline">\(1\)</span>，这样可以防止<code>梯度消失</code>或者说是降低<code>梯度消失的程度</code></p>
+\]</span> 现在我们就可以看到，当<code>LSTM</code>在进行反向传播<span class="math inline">\(k\)</span>次的时候，我们是连乘了<span class="math inline">\(k\)</span>次上面这个公式。而这与<code>RNN</code>不同的是，<span class="math inline">\(\frac{\partial h}{\partial h_{t-1}}\)</span>最终总是大于1，或者一直在<span class="math inline">\([0, 1]\)</span>，这最终导致了<code>梯度消失</code>或者<code>梯度爆炸</code>。而<span class="math inline">\(\frac{\partial c_t}{\partial c_{t-1}}\)</span>是可以动态调整，如果开始的部分趋向于<span class="math inline">\(0\)</span>，那么我们可以通过调整<span class="math inline">\(f_t\)</span>的值或者其他部分(<span class="math inline">\(f_t\)</span>，<span class="math inline">\(o_t\)</span>， <span class="math inline">\(i_t\)</span>， <span class="math inline">\(g_t\)</span>)来使<span class="math inline">\(\frac{\partial c_t}{\partial c_{t-1}}\)</span>爬升接近<span class="math inline">\(1\)</span>，这样可以防止<code>梯度消失</code>或者说是降低<code>梯度消失的程度</code>。</p>
 <p>下面我们来看一个比较简单的<code>LSTM</code>语言模型的<code>PyTorch</code>版本。</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="im">import</span> torch.nn <span class="im">as</span> nn</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"></a>
@@ -697,6 +697,7 @@ h_t = o_t \circ tanh(c_t)
 <a class="sourceLine" id="cb4-14" data-line-number="14">        out <span class="op">=</span> out.reshape(out.size(<span class="dv">0</span>)<span class="op">*</span>out.size(<span class="dv">1</span>), out.size(<span class="dv">2</span>))</a>
 <a class="sourceLine" id="cb4-15" data-line-number="15">        out <span class="op">=</span> <span class="va">self</span>.linear(out)</a>
 <a class="sourceLine" id="cb4-16" data-line-number="16">        <span class="cf">return</span> out, (h, c)</a></code></pre></div>
+<p>收工～</p>
 
           
         
