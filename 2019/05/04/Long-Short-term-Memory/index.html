@@ -105,7 +105,7 @@
 <meta property="og:image" content="http://yoursite.com/images/RNN_fold.png">
 <meta property="og:image" content="http://yoursite.com/images/RNN_unfold.png">
 <meta property="og:image" content="http://yoursite.com/images/BPTT.png">
-<meta property="og:updated_time" content="2019-05-08T05:43:52.569Z">
+<meta property="og:updated_time" content="2019-05-09T14:03:27.759Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Long Short-term Memory">
 <meta name="twitter:description" content="大概是去年八月份的时候，我第一次接触到语言模型。那个时候尝试了N-gram，但是发现N-gram在句子语义捕捉和泛化的表现都很有限，因此当时慢慢接触到LSTM，简直有种相见恨晚的感觉。 为了更好地介绍LSTM，我觉得结合语言模型(Language Model)这个实际案例去分析会更好。 一、语言模型  语言模型（LM）是自然语言处理（NLP）中最基础且重要的组成部分，它的核心任务就是在给定先前单">
@@ -594,7 +594,29 @@ h_t &amp;= tanh\biggl(W_{matrix}\begin{pmatrix}
     \end{pmatrix}\biggr) \\\\
     &amp;=  tanh(W_{xh}x_t \ \ + w_{hh}h_{t-1} )
 \end{aligned}
-\]</span> 其中，<span class="math inline">\(x_t\)</span>是长度为<span class="math inline">\(I\)</span>的向量，表示<span class="math inline">\(t\)</span>时刻的输入。<span class="math inline">\(h_t\)</span>是长度为<span class="math inline">\(H\)</span>的向量，表示<span class="math inline">\(t\)</span>时刻的输出。<span class="math inline">\(W\)</span>的维度是<span class="math inline">\(H \mathsf x (I+H)\)</span>。而通常需要对<span class="math inline">\(h_t\)</span>做一次映射，即<span class="math inline">\(o_t = W_{ho} h_t\)</span>，<span class="math inline">\(W_{ho}(V)\)</span>的维度是<span class="math inline">\(K \mathsf x H\)</span>，然后再接入一个<span class="math inline">\(softmax\)</span>进行<span class="math inline">\(t\)</span>时刻的预测，即<span class="math inline">\(y^{&#39;} = softmax(W_{ho}h_t)\)</span>。通过公式我们可以看出，我们一共需要学习<span class="math inline">\(H \mathsf x (I+H) + HK\)</span>个参数，然后就可以处理任意长度的序列。</p>
+\]</span></p>
+<p>其中，<span class="math inline">\(x_t\)</span>是长度为<span class="math inline">\(I\)</span>的向量，表示<span class="math inline">\(t\)</span>时刻的输入。<span class="math inline">\(h_t\)</span>是长度为<span class="math inline">\(H\)</span>的向量，表示<span class="math inline">\(t\)</span>时刻的输出。<span class="math inline">\(W\)</span>的维度是<span class="math inline">\(H \mathsf x (I+H)\)</span>。而通常需要对<span class="math inline">\(h_t\)</span>做一次映射，即<span class="math inline">\(o_t = W_{ho} h_t\)</span>，<span class="math inline">\(W_{ho}(V)\)</span>的维度是<span class="math inline">\(K \mathsf x H\)</span>，然后再接入一个<span class="math inline">\(softmax\)</span>进行<span class="math inline">\(t\)</span>时刻的预测，即<span class="math inline">\(y^{&#39;} = softmax(W_{ho}h_t)\)</span>。通过公式我们可以看出，我们一共需要学习<span class="math inline">\(H \mathsf x (I+H) + HK\)</span>个参数，然后就可以处理任意长度的序列。</p>
+<p>在这里我们顺便复习一下<code>sigmoid</code>和<code>tanh</code>两个激活函数吧。</p>
+<ul>
+<li><code>sigmoid</code> <span class="math inline">\(\in [0, 1]\)</span></li>
+</ul>
+<p><span class="math display">\[
+\begin{aligned}
+y &amp;= \frac{1}{1 + e^{-x}} \\\\
+\frac{\partial y}{\partial x} &amp; = -\frac{1}{1 + e^{-x}} \cdot e^{-x} \cdot (-1) \\
+&amp;= \frac{e^{-x}}{(1+e^{-x})^2} \\
+&amp;= \frac{1}{1+e^{-x}} \cdot \frac{1 + e^{-x} - 1}{1+e^{-x}} \\
+&amp;= y \cdot (1 - y)
+\end{aligned}
+\]</span></p>
+<ul>
+<li><code>tanh</code> <span class="math inline">\(\in [-1, 1]\)</span> <span class="math display">\[
+\begin{aligned}
+y &amp; = \frac{e^x - e^{-x}}{e^x + e^{-x}} \\\\
+\frac{\partial y}{\partial x} &amp;= \frac{(e^x + e^{-x})(e^x + e^{-x}) - (e^x - e^{-x})(e^x - e^{-x})}{(e^x + e^{-x})^2}
+\end{aligned}
+\]</span></li>
+</ul>
 <p>但接下来在介绍<code>RNN</code>的反向传播过程，也就是<code>BackProgagation Through Time(BPTT)</code>，我们就会发现<code>RNN</code>在处理较长序列时，就会很容易出现<code>梯度消失</code>或者<code>梯度爆炸</code>的情况。</p>
 <p>就像很多后向传播算法一样，<code>BPTT</code>重复地使用链式法则。区别在于，对于<code>RNN</code>而言，损失函数不仅依赖于当前时刻的输出层，还需要依赖下一时刻。除了输出层的参数<span class="math inline">\(V=W_{ho}\)</span>，<span class="math inline">\(U=W_{xh}\)</span>和<span class="math inline">\(W = W_{hh}\)</span>在计算更新梯度时都需要考虑当前时刻的梯度和下一时刻的梯度。</p>
 <p>首先我们定义<span class="math inline">\(E_t\)</span>为当前时刻在给定模型时预测<span class="math inline">\(y^{&#39;}\)</span>和实际标注<span class="math inline">\(y_t\)</span>的损失函数，或者我们叫交叉熵损失函数<code>(cross-entroy loss)</code>，<span class="math inline">\(E_t = E(y^{&#39;}, y_t) = \sum_t E( \hat y, y_t) = - \sum_t y_tlog(\hat y_{t})\)</span> 。</p>
@@ -616,13 +638,68 @@ h_t &amp;= tanh\biggl(W_{matrix}\begin{pmatrix}
 \frac{\partial h_{2}}{\partial h_{1}})
 \cdot \frac{\partial h_1}{\partial a_1}
 \]</span> 其中 <span class="math display">\[
-\frac{\partial h}{\partial h_{h-1}} = W_{hh}^T \cdot ( 1 - tanh(a_t)^2)
+\frac{\partial h}{\partial h_{t-1}} = W_{hh}^T \cdot ( 1 - tanh(a_t)^2)
 \]</span> <span class="math inline">\(tanh(a_t)\)</span>的导数是<span class="math inline">\(1-tanh(a_t)^2\)</span>，范围是<span class="math inline">\([0, 1]\)</span>，<span class="math inline">\(\frac{\partial h}{\partial h_{h-1}}\)</span>通常是小于<span class="math inline">\(1\)</span>的数，所以括号里面导数的连乘结果会非常接近<span class="math inline">\(0\)</span>，这就会导致<code>梯度消失</code>。如果忽略激活函数<span class="math inline">\(tanh\)</span>的导数，上面时刻<span class="math inline">\(1\)</span>获得时刻<span class="math inline">\(t\)</span>传来的导数就是<span class="math inline">\((W_{hh}^T)^t\)</span>，设<span class="math inline">\(W_{hh}^T\)</span>的特征值对角矩阵是<span class="math inline">\(\wedge\)</span>，<span class="math inline">\((W_{hh}^T)^t\)</span>就和<span class="math inline">\(\wedge\)</span>有关，如果某个特征值大于<span class="math inline">\(1\)</span>，<span class="math inline">\((W_{hh}^T)^t\)</span>就会很大，可能出现<code>梯度爆炸</code>。如果某个特征值小于<span class="math inline">\(1\)</span>，<span class="math inline">\((W_{hh}^T)^t\)</span>就会很小，可能出现<code>梯度消失</code>。所以当在训练日志中如果发现很多数值出现<code>nan</code>，就说明很有可能出现梯度爆炸。当然我们有很多方法可以防止<code>梯度消失</code>或者<code>梯度爆炸</code>，譬如<code>梯度裁剪</code>、更换激活函数（用<span class="math inline">\(ReLu\)</span>替换<span class="math inline">\(tanh\)</span>）、<code>残差结构</code>、<code>Batch Norm</code>等等。但这篇文章要讨论的方案是利用<code>LSTM</code>替换<code>RNN</code>。</p>
+<p>事实上，<span class="math inline">\(\frac{\partial h}{\partial h_{t-1}}\)</span>本质上是代表当我们在前一时刻对<code>hidden state</code>做调整改变的话，对<code>t</code>时刻的<code>hidden state</code>有多大的影响。所以根据上面的公式来看，如果出现<code>梯度消失</code>，则意味着较早的<code>hidden state</code>对后来的<code>hidden state</code>没有实质性的影响，也就意味着没有起到长期依赖的作用。</p>
 <ul>
 <li><strong><code>Long Short-term Memory(LSTM)</code></strong></li>
 </ul>
-<p>早在1977年，<a href="https://www.wikiwand.com/en/Sepp_Hochreiter" target="_blank" rel="noopener">Sepp Hochreiter</a> and <a href="https://www.wikiwand.com/en/Jürgen_Schmidhuber" target="_blank" rel="noopener">Jürgen Schmidhuber</a>就已经提出利用<a href="https://www.bioinf.jku.at/publications/older/2604.pdf" target="_blank" rel="noopener"><code>LSTM</code></a>解决<code>RNN</code>训练过程中长距离依赖的问题。</p>
-<p>【未完待续】</p>
+<p>早在1977年，<a href="https://www.wikiwand.com/en/Sepp_Hochreiter" target="_blank" rel="noopener">Sepp Hochreiter</a> and <a href="https://www.wikiwand.com/en/Jürgen_Schmidhuber" target="_blank" rel="noopener">Jürgen Schmidhuber</a>就已经提出利用<a href="https://www.bioinf.jku.at/publications/older/2604.pdf" target="_blank" rel="noopener">LSTM</a>解决<code>RNN</code>训练过程中长距离依赖的问题。<code>LSTM</code>主要是靠引入“门”机制，主要是<code>输入门(input gate)</code>、<code>遗忘门(forget gate)</code>、<code>输出门(output gate)</code>以及<code>单元状态值(cell state)</code>。那么我们就来看看这些变量的含义以及数学表达。</p>
+<ol type="1">
+<li><p><code>遗忘门(forget gate)</code></p>
+<p>在<code>LSTM</code>的第一个过程就是我们要决定前一个单元状态的遗忘程度。 <span class="math display">\[
+f_t = \sigma(W_{xh}^fx_t + W_{hh}^f h_{t-1})
+\]</span></p></li>
+<li><p><code>输入门(input gate)</code> &amp; <code>输入门相关状态(candidate values)</code></p>
+<p>第二步就是确定新状态通过的程度。这里有两个部分，第一个部分是<code>input gate</code>，它决定了有多少比例的值需要更新。第二部分是<code>candidate values</code>，这部分值是用来加入到当前的单元状态。 <span class="math display">\[
+\begin{aligned}
+i_t &amp;= \sigma(W_{xh}^ix_t + W_{hh}^i h_{t-1}) \\\\
+g_t &amp;= tanh(W_{xh}^gx_t + W_{hh}^g h_{t-1})
+\end{aligned}
+\]</span></p></li>
+<li><p><code>单元状态值(cell state)</code></p>
+<p>现在是时候从前一个<code>cell state</code>更新到新的<code>cell state</code>。 <span class="math display">\[
+c_t = f_t \circ c_{t-1} + i_t \circ g_t
+\]</span></p></li>
+<li><p><code>输出门(output gate)</code> &amp; <code>当前隐藏状态输出(Hidden state output)</code></p>
+<p>最后，我们就要决定输出的值是什么，这个输出值是基于已经更新的<code>cell state</code>。首先我们需要决定有多少比例的<code>cell state</code>需要被输出，然后我们将<span class="math inline">\(c_t\)</span>经过<span class="math inline">\(tanh\)</span>激活函数映射成<span class="math inline">\([-1, 1]\)</span>，再和<span class="math inline">\(sigmoid\)</span>值相乘来输出我们决定要输出的部分。 <span class="math display">\[
+\begin{aligned}
+o_t = \sigma(W_{xh}^ox_t + W_{hh}^o h_{t-1}) \\\\
+h_t = o_t \circ tanh(c_t)
+\end{aligned}
+\]</span></p></li>
+</ol>
+<p>而其实当<span class="math inline">\(i_t = 1, f_t = 0, o_t = 1\)</span>，就几乎变成了<code>RNN</code>了。</p>
+<p>下面我们来看看<code>LSTM</code>在求偏导的时候发生了什么，以致<code>LSTM</code>能解决<code>梯度消失</code>或<code>梯度爆炸</code>问题。 <span class="math display">\[
+\begin{aligned}
+\frac{\partial c_t}{\partial c_{t-1}} &amp;= \frac{\partial c_t}{\partial f_t}\frac{\partial f_t}{\partial h_{t-1}} \frac{\partial h_{t-1}}{\partial c_{t-1}} 
++ \frac{\partial c_t}{\partial i_t}\frac{\partial i_t}{\partial h_{t-1}} \frac{\partial h_{t-1}}{\partial c_{t-1}} \\\\
+&amp;+ \frac{\partial c_t}{\partial g_t}\frac{\partial g_t}{\partial h_{t-1}} \frac{\partial h_{t-1}}{\partial c_{t-1}}
++ \frac{\partial c_t}{\partial c_{t-1}} \\\\
+\frac{\partial c_t}{\partial c_{t-1}} 
+&amp; = c_{t-1} \sigma^{&#39;}(\cdot)W_f \circ o_{t-1} tanh^{&#39;}(c_{t-1}) \\\\
+&amp;+ g_{t} \sigma^{&#39;}(\cdot)W_i \circ o_{t-1} tanh^{&#39;}(c_{t-1}) \\\\
+&amp;+i_ttanh^{&#39;}(\cdot)W_C \circ o_{t-1}tanh^{&#39;}(c_{t-1}) \\\\
+&amp;+ f_t
+\end{aligned}
+\]</span> 现在我们就可以看到，当<code>LSTM</code>在进行反向传播<span class="math inline">\(k\)</span>次的时候，我们是连乘了<span class="math inline">\(k\)</span>次上面这个公式。而这与<code>RNN</code>不同的是，<span class="math inline">\(\frac{\partial h}{\partial h_{t-1}}\)</span>最终总是大于1，或者一直在<span class="math inline">\([0, 1]\)</span>，这最终导致了<code>梯度消失</code>或者<code>梯度爆炸</code>。而<span class="math inline">\(\frac{\partial c_t}{\partial c_{t-1}}\)</span>是可以动态调整，如果开始的部分趋向于<span class="math inline">\(0\)</span>，那么我们可以通过调整<span class="math inline">\(f_t\)</span>的值或者其他部分(<span class="math inline">\(f_t, o_t, i_t, g_t\)</span>)来使<span class="math display">\[\frac{\partial c_t}{\partial c_{t-1}}\]</span>爬升接近<span class="math inline">\(1\)</span>，这样可以防止<code>梯度消失</code>或者说是降低<code>梯度消失的程度</code></p>
+<p>下面我们来看一个比较简单的<code>LSTM</code>语言模型的<code>PyTorch</code>版本。</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="im">import</span> torch.nn <span class="im">as</span> nn</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw">class</span> RNNLM(nn.Module):</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, vocab_size, embed_size, hidden_size, num_layers):</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">        <span class="bu">super</span>(RNNLM, <span class="va">self</span>).<span class="fu">__init__</span>()</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">        <span class="va">self</span>.embed <span class="op">=</span> nn.Embedding(vocab_size, embed_size)</a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">        <span class="va">self</span>.lstm <span class="op">=</span> nn.LSTM(embed_size, hidden_size, num_layers, batch_first<span class="op">=</span><span class="va">True</span>)</a>
+<a class="sourceLine" id="cb4-9" data-line-number="9">        <span class="va">self</span>.linear <span class="op">=</span> nn.Linear(hidden_size, vocab_size)</a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11">    <span class="kw">def</span> forward(<span class="va">self</span>, x, h):</a>
+<a class="sourceLine" id="cb4-12" data-line-number="12">        x <span class="op">=</span> <span class="va">self</span>.embed(x)</a>
+<a class="sourceLine" id="cb4-13" data-line-number="13">        out, (h, c) <span class="op">=</span> <span class="va">self</span>.lstm(x, h)</a>
+<a class="sourceLine" id="cb4-14" data-line-number="14">        out <span class="op">=</span> out.reshape(out.size(<span class="dv">0</span>)<span class="op">*</span>out.size(<span class="dv">1</span>), out.size(<span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb4-15" data-line-number="15">        out <span class="op">=</span> <span class="va">self</span>.linear(out)</a>
+<a class="sourceLine" id="cb4-16" data-line-number="16">        <span class="cf">return</span> out, (h, c)</a></code></pre></div>
 
       
     </div>
