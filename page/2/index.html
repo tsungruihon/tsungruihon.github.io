@@ -4161,7 +4161,15 @@ f(x) = sign \left (\sum_{i=1}^{N}\alpha_{i}^{*}y_iK(x \cdot x_i) + b^{*}\right)
 <a class="sourceLine" id="cb1-175" data-line-number="175">            results.append(<span class="va">self</span>._predict_(feature))</a>
 <a class="sourceLine" id="cb1-176" data-line-number="176"></a>
 <a class="sourceLine" id="cb1-177" data-line-number="177">        <span class="cf">return</span> results</a></code></pre></div>
-<p>以上。</p>
+<h3 id="四svm解决多分类问题的方法">四、SVM解决多分类问题的方法</h3>
+<ol type="1">
+<li><h4 id="一对多法one-versus-rest">一对多法(one-versus-rest)</h4>
+<p>训练时依次把某个类别的样本归位一类，其他剩余的样本归位另一类，这样<code>k</code>个类别的样本就构造出<code>k</code>个<code>SVM</code>分类器。</p></li>
+<li><h4 id="一对一法one-versus-one">一对一法(one-versus-one)</h4>
+<p>在任意两类样本之间设计一个<code>SVM</code>，因此<code>k</code>个类别的样本就需要设计<code>k(k-1)/2</code>个<code>SVM</code>。当对一个未知样本进行分类时，最后得票最多的类别即为该未知样本的类别。</p></li>
+<li><h4 id="层次支持向量机h-svms">层次支持向量机(H-SVMs)</h4>
+<p>层次分类法首先将所有类别分成两个子类，再将子类进一步划分成两个次级子类，如此循环。</p></li>
+</ol>
 
           
         
