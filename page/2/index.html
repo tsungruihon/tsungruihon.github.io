@@ -4868,7 +4868,7 @@ w_j := w_j + \alpha\sum_{i=1}^m(y^{(i)}-h_w(x^{(i)}))\cdot x_j)
 <ul>
 <li>由于模型形式比较简单，很难去拟合数据的真实分布。</li>
 <li>很难处理数据不平衡的问题，在数据缺失或者特征空间较大的场景下表现不好。</li>
-<li>在不引入其他方法的情况下，只能处理线性可分的数据（只能处理二分类问题）。</li>
+<li>在不引入其他方法的情况下，只能处理线性可分的数据（只能处理二分类问题，除非用<code>kernel trick</code>）。</li>
 <li><code>Logistic Regression</code>本身无法筛选特征，有时候会先用<code>GBDT</code>来筛选特征，再上<code>Logistic Regression</code>。</li>
 </ul>
 
