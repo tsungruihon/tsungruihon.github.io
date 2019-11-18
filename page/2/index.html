@@ -3866,6 +3866,10 @@ L(w, b, \alpha) = \frac{1}{2}||w||^2 - \sum_{i=1} ^{N} \alpha_i\cdot((\mathbf{w}
 &amp; \ \ \ \ \ \ \ \ \ \alpha_i(y_i\cdot(\mathbf{w}^{T}\mathbf{x} + b) - 1) = 0
 \end{aligned}
 \]</span> 求得最优解<code>a*=(a1*, a2*, ..., aN*)^T</code></p>
+<p>其实对偶的做法并没有改变最优解，更多的出发点是用来改变算法复杂度。</p>
+<p>在原问题下，求解算法的复杂度与样本维度（等于权值<code>w</code>的维度）有关，而在对偶问题下，求解算法的复杂度与样本数量（等于拉格朗日算子<code>a</code>的数量）有关。</p>
+<p>因此，如果是做线性分类，且样本维度低于样本数量的话，在原问题喜爱求解就好了。</p>
+<p>但如果是做非线性分类，就会涉及到升维（比如使用高斯核做核函数，其实是将样本升到无穷维），升维后的样本维度往往会远大于样本数量，这时候在对偶问题下求解会更好。</p>
 <p>（3）计算 <span class="math display">\[
 w^{*} = \sum_{i=1}^{N}\alpha_iy_ix_i
 \]</span> 并选择<code>a*</code>的一个正分量<code>aj*&gt;0</code>，计算得 <span class="math display">\[

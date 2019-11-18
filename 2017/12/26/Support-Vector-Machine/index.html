@@ -102,7 +102,7 @@
 <meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202017-12-27%20at%2010.05.16%20PM.png">
 <meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202017-12-28%20at%201.24.55%20AM.png">
 <meta property="og:image" content="http://yoursite.com/images/Screen%20Shot%202017-12-28%20at%2011.32.43%20AM.png">
-<meta property="og:updated_time" content="2017-12-29T02:56:12.354Z">
+<meta property="og:updated_time" content="2019-11-18T02:42:16.132Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Support Vector Machine">
 <meta name="twitter:description" content="这个算法一直困扰着我，虽然我没有在实际中使用过它，但是我早已听闻它的强大之处。但因为里面充满着各种数学推导，不花一些时间去研究实在是无法消化。但是，解决恐惧的最好方法就是直面它。我一直都在看各种相关书籍，以及Youtube上各种SVM的视频，可谓是受尽各种煎熬，当中可能会因为看不懂里面某个公式而坐立不安，然后又找不到人可以沟通请教。所以基本上这个SVM算法整天都在我的脑袋里面挥之不去，然后又没办法">
@@ -434,6 +434,10 @@ L(w, b, \alpha) = \frac{1}{2}||w||^2 - \sum_{i=1} ^{N} \alpha_i\cdot((\mathbf{w}
 &amp; \ \ \ \ \ \ \ \ \ \alpha_i(y_i\cdot(\mathbf{w}^{T}\mathbf{x} + b) - 1) = 0
 \end{aligned}
 \]</span> 求得最优解<code>a*=(a1*, a2*, ..., aN*)^T</code></p>
+<p>其实对偶的做法并没有改变最优解，更多的出发点是用来改变算法复杂度。</p>
+<p>在原问题下，求解算法的复杂度与样本维度（等于权值<code>w</code>的维度）有关，而在对偶问题下，求解算法的复杂度与样本数量（等于拉格朗日算子<code>a</code>的数量）有关。</p>
+<p>因此，如果是做线性分类，且样本维度低于样本数量的话，在原问题喜爱求解就好了。</p>
+<p>但如果是做非线性分类，就会涉及到升维（比如使用高斯核做核函数，其实是将样本升到无穷维），升维后的样本维度往往会远大于样本数量，这时候在对偶问题下求解会更好。</p>
 <p>（3）计算 <span class="math display">\[
 w^{*} = \sum_{i=1}^{N}\alpha_iy_ix_i
 \]</span> 并选择<code>a*</code>的一个正分量<code>aj*&gt;0</code>，计算得 <span class="math display">\[
