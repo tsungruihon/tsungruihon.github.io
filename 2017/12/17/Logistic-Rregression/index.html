@@ -90,18 +90,18 @@
 
 
 
-<meta name="description" content="今天看了极大似然估计(Maximum likelihood evaluation)，然后就看到极大似然估计在Logistic Regression上面的应用，忽然有一种醍醐灌顶的感觉。 首先，原来Logistic Regression的中文读法是逻辑斯谛回归而不是逻辑回归，知道真相的我忽然觉得以前的自己好土。。但这不是重点，其实这是重点。。好吧 Logistic Regression是根据不同的特">
+<meta name="description" content="今天看了极大似然估计(Maximum likelihood evaluation)，然后就看到极大似然估计在Logistic Regression上面的应用，忽然有一种醍醐灌顶的感觉。 首先，原来Logistic Regression的中文读法是逻辑斯谛回归而不是逻辑回归，知道真相的我忽然觉得以前的自己好土。。但这不是重点，其实这是重点。。好吧 Logistic Regression假设数据服从伯">
 <meta name="keywords" content="python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Logistic Rregression">
 <meta property="og:url" content="http://yoursite.com/2017/12/17/Logistic-Rregression/index.html">
 <meta property="og:site_name" content="彼得的博客">
-<meta property="og:description" content="今天看了极大似然估计(Maximum likelihood evaluation)，然后就看到极大似然估计在Logistic Regression上面的应用，忽然有一种醍醐灌顶的感觉。 首先，原来Logistic Regression的中文读法是逻辑斯谛回归而不是逻辑回归，知道真相的我忽然觉得以前的自己好土。。但这不是重点，其实这是重点。。好吧 Logistic Regression是根据不同的特">
+<meta property="og:description" content="今天看了极大似然估计(Maximum likelihood evaluation)，然后就看到极大似然估计在Logistic Regression上面的应用，忽然有一种醍醐灌顶的感觉。 首先，原来Logistic Regression的中文读法是逻辑斯谛回归而不是逻辑回归，知道真相的我忽然觉得以前的自己好土。。但这不是重点，其实这是重点。。好吧 Logistic Regression假设数据服从伯">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-18T09:50:42.199Z">
+<meta property="og:updated_time" content="2019-11-18T03:51:06.472Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Logistic Rregression">
-<meta name="twitter:description" content="今天看了极大似然估计(Maximum likelihood evaluation)，然后就看到极大似然估计在Logistic Regression上面的应用，忽然有一种醍醐灌顶的感觉。 首先，原来Logistic Regression的中文读法是逻辑斯谛回归而不是逻辑回归，知道真相的我忽然觉得以前的自己好土。。但这不是重点，其实这是重点。。好吧 Logistic Regression是根据不同的特">
+<meta name="twitter:description" content="今天看了极大似然估计(Maximum likelihood evaluation)，然后就看到极大似然估计在Logistic Regression上面的应用，忽然有一种醍醐灌顶的感觉。 首先，原来Logistic Regression的中文读法是逻辑斯谛回归而不是逻辑回归，知道真相的我忽然觉得以前的自己好土。。但这不是重点，其实这是重点。。好吧 Logistic Regression假设数据服从伯">
 
 
 
@@ -371,6 +371,7 @@
       
         <p>今天看了极大似然估计(<code>Maximum likelihood evaluation</code>)，然后就看到极大似然估计在<code>Logistic Regression</code>上面的应用，忽然有一种醍醐灌顶的感觉。</p>
 <p>首先，原来<code>Logistic Regression</code>的中文读法是逻辑斯谛回归而不是逻辑回归，知道真相的我忽然觉得以前的自己好土。。但这不是重点，其实这是重点。。好吧</p>
+<p><code>Logistic Regression</code>假设数据服从伯努利分布，通过极大化似然函数的方法，运用梯度下降来求解参数，来达到将数据<strong>二分类</strong>的目的。</p>
 <p><code>Logistic Regression</code>是根据不同的特征量，输出0和1，并且只能输出0和1。我们可以通过<code>Sigmoid</code>函数来实现。 <span class="math display">\[
 \sigma(x)  = \frac{1}{1+e^{-w x}} = \frac{e^{wt}}{1 + e^{wx}}
 \]</span></p>
@@ -397,7 +398,7 @@ P(y|x, w) = (h_w(x))^y(1-h_w(x))^{1-y}
 L(w)&amp; =\prod_{i=1}^{m}P(y^{(i)}|x^{(i)}, w) \\
 &amp; =\prod_{i = 1}^{m}(h_w(x^{(i)}))^{y^{(i)}}(1-h_w(x^{(i)}))^{1-y^{(i)}} 
 \end{aligned}
-\]</span> 然后转化为对数似然函数，这样更方便求解。 <span class="math display">\[
+\]</span> 然后转化为对数似然函数，这样求解参数的速度是比较快的。 <span class="math display">\[
 J(w) = logL(w) = \sum_{i=1}^{m}(y^{(i)}logh_w(x^{(i)}) + (1-y^{(i)})log(1-h_w(x^{(i)})))
 \]</span> 得到对数似然函数<code>J(w)</code>后，我们就可以利用函数<code>J(w)</code>来表示预测值和实际值的偏差。<code>J(w)</code>越大，表示预测值与实际值的差异越小，预测越准确。</p>
 <p><code>Cost</code>函数可以写成： <span class="math display">\[
@@ -474,6 +475,18 @@ w_j := w_j + \alpha\sum_{i=1}^m(y^{(i)}-h_w(x^{(i)}))\cdot x_j)
 <a class="sourceLine" id="cb1-55" data-line-number="55"><span class="co"># Accuracy from scratch: 0.9948</span></a>
 <a class="sourceLine" id="cb1-56" data-line-number="56"><span class="co"># Accuracy from scikit-learn: 0.9948</span></a></code></pre></div>
 <p>貌似跟<code>scikit-learn</code>的结果很接近，实在是太开心了。</p>
+<p><code>Logistic Regression</code>的优点：</p>
+<ul>
+<li>形式简单，模型的可解释性非常好。从特征的权重可以看到不同的特征对最后结果的影响。</li>
+<li>作为<code>baseline</code>的工程效果不错，训练速度较快，资源占用小（尤其是内存）。</li>
+</ul>
+<p><code>Logistic Regression</code>的缺点：</p>
+<ul>
+<li>由于模型形式比较简单，很难去拟合数据的真实分布。</li>
+<li>很难处理数据不平衡的问题，在数据缺失或者特征空间较大的场景下表现不好。</li>
+<li>在不引入其他方法的情况下，只能处理线性可分的数据（只能处理二分类问题）。</li>
+<li><code>Logistic Regression</code>本身无法筛选特征，有时候会先用<code>GBDT</code>来筛选特征，再上<code>Logistic Regression</code>。</li>
+</ul>
 
       
     </div>
