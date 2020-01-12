@@ -276,6 +276,427 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/04/决策树/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peter Tsung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pandas.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="彼得的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/02/04/决策树/" itemprop="url">
+                  Decision Tree
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-04T19:38:58+08:00">
+                2018-02-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine_learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>今天终于有时间来总结一下决策树了。</p>
+<p>决策树是一种用于分类或者回归的<code>无参数学习</code>的监督方法。决策树的特点是它总是在沿着特征做切分，随着层层递进，这个划分会越来越细。</p>
+<p>决策树学习包括三个步骤： <code>特征选择</code>、<code>决策树的生成</code>和<code>决策树的修剪</code>。</p>
+<p>用决策树分类，从根节点开始，对实例的某一特征进行测试，根据测试结果，将实例分配到其子结点。每一个子结点对应着该特征的一个取值。如此递归地对实例进行测试并分配，直至达到叶节点。最后将实例分到叶结点的类中。</p>
+<p>决策树的路径或其对应的<code>if-then</code>规则集合具有一个重要性质：互斥并且完备。就是说每一个实例都被一条路径或一条规则所覆盖，而且只被一条路径或一条规则所覆盖。</p>
+<h2 id="特征选择"><u>特征选择</u></h2>
+<p>特征选择在于选取对训练数据具有分类能力的特征，这样可以提高决策树学习的效率。如果利用一个特征进行分类的结果与随机分类的结果没有很大差别，则称这个特征是没有分类能力的。通常特征选择的准则是<code>信息增益</code>或<code>信息增益比</code>。</p>
+<h3 id="信息增益"><u>信息增益</u></h3>
+<p>熵<code>(entropy)</code>是随机变量不确定性的度量。</p>
+<ul>
+<li>设X是一个取有限个值的离散随机变量，其概率分布为</li>
+</ul>
+<p><span class="math display">\[
+\begin{aligned}
+P(X=X_i) = p_ i, \ \ \ i = 1, 2, ...,n
+\end{aligned}
+\]</span></p>
+<p>则随机变量X的熵定义为 <span class="math display">\[
+H(X)=-\sum_{i=1}^{n}p_ilog\ p_i
+\]</span> 熵通常以<code>2</code>为底或以<code>e</code>为底（自然对数），这是熵的单位分别称作<code>比特(bit)</code>或<code>纳特(nat)</code>。由定义可知，熵只依赖于X的分布，而与X的取值无关，所以也可将X的熵记作<code>H(p)</code>。 <span class="math display">\[
+H(p)=-\sum_{i=1}^{n}p_ilog\ p_i
+\]</span> 熵越大， 随机变量的不确定性就越大。从上面式子我们可知 <span class="math display">\[
+0 \le H(p) \le log\ n
+\]</span> 如果随机变量只取两个值，当p为0或1的时候，熵为0，随机变量完全没有不确定性，当p为0.5时，<code>H(p)=1</code>，熵取值最大，随机变量不确定性最大。</p>
+<ul>
+<li>设有随机变量(X, Y)，其联合概率分布为</li>
+</ul>
+<p><span class="math display">\[
+\begin{aligned}
+P(X=x_i, Y=y_i) = p_ {ij}, \ \ \ i = 1, 2, ...,n; \ \ \ j = 1, 2, ..., m
+\end{aligned}
+\]</span></p>
+<p>条件熵<code>H(X|Y)</code>表示在已知随机变量<code>X</code>的条件下随机变量<code>Y</code>的不确定性，随机变量X给定的条件下随机变量<code>Y</code>的<code>条件熵(Condition entropy)H(Y|X)</code>，定义为X给定条件下<code>Y</code>的条件概率分布的熵对<code>X</code>的数学期望 <span class="math display">\[
+\begin{aligned}
+H(Y|X) &amp; = \sum_{i=1}^{n}p_iH(Y|X=x_i), \\  
+\\
+&amp;p_i = P(X=x_i), i = 1, 2, ..., n
+\end{aligned}
+\]</span></p>
+<ul>
+<li><code>特征A</code>对训练数据集D的信息增益<code>g(D, A)</code>，定义为<code>集合D</code>的经<code>验熵H(D)</code>与<code>特征A</code>给定条件下D的<code>经验条件熵H(D|A)</code>之差，即 <span class="math display">\[
+g(D, A) = H(D) - H(D|A)
+\]</span></li>
+</ul>
+<p>信息增益越大，该特征越适合作为分裂点。</p>
+<p>对<code>训练数据集（或子集）D</code>，计算其每个特征的信息增益，并比较它们的大小，选择信息增益最大的特征。</p>
+<p>但是，信息增益存在偏向于选择取值较多的特征的问题，使用<code>信息增益比(information gain ratio)</code>可以对这一问题进行校正。</p>
+<p>特征A对<code>训练数据D</code>的<code>信息增益比gR(D, A)</code>定义为其<code>信息增益g(D, A)</code>与<code>训练集D</code>关于<code>特征A</code>的值的<code>熵HA(D)</code>之比，即 <span class="math display">\[
+\begin{aligned}
+g_R(D, A) &amp;= \frac{g(D, A)}{H_A(D)} \\
+\\
+H_A(D) &amp;= -\sum_{i=1}^{n}\frac{|D_i|}{D}log_2\frac{D_i}{D},   \ \ \ n是特征A取值的个数。
+\end{aligned}
+\]</span> 下面是<code>Python</code>代码。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">def</span> createDataSet():</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">    dataSet <span class="op">=</span> [[<span class="dv">1</span>, <span class="dv">1</span>, <span class="st">&#39;yes&#39;</span>],</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">               [<span class="dv">1</span>, <span class="dv">1</span>, <span class="st">&#39;yes&#39;</span>],</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">               [<span class="dv">1</span>, <span class="dv">0</span>, <span class="st">&#39;no&#39;</span>],</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">               [<span class="dv">0</span>, <span class="dv">1</span>, <span class="st">&#39;no&#39;</span>],</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">               [<span class="dv">0</span>, <span class="dv">1</span>, <span class="st">&#39;no&#39;</span>]]</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">    labels <span class="op">=</span> [<span class="st">&#39;no surfacing&#39;</span>,<span class="st">&#39;flippers&#39;</span>]</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">    <span class="cf">return</span> dataSet, labels</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="kw">def</span> calcShannonEnt(dataSet):</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">    numEntries <span class="op">=</span> <span class="bu">len</span>(dataSet)</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">    labelCounts <span class="op">=</span> {}</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">    <span class="cf">for</span> featVec <span class="kw">in</span> dataSet:</a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">        currentLabel <span class="op">=</span> featVec[<span class="op">-</span><span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb1-15" data-line-number="15">        <span class="cf">if</span> currentLabel <span class="kw">not</span> <span class="kw">in</span> labelCounts.keys(): labelCounts[currentLabel] <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16">        labelCounts[currentLabel] <span class="op">+=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17">        </a>
+<a class="sourceLine" id="cb1-18" data-line-number="18">    shannonEnt <span class="op">=</span> <span class="fl">0.0</span></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19">    <span class="cf">for</span> key <span class="kw">in</span> labelCounts:</a>
+<a class="sourceLine" id="cb1-20" data-line-number="20">        prob <span class="op">=</span> <span class="bu">float</span>(labelCounts[key])<span class="op">/</span>numEntries</a>
+<a class="sourceLine" id="cb1-21" data-line-number="21">        shannonEnt <span class="op">-=</span> prob <span class="op">*</span> log(prob, <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb1-22" data-line-number="22">    <span class="cf">return</span> shannonEnt</a>
+<a class="sourceLine" id="cb1-23" data-line-number="23"></a>
+<a class="sourceLine" id="cb1-24" data-line-number="24"><span class="kw">def</span> splitDataSet(dataSet, axis, value):</a>
+<a class="sourceLine" id="cb1-25" data-line-number="25">    retDataSet <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb1-26" data-line-number="26">    <span class="cf">for</span> featVec <span class="kw">in</span> dataSet:</a>
+<a class="sourceLine" id="cb1-27" data-line-number="27">        <span class="cf">if</span> featVec[axis] <span class="op">==</span> value:</a>
+<a class="sourceLine" id="cb1-28" data-line-number="28">            reducedFeatVec <span class="op">=</span> featVec[:axis]</a>
+<a class="sourceLine" id="cb1-29" data-line-number="29">            reducedFeatVec.extend(featVec[axis<span class="op">+</span><span class="dv">1</span>:])</a>
+<a class="sourceLine" id="cb1-30" data-line-number="30">            retDataSet.append(reducedFeatVec)</a>
+<a class="sourceLine" id="cb1-31" data-line-number="31">    <span class="cf">return</span> retDataSet</a>
+<a class="sourceLine" id="cb1-32" data-line-number="32"></a>
+<a class="sourceLine" id="cb1-33" data-line-number="33"><span class="kw">def</span> chooseBestFeatureToSplit(dataSet):</a>
+<a class="sourceLine" id="cb1-34" data-line-number="34">    numFeatures <span class="op">=</span> <span class="bu">len</span>(dataSet[<span class="dv">0</span>]) <span class="op">-</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb1-35" data-line-number="35">    baseEntropy <span class="op">=</span> calcShannonEnt(dataSet)</a>
+<a class="sourceLine" id="cb1-36" data-line-number="36">    bestInfoGain <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span> bestFeature <span class="op">=</span> <span class="dv">-1</span></a>
+<a class="sourceLine" id="cb1-37" data-line-number="37">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(numFeatures):</a>
+<a class="sourceLine" id="cb1-38" data-line-number="38">        featList <span class="op">=</span> [example[i] <span class="cf">for</span> example <span class="kw">in</span> dataSet]</a>
+<a class="sourceLine" id="cb1-39" data-line-number="39">        uniqueVals <span class="op">=</span> <span class="bu">set</span>(featList)</a>
+<a class="sourceLine" id="cb1-40" data-line-number="40">        newEntropy <span class="op">=</span> <span class="fl">0.0</span></a>
+<a class="sourceLine" id="cb1-41" data-line-number="41">        <span class="cf">for</span> value <span class="kw">in</span> uniqueVals:</a>
+<a class="sourceLine" id="cb1-42" data-line-number="42">            subDataSet <span class="op">=</span> splitDataSet(dataSet, i, value)</a>
+<a class="sourceLine" id="cb1-43" data-line-number="43">            prob <span class="op">=</span> <span class="bu">len</span>(subDataSet) <span class="op">/</span> <span class="bu">float</span>(<span class="bu">len</span>(dataSet))</a>
+<a class="sourceLine" id="cb1-44" data-line-number="44">            newEntropy <span class="op">+=</span> prob <span class="op">*</span> calcShannonEnt(subDataSet)</a>
+<a class="sourceLine" id="cb1-45" data-line-number="45">        infoGain <span class="op">=</span> baseEntropy <span class="op">-</span> newEntropy</a>
+<a class="sourceLine" id="cb1-46" data-line-number="46">        <span class="cf">if</span> (infoGain <span class="op">&gt;</span> bestInfoGain):</a>
+<a class="sourceLine" id="cb1-47" data-line-number="47">            bestInfoGain <span class="op">=</span> infoGain</a>
+<a class="sourceLine" id="cb1-48" data-line-number="48">            bestFeature <span class="op">=</span> i</a>
+<a class="sourceLine" id="cb1-49" data-line-number="49">    <span class="cf">return</span> bestFeature</a></code></pre></div>
+<h2 id="决策树的生成"><u>决策树的生成</u></h2>
+<h3 id="id3算法"><u>ID3算法</u></h3>
+<p>输入：训练数据集D，特征集A，阈值e</p>
+<p>输出：决策树T</p>
+<ul>
+<li>算法
+<ol type="1">
+<li>若D中所有的实例属于同一类Ck，则T为单节点树，并将类Ck作为该结点的类标记，返回T</li>
+<li>若A=空集，则T为单节点树，并将D中实例数最大的类Ck作为该结点的类标记，返回T</li>
+<li>否则，按照计算A中各特征对D的信息增益，选择信息增益最大的特征Ag</li>
+<li>如果Ag的信息增益小于阈值e，则置T为单节点树，并将D中实例数最大的类Ck作为该结点的类标记，返回T</li>
+<li>否则，对Ag的每一可能值ai，将D分割为若干非空子集Di，将Di中实例数最大的类作为标记，构建子结点，由结点及其子结点构成树T，返回T</li>
+<li>对第i个子节点，以Di为训练集，以A-{Ag}为特征集，递归地调用1-5，得到子树Ti，返回Ti。</li>
+</ol></li>
+<li>问题：
+<ol type="1">
+<li>不能处理连续值</li>
+<li>容易偏向取值较多的特征</li>
+<li>过拟合</li>
+</ol></li>
+</ul>
+<p><code>ID3</code>算法生成的树容易产生过拟合，而且它不能直接处理连续型特征，只有事先将连续型特征转换成离散型，才能在<code>ID3</code>算法中使用。但这种转换过程会破坏连续型变量的内在性值。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">def</span> majorityCnt(classList):</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">    classCount<span class="op">=</span>{}</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">    <span class="cf">for</span> vote <span class="kw">in</span> classList:</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">        <span class="cf">if</span> vote <span class="kw">not</span> <span class="kw">in</span> classCount.keys(): classCount[vote] <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">        classCount[vote] <span class="op">+=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">    sortedClassCount <span class="op">=</span> <span class="bu">sorted</span>(classCount.iteritems(), key<span class="op">=</span>operator.itemgetter(<span class="dv">1</span>), reverse<span class="op">=</span><span class="va">True</span>)</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">    <span class="cf">return</span> sortedClassCount[<span class="dv">0</span>][<span class="dv">0</span>]</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="kw">def</span> createTree(dataSet,labels):</a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">    classList <span class="op">=</span> [example[<span class="op">-</span><span class="dv">1</span>] <span class="cf">for</span> example <span class="kw">in</span> dataSet]</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11">    <span class="cf">if</span> classList.count(classList[<span class="dv">0</span>]) <span class="op">==</span> <span class="bu">len</span>(classList): </a>
+<a class="sourceLine" id="cb2-12" data-line-number="12">        <span class="cf">return</span> classList[<span class="dv">0</span>]</a>
+<a class="sourceLine" id="cb2-13" data-line-number="13">    <span class="cf">if</span> <span class="bu">len</span>(dataSet[<span class="dv">0</span>]) <span class="op">==</span> <span class="dv">1</span>: </a>
+<a class="sourceLine" id="cb2-14" data-line-number="14">        <span class="cf">return</span> majorityCnt(classList)</a>
+<a class="sourceLine" id="cb2-15" data-line-number="15">    bestFeat <span class="op">=</span> chooseBestFeatureToSplit(dataSet)</a>
+<a class="sourceLine" id="cb2-16" data-line-number="16">    bestFeatLabel <span class="op">=</span> labels[bestFeat]</a>
+<a class="sourceLine" id="cb2-17" data-line-number="17">    myTree <span class="op">=</span> {bestFeatLabel:{}}</a>
+<a class="sourceLine" id="cb2-18" data-line-number="18">    <span class="kw">del</span>(labels[bestFeat])</a>
+<a class="sourceLine" id="cb2-19" data-line-number="19">    featValues <span class="op">=</span> [example[bestFeat] <span class="cf">for</span> example <span class="kw">in</span> dataSet]</a>
+<a class="sourceLine" id="cb2-20" data-line-number="20">    uniqueVals <span class="op">=</span> <span class="bu">set</span>(featValues)</a>
+<a class="sourceLine" id="cb2-21" data-line-number="21">    <span class="cf">for</span> value <span class="kw">in</span> uniqueVals:</a>
+<a class="sourceLine" id="cb2-22" data-line-number="22">        subLabels <span class="op">=</span> labels[:]       </a>
+<a class="sourceLine" id="cb2-23" data-line-number="23">        myTree[bestFeatLabel][value] <span class="op">=</span> createTree(splitDataSet(dataSet, bestFeat, value),subLabels)</a>
+<a class="sourceLine" id="cb2-24" data-line-number="24">    <span class="cf">return</span> myTree                            </a></code></pre></div>
+<h3 id="c4.5算法"><u>C4.5算法</u></h3>
+<p>输入：训练数据集D，特征集A，阈值e</p>
+<p>输出：决策树T</p>
+<ul>
+<li>算法
+<ol type="1">
+<li>若D中所有实例属于同一类Ck，则置T为单节点树，并将Ck作为该节点的类，返回T</li>
+<li>如果A为空集，则置T为单节点树，并将D中实例数最大的类Ck作为该结点的类，返回T</li>
+<li>否则，计算A中各特征对D的信息增益比，选择信息增益比最大的特征A</li>
+<li>如果Ag的信息增益比小于阈值e，则置T为单节点树，并将D中实例数最大的类Ck作为该节点的类，返回T</li>
+<li>否则，对Ag的每一可能值ai，依Ag=ai将D分割为子集若干非空Di，将Di中实例数最大的类作为标记，构建子结点，由结点及其子结点构成树T，返回T</li>
+<li>对结点i，以Di为训练集，以A-{Ag}为特征集，递归地调用1-5，得到子树Ti，返回Ti。</li>
+</ol></li>
+<li>优点
+<ol type="1">
+<li><code>C4.5</code>在生成过程中，用信息增益比来选择特征，与<code>ID3</code>算法相似，而且它可以处理连续的和有缺失值的数据。</li>
+</ol></li>
+<li>缺点
+<ol type="1">
+<li>生成的是多叉树</li>
+<li>只能用于分类</li>
+<li>使用了熵模型，涉及大量的对数运算，很耗时</li>
+</ol></li>
+</ul>
+<h3 id="cartclassification-and-regression-tree算法"><u>CART</u>(Classification and regression tree)算法</h3>
+<p><code>CART</code>是目前最主流的决策树算法，既能生成分类树，也能生成回归树。</p>
+<h3 id="cart分类树"><u>CART分类树</u></h3>
+<p><code>CART</code>在处理连续值的时候，思想与<code>C4.5</code>是类似的，唯一的不同就是<code>CART</code>使用<code>基尼系数</code>最小化准则作为特征选择指标。<code>基尼系数</code>代表了模型的不纯度，基尼系数越小，则不纯度越低，特征越好。</p>
+<p>在分类问题中，有K个类别，第k个类别的概率为pk，则概率分布的基尼系数表达式为： <span class="math display">\[
+Gini(p) = \sum_{k=1}^{K}p_{k}(1-p_k) = 1 - \sum_{k=1}^{K}p_{k}^{2}
+\]</span> 对于给定的样本D，假设有K个类别，第k个类别的数量为Ck，则样本D的基尼系数表达式为 <span class="math display">\[
+Gini(D) = 1- \sum_{k=1}^{K}\biggl(\frac{|C_k|}{D}\biggr)^2
+\]</span> 对于样本D，如果根据特征A的某个值a，把D分成D1和D2两部分，则在特征A的条件下，D的基尼系数表达式为： <span class="math display">\[
+Gini(D, A) = \frac{D_1}{D}Gini(D_1) + \frac{D_2}{D}Gini(D2)
+\]</span> 对于离散特征，<code>CART</code>构建的是二叉树而不是多叉树。复杂度一般情况下是O(logN)</p>
+<p>输入：训练集D，基尼系数的阈值，样本个数阈值</p>
+<p>输出：决策树T</p>
+<ul>
+<li>算法
+<ol type="1">
+<li>对于当前节点的数据集D，如果样本个数小于阈值或者没有特征，则返回决策子树，当前节点停止递归。</li>
+<li>计算样本集D的基尼系数，如果基尼系数小于阈值，则返回决策树子树，当前节点停止递归。</li>
+<li>计算当前节点现有的各个特征值对数据集D的基尼系数。</li>
+<li>在计算出来的各个特征的各个特征值对数据集D的基尼系数中，选择基尼系数最小的特征A和对应的特征值a。根据这个最优特征和最优特征值，把数据集划分成两部分D1和D2，同时建立当前节点的左右节点，左节点的数据集D，右节点的数据集D为D2。</li>
+<li>对左右的子节点递归的调用1-4步，生成决策树。</li>
+</ol></li>
+</ul>
+<h3 id="cart回归树"><u>CART回归树</u></h3>
+<p><code>CART回归树</code>用平方误差最小化准则进行特征选择，<code>CART回归树</code>的度量目标是对于任意划分特征A，对应的任意划分点s两边划分成数据集D1和D2，求出使D1和D2各自集合的均方差最小，同时D1和D2的均方差之和最小对应的特征和特征值划分点。 <span class="math display">\[
+\min_{j,s}\left[ \min_{c1}\sum_{x_i\subseteq R_{1}(j,s)}(y_i-c_1)^2+\min_{c_{2}}\sum_{x_i\subseteq R_{2}(j,s)}(y_i-c_1)^2\right]
+\]</span> 其中C1为D1数据集的样本输出均值，C2为D2数据集的样本输出均值。</p>
+<p><code>CART回归树</code>采用的是<code>最终叶子节点的均值</code>或者<code>中位数</code>来预测输出结果。</p>
+<p>输入：训练数据集D</p>
+<p>输出：回归树<code>f(x)</code> <span class="math display">\[
+f(x) = \sum_{m=1}^{M}c_mI(x\subseteq R_m)
+\]</span> 在训练数据集所在的输入空间中，递归地将每个区域划分为两个子区域并决定每个子区域上的输出值，构建二叉决策树。</p>
+<ul>
+<li><p>算法</p>
+<ol type="1">
+<li><p>选择最优切分变量<code>j</code>与切分点<code>s</code>， 求解 <span class="math display">\[
+\min_{j,s}\left[ \min_{c1}\sum_{x_i\subseteq R_{1}(j,s)}(y_i-c_1)^2+\min_{c_{2}}\sum_{x_i\subseteq R_{2}(j,s)}(y_i-c_1)^2\right]
+\]</span> 遍历变量<code>j</code>，对固定的切分变量<code>j</code>扫描切分点<code>s</code>，选择上式达到最小值的对<code>(j, s)</code></p></li>
+<li><p>用选定的对<code>(j, s)</code>划分区域并决定相应的输出值。 <span class="math display">\[
+R_1(j, s) = \{x|x^{(j)}\le s\}  \ \ \ 和 \ \ \ R_2(j, s) = \{x|x^{(j)}\gt s\}
+\]</span></p>
+<p><span class="math display">\[
+\hat c_m = \frac{1}{N_m}\sum_{x_i\subseteq R_{m}(j,s)}y_i,   \ \ \ \ \ \ x\subseteq R_m, m = 1, 2
+\]</span></p></li>
+<li><p>继续对两个子区域调用步骤(1), (2)，直至满足停止条件</p></li>
+<li><p>将输入空间划分为M个区域R1, R2, …, RM, 生成决策树： <span class="math display">\[
+f(x) = \sum_{m=1}^{M}\hat c_mI(x\subseteq R_m)
+\]</span></p></li>
+</ol></li>
+</ul>
+<h2 id="决策树的剪枝"><u>决策树的剪枝</u></h2>
+<p>在决策树学习中将已生成的树进行简化的过程称为<code>剪枝(pruning)</code>。具体地，剪枝从已生成的树上裁掉一些子树或叶结点，并将其根结点或父结点作为新的叶结点，从而简化分类树模型。</p>
+<p>决策树的剪枝通过极小化决策树整体的损失函数(<code>loss function</code>)或代价函数(<code>cost function</code>)</p>
+<p>设<code>树T</code>的叶结点个数为<code>|T|</code>，<code>t</code>是<code>树T</code>的叶结点，该叶结点有<code>Nt</code>个样本点，其中<code>k</code>类的样本点有<code>Ntk</code>个，k=1, 2, …, K，<code>Ht(T)</code>为叶结点<code>t</code>上的经验熵，<code>a</code>大于等于0为参数，决策树学习的损失函数定义为 <span class="math display">\[
+\begin{aligned}
+C_{\alpha}(T) &amp; =\sum_{t=1}^{|T|}N_tH_t(H)+\alpha|T| \\
+\\
+H_t(T) &amp; = -\sum_k \frac{N_{tk}}{N_t}log\frac{N_{tk}}{N_t} \\
+\\
+令\ \ \  C(T) &amp; = \sum_{t=1}^{|T|}N_tH_t(H) = -\sum_{t=1}^{|T|}\sum_k^{K}N_{tk}log\frac{N_{tk}}{N_t}
+\\
+\\
+C_{\alpha}(T) &amp; = C(T) + \alpha(T)
+\end{aligned}
+\]</span> <code>C(T)</code>表示模型对训练数据的预测误差，即模型与训练数据的拟合程度，<code>|T|</code>表示模型复杂度，参数<code>a&gt;=0</code>控制两者之间的影响。</p>
+<p>剪枝，就是当<code>a</code>确定时，选择损失函数最小的模型，即损失函数最小的子树。可以看出，决策树生成只考虑了通过提高信息增益（或信息增益比）对训练数据进行更好的拟合，而决策树剪枝通过优化损失函数还考虑了减少模型复杂度，决策树生成学习局部的模型，而决策树剪枝学习整体的模型。</p>
+<p><code>剪枝</code>分为<code>预剪枝</code>和<code>后剪枝</code>。</p>
+<p><code>预剪枝</code>是指事先给定某个误差计算方法，找到数据集最佳的二元切分方式，另外，还要确定什么时候停止划分，一旦停止划分会生成一个叶结点。在决策树生成过程中，在划分节点时，若该节点的划分没有提高其在训练集上的准确率，则不进行划分。</p>
+<p><code>后剪枝</code>是利用测试集来对树进行剪枝。首先指定参数，使得构建出的树足够大、足够复杂，便于剪枝。然后从上而下找到叶节点，用测试集来判断将这些叶节点合并是否能降低测试误差。如果是的话就合并。</p>
+<p>采取类似于伪代码的形式来进行叙述：</p>
+<p><strong>1. 输入</strong>：生成算法产生的原始决策树T，惩罚因子α</p>
+<p><strong>2. 过程</strong>：</p>
+<ol type="1">
+<li><p>从下往上地获取T中所有 Node，存入列表<code>_tmp_nodes</code></p></li>
+<li><p>对<code>_tmp_nodes</code>中的所有 Node 计算损失，存入列表<code>_old</code></p></li>
+<li><p>计算<code>_tmp_nodes</code>中所有 Node 进行局部剪枝后的损失，存入列表<code>_new</code></p></li>
+<li><p>进入循环体：</p>
+<ol type="1">
+<li><p>若<code>_new</code>中所有损失都大于<code>_old</code>中对应的损失、则退出循环体</p></li>
+<li><p>否则，设p满足： <span class="math display">\[
+p=\mathop{\arg\min}_{p}\_new[p]≤\_old[p]
+\]</span> 则对<code>_tmp_nodes[p]</code>进行局部剪枝</p></li>
+<li><p>在完成局部剪枝后，更新<code>_old</code>、<code>_new</code>、<code>_tmp_nodes</code>等变量。具体而言，我们无需重新计算它们， 只需更新“被影响到的” Node 所对应的位置的值即可</p></li>
+</ol></li>
+<li><p>最后调用<code>self.reduce_nodes</code>方法、将被剪掉的 Node 从<code>nodes</code>中除去</p></li>
+</ol>
+<p><strong>3.输出</strong>：修剪过后的决策树<code>Tα</code></p>
+<h2 id="决策树优缺点">决策树优缺点</h2>
+<ul>
+<li><h4 id="优点">优点</h4></li>
+</ul>
+<ol type="1">
+<li>决策树易于理解和解释</li>
+<li>数据的准备往往是简单或者是不必要的</li>
+<li>能够同时处理数据型和<em>类别型</em>属性。其他的技术往往要求数据属性的单一</li>
+<li>在相对短的时间内能够对大型数据源做出可行且效果良好的结果</li>
+<li>可以对有许多属性的数据集构造决策树</li>
+<li>决策树常用于集成算法，如随机森林，提升树等</li>
+</ol>
+<ul>
+<li><h4 id="缺点">缺点</h4></li>
+</ul>
+<ol type="1">
+<li>在决策树当中,信息增益的结果偏向于那些具有更多数值的特征</li>
+<li>决策树处理缺失数据时的困难。</li>
+<li>出现过拟合</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/28/Python3内置函数/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -4913,278 +5334,11 @@ w_j := w_j + \alpha\sum_{i=1}^m(y^{(i)}-h_w(x^{(i)}))\cdot x_j)
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/13/Gradient-Descent/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Peter Tsung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pandas.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="彼得的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/12/13/Gradient-Descent/" itemprop="url">
-                  Gradient Descent
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-13T18:15:00+08:00">
-                2017-12-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
-                    <span itemprop="name">Machine Learning</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>从六月份开始，已经看了很多Python机器学习的书籍和教程，但是依然有些摸不着头脑。现在看来，其实一方面是太过注重应用层面而没有关注实质性的数学层面内容。而如果慢慢看算法公式，其实很多疑点都会被解决。我觉得自己对于这方面是有着一个近乎极度疯狂的执迷，很想弄明白里面的运作机制。</p>
-<p>而今天这一内容里面，我将分享自己对机器学习算法里面的梯度下降方法做一个笔记和总结。</p>
-<p>在进行解释梯度下降方法之前，需要对方向导数和梯度做一个基本的解释。</p>
-<blockquote>
-<p>对于<strong>方向导数</strong>，设 z = f(x, y) 在M0(x0, y0)处可微，则f(x, y)在M0点任意方向<strong><em>l</em></strong> = （cosa, cosb)存在方向导数且： <span class="math display">\[
-\frac{\partial f(x_0, y_0)}{\partial l} = \frac{\partial f(x_0, y_0)}{\partial x}cos\alpha+\frac{\partial f(x_0, y_0)}{\partial y}cos\beta
-\]</span> 对于梯度，函数z = f(x, y)在点M0的方向导数计算公式可改写成：</p>
-<p><span class="math display">\[
-\begin{aligned}
-\frac{\partial f(x_0, y_0)}{\partial l} &amp; = (\frac{\partial f(x_0, y_0)}{\partial x}, \frac{\partial f(x_0, y_0)}{\partial y})· (cos \alpha, cos \beta) \\ \\ 
-&amp; = grad(x_0, y_0)·l \\
- \\
-&amp; = |gradf(x_0, y_0)|cos&lt;grad(x_0, y_0), l&gt;
-\end{aligned}
-\]</span> 在这里向量: <span class="math display">\[
-grad  f(x_0, y_0) = (\frac{\partial f(x_0, y_0)}{x} , \frac{\partial f(x_0, y_0)}{\partial y} ）
-\]</span></p>
-<p>称为z = f(x, y) 在点M0的梯度（向量）。</p>
-<p>假设我们需要求得函数中某点变化最快的值，其实也就是求方向导数模的最大值，那么梯度的方向需要跟单位方向向量的夹角为0。也就是说，函数在某点的梯度，其方向是函数在该点的方向导数最大的方向，它的模是最大方向导数的值。</p>
-</blockquote>
-<p>因此对于方向导数而言，求的是函数中某点在某个方向下的导数，不同方向的导数都不相同，也就说函数中某点沿不同方向的变化速度不一样。而梯度就是函数对变量偏导数的集合。</p>
-<p>假设有如下一个线性回归问题，公式如下： &gt; <span class="math display">\[
-&gt; h(x) =h_\theta(x) =\theta_0+\theta_1x_1+\theta_2x_2
-&gt; \]</span> &gt;</p>
-<p>其中x是自变量，比如说房子面积，θ是权重参数，也就是我们需要使用梯度下降求解的具体值。</p>
-<p>然后我们还需要引入损失函数（<code>Loss Function</code>或者叫<code>Cost Function</code>)，目的是为了在梯度下降时用来衡量更新后的参数是否是向着正确的方向前进。如下损失函数(m表示训练集样本数量)</p>
-<p><span class="math display">\[
-J(\theta) = \sum_{i=1}^{m}\frac{1}{2}·(h_\theta(x^{(i)}) - y^{(i)})^2
-\]</span> 因为我们的目的，是要找到这个损失函数的值最小的参数下的目标函数<code>h(x)</code>，所以面对这种情况，我们其实很容易想到偏导数。结合方向导数以及梯度这一个概念，我们可以得到某个样本数据在函数中下降速度最快的方向。也就是说，我们希望能够对<code>Loss Function</code>求最优解，而我们可以通过求<code>Loss Function</code>的梯度然后不断更新参数来得到。如果我们得到了<code>Loss Function</code>的最优解，那么我们也就能得到目标函数<code>h(x)</code>。</p>
-<p>下面将对<code>Loss Function</code>进行某一个参数θi的偏导数：</p>
-<p><span class="math display">\[
-\begin{aligned}
-\frac{\partial}{\partial \theta_j}J(\theta) &amp;= \frac{\partial}{\partial \theta_j}\frac{1}{2}·(h_\theta(x) - y)^2 \\\\
-&amp; = 2 · \frac{1}{2}·(h_\theta(x) - y) · \frac{\partial}{\partial \theta_j}(h_\theta(x) - y) \\\\
-&amp; = (h_\theta(x) - y)  \cdot \frac{\partial}{\partial \theta_j}(\sum_{i=0}^{n}\theta_ix_i- y) \\\\
-&amp; = h_\theta(x) - y) x_j
-\end{aligned}
-\]</span> 在求出<code>Loss Function</code>对于某一个参数的偏导数之后，我们实际上已经求得到了<code>Loss Function</code>在某一点M0下变化速度最快的方向，也就是确定θi的值。这个时候，只要逐步迭代，就可以求出在给定的数据集中，<code>Loss Function</code>最优解下的目标函数，也就是所有θ的最优解。</p>
-<p>于是对于这一个最基本的线性回归例子，我们就可以直接上<code>Python</code>代码了。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="im">import</span> numpy <span class="im">as</span> np</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#y=2 * (x1) + (x2) + 3 </span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">rate <span class="op">=</span> <span class="fl">0.001</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">x_train <span class="op">=</span> np.array([    [<span class="dv">1</span>, <span class="dv">2</span>],    [<span class="dv">2</span>, <span class="dv">1</span>],    [<span class="dv">2</span>, <span class="dv">3</span>],    [<span class="dv">3</span>, <span class="dv">5</span>],    [<span class="dv">1</span>, <span class="dv">3</span>],    [<span class="dv">4</span>, <span class="dv">2</span>],    [<span class="dv">7</span>, <span class="dv">3</span>],    [<span class="dv">4</span>, <span class="dv">5</span>],    [<span class="dv">11</span>, <span class="dv">3</span>],    [<span class="dv">8</span>, <span class="dv">7</span>]    ])</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">y_train <span class="op">=</span> np.array([<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">10</span>, <span class="dv">14</span>, <span class="dv">8</span>, <span class="dv">13</span>, <span class="dv">20</span>, <span class="dv">16</span>, <span class="dv">28</span>, <span class="dv">26</span>])</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">x_test  <span class="op">=</span> np.array([    [<span class="dv">1</span>, <span class="dv">4</span>],    [<span class="dv">2</span>, <span class="dv">2</span>],    [<span class="dv">2</span>, <span class="dv">5</span>],    [<span class="dv">5</span>, <span class="dv">3</span>],    [<span class="dv">1</span>, <span class="dv">5</span>],    [<span class="dv">4</span>, <span class="dv">1</span>]    ])</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">a <span class="op">=</span> np.random.normal()</a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">b <span class="op">=</span> np.random.normal()</a>
-<a class="sourceLine" id="cb1-11" data-line-number="11">c <span class="op">=</span> np.random.normal()</a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="kw">def</span> h(x):</a>
-<a class="sourceLine" id="cb1-14" data-line-number="14">    <span class="cf">return</span> a<span class="op">*</span>x[<span class="dv">0</span>]<span class="op">+</span>b<span class="op">*</span>x[<span class="dv">1</span>]<span class="op">+</span>c</a>
-<a class="sourceLine" id="cb1-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10000</span>):</a>
-<a class="sourceLine" id="cb1-17" data-line-number="17">    sum_a<span class="op">=</span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb1-18" data-line-number="18">    sum_b<span class="op">=</span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb1-19" data-line-number="19">    sum_c<span class="op">=</span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb1-20" data-line-number="20">    <span class="cf">for</span> x, y <span class="kw">in</span> <span class="bu">zip</span>(x_train, y_train):</a>
-<a class="sourceLine" id="cb1-21" data-line-number="21">        sum_a <span class="op">=</span> sum_a <span class="op">+</span> rate<span class="op">*</span>(y<span class="op">-</span>h(x))<span class="op">*</span>x[<span class="dv">0</span>]</a>
-<a class="sourceLine" id="cb1-22" data-line-number="22">        sum_b <span class="op">=</span> sum_b <span class="op">+</span> rate<span class="op">*</span>(y<span class="op">-</span>h(x))<span class="op">*</span>x[<span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb1-23" data-line-number="23">        sum_c <span class="op">=</span> sum_c <span class="op">+</span> rate<span class="op">*</span>(y<span class="op">-</span>h(x))</a>
-<a class="sourceLine" id="cb1-24" data-line-number="24">    a <span class="op">=</span> a <span class="op">+</span> sum_a</a>
-<a class="sourceLine" id="cb1-25" data-line-number="25">    b <span class="op">=</span> b <span class="op">+</span> sum_b</a>
-<a class="sourceLine" id="cb1-26" data-line-number="26">    c <span class="op">=</span> c <span class="op">+</span> sum_c</a>
-<a class="sourceLine" id="cb1-27" data-line-number="27">    plt.plot([h(xi) <span class="cf">for</span> xi <span class="kw">in</span> x_test])</a>
-<a class="sourceLine" id="cb1-28" data-line-number="28"></a>
-<a class="sourceLine" id="cb1-29" data-line-number="29"><span class="bu">print</span>(a)</a>
-<a class="sourceLine" id="cb1-30" data-line-number="30"><span class="bu">print</span>(b)</a>
-<a class="sourceLine" id="cb1-31" data-line-number="31"><span class="bu">print</span>(c)</a>
-<a class="sourceLine" id="cb1-32" data-line-number="32"></a>
-<a class="sourceLine" id="cb1-33" data-line-number="33">result<span class="op">=</span>[h(xi) <span class="cf">for</span> xi <span class="kw">in</span> x_train]</a>
-<a class="sourceLine" id="cb1-34" data-line-number="34"><span class="bu">print</span>(result)</a>
-<a class="sourceLine" id="cb1-35" data-line-number="35"></a>
-<a class="sourceLine" id="cb1-36" data-line-number="36">result<span class="op">=</span>[h(xi) <span class="cf">for</span> xi <span class="kw">in</span> x_test]</a>
-<a class="sourceLine" id="cb1-37" data-line-number="37"><span class="bu">print</span>(result)</a>
-<a class="sourceLine" id="cb1-38" data-line-number="38"></a>
-<a class="sourceLine" id="cb1-39" data-line-number="39">plt.show()</a></code></pre></div>
-<p><img src="/images/Figure_1.png"></p>
-<p>然而， 这样的写法对于效率而言是一个十分大的问题，，整个程序跑下来的时间十分长。这个时候，就想到了<strong>梯度下降矢量化</strong>，通过矢量化，能够将运算过程转为线性代数的计算，利用逆矩阵和矩阵乘法，整个计算速度大大提高。</p>
-<p><span class="math display">\[
-\begin{aligned}
-h_\theta(x) &amp;= \theta_0 + \theta_1x_1 + \theta_2x_2  \\\\
-J(\theta) &amp; = \frac{1}{2m}\sum_{i=1}^{m}(h_\theta(x^{(i)}) - y^{(i)})^{2} \\\\
-\theta_j &amp;:= \theta_j - \alpha\frac{1}{m}\sum_{i=1}^{m}(h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)}
-\end{aligned}
-\]</span></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="im">import</span> numpy <span class="im">as</span> np</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#y=2 * (x1) + (x2) + 3 </span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">rate <span class="op">=</span> <span class="fl">0.001</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">X <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">2</span>, <span class="dv">1</span>], [<span class="dv">2</span>, <span class="dv">3</span>], </a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">              [<span class="dv">3</span>, <span class="dv">5</span>], [<span class="dv">1</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">2</span>], </a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">              [<span class="dv">7</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">5</span>], [<span class="dv">11</span>, <span class="dv">3</span>]])</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">y <span class="op">=</span> np.array([<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">10</span>, </a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">              <span class="dv">14</span>, <span class="dv">8</span>, <span class="dv">13</span>, </a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">              <span class="dv">20</span>, <span class="dv">16</span>, <span class="dv">28</span>])</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="kw">def</span> compute_cost(X, y, theta):</a>
-<a class="sourceLine" id="cb2-13" data-line-number="13">    <span class="cf">return</span> np.<span class="bu">sum</span>(np.square(np.dot(X, theta) <span class="op">-</span> y)) <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> <span class="bu">len</span>(y))</a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="kw">def</span> gradient_descent_vectorization(X, y, learning_rate, iterations):</a>
-<a class="sourceLine" id="cb2-16" data-line-number="16">    X <span class="op">=</span> np.column_stack((np.ones(<span class="bu">len</span>(X)), X))</a>
-<a class="sourceLine" id="cb2-17" data-line-number="17">    theta <span class="op">=</span> np.zeros(X.shape[<span class="dv">1</span>])</a>
-<a class="sourceLine" id="cb2-18" data-line-number="18">    m <span class="op">=</span> <span class="bu">len</span>(X)</a>
-<a class="sourceLine" id="cb2-19" data-line-number="19">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(iterations):</a>
-<a class="sourceLine" id="cb2-20" data-line-number="20">        hypothesis <span class="op">=</span> np.dot(X, theta)</a>
-<a class="sourceLine" id="cb2-21" data-line-number="21">        loss <span class="op">=</span> hypothesis <span class="op">-</span> y</a>
-<a class="sourceLine" id="cb2-22" data-line-number="22">        gradient <span class="op">=</span> np.dot(X.T, loss) <span class="op">/</span> m</a>
-<a class="sourceLine" id="cb2-23" data-line-number="23">        theta <span class="op">=</span> theta <span class="op">-</span> learning_rate <span class="op">*</span> gradient</a>
-<a class="sourceLine" id="cb2-24" data-line-number="24">    <span class="cf">return</span> X, theta</a>
-<a class="sourceLine" id="cb2-25" data-line-number="25"></a>
-<a class="sourceLine" id="cb2-26" data-line-number="26">learning_rate <span class="op">=</span> <span class="fl">0.01</span></a>
-<a class="sourceLine" id="cb2-27" data-line-number="27">iterations <span class="op">=</span> <span class="dv">50000</span></a>
-<a class="sourceLine" id="cb2-28" data-line-number="28">X, theta <span class="op">=</span> gradient_descent_vectorization(X, y, learning_rate, iterations)</a>
-<a class="sourceLine" id="cb2-29" data-line-number="29">cost <span class="op">=</span> compute_cost(X, y, theta)</a>
-<a class="sourceLine" id="cb2-30" data-line-number="30"></a>
-<a class="sourceLine" id="cb2-31" data-line-number="31"><span class="bu">print</span>(<span class="st">&quot;theta1 = &quot;</span>,theta[<span class="dv">1</span>], <span class="st">&quot;theta2 = &quot;</span>, theta[<span class="dv">2</span>], <span class="st">&quot;theta3 = &quot;</span>, theta[<span class="dv">0</span>])</a>
-<a class="sourceLine" id="cb2-32" data-line-number="32"><span class="bu">print</span>(<span class="st">&#39;cost:&#39;</span>, cost)</a>
-<a class="sourceLine" id="cb2-33" data-line-number="33"></a>
-<a class="sourceLine" id="cb2-34" data-line-number="34"></a>
-<a class="sourceLine" id="cb2-35" data-line-number="35">[output]</a>
-<a class="sourceLine" id="cb2-36" data-line-number="36">theta1 <span class="op">=</span>  <span class="fl">2.02720821766</span> theta2 <span class="op">=</span>  <span class="fl">1.17962898412</span> theta3 <span class="op">=</span>  <span class="fl">2.2645149405</span></a>
-<a class="sourceLine" id="cb2-37" data-line-number="37">cost: <span class="fl">0.0354239310129</span></a>
-<a class="sourceLine" id="cb2-38" data-line-number="38">[Finished <span class="kw">in</span> <span class="fl">0.7</span>s]</a></code></pre></div>
-<p>只能说，经过矢量化运算后的梯度下降效率真的很高。还没有矢量化的梯度下降，在相同迭代次数和学习速度下的所需时间接近67s，而目前矢量化后的时间是0.7s，足足快了一百倍。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -5229,7 +5383,7 @@ J(\theta) &amp; = \frac{1}{2m}\sum_{i=1}^{m}(h_\theta(x^{(i)}) - y^{(i)})^{2} \\
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">40</span>
+                <span class="site-state-item-count">41</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -5240,7 +5394,7 @@ J(\theta) &amp; = \frac{1}{2m}\sum_{i=1}^{m}(h_\theta(x^{(i)}) - y^{(i)})^{2} \\
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -5251,7 +5405,7 @@ J(\theta) &amp; = \frac{1}{2m}\sum_{i=1}^{m}(h_\theta(x^{(i)}) - y^{(i)})^{2} \\
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -5294,7 +5448,7 @@ J(\theta) &amp; = \frac{1}{2m}\sum_{i=1}^{m}(h_\theta(x^{(i)}) - y^{(i)})^{2} \\
 <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

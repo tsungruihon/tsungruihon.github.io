@@ -276,6 +276,273 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/13/Gradient-Descent/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peter Tsung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pandas.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="彼得的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/12/13/Gradient-Descent/" itemprop="url">
+                  Gradient Descent
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-13T18:15:00+08:00">
+                2017-12-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>从六月份开始，已经看了很多Python机器学习的书籍和教程，但是依然有些摸不着头脑。现在看来，其实一方面是太过注重应用层面而没有关注实质性的数学层面内容。而如果慢慢看算法公式，其实很多疑点都会被解决。我觉得自己对于这方面是有着一个近乎极度疯狂的执迷，很想弄明白里面的运作机制。</p>
+<p>而今天这一内容里面，我将分享自己对机器学习算法里面的梯度下降方法做一个笔记和总结。</p>
+<p>在进行解释梯度下降方法之前，需要对方向导数和梯度做一个基本的解释。</p>
+<blockquote>
+<p>对于<strong>方向导数</strong>，设 z = f(x, y) 在M0(x0, y0)处可微，则f(x, y)在M0点任意方向<strong><em>l</em></strong> = （cosa, cosb)存在方向导数且： <span class="math display">\[
+\frac{\partial f(x_0, y_0)}{\partial l} = \frac{\partial f(x_0, y_0)}{\partial x}cos\alpha+\frac{\partial f(x_0, y_0)}{\partial y}cos\beta
+\]</span> 对于梯度，函数z = f(x, y)在点M0的方向导数计算公式可改写成：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{\partial f(x_0, y_0)}{\partial l} &amp; = (\frac{\partial f(x_0, y_0)}{\partial x}, \frac{\partial f(x_0, y_0)}{\partial y})· (cos \alpha, cos \beta) \\ \\ 
+&amp; = grad(x_0, y_0)·l \\
+ \\
+&amp; = |gradf(x_0, y_0)|cos&lt;grad(x_0, y_0), l&gt;
+\end{aligned}
+\]</span> 在这里向量: <span class="math display">\[
+grad  f(x_0, y_0) = (\frac{\partial f(x_0, y_0)}{x} , \frac{\partial f(x_0, y_0)}{\partial y} ）
+\]</span></p>
+<p>称为z = f(x, y) 在点M0的梯度（向量）。</p>
+<p>假设我们需要求得函数中某点变化最快的值，其实也就是求方向导数模的最大值，那么梯度的方向需要跟单位方向向量的夹角为0。也就是说，函数在某点的梯度，其方向是函数在该点的方向导数最大的方向，它的模是最大方向导数的值。</p>
+</blockquote>
+<p>因此对于方向导数而言，求的是函数中某点在某个方向下的导数，不同方向的导数都不相同，也就说函数中某点沿不同方向的变化速度不一样。而梯度就是函数对变量偏导数的集合。</p>
+<p>假设有如下一个线性回归问题，公式如下： &gt; <span class="math display">\[
+&gt; h(x) =h_\theta(x) =\theta_0+\theta_1x_1+\theta_2x_2
+&gt; \]</span> &gt;</p>
+<p>其中x是自变量，比如说房子面积，θ是权重参数，也就是我们需要使用梯度下降求解的具体值。</p>
+<p>然后我们还需要引入损失函数（<code>Loss Function</code>或者叫<code>Cost Function</code>)，目的是为了在梯度下降时用来衡量更新后的参数是否是向着正确的方向前进。如下损失函数(m表示训练集样本数量)</p>
+<p><span class="math display">\[
+J(\theta) = \sum_{i=1}^{m}\frac{1}{2}·(h_\theta(x^{(i)}) - y^{(i)})^2
+\]</span> 因为我们的目的，是要找到这个损失函数的值最小的参数下的目标函数<code>h(x)</code>，所以面对这种情况，我们其实很容易想到偏导数。结合方向导数以及梯度这一个概念，我们可以得到某个样本数据在函数中下降速度最快的方向。也就是说，我们希望能够对<code>Loss Function</code>求最优解，而我们可以通过求<code>Loss Function</code>的梯度然后不断更新参数来得到。如果我们得到了<code>Loss Function</code>的最优解，那么我们也就能得到目标函数<code>h(x)</code>。</p>
+<p>下面将对<code>Loss Function</code>进行某一个参数θi的偏导数：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{\partial}{\partial \theta_j}J(\theta) &amp;= \frac{\partial}{\partial \theta_j}\frac{1}{2}·(h_\theta(x) - y)^2 \\\\
+&amp; = 2 · \frac{1}{2}·(h_\theta(x) - y) · \frac{\partial}{\partial \theta_j}(h_\theta(x) - y) \\\\
+&amp; = (h_\theta(x) - y)  \cdot \frac{\partial}{\partial \theta_j}(\sum_{i=0}^{n}\theta_ix_i- y) \\\\
+&amp; = h_\theta(x) - y) x_j
+\end{aligned}
+\]</span> 在求出<code>Loss Function</code>对于某一个参数的偏导数之后，我们实际上已经求得到了<code>Loss Function</code>在某一点M0下变化速度最快的方向，也就是确定θi的值。这个时候，只要逐步迭代，就可以求出在给定的数据集中，<code>Loss Function</code>最优解下的目标函数，也就是所有θ的最优解。</p>
+<p>于是对于这一个最基本的线性回归例子，我们就可以直接上<code>Python</code>代码了。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="im">import</span> numpy <span class="im">as</span> np</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#y=2 * (x1) + (x2) + 3 </span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">rate <span class="op">=</span> <span class="fl">0.001</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">x_train <span class="op">=</span> np.array([    [<span class="dv">1</span>, <span class="dv">2</span>],    [<span class="dv">2</span>, <span class="dv">1</span>],    [<span class="dv">2</span>, <span class="dv">3</span>],    [<span class="dv">3</span>, <span class="dv">5</span>],    [<span class="dv">1</span>, <span class="dv">3</span>],    [<span class="dv">4</span>, <span class="dv">2</span>],    [<span class="dv">7</span>, <span class="dv">3</span>],    [<span class="dv">4</span>, <span class="dv">5</span>],    [<span class="dv">11</span>, <span class="dv">3</span>],    [<span class="dv">8</span>, <span class="dv">7</span>]    ])</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">y_train <span class="op">=</span> np.array([<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">10</span>, <span class="dv">14</span>, <span class="dv">8</span>, <span class="dv">13</span>, <span class="dv">20</span>, <span class="dv">16</span>, <span class="dv">28</span>, <span class="dv">26</span>])</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">x_test  <span class="op">=</span> np.array([    [<span class="dv">1</span>, <span class="dv">4</span>],    [<span class="dv">2</span>, <span class="dv">2</span>],    [<span class="dv">2</span>, <span class="dv">5</span>],    [<span class="dv">5</span>, <span class="dv">3</span>],    [<span class="dv">1</span>, <span class="dv">5</span>],    [<span class="dv">4</span>, <span class="dv">1</span>]    ])</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">a <span class="op">=</span> np.random.normal()</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">b <span class="op">=</span> np.random.normal()</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">c <span class="op">=</span> np.random.normal()</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="kw">def</span> h(x):</a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">    <span class="cf">return</span> a<span class="op">*</span>x[<span class="dv">0</span>]<span class="op">+</span>b<span class="op">*</span>x[<span class="dv">1</span>]<span class="op">+</span>c</a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10000</span>):</a>
+<a class="sourceLine" id="cb1-17" data-line-number="17">    sum_a<span class="op">=</span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb1-18" data-line-number="18">    sum_b<span class="op">=</span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19">    sum_c<span class="op">=</span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb1-20" data-line-number="20">    <span class="cf">for</span> x, y <span class="kw">in</span> <span class="bu">zip</span>(x_train, y_train):</a>
+<a class="sourceLine" id="cb1-21" data-line-number="21">        sum_a <span class="op">=</span> sum_a <span class="op">+</span> rate<span class="op">*</span>(y<span class="op">-</span>h(x))<span class="op">*</span>x[<span class="dv">0</span>]</a>
+<a class="sourceLine" id="cb1-22" data-line-number="22">        sum_b <span class="op">=</span> sum_b <span class="op">+</span> rate<span class="op">*</span>(y<span class="op">-</span>h(x))<span class="op">*</span>x[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb1-23" data-line-number="23">        sum_c <span class="op">=</span> sum_c <span class="op">+</span> rate<span class="op">*</span>(y<span class="op">-</span>h(x))</a>
+<a class="sourceLine" id="cb1-24" data-line-number="24">    a <span class="op">=</span> a <span class="op">+</span> sum_a</a>
+<a class="sourceLine" id="cb1-25" data-line-number="25">    b <span class="op">=</span> b <span class="op">+</span> sum_b</a>
+<a class="sourceLine" id="cb1-26" data-line-number="26">    c <span class="op">=</span> c <span class="op">+</span> sum_c</a>
+<a class="sourceLine" id="cb1-27" data-line-number="27">    plt.plot([h(xi) <span class="cf">for</span> xi <span class="kw">in</span> x_test])</a>
+<a class="sourceLine" id="cb1-28" data-line-number="28"></a>
+<a class="sourceLine" id="cb1-29" data-line-number="29"><span class="bu">print</span>(a)</a>
+<a class="sourceLine" id="cb1-30" data-line-number="30"><span class="bu">print</span>(b)</a>
+<a class="sourceLine" id="cb1-31" data-line-number="31"><span class="bu">print</span>(c)</a>
+<a class="sourceLine" id="cb1-32" data-line-number="32"></a>
+<a class="sourceLine" id="cb1-33" data-line-number="33">result<span class="op">=</span>[h(xi) <span class="cf">for</span> xi <span class="kw">in</span> x_train]</a>
+<a class="sourceLine" id="cb1-34" data-line-number="34"><span class="bu">print</span>(result)</a>
+<a class="sourceLine" id="cb1-35" data-line-number="35"></a>
+<a class="sourceLine" id="cb1-36" data-line-number="36">result<span class="op">=</span>[h(xi) <span class="cf">for</span> xi <span class="kw">in</span> x_test]</a>
+<a class="sourceLine" id="cb1-37" data-line-number="37"><span class="bu">print</span>(result)</a>
+<a class="sourceLine" id="cb1-38" data-line-number="38"></a>
+<a class="sourceLine" id="cb1-39" data-line-number="39">plt.show()</a></code></pre></div>
+<p><img src="/images/Figure_1.png"></p>
+<p>然而， 这样的写法对于效率而言是一个十分大的问题，，整个程序跑下来的时间十分长。这个时候，就想到了<strong>梯度下降矢量化</strong>，通过矢量化，能够将运算过程转为线性代数的计算，利用逆矩阵和矩阵乘法，整个计算速度大大提高。</p>
+<p><span class="math display">\[
+\begin{aligned}
+h_\theta(x) &amp;= \theta_0 + \theta_1x_1 + \theta_2x_2  \\\\
+J(\theta) &amp; = \frac{1}{2m}\sum_{i=1}^{m}(h_\theta(x^{(i)}) - y^{(i)})^{2} \\\\
+\theta_j &amp;:= \theta_j - \alpha\frac{1}{m}\sum_{i=1}^{m}(h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)}
+\end{aligned}
+\]</span></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="im">import</span> numpy <span class="im">as</span> np</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#y=2 * (x1) + (x2) + 3 </span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">rate <span class="op">=</span> <span class="fl">0.001</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">X <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">2</span>, <span class="dv">1</span>], [<span class="dv">2</span>, <span class="dv">3</span>], </a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">              [<span class="dv">3</span>, <span class="dv">5</span>], [<span class="dv">1</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">2</span>], </a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">              [<span class="dv">7</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">5</span>], [<span class="dv">11</span>, <span class="dv">3</span>]])</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">y <span class="op">=</span> np.array([<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">10</span>, </a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">              <span class="dv">14</span>, <span class="dv">8</span>, <span class="dv">13</span>, </a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">              <span class="dv">20</span>, <span class="dv">16</span>, <span class="dv">28</span>])</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="kw">def</span> compute_cost(X, y, theta):</a>
+<a class="sourceLine" id="cb2-13" data-line-number="13">    <span class="cf">return</span> np.<span class="bu">sum</span>(np.square(np.dot(X, theta) <span class="op">-</span> y)) <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> <span class="bu">len</span>(y))</a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="kw">def</span> gradient_descent_vectorization(X, y, learning_rate, iterations):</a>
+<a class="sourceLine" id="cb2-16" data-line-number="16">    X <span class="op">=</span> np.column_stack((np.ones(<span class="bu">len</span>(X)), X))</a>
+<a class="sourceLine" id="cb2-17" data-line-number="17">    theta <span class="op">=</span> np.zeros(X.shape[<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb2-18" data-line-number="18">    m <span class="op">=</span> <span class="bu">len</span>(X)</a>
+<a class="sourceLine" id="cb2-19" data-line-number="19">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(iterations):</a>
+<a class="sourceLine" id="cb2-20" data-line-number="20">        hypothesis <span class="op">=</span> np.dot(X, theta)</a>
+<a class="sourceLine" id="cb2-21" data-line-number="21">        loss <span class="op">=</span> hypothesis <span class="op">-</span> y</a>
+<a class="sourceLine" id="cb2-22" data-line-number="22">        gradient <span class="op">=</span> np.dot(X.T, loss) <span class="op">/</span> m</a>
+<a class="sourceLine" id="cb2-23" data-line-number="23">        theta <span class="op">=</span> theta <span class="op">-</span> learning_rate <span class="op">*</span> gradient</a>
+<a class="sourceLine" id="cb2-24" data-line-number="24">    <span class="cf">return</span> X, theta</a>
+<a class="sourceLine" id="cb2-25" data-line-number="25"></a>
+<a class="sourceLine" id="cb2-26" data-line-number="26">learning_rate <span class="op">=</span> <span class="fl">0.01</span></a>
+<a class="sourceLine" id="cb2-27" data-line-number="27">iterations <span class="op">=</span> <span class="dv">50000</span></a>
+<a class="sourceLine" id="cb2-28" data-line-number="28">X, theta <span class="op">=</span> gradient_descent_vectorization(X, y, learning_rate, iterations)</a>
+<a class="sourceLine" id="cb2-29" data-line-number="29">cost <span class="op">=</span> compute_cost(X, y, theta)</a>
+<a class="sourceLine" id="cb2-30" data-line-number="30"></a>
+<a class="sourceLine" id="cb2-31" data-line-number="31"><span class="bu">print</span>(<span class="st">&quot;theta1 = &quot;</span>,theta[<span class="dv">1</span>], <span class="st">&quot;theta2 = &quot;</span>, theta[<span class="dv">2</span>], <span class="st">&quot;theta3 = &quot;</span>, theta[<span class="dv">0</span>])</a>
+<a class="sourceLine" id="cb2-32" data-line-number="32"><span class="bu">print</span>(<span class="st">&#39;cost:&#39;</span>, cost)</a>
+<a class="sourceLine" id="cb2-33" data-line-number="33"></a>
+<a class="sourceLine" id="cb2-34" data-line-number="34"></a>
+<a class="sourceLine" id="cb2-35" data-line-number="35">[output]</a>
+<a class="sourceLine" id="cb2-36" data-line-number="36">theta1 <span class="op">=</span>  <span class="fl">2.02720821766</span> theta2 <span class="op">=</span>  <span class="fl">1.17962898412</span> theta3 <span class="op">=</span>  <span class="fl">2.2645149405</span></a>
+<a class="sourceLine" id="cb2-37" data-line-number="37">cost: <span class="fl">0.0354239310129</span></a>
+<a class="sourceLine" id="cb2-38" data-line-number="38">[Finished <span class="kw">in</span> <span class="fl">0.7</span>s]</a></code></pre></div>
+<p>只能说，经过矢量化运算后的梯度下降效率真的很高。还没有矢量化的梯度下降，在相同迭代次数和学习速度下的所需时间接近67s，而目前矢量化后的时间是0.7s，足足快了一百倍。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/28/Python-zip-with-iter/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -4980,175 +5247,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/12/讀《計算廣告》筆記-三/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Peter Tsung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pandas.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="彼得的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/06/12/讀《計算廣告》筆記-三/" itemprop="url">
-                  讀《計算廣告》筆記(三)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-12T17:47:47+08:00">
-                2017-06-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/讀書筆記/" itemprop="url" rel="index">
-                    <span itemprop="name">讀書筆記</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>互联网广告业务的初始阶段，拥有流量的媒体与需要广告资源的代理商是市场的主要参与者。而随着受众定向技术的发展，广告位独占式售卖的执行方式也发生了很大的变化。如果能够对这些系列的受众分别投送相应的创意，就可以取得更好的效果。</p>
-<p>在受众定向中，主要有两个方面的性能需要关注：一是定向的效果，即符合该定向方式的流量上高出平均eCPM的水平；二是定向的规模，即这部分流量占整体广告库存流量的比例。</p>
-<p>受众定向方法概览：</p>
-<ol type="1">
-<li>地域定向（geo-targeting）</li>
-<li>人口属性定向（demographical targeting）：人口属性的主要标签包括年龄、性别、教育程度、收入水平等。</li>
-<li>频道定向（channel targeting）：频道定向是完全按照供应方的内容分类体系将库存按照频道划分，对各频道的流量投送不同的广告。</li>
-<li>上下文定向（contextual targeting）：将频道定向这种方法加以推广，可以根据网页的具体内容来匹配相关的广告。上下文定向的粒度可以是关键词、主题，也可以是根据广告主需求确定的分类。</li>
-<li>行为定向（behaviorial targeting）：行为定向框架是根据用户的历史访问行为了解用户兴趣，从而投送相关广告。</li>
-<li>精确位置定向（hyper-local targeting）</li>
-<li>重定向（retargeting）：其原理是对某个广告主过去一段时间的访客投放广告以提升效果。显然，某个广告主的访客是其独有的信息，因此这属于定制化标签。</li>
-<li>新客推荐定向（look-alike targeting）：其思路是根据广告主提供的种子访客信息，结合广告平台更丰富的数据，为广告主找到行为上相似的潜在客户。这一方法的目的是希望在同等用户覆盖比率的情况下，达到比一些通用的兴趣标签更好的效果。</li>
-<li>团购（group-purchase）：团购主要利用价格工具，直接降低用户在决策阶段的门槛，使得价格敏感的用户转化效果有明显的提升。</li>
-</ol>
-<p>專業名詞總結：</p>
-<ul>
-<li>合約廣告產品：它由線下廣告的交易形式衍生而来，又可以分为按照时段售卖的CPT广告和按照约定展示量售卖的CPM广告。这类广告产品主要服务于后续效果不宜直接衡量的品牌类广告主，在门户网站和视频网站较为常见。</li>
-<li>竞价广告产品：其最重要的形式是搜索广告，其产品形式为对搜索关键词的竞价。这种广告在拓展到站外展示广告流量时，演进成了对页面关键词或者用户标签竞价的产品形式，也就是ADN。</li>
-<li>程序化交易广告产品：竞价广告的进一步发展催生了实时竞价的交易形式。实时竞价使得需求方可以更灵活地划分和选择自己的目标受众，也使得更广泛的数据使用和交易迅速发展起来。</li>
-<li>广告计划：概念上对应于广告主的一次投放合同，其中包括了预算、时间范围等基本信息。</li>
-<li>广告组：对应于一个具体的广告投放策略，主要是设定受众定向条件和出价。</li>
-<li>广告创意：最终展示出的素材。</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -5193,7 +5296,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">40</span>
+                <span class="site-state-item-count">41</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -5204,7 +5307,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -5215,7 +5318,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -5258,7 +5361,7 @@
 <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
