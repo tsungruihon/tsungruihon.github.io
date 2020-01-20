@@ -276,6 +276,317 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/17/KNN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peter Tsung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pandas.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="彼得的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/02/17/KNN/" itemprop="url">
+                  K-Nearest Neighbor
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-17T01:38:56+08:00">
+                2018-02-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><code>KNN(k-nearest neighbor)</code>应该是分类和回归算法里面最简单的一个了。这个笔记主要分享下<code>KNN</code>以及<code>KD树</code>。</p>
+<p><code>k近邻法</code>假设给定一个训练数据集，其中的实例类别已定。分类时，对新的实例，根据其k个最近邻的训练实例的类别，通过多数表决等方式进行预测。因此，<code>k近邻法</code>不具有显式的学习过程。<code>k近邻法</code>实际上利用训练数据集对特征向量空间进行划分，并作为其分类的“模型”。</p>
+<p><code>k值的选择</code>、<code>距离度量</code>及<code>分类决策规则</code>是<code>k近邻法</code>的三个基本要素。</p>
+<h2 id="距离度量"><u>距离度量</u></h2>
+<p>特征空间中两个实例点的距离是两个实例点相似程度的反映。</p>
+<p>设特征空间是n维实数向量空间R^n， 其中 <span class="math display">\[
+\begin{aligned}
+&amp; x_i, x_j \in \mathcal{X} \\
+\\
+&amp; x_i = (x_i^{(1)}, x_i^{(2)},  ... , x_i^{(n)})^T \\
+\\
+&amp; x_j = (x_j^{(1)}, x_j^{(2)},  ... , x_j^{(n)})^T \\
+\end{aligned}
+\]</span> 因此，<code>x_i</code>, <code>x_j</code>的<code>L_p</code>距离定义为 <span class="math display">\[
+L_p(x_i, x_j)  = \Biggl( \sum_{i=1}^n|x_i^{(l)} - x_j^{(l)}|^p \Biggr)^{\frac {1}{p}}, \ \ \ p \ge1
+\]</span> 当<code>p=2</code>， 称为<code>欧式距离(Euclidean distance)</code>， 即 <span class="math display">\[
+L_2(x_i, x_j)  = \Biggl( \sum_{i=1}^n|x_i^{(l)} - x_j^{(l)}|^2 \Biggr)^{\frac {1}{2}}
+\]</span> 当<code>p=1</code>， 称为<code>曼哈顿距离(Manhattan distance)</code>， 即 <span class="math display">\[
+L_1(x_i, x_j)  = \sum_{i=1}^n|x_i^{(l)} - x_j^{(l)}|
+\]</span> 当<code>p=∞</code>，它是各个坐标距离的最大值，即 <span class="math display">\[
+L_\infty(x_i, x_j)  = \max_{l}|x_i^{(l)} - x_j^{(l)}|
+\]</span></p>
+<h2 id="k值的选择"><u>k值的选择</u></h2>
+<p>如果选择较小的k值，就相当于用较小的领域中的训练实例进行预测。“学习”的<code>近似误差(approximation error)</code>会减少，只有与输入实例较近的训练实例才会对预测结果起作用。但“学习”的<code>估计误差(estimation error)</code>会增大。k值的减小意味着整体模型变得复杂，容易发生过拟合。</p>
+<p>如果选择较大的k值，相当于用较大领域中的训练实例进行预测，整体模型变得简单，“学习”的<code>估计误差(estimation error)</code>会减少，但是“学习”的<code>近似误差(approximation error)</code>会增大。</p>
+<p>在应用中，k值一般取一个比较小的值，通常采用交叉验证法来选取最优的k值。</p>
+<h2 id="k近邻法的实现kd树"><u>k近邻法的实现：kd树</u></h2>
+<p>实现<code>k近邻法</code>时，主要考虑的问题是如何对训练数据进行快速k近邻搜索。其中比较高效的方法是<code>kd树</code>。</p>
+<p><code>kd树</code>是二叉树，表示对k维空间的一个划分。构造<code>kd树</code>的过程就是不断地对第l维<code>(l={1, 2, ..., p})</code>维取中位数的过程，中位数对应的对象就是二叉树中的结点。</p>
+<h3 id="构造平衡kd树"><u>构造平衡kd树</u></h3>
+<p>首先给出伪代码：</p>
+<ol type="1">
+<li>历遍所有维度，找到方差最大的维度</li>
+<li>以这个维度上的点的数值进行排序，找到其中间点</li>
+<li>以这个点为划分，递归建立左子树</li>
+<li>以这个点为划分，递归建立右子树</li>
+<li>当数据集内没有点时，退出函数</li>
+</ol>
+<p>这里给出<code>两个重要概念</code>：</p>
+<ul>
+<li><p>以方差最大维度为划分的维度：方差越大，代表着这个维度上的数据波动越大，代表着以这个维度划分数据，可以最广泛的把数据集分开</p></li>
+<li><p>取中位点为划分点，有助有构造一个平衡二叉树，不至于出现二叉树有时候会出现的极端，即是一个父节点只有一个孩子节点，使树的深度大大加深，增加搜索的复杂度。</p></li>
+</ul>
+<p><code>输入</code>： k维空间的数据集<code>T={x1, x2, ..., xN}</code></p>
+<p>其中<code>x_i = (xi1, xi2, ..., xik)^T</code>, i = 1, 2, … , N</p>
+<p><code>输出</code>： kd树</p>
+<ol type="1">
+<li><p>开始：选择根结点。</p>
+<ul>
+<li><p>选择<code>x^(1)</code>为坐标轴，以T中所有实例的<code>x^1</code>坐标的中位数为切分点，将根结点对应的超矩形区域切分为两个子区域，切分由通过切分点并与坐标轴<code>x^1</code>垂直的超平面实现。</p></li>
+<li><p>由根结点生成深度为1的左、右子结点：左子结点对应坐标<code>x^(i)</code>小于切分点的子区域，右子结点对应于坐标<code>x^(i)</code>大于切分点的子区域。</p></li>
+</ul></li>
+<li><p>重复：</p>
+<ul>
+<li>对深度为<code>j</code>的结点，选择<code>x^(l)</code>为切分的坐标轴，<code>l=j(modk)+1</code>。以该结点的区域中所有实例的<code>x^(l)</code>坐标的中位数为切分点，将该节点对应的矩形区域切分为两个子区域。切分由通过切分点并与坐标轴<code>x^(l)</code>垂直的超平面实现。</li>
+<li>由根结点生成深度为<code>j+1</code>的左、右子结点：左子结点对应坐标<code>x^(l)</code>小于切分点的子区域，右子结点对应于坐标<code>x^(l)</code>大于切分点的子区域。</li>
+</ul></li>
+<li><p>直到两个子区域没有实例存在时停止。从而形成<code>kd树</code>的划分。</p></li>
+</ol>
+<h3 id="查找k个最小值"><u>查找K个最小值</u></h3>
+<ol type="1">
+<li>若该节点是叶子结点，则返回</li>
+<li>若不是叶子结点，则比较待预测节点与该节点被划分的维度上的值，若小于，则去其左子树。</li>
+<li>若不是叶子结点，则比较待预测节点与该节点被划分的维度上的值，若大于，则去其右子树。</li>
+</ol>
+<p>我们用一个k大小的优先队列来存储k个节点的值：</p>
+<ol type="1">
+<li>若队列的长度不满k个，则把当前节点入队，并且去该父节点的另外一个子节点比较。</li>
+<li>若已经满了k个，则取距离最长的节点，计算其距离，设为k。在计算预测结点到该节点的父节点的所划分的维度的距离，设为d。如K&gt;d，则去改父节点的另一个子节点查找。否则，继续回退到该节点的父节点的父节点。</li>
+</ol>
+<p>然后我们来看看如何用代码来实现。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># 首先写一个简单的KNN。</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="im">import</span> numpy <span class="im">as</span> np</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="im">import</span> operator</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="im">from</span> os <span class="im">import</span> listdir</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw">def</span> createDataSet():</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">    group <span class="op">=</span> np.array([[<span class="fl">1.0</span>, <span class="fl">1.1</span>], [<span class="fl">1.0</span>, <span class="fl">1.0</span>], [<span class="dv">0</span>, <span class="dv">0</span>],[<span class="dv">0</span>, <span class="fl">0.1</span>]])</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">    labels <span class="op">=</span> [<span class="st">&#39;A&#39;</span>, <span class="st">&#39;A&#39;</span>, <span class="st">&#39;B&#39;</span>, <span class="st">&#39;B&#39;</span>]</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">    <span class="cf">return</span> group, labels</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="kw">def</span> knn(inX, dataSet, labels, k):</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">    dataSetSise <span class="op">=</span> dataSet.shape[<span class="dv">0</span>]</a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">    diffMat <span class="op">=</span> np.tile(inX, (dataSetSise, <span class="dv">1</span>)) <span class="op">-</span> dataSet</a>
+<a class="sourceLine" id="cb1-15" data-line-number="15">    sqDiffMat <span class="op">=</span> diffMat <span class="op">**</span> <span class="dv">2</span></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16">    sqDistances <span class="op">=</span> sqDiffMat.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb1-17" data-line-number="17">    distances <span class="op">=</span> sqDistances <span class="op">**</span> <span class="fl">0.5</span></a>
+<a class="sourceLine" id="cb1-18" data-line-number="18">    sortedDistIndices <span class="op">=</span> distances.argsort()</a>
+<a class="sourceLine" id="cb1-19" data-line-number="19">    classCount <span class="op">=</span> {}</a>
+<a class="sourceLine" id="cb1-20" data-line-number="20">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(k):</a>
+<a class="sourceLine" id="cb1-21" data-line-number="21">        voteIlabel <span class="op">=</span> labels[sortedDistIndices[i]]</a>
+<a class="sourceLine" id="cb1-22" data-line-number="22">        classCount[voteIlabel] <span class="op">=</span> classCount.get(voteIlabel, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb1-23" data-line-number="23">    sortedDistIndices <span class="op">=</span> <span class="bu">sorted</span>(classCount.items(), key<span class="op">=</span>operator.itemgetter(<span class="dv">1</span>), reverse<span class="op">=</span><span class="va">True</span>)</a>
+<a class="sourceLine" id="cb1-24" data-line-number="24">    <span class="cf">return</span> sortedDistIndices[<span class="dv">0</span>][<span class="dv">0</span>]</a>
+<a class="sourceLine" id="cb1-25" data-line-number="25"></a>
+<a class="sourceLine" id="cb1-26" data-line-number="26">dataSet, labels <span class="op">=</span> createDataSet()</a>
+<a class="sourceLine" id="cb1-27" data-line-number="27"><span class="bu">print</span>(knn([<span class="dv">0</span>, <span class="dv">0</span>], dataSet, labels, <span class="dv">3</span>))</a>
+<a class="sourceLine" id="cb1-28" data-line-number="28"></a>
+<a class="sourceLine" id="cb1-29" data-line-number="29">[output]</a>
+<a class="sourceLine" id="cb1-30" data-line-number="30">B</a>
+<a class="sourceLine" id="cb1-31" data-line-number="31"></a>
+<a class="sourceLine" id="cb1-32" data-line-number="32"><span class="co"># 下面就是kd树。</span></a>
+<a class="sourceLine" id="cb1-33" data-line-number="33"><span class="kw">class</span> KD_node(<span class="bu">object</span>):</a>
+<a class="sourceLine" id="cb1-34" data-line-number="34">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, point<span class="op">=</span><span class="va">None</span>, split<span class="op">=</span><span class="va">None</span>, LL<span class="op">=</span><span class="va">None</span>, RR<span class="op">=</span><span class="va">None</span>):</a>
+<a class="sourceLine" id="cb1-35" data-line-number="35">        <span class="va">self</span>.point <span class="op">=</span> point</a>
+<a class="sourceLine" id="cb1-36" data-line-number="36">        <span class="va">self</span>.split <span class="op">=</span> split</a>
+<a class="sourceLine" id="cb1-37" data-line-number="37">        <span class="va">self</span>.left <span class="op">=</span> LL</a>
+<a class="sourceLine" id="cb1-38" data-line-number="38">        <span class="va">self</span>.right <span class="op">=</span> RR</a>
+<a class="sourceLine" id="cb1-39" data-line-number="39"></a>
+<a class="sourceLine" id="cb1-40" data-line-number="40"><span class="kw">def</span> createKDTree(root, data_list):</a>
+<a class="sourceLine" id="cb1-41" data-line-number="41">    length <span class="op">=</span> <span class="bu">len</span>(data_list)</a>
+<a class="sourceLine" id="cb1-42" data-line-number="42">    <span class="cf">if</span> length <span class="op">==</span> <span class="dv">0</span>:</a>
+<a class="sourceLine" id="cb1-43" data-line-number="43">        <span class="cf">return</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb1-44" data-line-number="44">    dimension <span class="op">=</span> <span class="bu">len</span>(data_list[<span class="dv">0</span>])</a>
+<a class="sourceLine" id="cb1-45" data-line-number="45">    max_var <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb1-46" data-line-number="46">    split <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb1-47" data-line-number="47">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(dimension):</a>
+<a class="sourceLine" id="cb1-48" data-line-number="48">        l1 <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb1-49" data-line-number="49">        <span class="cf">for</span> t <span class="kw">in</span> data_list:</a>
+<a class="sourceLine" id="cb1-50" data-line-number="50">            l1.append(t[i])</a>
+<a class="sourceLine" id="cb1-51" data-line-number="51">        var <span class="op">=</span> computeVariance(l1)</a>
+<a class="sourceLine" id="cb1-52" data-line-number="52">        <span class="cf">if</span> var <span class="op">&gt;</span> max_var:</a>
+<a class="sourceLine" id="cb1-53" data-line-number="53">            max_var <span class="op">=</span> var</a>
+<a class="sourceLine" id="cb1-54" data-line-number="54">            split <span class="op">=</span> i</a>
+<a class="sourceLine" id="cb1-55" data-line-number="55"></a>
+<a class="sourceLine" id="cb1-56" data-line-number="56">    data_list <span class="op">=</span> <span class="bu">sorted</span>(data_list, key<span class="op">=</span><span class="kw">lambda</span> x: x[split])</a>
+<a class="sourceLine" id="cb1-57" data-line-number="57">    point <span class="op">=</span> data_list[<span class="bu">int</span>(length<span class="op">/</span><span class="dv">2</span>)]</a>
+<a class="sourceLine" id="cb1-58" data-line-number="58">    root <span class="op">=</span> KD_node(point, split)</a>
+<a class="sourceLine" id="cb1-59" data-line-number="59">    root.left <span class="op">=</span> createKDTree(root.left, data_list[<span class="dv">0</span>:<span class="bu">int</span>(length<span class="op">/</span><span class="dv">2</span>)])</a>
+<a class="sourceLine" id="cb1-60" data-line-number="60">    root.right <span class="op">=</span> createKDTree(root.right, data_list[<span class="bu">int</span>(length<span class="op">/</span><span class="dv">2</span>)<span class="op">+</span><span class="dv">1</span>:length])</a>
+<a class="sourceLine" id="cb1-61" data-line-number="61">    <span class="cf">return</span> root</a>
+<a class="sourceLine" id="cb1-62" data-line-number="62"></a>
+<a class="sourceLine" id="cb1-63" data-line-number="63"><span class="kw">def</span> computeVariance(arrayList):</a>
+<a class="sourceLine" id="cb1-64" data-line-number="64">    arrayList <span class="op">=</span> np.array(arrayList)</a>
+<a class="sourceLine" id="cb1-65" data-line-number="65">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(arrayList)):</a>
+<a class="sourceLine" id="cb1-66" data-line-number="66">        arrayList[i] <span class="op">=</span> <span class="bu">float</span>(arrayList[i])</a>
+<a class="sourceLine" id="cb1-67" data-line-number="67">    length <span class="op">=</span> <span class="bu">len</span>(arrayList)</a>
+<a class="sourceLine" id="cb1-68" data-line-number="68">    sum1 <span class="op">=</span> arrayList.<span class="bu">sum</span>()</a>
+<a class="sourceLine" id="cb1-69" data-line-number="69">    array2 <span class="op">=</span> arrayList <span class="op">*</span> arrayList</a>
+<a class="sourceLine" id="cb1-70" data-line-number="70">    sum2 <span class="op">=</span> array2.<span class="bu">sum</span>()</a>
+<a class="sourceLine" id="cb1-71" data-line-number="71">    mean <span class="op">=</span> sum1 <span class="op">/</span> length</a>
+<a class="sourceLine" id="cb1-72" data-line-number="72">    variance <span class="op">=</span> sum2 <span class="op">/</span> length <span class="op">-</span> mean <span class="op">**</span> <span class="dv">2</span></a>
+<a class="sourceLine" id="cb1-73" data-line-number="73"></a>
+<a class="sourceLine" id="cb1-74" data-line-number="74"><span class="kw">def</span> computerDistance(pt1, pt2):</a>
+<a class="sourceLine" id="cb1-75" data-line-number="75">    <span class="bu">sum</span> <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb1-76" data-line-number="76">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(pt1)):</a>
+<a class="sourceLine" id="cb1-77" data-line-number="77">        <span class="bu">sum</span> <span class="op">+=</span> (pt1[i] <span class="op">-</span> pt2[i]) <span class="op">**</span> <span class="dv">2</span></a>
+<a class="sourceLine" id="cb1-78" data-line-number="78">    <span class="cf">return</span> <span class="bu">sum</span> <span class="op">**</span> <span class="fl">0.5</span></a>
+<a class="sourceLine" id="cb1-79" data-line-number="79"></a>
+<a class="sourceLine" id="cb1-80" data-line-number="80"><span class="kw">def</span> findNN(root, query, k):</a>
+<a class="sourceLine" id="cb1-81" data-line-number="81">    min_dist <span class="op">=</span> computerDistance(query, root.point)</a>
+<a class="sourceLine" id="cb1-82" data-line-number="82">    node_k <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb1-83" data-line-number="83">    nodeList <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb1-84" data-line-number="84">    temp_root <span class="op">=</span> root</a>
+<a class="sourceLine" id="cb1-85" data-line-number="85">    <span class="cf">while</span> temp_root:</a>
+<a class="sourceLine" id="cb1-86" data-line-number="86">        nodeList.append(temp_root)</a>
+<a class="sourceLine" id="cb1-87" data-line-number="87">        dd <span class="op">=</span> computerDistance(query, temp_root.point)</a>
+<a class="sourceLine" id="cb1-88" data-line-number="88">        <span class="cf">if</span> <span class="bu">len</span>(node_k) <span class="op">&lt;</span> k:</a>
+<a class="sourceLine" id="cb1-89" data-line-number="89">            node_k.append(dd)</a>
+<a class="sourceLine" id="cb1-90" data-line-number="90">        <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb1-91" data-line-number="91">            max_dist <span class="op">=</span> <span class="bu">max</span>(node_k)</a>
+<a class="sourceLine" id="cb1-92" data-line-number="92">            <span class="cf">if</span> dd <span class="op">&lt;</span> max_dist:</a>
+<a class="sourceLine" id="cb1-93" data-line-number="93">                index <span class="op">=</span> node_k.index(max_dist)</a>
+<a class="sourceLine" id="cb1-94" data-line-number="94">                <span class="kw">del</span>(node_k[index])</a>
+<a class="sourceLine" id="cb1-95" data-line-number="95">                node_k.append(dd)</a>
+<a class="sourceLine" id="cb1-96" data-line-number="96">        ss <span class="op">=</span> temp_root.split</a>
+<a class="sourceLine" id="cb1-97" data-line-number="97">        <span class="cf">if</span> query[ss] <span class="op">&lt;=</span> temp_root.point[ss]:</a>
+<a class="sourceLine" id="cb1-98" data-line-number="98">            temp_root <span class="op">=</span> temp_root.left</a>
+<a class="sourceLine" id="cb1-99" data-line-number="99">        <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb1-100" data-line-number="100">            temp_root <span class="op">=</span> temp_root.right</a>
+<a class="sourceLine" id="cb1-101" data-line-number="101">    <span class="bu">print</span>(<span class="st">&#39;node_k: &#39;</span>, node_k)</a>
+<a class="sourceLine" id="cb1-102" data-line-number="102"></a>
+<a class="sourceLine" id="cb1-103" data-line-number="103">    <span class="cf">while</span> nodeList:</a>
+<a class="sourceLine" id="cb1-104" data-line-number="104">        back_point <span class="op">=</span> nodeList.pop()</a>
+<a class="sourceLine" id="cb1-105" data-line-number="105">        ss <span class="op">=</span> back_point.split</a>
+<a class="sourceLine" id="cb1-106" data-line-number="106">        max_dist <span class="op">=</span> <span class="bu">max</span>(node_k)</a>
+<a class="sourceLine" id="cb1-107" data-line-number="107">        <span class="cf">if</span> <span class="bu">len</span>(node_k) <span class="op">&lt;</span> k <span class="kw">or</span> <span class="bu">abs</span>(query[ss] <span class="op">-</span> back_point.point[ss]) <span class="op">&lt;</span> max_dist:</a>
+<a class="sourceLine" id="cb1-108" data-line-number="108">            <span class="cf">if</span> query[ss] <span class="op">&lt;=</span> back_point.point[ss]:</a>
+<a class="sourceLine" id="cb1-109" data-line-number="109">                temp_root <span class="op">=</span> back_point.right</a>
+<a class="sourceLine" id="cb1-110" data-line-number="110">            <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb1-111" data-line-number="111">                temp_root <span class="op">=</span> back_point.left</a>
+<a class="sourceLine" id="cb1-112" data-line-number="112">            <span class="cf">if</span> temp_root:</a>
+<a class="sourceLine" id="cb1-113" data-line-number="113">                nodeList.append(temp_root)</a>
+<a class="sourceLine" id="cb1-114" data-line-number="114">                curDist <span class="op">=</span> computerDistance(temp_root.point, query)</a>
+<a class="sourceLine" id="cb1-115" data-line-number="115">                <span class="cf">if</span> max_dist <span class="op">&gt;</span> curDist <span class="kw">and</span> <span class="bu">len</span>(node_k) <span class="op">==</span> k:</a>
+<a class="sourceLine" id="cb1-116" data-line-number="116">                    index <span class="op">=</span> node_k.index(max_dist)</a>
+<a class="sourceLine" id="cb1-117" data-line-number="117">                    <span class="kw">del</span>(node_k[index])</a>
+<a class="sourceLine" id="cb1-118" data-line-number="118">                    node_k.append(curDist)</a>
+<a class="sourceLine" id="cb1-119" data-line-number="119">                <span class="cf">elif</span> <span class="bu">len</span>(node_k) <span class="op">&lt;</span> k:</a>
+<a class="sourceLine" id="cb1-120" data-line-number="120">                    node_k.append(curDist)</a>
+<a class="sourceLine" id="cb1-121" data-line-number="121">    <span class="cf">return</span> node_k</a></code></pre></div>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/04/决策树/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -5075,265 +5386,6 @@ y = f(x) = \mathop{\arg\max}_{c_k}P(Y=c_k)\prod_jP(X^{(j)}=x^{(j)}|Y=c_k)
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/17/Logistic-Rregression/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Peter Tsung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pandas.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="彼得的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/12/17/Logistic-Rregression/" itemprop="url">
-                  Logistic Rregression
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-17T10:53:16+08:00">
-                2017-12-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
-                    <span itemprop="name">Machine Learning</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>今天看了极大似然估计(<code>Maximum likelihood evaluation</code>)，然后就看到极大似然估计在<code>Logistic Regression</code>上面的应用，忽然有一种醍醐灌顶的感觉。</p>
-<p>首先，原来<code>Logistic Regression</code>的中文读法是逻辑斯谛回归而不是逻辑回归，知道真相的我忽然觉得以前的自己好土。。但这不是重点，其实这是重点。。好吧</p>
-<p><code>Logistic Regression</code>假设数据服从伯努利分布，通过极大化似然函数的方法，运用梯度下降来求解参数，来达到将数据<strong>二分类</strong>的目的。</p>
-<p><code>Logistic Regression</code>是根据不同的特征量，输出0和1，并且只能输出0和1。我们可以通过<code>Sigmoid</code>函数来实现。 <span class="math display">\[
-\sigma(x)  = \frac{1}{1+e^{-w x}} = \frac{e^{wt}}{1 + e^{wx}}
-\]</span></p>
-<p><span class="math display">\[
-\sigma&#39;(x) =  \sigma(x)(1 - \sigma(x))
-\]</span></p>
-<p>而为什么会涉及到极大似然估计呢？因为我们希望能够在给定的概率密度函<code>σ(x)</code>，以及样本数据中，得到能够以最大概率发生样本数据的参数<code>w</code>的估计。因此我们需要引入似然函数并且计算极大似然估计。</p>
-<p>确定了分类函数之后，接下来，我们把<code>Sigmoid</code>函数的输入记为<code>z</code>，则 <span class="math display">\[
-z = w_0x_0+w_1x_1+w_2x_2+...+w_nx_n = w^Tx
-\]</span> 向量<code>x</code>是特征变量，是输入数据，向量<code>w</code>是回归系数。所以我们要做的事情就是如何确定最优的回归系数<code>w(w0, w1, w2, ..., wn)</code></p>
-<p>现在来看看我们有什么公式</p>
-<ul>
-<li><p>输入特征变量： <span class="math display">\[z = w_0x_0+w_1x_1+w_2x_2+...+w_nx_n = w^Tx\]</span></p></li>
-<li><p>分类函数（预测函数）： <span class="math display">\[ h(z) =  \frac{1}{1+e^{-z}} = h_w(x)= \frac{1}{1+e^{-w^Tx}} \]</span></p></li>
-<li><p>对于任意确定的<code>x</code>和<code>w</code>，有：</p>
-<p><span class="math display">\[P(y=1|x, w)=h_w(x)\]</span></p>
-<p><span class="math display">\[P(y = 0|x, w) = 1 - h_w(x)\]</span></p></li>
-</ul>
-<p>这个公式可以写成： <span class="math display">\[
-P(y|x, w) = (h_w(x))^y(1-h_w(x))^{1-y}
-\]</span></p>
-<p>取似然函数： <span class="math display">\[
-\begin{aligned}
-L(w)&amp; =\prod_{i=1}^{m}P(y^{(i)}|x^{(i)}, w) \\
-&amp; =\prod_{i = 1}^{m}(h_w(x^{(i)}))^{y^{(i)}}(1-h_w(x^{(i)}))^{1-y^{(i)}} 
-\end{aligned}
-\]</span> 然后转化为对数似然函数，这样求解参数的速度是比较快的。 <span class="math display">\[
-J(w) = logL(w) = \sum_{i=1}^{m}(y^{(i)}logh_w(x^{(i)}) + (1-y^{(i)})log(1-h_w(x^{(i)})))
-\]</span> 得到对数似然函数<code>J(w)</code>后，我们就可以利用函数<code>J(w)</code>来表示预测值和实际值的偏差。<code>J(w)</code>越大，表示预测值与实际值的差异越小，预测越准确。</p>
-<p><code>Cost</code>函数可以写成： <span class="math display">\[
-Cost(h_w^x, y)=\left\{
-\begin{aligned}
-logh_w(x), &amp;  &amp;  { y = 1}  \\
-1 - logh_w(x), &amp; &amp; {y = 0}
-\end{aligned}
-\right.
-\]</span> 下面我们需要求<code>Cost</code>函数的最大值，所以我们需要对<code>J(w)</code>进行求偏导： <span class="math display">\[
-\begin{aligned}
-\frac {\partial}{\partial {w_j}}J(w) &amp; = \sum_{i=1}^m((y^{(i)}\frac{1}{h_w(x^{(i)})}-(1-y^{(i)})\frac{1}{1-h_w(x^{(i)})})\cdot\frac{\partial{h_w(x^{(i)})}}{\partial {w_j}})  \\
-&amp; = \sum_{i=1}^m((y^{(i)}\frac{1}{h_w(x^{(i)})}-(1-y^{(i)})\frac{1}{1-h_w(x^{(i)})})\cdot(h_w(x^{(i)})\cdot(1-h_w(x^{(i)}))\cdot x_j) \\
-&amp; = \sum_{i=1}^m((y^{(i)}\cdot (1-h_w(x^{(i)} )-(1-y^{(i)})\cdot h_w(x^{(i)})) \cdot x_j) \\
-&amp; = \sum_{i=1}^m(y^{(i)}-h_w(x^{(i)}))\cdot x_j)
-\end{aligned}
-\]</span> 因此我们得到了梯度上升法迭代公式： <span class="math display">\[
-w_j := w_j + \alpha\sum_{i=1}^m(y^{(i)}-h_w(x^{(i)}))\cdot x_j)
-\]</span> 弄清楚每一块做什么之后，我们就可以用Python写一遍<code>Logistic Regression</code>了。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="im">import</span> numpy <span class="im">as</span> np</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">def</span> sigmoid(z):</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">    <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> np.exp(<span class="op">-</span>z))</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw">def</span> log_likelihood(X, y, w):</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">    hypothesis <span class="op">=</span> sigmoid(np.dot(w.T, x))</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">    ll <span class="op">=</span> np.<span class="bu">sum</span>(y <span class="op">*</span> np.log(hypothesis) <span class="op">+</span> (<span class="dv">1</span> <span class="op">-</span> y) <span class="op">*</span> np.log(<span class="dv">1</span> <span class="op">-</span> hypothesis))</a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">    <span class="cf">return</span> ll</a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="kw">def</span> logistic_regression(X, y, num_steps, learning_rate, add_intercept <span class="op">=</span> <span class="va">False</span>):</a>
-<a class="sourceLine" id="cb1-13" data-line-number="13">    <span class="cf">if</span> add_intercept:</a>
-<a class="sourceLine" id="cb1-14" data-line-number="14">        intercept <span class="op">=</span> np.ones((X.shape[<span class="dv">0</span>], <span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb1-15" data-line-number="15">        X <span class="op">=</span> np.hstack((intercept, X))</a>
-<a class="sourceLine" id="cb1-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb1-17" data-line-number="17">        weights <span class="op">=</span> np.zeros(X.shape[<span class="dv">1</span>])</a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb1-19" data-line-number="19">        <span class="cf">for</span> step <span class="kw">in</span> <span class="bu">range</span>(num_steps):</a>
-<a class="sourceLine" id="cb1-20" data-line-number="20">            hypothesis <span class="op">=</span> sigmoid(np.dot(X, weights.T))</a>
-<a class="sourceLine" id="cb1-21" data-line-number="21">            error <span class="op">=</span> y <span class="op">-</span> hypothesis</a>
-<a class="sourceLine" id="cb1-22" data-line-number="22">            gradient <span class="op">=</span> np.dot(X.T, error)</a>
-<a class="sourceLine" id="cb1-23" data-line-number="23">            weights <span class="op">+=</span> learning_rate <span class="op">*</span> gradient</a>
-<a class="sourceLine" id="cb1-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb1-25" data-line-number="25">    <span class="cf">return</span> weights</a>
-<a class="sourceLine" id="cb1-26" data-line-number="26"></a>
-<a class="sourceLine" id="cb1-27" data-line-number="27">np.random.seed(<span class="dv">12</span>)</a>
-<a class="sourceLine" id="cb1-28" data-line-number="28">num_observations <span class="op">=</span> <span class="dv">5000</span></a>
-<a class="sourceLine" id="cb1-29" data-line-number="29"></a>
-<a class="sourceLine" id="cb1-30" data-line-number="30">x1 <span class="op">=</span> np.random.multivariate_normal([<span class="dv">0</span>, <span class="dv">0</span>], [[<span class="dv">1</span>, <span class="fl">.75</span>], [.<span class="dv">75</span>, <span class="dv">1</span>]], num_observations)</a>
-<a class="sourceLine" id="cb1-31" data-line-number="31">x2 <span class="op">=</span> np.random.multivariate_normal([<span class="dv">1</span>, <span class="dv">4</span>], [[<span class="dv">1</span>, <span class="fl">.75</span>], [.<span class="dv">75</span>, <span class="dv">1</span>]], num_observations)</a>
-<a class="sourceLine" id="cb1-32" data-line-number="32"></a>
-<a class="sourceLine" id="cb1-33" data-line-number="33">X <span class="op">=</span> np.vstack((x1, x2)).astype(np.float32)</a>
-<a class="sourceLine" id="cb1-34" data-line-number="34">y <span class="op">=</span> np.hstack((np.zeros(num_observations), np.ones(num_observations)))</a>
-<a class="sourceLine" id="cb1-35" data-line-number="35"></a>
-<a class="sourceLine" id="cb1-36" data-line-number="36">weights <span class="op">=</span> logistic_regression(X, y, num_steps <span class="op">=</span> <span class="dv">50000</span>, learning_rate <span class="op">=</span> <span class="fl">5e-5</span>, add_intercept <span class="op">=</span> <span class="va">True</span>)</a>
-<a class="sourceLine" id="cb1-37" data-line-number="37"></a>
-<a class="sourceLine" id="cb1-38" data-line-number="38"></a>
-<a class="sourceLine" id="cb1-39" data-line-number="39"><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</a>
-<a class="sourceLine" id="cb1-40" data-line-number="40"></a>
-<a class="sourceLine" id="cb1-41" data-line-number="41">clf <span class="op">=</span> LogisticRegression(fit_intercept<span class="op">=</span><span class="va">True</span>, C<span class="op">=</span><span class="fl">1e15</span>)</a>
-<a class="sourceLine" id="cb1-42" data-line-number="42">clf.fit(X, y)</a>
-<a class="sourceLine" id="cb1-43" data-line-number="43"><span class="bu">print</span>(clf.intercept_, clf.coef_)</a>
-<a class="sourceLine" id="cb1-44" data-line-number="44"><span class="bu">print</span>(weights)</a>
-<a class="sourceLine" id="cb1-45" data-line-number="45"></a>
-<a class="sourceLine" id="cb1-46" data-line-number="46">final_distribtion <span class="op">=</span> np.dot(np.hstack((np.ones((X.shape[<span class="dv">0</span>], <span class="dv">1</span>)),</a>
-<a class="sourceLine" id="cb1-47" data-line-number="47">                        X)), weights)</a>
-<a class="sourceLine" id="cb1-48" data-line-number="48">preds <span class="op">=</span> np.<span class="bu">round</span>(sigmoid(final_distribtion))</a>
-<a class="sourceLine" id="cb1-49" data-line-number="49"><span class="bu">print</span>(<span class="st">&#39;Accuracy from scratch: </span><span class="sc">{0}</span><span class="st">&#39;</span>.<span class="bu">format</span>((preds <span class="op">==</span> y).<span class="bu">sum</span>().astype(<span class="bu">float</span>) <span class="op">/</span> <span class="bu">len</span>(preds)))</a>
-<a class="sourceLine" id="cb1-50" data-line-number="50"><span class="bu">print</span>(<span class="st">&#39;Accuracy from scikit-learn: </span><span class="sc">{0}</span><span class="st">&#39;</span>.<span class="bu">format</span>(clf.score(X, y)))</a>
-<a class="sourceLine" id="cb1-51" data-line-number="51"></a>
-<a class="sourceLine" id="cb1-52" data-line-number="52">[output]</a>
-<a class="sourceLine" id="cb1-53" data-line-number="53"><span class="co"># [-13.99400797] [[-5.02712572  8.23286799]]</span></a>
-<a class="sourceLine" id="cb1-54" data-line-number="54"><span class="co"># [-13.58690551  -4.8809644    7.99812915]</span></a>
-<a class="sourceLine" id="cb1-55" data-line-number="55"><span class="co"># Accuracy from scratch: 0.9948</span></a>
-<a class="sourceLine" id="cb1-56" data-line-number="56"><span class="co"># Accuracy from scikit-learn: 0.9948</span></a></code></pre></div>
-<p>貌似跟<code>scikit-learn</code>的结果很接近，实在是太开心了。</p>
-<p><code>Logistic Regression</code>的优点：</p>
-<ul>
-<li>形式简单，模型的可解释性非常好。从特征的权重可以看到不同的特征对最后结果的影响。</li>
-<li>作为<code>baseline</code>的工程效果不错，训练速度较快，资源占用小（尤其是内存）。</li>
-</ul>
-<p><code>Logistic Regression</code>的缺点：</p>
-<ul>
-<li>由于模型形式比较简单，很难去拟合数据的真实分布。</li>
-<li>很难处理数据不平衡的问题，在数据缺失或者特征空间较大的场景下表现不好。</li>
-<li>在不引入其他方法的情况下，只能处理线性可分的数据（只能处理二分类问题，除非用<code>kernel trick</code>）。</li>
-<li><code>Logistic Regression</code>本身无法筛选特征，有时候会先用<code>GBDT</code>来筛选特征，再上<code>Logistic Regression</code>。</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -5383,7 +5435,7 @@ w_j := w_j + \alpha\sum_{i=1}^m(y^{(i)}-h_w(x^{(i)}))\cdot x_j)
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -5394,7 +5446,7 @@ w_j := w_j + \alpha\sum_{i=1}^m(y^{(i)}-h_w(x^{(i)}))\cdot x_j)
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -5405,7 +5457,7 @@ w_j := w_j + \alpha\sum_{i=1}^m(y^{(i)}-h_w(x^{(i)}))\cdot x_j)
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
